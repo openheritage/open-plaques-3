@@ -23,7 +23,7 @@ gem 'turbolinks'
 
 # Other gems to consider
 # gem 'activeadmin', '0.6.0' # `rails g active_admin:assets` when upgrading
-# gem 'devise'
+gem 'devise'
 # gem 'dragonfly'
 # gem 'facets', :require => false
 # gem 'friendly_id'
@@ -38,6 +38,9 @@ gem 'turbolinks'
 # gem 'state_machine'
 # gem 'uglifier', '>= 1.3.0'
 
+gem 'curb'
+gem 'sanitize'
+gem 'meta-tags', :require => 'meta_tags'
 
 # Gems that facilitate development but are not required to run the app.
 # Note `:require => false` for those gems that are purely command-line tools.

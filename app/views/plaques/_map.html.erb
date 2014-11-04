@@ -1,0 +1,171 @@
+<% @geolocated_plaques = @plaques.clone() if @plaques
+
+if @geolocated_plaques
+
+@geolocated_plaques.delete_if{ |plaque| !plaque.geolocated?} %>
+
+<% if @geolocated_plaques != nil && @geolocated_plaques.length > 0 %>
+
+  <% @center = find_mean(@geolocated_plaques) %>
+    <style type="text/css">
+        .olControlAttribution { bottom: 0px!important }
+        #map {
+            height: 512px;
+        }
+    </style>
+    <script src="http://openlayers.org/api/OpenLayers.js"></script>
+    <script type="text/javascript">
+
+    // for different styles see http://openlayers.org/dev/examples/popupMatrix.html
+        AutoSizeFramedCloud = OpenLayers.Class(OpenLayers.Popup.FramedCloud, {
+            'autoSize': true
+        });
+        FramedCloudMinSize = OpenLayers.Class(OpenLayers.Popup.FramedCloud, {
+            'autoSize': true,
+            'minSize': new OpenLayers.Size(350,360)
+        });
+
+        var map, layer, markers, popup, currentPopup;
+        var popupClass = AutoSizeFramedCloud;
+        var size = new OpenLayers.Size(10,10);
+        var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+        var icon = new OpenLayers.Icon('<%= asset_path 'openplaques-icon.png' %>',size,offset);
+        var icon_blue = new OpenLayers.Icon('<%= asset_path 'icon-blue.png' %>',size,offset);
+        var icon_black = new OpenLayers.Icon('<%= asset_path 'icon-black.png' %>',size,offset);
+        var icon_green = new OpenLayers.Icon('<%= asset_path 'icon-green.png' %>',size,offset);
+        var icon_red = new OpenLayers.Icon('<%= asset_path 'icon-red.png' %>',size,offset);
+        var icon_white = new OpenLayers.Icon('<%= asset_path 'icon-white.png' %>',size,offset);
+        var icon_yellow = new OpenLayers.Icon('<%= asset_path 'icon-yellow.png' %>',size,offset);
+        <% if @centre %>
+          var lat = <%= @centre.latitude %>;
+          var lon = <%= @centre.longitude %>;
+        <% else %>
+          var lat = 0;
+          var lon = 51.475;
+        <%end %>
+        <% if @zoom %>
+          var zoom = <%= @zoom %>;
+        <% else %>
+          var zoom = 11;
+        <% end %>
+
+        // avoid pink tiles
+        OpenLayers.IMAGE_RELOAD_ATTEMPTS = 3;
+        OpenLayers.Util.onImageLoadErrorColor = "transparent";
+
+        function init(){
+            var options = {
+                projection: new OpenLayers.Projection("EPSG:900913"),
+                displayProjection: new OpenLayers.Projection("EPSG:4326"),
+                units: "m",
+                numZoomLevels: 18,
+                maxResolution: 156543.0339,
+                maxExtent: new OpenLayers.Bounds(-20037508, -20037508,
+                                                 20037508, 20037508.34)
+            };
+            map = new OpenLayers.Map('map', options);
+            layer = new OpenLayers.Layer.OSM();
+            markers = new OpenLayers.Layer.Markers("Markers");
+            map.addLayers([layer, markers]);
+
+            var proj = new OpenLayers.Projection("EPSG:4326");
+            var point = new OpenLayers.LonLat(lon, lat);
+            point.transform(proj, map.getProjectionObject());
+
+            map.setCenter(point, zoom);
+
+            if (!map.getCenter()) {map.zoomToMaxExtent()}
+
+           var popupContentHTML;
+
+           <% for plaque in @geolocated_plaques %>
+             <% if plaque.geolocated? %>
+               popupClass = AutoSizeFramedCloud;
+               point = new OpenLayers.LonLat(<%= plaque.longitude%>, <%= plaque.latitude%>);
+               point.transform(proj, map.getProjectionObject());
+               popupContentHTML = '<p><%= link_to("\#" + plaque.id.to_s, plaque) %> <%= html_safe(plaque.inscription) %> </p>';
+               popupContentHTML = popupContentHTML + '<div class="popup_photo">';
+               <% if plaque.photographed? %>
+                 popupClass = FramedCloudMinSize;
+                 <% photo = plaque.photos.first %>
+                 <% if !photo.nil? %>
+                   popupContentHTML = popupContentHTML + '<p><%= link_to(thumbnail_img(photo), plaque) %></p>';
+                   popupContentHTML = popupContentHTML + '<p>Photographer: <%= link_to(html_safe(photo.photographer), photo.url) %>';
+                   <% if !photo.licence.nil? %>
+                     popupContentHTML = popupContentHTML + '<br/>License:&#160;<%= link_to(photo.licence.name, photo.licence.url)  %></p>';
+                   <% end %>
+                 <% end %>
+               <% end %>
+               popupContentHTML = popupContentHTML + '</div>';
+               addMarker(point, <% if plaque.colour && plaque.colour.name =~ /(blue|black|yellow|red|white|green)/ %> '<%= plaque.colour.name %>' <% else %> 'blue' <% end %>, popupClass, popupContentHTML, true, true);
+             <% end %>
+           <% end %>
+        }
+
+        /**
+         * Function: addMarker
+         * Add a new marker to the markers layer given the following lonlat,
+         *     popupClass, and popup contents HTML. Also allow specifying
+         *     whether or not to give the popup a close box.
+         *
+         * Parameters:
+         * ll - {<OpenLayers.LonLat>} Where to place the marker
+         * popupClass - {<OpenLayers.Class>} Which class of popup to bring up
+         *     when the marker is clicked.
+         * popupContentHTML - {String} What to put in the popup
+         * closeBox - {Boolean} Should popup have a close box?
+         * overflow - {Boolean} Let the popup overflow scrollbars?
+         */
+        function addMarker(point, colour, popupClass, popupContentHTML, closeBox, overflow) {
+
+            var feature = new OpenLayers.Feature(markers, point);
+            feature.closeBox = closeBox;
+            feature.popupClass = popupClass;
+            feature.data.popupContentHTML = popupContentHTML;
+            feature.data.overflow = (overflow) ? "auto" : "hidden";
+
+            var marker = null;
+
+            if (colour=="blue") {
+              marker = new OpenLayers.Marker(point, icon_blue.clone());
+            } else if (colour=="black") {
+              marker = new OpenLayers.Marker(point, icon_black.clone());
+            } else if (colour=="yellow") {
+              marker = new OpenLayers.Marker(point, icon_yellow.clone());
+            } else if (colour=="red") {
+              marker = new OpenLayers.Marker(point, icon_red.clone());
+            } else if (colour=="white") {
+              marker = new OpenLayers.Marker(point, icon_white.clone());
+            } else if (colour=="green") {
+              marker = new OpenLayers.Marker(point, icon_green.clone());
+            } else {
+              marker = new OpenLayers.Marker(point, icon_blue.clone());
+            }
+
+            var markerClick = function (evt) {
+                if (currentPopup != null) {
+                  currentPopup.hide();
+                }
+                if (this.popup == null) {
+                    this.popup = this.createPopup(this.closeBox);
+                    map.addPopup(this.popup);
+                    this.popup.show();
+                } else {
+                    this.popup.toggle();
+                }
+                currentPopup = this.popup;
+                OpenLayers.Event.stop(evt);
+            };
+            marker.events.register("mousedown", feature, markerClick);
+
+            markers.addMarker(marker);
+        }
+
+        addLoadEvent(init);
+
+    </script>
+
+    <div id="map" class="smallmap"></div>
+
+<% end %>
+<% end %>

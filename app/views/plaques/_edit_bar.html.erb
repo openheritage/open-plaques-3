@@ -1,0 +1,21 @@
+<% if current_user && current_user.is_admin? %>
+  <section class="admin_panel">
+    <%= link_to "Edit inscription", edit_plaque_inscription_path(plaque), {:class => :edit, :title => "Edit inscription"} %>
+
+    <%= link_to "Establish connections", new_personal_connection_path(plaque), {:class => :edit, :title => "Establish connections"} %>
+
+    <%= link_to "Establish sponsors", new_sponsorship_path(plaque), {:class => :edit, :title => "Establish sponsors"} %>
+
+    <%= link_to "Edit description", edit_plaque_description_path(plaque), {:class => :edit, :title => "Edit description"} %>
+
+    <%= link_to "Edit colour", edit_plaque_colour_path(plaque), {:class => :edit, :title => "Edit colour"} %>
+
+    <%= link_to "Edit geolocation", edit_plaque_geolocation_path(plaque), {:class => :edit, :title => "Edit geolocation"} %>
+
+    <%= link_to "Edit location", edit_location_path(plaque.location), {:class => :edit, :title => "Edit location"} %>
+
+    <%= link_to "Edit erected date", edit_plaque_erected_path(plaque), {:class => :edit, :title => "Edit organisation"} %>
+
+    <%= link_to "Show photos", plaque_photos_path(plaque), {:class => :show, :title => "Show photos"} %>
+  </section>
+<% end %>
