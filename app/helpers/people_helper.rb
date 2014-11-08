@@ -1,6 +1,6 @@
 # -*- encoding : utf-8 -*-
-require 'nokogiri'
-require 'sanitize'
+#require 'nokogiri'
+#require 'sanitize'
 
 module PeopleHelper
 
@@ -64,13 +64,13 @@ module PeopleHelper
   end
 
   # select the very first html paragraph
-  def wikipedia_summary(url)
-    doc = Nokogiri::HTML(open(url))
-    first_para_html = doc.search('//p').first.to_s # .gsub(/<\/?[^>]*>/, "")
-    return Sanitize.clean(first_para_html)
-    rescue Exception
-    return nil
-  end
+  # def wikipedia_summary(url)
+  #   doc = Nokogiri::HTML(open(url))
+  #   first_para_html = doc.search('//p').first.to_s # .gsub(/<\/?[^>]*>/, "")
+  #   return Sanitize.clean(first_para_html)
+  #   rescue Exception
+  #   return nil
+  # end
 
   # select html paragraphs from a web page given an Array, String or integer
   # e.g. "http://en.wikipedia.org/wiki/Arthur_Onslow", "2,4,5"
