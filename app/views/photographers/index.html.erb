@@ -10,10 +10,11 @@
   <p>The top 50 are:</p>
   <canvas id="myCanvas" width="1000" height="1000"></canvas>
 
+  <h3>Plaques photographed</h3>
   <ol>
     <% for photographer in @photographers %>
       <% if photographer[0] != nil %>
-        <li><%= link_to(photographer[0], photographer_url(photographer[0].gsub(/\./,'_').gsub('/','_'))) rescue photographer[0] %> - <%= pluralize(photographer[1], "photo") %></li>
+        <li><%= link_to(photographer[0], photographer_url(photographer[0].gsub(/\./,'_').gsub('/','_'))) rescue photographer[0] %> - <%= pluralize(photographer[1], "") %> </li>
       <% end %>
     <% end %>
  </ol>
