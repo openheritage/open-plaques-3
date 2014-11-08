@@ -45,20 +45,20 @@ class Plaque < ActiveRecord::Base
 
   before_save :use_other_colour_id
 
-  scope :current, :conditions => {:is_current => true} , :order => "id DESC"
-  scope :geolocated, :conditions => ["latitude IS NOT NULL"]
-  scope :ungeolocated, :conditions => {:latitude => nil} , :order => "id DESC"
-  scope :photographed, :conditions => ["photos_count > 0"]
-  scope :unphotographed, :conditions => {:photos_count => 0, :is_current => true} , :order => "id DESC"
-  scope :coloured, :conditions => ["colour_id IS NOT NULL"]
-  scope :photographed_not_coloured, :conditions => ["photos_count > 0 AND colour_id IS NULL"]
-  scope :geo_no_location, :conditions => ["latitude IS NOT NULL AND location_id IS NULL"]
-  scope :detailed_address_no_geo, :conditions => ["latitude IS NULL AND 1 = ((SELECT FROM locations WHERE locations.id = location_id) REGEXP '.*[0-9].*')"]
-  scope :no_connection, :conditions => {:personal_connections_count => 0} , :order => "id DESC"
-  scope :no_description, where("description = '' OR description IS NULL")
-  scope :partial_inscription, :conditions => {:inscription_is_stub => true } , :order => "id DESC"
-  scope :partial_inscription_photo, :conditions => {:photos_count => 1..99999, :inscription_is_stub => true} , :order => "id DESC"
-  scope :no_english_version, :conditions => ["language_id > 1 AND inscription_is_stub = 0 AND inscription_in_english IS NULL"]
+  scope :current, -> { where(is_current: true).order('id desc') }
+  scope :geolocated, ->  { where(["latitude IS NOT NULL"]) }
+  scope :ungeolocated, -> { where(latitude: nil).order("id DESC") }
+  scope :photographed, -> { where("photos_count > 0") }
+  scope :unphotographed, -> { where(:photos_count => 0, :is_current => true).order("id DESC") }
+  scope :coloured, -> { where("colour_id IS NOT NULL") }
+  scope :photographed_not_coloured, -> { where(["photos_count > 0 AND colour_id IS NULL"]) }
+  scope :geo_no_location, -> { where(["latitude IS NOT NULL AND location_id IS NULL"]) }
+  scope :detailed_address_no_geo, -> { where(latitude: nil).where("location_id is not null") }  # TODO fix this
+  scope :no_connection, -> { where(personal_connections_count: 0).order("id DESC") }
+  scope :no_description, -> { where("description = '' OR description IS NULL") }
+  scope :partial_inscription, -> { where(inscription_is_stub: true).order("id DESC") }
+  scope :partial_inscription_photo, -> { where(photos_count: 1..99999, inscription_is_stub: true).order("id DESC") }
+  scope :no_english_version, -> { where("language_id > 1").where(inscription_is_stub: false, inscription_in_english: nil) }
   
   attr_accessor :country, :other_colour_id
 

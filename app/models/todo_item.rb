@@ -19,8 +19,8 @@ class TodoItem < ActiveRecord::Base
 
   validates_presence_of :action, :description
 
-  scope :to_add, :conditions => ["action = 'add' AND url IS NOT NULL"]
-  scope :to_datacapture, :conditions => ["action = 'datacapture' AND url IS NOT NULL"]
+  scope :to_add, -> { where(action: 'add').where.not(url: nil) }
+  scope :to_datacapture, -> { where(action: 'datacapture').where.not(url: nil) }
   
   def to_datacapture?
     false

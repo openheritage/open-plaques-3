@@ -22,4 +22,4 @@ group :test do
   gem 'rspec-rails',        :group => :development
 end
 
-gem 'unicorn'
+gem 'thin'

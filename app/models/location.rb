@@ -23,7 +23,7 @@ class Location < ActiveRecord::Base
   has_many :plaques
   has_many :verbs, :through => :personal_connections #, :uniq => true
 
-  scope :no_area, :conditions => ["area_id IS NULL"]
+  scope :no_area, -> { where(area_id: nil) }
 
   before_validation :update_country_id
   
