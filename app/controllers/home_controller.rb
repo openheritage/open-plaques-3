@@ -1,7 +1,7 @@
 class HomeController < ApplicationController
   def index
     @plaques_count = Plaque.count
-    @recent_plaques = Plaque.photographed.order("random()")
+    @recent_plaques = Plaque.photographed.order("random()").limit(2)
     @todays = Pick.todays
     begin
       set_meta_tags :open_graph => {

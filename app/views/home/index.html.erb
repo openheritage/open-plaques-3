@@ -50,14 +50,16 @@
 
   <ol id="recent_photographed_plaques">
   <% @recent_plaques.each do |plaque| %>
-  <li class="first option_one">
-    <%= link_to plaque_path(plaque) do %>
-      <img src="<%= plaque.photos.first.file_url %>" width="200" alt="Plaque inscription" />
-      <div class="info">
-        <p><%= truncate(plaque.inscription, :length => 150) %></p>
-      </div>
+    <% if plaque.photos.first %>
+      <li class="first option_one">
+        <%= link_to plaque_path(plaque) do %>
+          <img src="<%= plaque.photos.first.file_url %>" width="200" alt="Plaque inscription" />
+          <div class="info">
+            <p><%= truncate(plaque.inscription, :length => 150) %></p>
+          </div>
+        <% end %>
+      </li>
     <% end %>
-  </li>
   <% end %>
   </ol>
 
