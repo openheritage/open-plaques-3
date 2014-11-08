@@ -4,7 +4,7 @@ class SeriesController < ApplicationController
   before_filter :find, :only => [:show, :edit, :update]
 
   def index
-    @series = Series.all(:order => :name)
+    @series = Series.all
   end
 
   def show
