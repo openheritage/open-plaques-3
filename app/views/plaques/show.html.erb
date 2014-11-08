@@ -1,0 +1,101 @@
+<% content_for :page_title, @plaque %>
+
+<%= content_tag(:section, link_to("Edit this plaque", edit_plaque_path(@plaque), {:class => :edit, :title => "Edit this plaque"}), :class => :admin_panel) if current_user && current_user.is_admin? %>
+
+<div class="panel clearfix">  
+  <% if @plaque.foreign? && !@plaque.inscription_in_english %><div class="goog-trans-section" lang=""><% end %>
+  <%= plaque_class = @plaque.inscription.length > 250 ? "large_inscription" : "inscription"
+    content_tag("h1", new_linked_inscription(@plaque), {:class => plaque_class, :property => "op:inscription"})%>
+  <% if @plaque.inscription_in_english %>
+    <%= plaque_class = @plaque.inscription_in_english.length > 250 ? "large_inscription" : "inscription" 
+      content_tag("h1", @plaque.inscription_in_english, {:class => plaque_class, :property => "op:inscription"})%>
+  <% end %>
+  <% if @plaque.foreign? && !@plaque.inscription_in_english %>
+    <div class="goog-trans-control"></div>
+    </div>
+    <script>
+    function googleSectionalElementInit() {
+      new google.translate.SectionalElement({
+        sectionalNodeClassName: 'goog-trans-section',
+        controlNodeClassName: 'goog-trans-control',
+        background: '#f4fa58'
+      }, 'google_sectional_element');
+    }
+    </script>
+    <script src="http://translate.google.com/translate_a/element.js?cb=googleSectionalElementInit&ug=section&hl=en"></script>
+  <% end %>
+</div>
+
+<div class="panel clearfix">
+  <% if !@plaque.main_photo %>
+    <section id="plaque_no_photos">
+      <div class="no_photo">
+        <h2>Your photo</h2>
+        <% if @plaque.is_current %>
+          <p>There is no photo linked to this plaque record. It needs someone to hunt it down. Maybe that someone could be you?</p>
+        <% else %>
+          <p>There is no photo linked to this plaque record. We don't think that it currently exists so we need someone to hunt down an old photo. Maybe that someone could be you?</p>
+        <% end %>
+        <p><%= link_to 'How to add it', plaque_photos_path(@plaque), {:class => :show, :title => 'Show photos'} %></p>
+      </div>
+      <% if @plaque.geolocated? %>
+        <div class="no_photo_geo">
+          <div id="plaque-map" data-latitude="<%= @plaque.latitude %>" data-longitude="<%= @plaque.longitude %>" class="mini" data-zoom="18" data-view="one"></div>
+        </div>
+      <% else %>	  
+        <div class="no_location">
+          <h2>Map location unknown</h2>
+          <p>We haven&apos;t located this plaque on a map yet. <!--a href="#">Locate this plaque</a--></p>
+        </div>
+      <% end %>
+    </section>
+
+    <section id="plaque_identifier" class="plaque_info_panel">
+      <%= render 'header' %>
+      <%= render 'details', :plaque => @plaque %>
+    </section>
+
+  <% else %>
+
+    <div class="plaque_image plaque_multiple_images">
+      <% first_photo = @plaque.main_photo %>
+      <%= link_to(image_tag(first_photo.file_url, {:id => "primary_image", :alt => "Photo of plaque", :rel => "foaf:depiction"}), first_photo.url) %>
+      <div id="photo_information" >
+        <p class="photo_credit">Photographed by <% if first_photo.photographer_url %><%= link_to(first_photo.photographer, first_photo.photographer_url) %><% else %><%= first_photo.photographer %>.<% end %></p>
+        <p class="photo_licence"><%= link_to(first_photo.licence.name, first_photo.licence.url) %></p>
+      </div>
+      <div id="secondary_images">
+        <% @plaque.photos.detail_order.each do |image| %>
+          <%= link_to(image_tag(image.file_url, {:alt => "Photo of plaque", :rel => "foaf:depiction"}), image.url) unless image == first_photo %>
+        <% end %>
+        <div class="no_photo">
+          <h2>Your photo</h2>
+          <p><%= link_to 'How to add it', plaque_photos_path(@plaque), {:class => :show, :title => 'Show photos'} %></p>
+        </div>
+      </div>
+    </div>
+    <section id="plaque_identifier" class="plaque_info_panel">
+      <%= render 'header' %>
+      <% if @plaque.geolocated? %>
+        <div id="plaque-map" data-latitude="<%= @plaque.latitude %>" data-longitude="<%= @plaque.longitude %>" class="mini" data-zoom="18" data-view="one"></div>
+      <% end %>
+      <%= render 'details', :plaque => @plaque %>
+    </section>
+
+  <% end %>
+
+</div>
+
+<% unless @plaque.description.blank? %>
+  <div class="panel clearfix info">
+    <div class="description" id="description">
+      <%= simple_format(h(@plaque.description)) %>
+    </div>
+  </div>
+<% end %>
+
+<div id="plaques_nearby"></div>
+
+<div<%= " class=\"" + @plaque.colour.name + "plaque\"" if @plaque.colour %> about="#this" typeof="op:Plaque"></div>
+
+<p class="alternate_formats">Data about this plaque as <%= alternate_link_to "XML", plaque_path(@plaque, :xml), :xml %> <%= alternate_link_to "JSON", plaque_path(@plaque, :json), :json %> <%= alternate_link_to "KML", plaque_path(@plaque, :kml), :kml if @plaque.geolocated? %> <%= alternate_link_to "GMAP", "http://maps.google.co.uk/maps?q=" + plaque_url(@plaque, :kml), :html if @plaque.geolocated? %></p>

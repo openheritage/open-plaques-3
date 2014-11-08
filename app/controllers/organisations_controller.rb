@@ -9,7 +9,7 @@ class OrganisationsController < ApplicationController
       limit = params[:limit] ? params[:limit] : 5
       @organisations = Organisation.name_contains(params[:name_starts_with]).limit(limit).most_plaques_order
     else
-      @organisations = Organisation.all(:order => :name)
+      @organisations = Organisation.all
     end
     respond_to do |format|
       format.html
