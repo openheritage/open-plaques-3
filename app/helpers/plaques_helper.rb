@@ -388,8 +388,8 @@ module PlaquesHelper
 
   def new_linked_inscription(plaque)
     inscription = plaque.inscription
-    connections = plaque.personal_connections.all(:select => "personal_connections.person_id", :group => "personal_connections.person_id")
-    if connections.size > 0
+    connections = plaque.personal_connections
+    if connections.length > 0
       connections.each do |connection|
         if connection.person
           matched = false

@@ -34,7 +34,7 @@ class CountriesController < ApplicationController
       @country = Country.find(params[:id])
       redirect_to(country_url(@country), :status => :moved_permanently) and return
     end
-    @areas = @country.areas.all(:order => :name, :include => :country)
+    @areas = @country.areas.order(:name).includes(:country)
     respond_to do |format|
       format.html
       format.xml

@@ -122,6 +122,7 @@ GEM
       thread_safe (~> 0.1)
     warden (1.2.3)
       rack (>= 1.0)
+    will_paginate (3.0.7)
 
 PLATFORMS
   ruby
@@ -139,3 +140,4 @@ DEPENDENCIES
   sass-rails (~> 4.0.3)
   spring
   thin
+  will_paginate
