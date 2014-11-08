@@ -1,0 +1,64 @@
+<% content_for :page_title, "Open Plaques - linking historical people and places" %>
+
+<% if Rails.env == 'development' %>
+  <%= render 'development_message' %>
+<% end %>
+
+<div class="panel clearfix">
+
+  <div id="homepage_content">
+
+    <p class="intro">Documenting the historical links between <strong>people</strong> and <strong>places</strong>, as recorded by commemorative <strong>plaques</strong>.</p>
+
+    <ul id="homepage_modules">
+      <li>
+        <h2><%=t :explore %></h2>
+        <p>Browse the <%= @plaques_count %> plaques by <%= link_to "person", people_path %>, <%= link_to "place", countries_path %>, or <%= link_to "search", search_path %>.</p>
+      </li>
+      <li>
+        <h2><%=t :contribute %></h2>
+        <p>Spot a plaque. Help us by <%= link_to "adding it", new_plaque_path %> to the site.</p>
+        <p>Take a photo. Add it to Flickr or Wikimedia Commons and link it to our record</p>
+        <p>Spot an innaccuracy. Tell us.</p>
+        <% if current_user && current_user.is_admin? %>
+          <p>Or find something <%= link_to("Todo", "/todo", {:class => :edit, :title => "Todos"})%></p>
+        <% end %>
+        <p>You are all part of our mission to find all of the plaques in the world!</p>
+      </li>
+      <li>
+        <h2><%=t :news %></h2>
+        <p>Subscribe to <a href="http://blog.openplaques.org">our blog</a>, follow us on <a href="http://www.twitter.com/openplaques">Twitter</a> for updates.</p>
+        <div class="like_button">
+          <iframe src="http://www.facebook.com/plugins/like.php?href=https://www.facebook.com/OpenPlaques&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action=like&amp;font&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:75px; height:20px; text-align:right;" allowTransparency="true"></iframe> us on Facebook for features and trivia.
+        </div>
+      </li>
+      <% if @todays %>
+      <li id="plaque_of_the_day">
+        <h2><%= t :plaque_of_the_day %> from <%= link_to "our favourites", picks_path %></h2>
+        <div>
+          <div class="thumb">
+            <%= link_to thumbnail_img(@todays.plaque), @todays.plaque %>
+          </div>
+          <div><%= link_to @todays.plaque.title, @todays.plaque %><br/>"<%= @todays.description %>" - <%= @todays.proposer %></div>
+        </div>
+        <p></p>
+      </li>
+      <% end %>
+    </ul>
+
+  </div>
+
+  <ol id="recent_photographed_plaques">
+  <% @recent_plaques.each do |plaque| %>
+  <li class="first option_one">
+    <%= link_to plaque_path(plaque) do %>
+      <img src="<%= plaque.photos.first.file_url %>" width="200" alt="Plaque inscription" />
+      <div class="info">
+        <p><%= truncate(plaque.inscription, :length => 150) %></p>
+      </div>
+    <% end %>
+  </li>
+  <% end %>
+  </ol>
+
+</div>
