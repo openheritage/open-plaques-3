@@ -1,0 +1,104 @@
+<% content_for :page_title, "Edit " + @area.name %>
+
+<div class="panel clearfix">
+
+  <h1>Edit <%= link_to(h(@area.name), @area) %>, <%= link_to @area.country.name, @area.country %></h1>
+
+  <%= form_for(@area) do |f| %>
+
+    <p>
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+    </p>
+
+    <p>
+      <%= f.label :slug %>
+      <%= f.text_field :slug %> (must be lowercase with underscores)
+    </p>
+
+    <p>
+      <%= f.label :country_id, "Country" %>
+      <%= f.collection_select :country_id, @countries, :id, :name %>
+    </p>
+
+	<p>Find "<%= @area.name %>, <%= @area.country.name %>" on <a href="http://maps.google.co.uk/maps?q=<%= @area.name %>, <%= @area.country.name %>&z=18" target="_new">Google Maps</a></p>
+	
+    <fieldset>
+      <legend>Geolocation</legend>
+
+      <%= f.label :latitude %>
+      <%= f.text_field :latitude %>
+
+      <%= f.label :longitude %>
+      <%= f.text_field :longitude %>
+
+    </fieldset>
+
+	  <p><%= label_tag(:streetview_url, "Google Streetview url:") %> <%= text_field_tag(:streetview_url) %></p>
+
+    <p>
+      <%= f.submit "Update", :class => :button %>
+    </p>
+  <% end %>
+
+	
+
+		<div id="map" style="height: 400px; width: 100%; margin-top: 15px;"></div>
+		
+		<script>
+			var map = null;
+			var lat_element = null;
+			var lon_element = null;
+			var geolocation = new L.LatLng(52, 0);	
+			var view = 5;
+			
+			document.addEventListener("DOMContentLoaded", function() {
+
+				lat_element = document.getElementById('area_latitude');
+				lon_element = document.getElementById('area_longitude');
+
+				lat_element.addEventListener('blur', update_map);
+				lon_element.addEventListener('blur', update_map);
+
+				update_geolocation_from_text_fields();
+				
+				var plaque_icon = new L.DivIcon({ className: 'plaque-marker', html: '', iconSize : 16 });
+			
+				map = L.map('map').setView(geolocation, view);
+
+				L.tileLayer('http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {
+					maxZoom: 18,
+					subdomains: ['otile1','otile2','otile3','otile4']
+				}).addTo(map);
+				
+				marker = L.marker(geolocation, {draggable: true, icon: plaque_icon});
+				marker.on('dragend', update_text_fields_from_marker);
+				marker.addTo(map);
+				
+				function update_geolocation_from_text_fields() {
+					if (lat_element && lat_element.value != '' && lon_element && lon_element.value != '') {
+						geolocation.lat = lat_element.value;
+						geolocation.lng = lon_element.value;
+						view = 18;
+					} 
+				}
+				
+			 function update_map() {
+				 update_geolocation_from_text_fields();
+				 marker.setLatLng(geolocation);
+				 map.setView(geolocation, view);
+			 }
+			 
+			 function update_text_fields_from_marker() {
+				 lat_element.value = marker.getLatLng().lat;
+				 lon_element.value = marker.getLatLng().lng;
+			 }
+		
+			});
+		</script>
+
+
+<br/>
+
+  <%= button_to("Delete", area_path(@area), {:method => :delete, :class => "button delete"}) %>
+</div>

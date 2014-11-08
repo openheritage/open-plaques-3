@@ -1,0 +1,29 @@
+<div class="panel">
+  <h1>Edit connection for <%= link_to @plaque.title, @plaque %></h1>
+  
+  <p>From <%= render 'plaques/minimal', :plaque => @plaque %> we can establish that</p>
+
+  <%= form_for @personal_connection, :url => plaque_connection_path(@plaque, @personal_connection) do |f| %>
+    <p>
+      <%= f.collection_select :person_id, @people, :id, :name_and_dates %>
+      <%= link_to("Add person", new_person_path) %>
+    </p>
+    <p>
+      <%= f.collection_select :verb_id, @verbs, :id, :name %>
+      <%= link_to("Add verb", new_verb_path) %>
+    </p>
+    <p>
+      <%= f.label :location_id, "At" %>
+      <%= f.collection_select :location_id, @locations, :id, :name %>
+    </p>
+    <p>
+      <%= f.label :started_at, "From" %>
+      <%= f.text_field :started_at %>
+    </p>
+    <p>
+      <%= f.label :ended_at, "To" %>
+      <%= f.text_field :ended_at %>
+    </p>
+    <%= f.submit "Update", :class => :button %>
+  <% end %>
+</div>

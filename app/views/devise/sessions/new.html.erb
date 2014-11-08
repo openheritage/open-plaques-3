@@ -1,0 +1,34 @@
+<% content_for :page_title, "Login" %>
+
+<div class="panel clearfix">
+	<h1>Login</h1>
+</div>
+
+<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+
+	<fieldset>
+		<div class="row">
+			<%= f.label :email %>
+			<%= f.text_field :email, :autofocus => true %>
+		</div>
+		
+		<div class="row">
+			<%= f.label :password %>
+			<%= f.password_field :password %>
+		</div>
+		
+		<% if devise_mapping.rememberable? -%>
+			<div class="row checkbox">
+				<%= f.check_box :remember_me %>
+				<%= f.label :remember_me %>
+			</div>
+		<% end -%>
+	
+		<%= f.submit "Sign in", :class => "button" %>
+		<%= render :partial => "devise/shared/links" %>
+		
+	</fieldset>
+	
+<% end %>
+
+

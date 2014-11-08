@@ -1,0 +1,12 @@
+<% content_for :page_title, "Add organisation" %>
+<h1>Add an organisation</h1>
+
+<%= form_for @organisation do |f| %>
+
+  <p><%= f.label :name %> <%= f.text_field :name %> (Note: please don't include the word 'The' unless it is absolutely an indivisible part of the name.)</p>
+  <h2>Optional fields</h2>
+  <p><%= f.label :website %> <%= f.text_field :website %></p>
+  <p><%= f.label :description %><%= f.text_area :description %> (Displayed on the page)</p>
+  <p><%= f.label :notes %> <%= f.text_area :notes %> (Internal use only)</p>
+  <p><%= f.submit "Save", :class => :button %></p>
+<% end %>

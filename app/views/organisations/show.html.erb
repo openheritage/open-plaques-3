@@ -1,0 +1,18 @@
+<% content_for :page_title, "#{@organisation.name} plaques" %>
+
+<%= content_tag(:section, link_to("Edit this organisation", edit_organisation_path(@organisation), {:class => :edit, :title => "Edit this organisation"}), :class => :admin_panel) if current_user && current_user.is_admin? %>
+
+<div class="panel clearfix">
+  <h1 property="dc:title rdfs:label foaf:name" about="#this"><%= h @organisation.name %> plaques</h1>
+</div>
+
+<div id="organisation_info" typeof="foaf:Organization">
+  <%= content_tag("p", link_to(h(@organisation.website),@organisation.website), {:rel => "foaf:homepage vcard:url"}) unless @organisation.website.blank? %>
+  <%= simple_format(@organisation.description) if @organisation.description %>
+  <div id="plaque-map" data-latitude="<%= @mean.latitude %>" data-longitude="<%= @mean.longitude %>" class="full" data-zoom="<%= @zoom %>"></div>
+  <%= will_paginate @sponsorships %>
+  <%= render partial: 'plaques/plaque', collection: @sponsorships, as: :plaque %>
+  <%= will_paginate @sponsorships %>
+</div>
+
+<p class="alternate_formats">Data about <%= @organisation %> as <%= alternate_link_to "XML", organisation_path(@organisation, :format => :xml), :xml %> <%= alternate_link_to "JSON", organisation_path(@organisation, :format => :json), :json %> <%= alternate_link_to "KML", organisation_path(@organisation, :format => :kml), :kml %> <%= alternate_link_to "GMAP", "http://maps.google.co.uk/maps?q=" + organisation_url(@organisation, :format => :kml), :html %></p>

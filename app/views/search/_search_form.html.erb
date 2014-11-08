@@ -1,0 +1,11 @@
+﻿<%= form_tag("/search", :method => "get", :class => "search_box") do %>
+	<fieldset>
+		<span id="magnifying_glass"></span>
+		<div class="row">
+			<%= label_tag(:phrase, "Search: ") %>
+			<%= text_field_tag(:phrase, phrase, :type => 'search' ) %>
+		</div>
+		<%= submit_tag("Go", :class => 'button', :name => nil) %>
+		
+	</fieldset>
+<% end %>

@@ -1,0 +1,18 @@
+<% @page_title = @user.username %>
+
+<div class="panel" typeof="sioc:UserAccount">
+	<h1 property="foaf:nick"><%= @user.username %></h1>
+</div>
+
+<div class="panel">
+<% if @user.plaques.size > 0 %>
+  <p><%= @user.username %> has added <%= pluralize(@user.plaques.count, "plaque") %>.</p>
+  <ul>
+    <% @user.plaques.each do |plaque| %>
+    <li><%= link_to(plaque.first_person || "Plaque #" + plaque.id.to_s, "/plaques/" + plaque.id.to_s, {:rel => "sioc:creator_of"})  %> <%= plaque.inscription %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <%= content_tag("p", "No plaques yet.")%>
+<% end %>
+</div>

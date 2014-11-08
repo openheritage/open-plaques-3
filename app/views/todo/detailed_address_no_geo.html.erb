@@ -1,0 +1,24 @@
+﻿<% content_for :page_title, "To do: needs geolocating" %>
+
+<div class="panel">
+  <h1>Plaques with no geolocation</h1>
+  <section class="admin_panel"><%= link_to("All to-do lists", "/todo") %></section>
+  <% if @plaques.size > 0 %>
+    <%= will_paginate @plaques %>
+    <%= list @plaques, :detailed_address_no_geo %>
+    <%= will_paginate @plaques %>
+  <% else %>
+    <p>Every plaque with a photo has a colour attribute assigned. Bravo!</p>
+  <% end %>
+
+  <% if @plaques.size > 0 %>
+    <%= will_paginate @plaques %>
+    <ul>
+      <% @plaques.each do |plaque| %>
+        <li><%= link_to(plaque.first_person || "Plaque #" + plaque.id.to_s, "/plaques/" + plaque.id.to_s + "/geolocation/edit")  %> - <%= plaque.location.name if plaque.location %>, <%= plaque.area.name if plaque.area %></li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>Every plaque has been geolocated. Bravo!</p>
+  <% end %>
+</div>

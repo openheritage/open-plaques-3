@@ -1,0 +1,18 @@
+<% content_for :page_title, "Add country" %>
+<div class="panel">
+  <h1>Add country</h1>
+
+  <%= form_for @country, :url => countries_path do |f| %>
+
+    <%#= f.error_messages %>
+
+    <p><%= f.label :name %> <%= f.text_field :name %></p>
+
+    <p><%= f.label :alpha2, "Alpha-2 code" %> <%= f.text_field :alpha2 %> <a target="new" href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">ISO 3166</a></p>
+
+    <p><%= f.label :dbpedia_uri, "DBpedia resource URI" %> <%= f.text_field :dbpedia_uri %></p>
+
+    <%= f.submit "Add" %>
+
+  <% end %>
+</div>

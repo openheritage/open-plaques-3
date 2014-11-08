@@ -1,0 +1,17 @@
+<% content_for :page_title, "Open Plaques pages" %>
+
+<% if current_user && current_user.is_admin? %>
+  <section class="admin_panel">
+    <%= link_to("Add new page", new_page_path, {:class => :edit, :title => "Add new page"})%>
+  </section>
+<% end %>
+
+<div class="panel clearfix">
+  <p><%= pluralize(@pages.size, "Open Plaques page") %></p>
+
+  <ul>
+    <% for page in @pages %>
+      <li><%= link_to page.name, {:action => :show, :id => page.slug} %>. Last updated <%= page.updated_at.to_s(:long) %> <%= link_to "[Edit]", edit_page_path(page.slug) %></li>
+    <% end %>
+  </ul>
+</div>

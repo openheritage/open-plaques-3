@@ -1,0 +1,9 @@
+<% content_for :page_title, "Plaque series " + @series.name %>
+<div class="panel">
+  <h1>Plaque series <%= @series.name %></h1>
+  <p><%= @series.description %></p>
+  <div id="plaque-map" data-latitude="<%= @mean.latitude %>" data-longitude="<%= @mean.longitude %>" class="full" data-zoom="8"></div>
+  <%= will_paginate @plaques %>
+  <%= render @plaques %>
+  <%= will_paginate @plaques %>
+</div>

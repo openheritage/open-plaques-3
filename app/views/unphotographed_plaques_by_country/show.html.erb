@@ -1,0 +1,9 @@
+<% content_for :page_title, "Unphotographed plaques in " + @country.name %>
+<h1>Unphotographed plaques in <%= link_to @country.name, country_path(@country) %></h1>
+
+<% unless @plaques.nil? %>
+  <div id="plaque-map" data-latitude="<%= @mean.latitude %>" data-longitude="<%= @mean.longitude %>" data-view="not all" data-zoom="6"></div>
+  <%= will_paginate @plaques %>
+  <%= render @plaques %>
+  <%= will_paginate @plaques %>
+<% end %>

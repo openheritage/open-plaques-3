@@ -1,0 +1,18 @@
+<% @page_title = "Roles starting with " + @index.capitalize %>
+<div class="panel clearfix">
+	<h1>Roles - <%= @index.upcase %></h1>
+	<%= render :partial => "index_navigation" %>
+</div>
+
+	<%= content_tag("ul", :id => 'roles_results', :class => 'results') do %>
+	  <% @roles.each do |role| %>
+	    <%= content_tag("li") do %>
+	      <%= link_to pluralize(role.personal_roles_count, role.name), role_path(role) %>
+	    <% end %>
+	  <% end %>
+	<% end %>
+</div>
+
+<!--
+<p class="alternate_formats">Data about roles as <%= alternate_link_to "XML", role_by_index_path(@index.downcase, :xml), :xml %> <%= alternate_link_to "JSON", role_by_index_path(@index.downcase, :json), :json %></p>
+-->

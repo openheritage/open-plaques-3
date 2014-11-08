@@ -1,0 +1,20 @@
+<h1>Editing series</h1>
+
+<%= form_for(@series) do |f| %>
+
+  <p>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :description %>
+    <%= f.text_field :description %>
+  </p>
+
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @series %> |
+<%= link_to 'Back', series_path %>

@@ -9,6 +9,9 @@ Rails.application.routes.draw do
     get page => "static_pages##{page.gsub('-', '_')}"
   end
 
+  devise_for :users
+  resources :users, :only => [:index, :show, :new, :create]
+
   scope "/plaques" do
     resource :latest, :as => :latest, :controller => :plaques_latest, :only => :show
   end

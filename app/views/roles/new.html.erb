@@ -1,0 +1,11 @@
+<% @page_title = "New role" %>
+
+<div class="panel">
+  <h1>New role</h1>
+  <%= form_for(@role) do |f| %>
+    <p><%= f.label :name %><%= f.text_field :name %></p>
+    <p><%= f.label :abbreviation %><%= f.text_field :abbreviation %></p>
+    <p>This is a <%= f.collection_select :role_type, Role.types, :to_s, :to_s, :include_blank => true %> type role (optional)</p>
+    <p><%= f.submit "Create", :class => :button %></p>
+  <% end %>
+</div>

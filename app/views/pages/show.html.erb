@@ -1,0 +1,15 @@
+<% content_for :page_title, @page.name %>
+
+<% if current_user && current_user.is_admin? %>
+  <section class="admin_panel">
+    <%= link_to("Edit this page", edit_page_path(@page.slug), {:class => :edit, :title => "Edit this page"})%>
+  </section>
+<% end %>
+
+<div class="panel clearfix">
+  <h1><%= @page.name %></h1>
+</div>
+
+<div class="body">
+  <%= simple_format(@page.body) %>
+</div>

@@ -5,7 +5,7 @@ class CountriesController < ApplicationController
   before_filter :find_country, :only => [:edit, :update]
 
   def index
-    @countries = Country.all(:order => :name)
+    @countries = Country.all.to_a
     @countries.sort! { |a,b| b.plaques.size <=> a.plaques.size }
     respond_to do |format|
       format.html

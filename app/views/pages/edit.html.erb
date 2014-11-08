@@ -1,0 +1,21 @@
+<h1>Edit <%= link_to @page.name, {:action => :show, :id => @page.slug }%></h1>
+
+<div class="panel">
+  <%= form_for @page, :url => "/pages/" + @page.slug do |f| %>
+
+    <p>
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+    </p>
+
+    <p>
+      <%= f.label :slug %>
+      <%= f.text_field :slug %>
+    </p>
+
+    <%= f.text_area :body, {:rows => "40", :cols => "160"} %>
+
+    <%= f.submit "Save", :class => :button  %>
+
+  <% end %>
+</div>
