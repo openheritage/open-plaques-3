@@ -1,0 +1,23 @@
+<% content_for :page_title, "Edit sponsor information for plaque \#" + @plaque.id.to_s %>
+
+<%= render 'plaques/edit_bar', :plaque => @plaque %>
+
+<div class="panel">
+  <h1>Which organisations were involved in erecting this plaque?</h1>
+  <%= render @plaque %>
+  <div>
+    <% @plaque.sponsorships.all.each do |sponsorship| %>
+      <% if sponsorship.organisation %>
+        <div><%= sponsorship.organisation.name %> <%= button_to "Delete", sponsorship, :method => :delete, :class => :button %></div>
+      <% end %>
+    <% end %>
+    <p>
+    <%= form_for @sponsorship do |f| %>
+      <%= f.hidden_field :plaque_id, :value => @plaque.id %>
+      <% if @plaque.sponsorships.all.count > 0 %>Also sponsored<% end %> by <%= f.collection_select :organisation_id, @organisations, :id, :name, {:include_blank => true} %>
+      <%= f.submit "Add", :class => :button %>
+    <% end %>
+    </p>
+  </div>
+  <%= content_tag("p", link_to("Add new organisation", new_organisation_path)) if current_user %>
+</div>

@@ -1,0 +1,20 @@
+<% content_for :page_title, "Geocoding " + @plaque.title %>
+
+<div class="panel">
+  <h1>Can you see the <%= link_to @plaque.title, @plaque %> in Google Streetview?</h1>
+  <% if url_for(:only_path => false).include?('microtask') %>
+    <p><%= button_to "Not sure. Give me another one", todo_path('microtask'), :method => :get, :class => :button %></p>
+  <% end %>
+  <br/>
+  <%= render 'plaques/minimal', :plaque => @plaque %>
+
+  <%= form_for(@plaque) do |f| %>
+	<p>Find <%= @plaque.address %> on <a href="http://maps.google.co.uk/maps?q=<%= @plaque.location.name if @plaque.location %>,<%= @plaque.area.name if @plaque.area %>&z=18" target="_new">Google Maps</a>, move around until the plaque is in front of you, click on the link button to copy the Streetview url and paste it in below. If you are sure that it is more-or-less the right address but cannot actually see it then you can still tell us.</p>
+	<br/>
+    <div class="edit_lat_long">
+      <p><%= f.label :is_accurate_geolocation, "The plaque can be seen" %> <%= f.check_box :is_accurate_geolocation %></p>
+	  <p><%= label_tag(:streetview_url, "at the Streetview url") %> <%= text_field_tag(:streetview_url) %></p>
+      <p><%= f.submit "Update", :class => :button  %></p>
+    </div>
+  <% end %>
+</div>
