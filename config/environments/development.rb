@@ -35,14 +35,4 @@ Rails.application.configure do
   # Raises helpful error messages.
   config.assets.raise_runtime_errors = true
 
-  # Raises error for missing translations
-  # config.action_view.raise_on_missing_translations = true
-
-  # Limit log file size to 20MB with one backup
-  log_file = open(config.paths['log'].first, 'a')
-  log_file.binmode
-  config.logger = Logger.new(log_file, 1, 20971520)
-
-  # Automatically inject JavaScript needed for LiveReload.
-  config.middleware.insert_after(ActionDispatch::Static, Rack::LiveReload)
 end
