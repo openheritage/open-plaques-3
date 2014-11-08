@@ -11,7 +11,7 @@
   <canvas id="myCanvas" width="1000" height="1000"></canvas>
 
   <ol>
-    <% for photographer in @photographers.sort_by { |p| 1 - p[1] } %>
+    <% for photographer in @photographers %>
       <% if photographer[0] != nil %>
         <li><%= link_to(photographer[0], photographer_url(photographer[0].gsub(/\./,'_').gsub('/','_'))) rescue photographer[0] %> - <%= pluralize(photographer[1], "photo") %></li>
       <% end %>

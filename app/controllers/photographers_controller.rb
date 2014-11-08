@@ -1,7 +1,7 @@
 class PhotographersController < ApplicationController
 
   def index
-    @photographers = Photo.count(:photographer, :group => 'photographer')
+    @photographers = Photo.group('photographer').order('count_all desc').count
     respond_to do |format|
       format.html
       format.xml
