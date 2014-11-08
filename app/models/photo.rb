@@ -17,9 +17,9 @@
 # === Associations
 # * Licence - The content licence under which the photo is made available.
 # * Plaque - the featured in the photo.
-require 'curb'
-require 'nokogiri'
-require 'sanitize'
+#require 'curb'
+#require 'nokogiri'
+#require 'sanitize'
 
 class Photo < ActiveRecord::Base
 
@@ -40,8 +40,8 @@ class Photo < ActiveRecord::Base
 
   scope :reverse_detail_order, -> { order('shot DESC') }
   scope :detail_order, -> { order('shot ASC') }
-  scope :unassigned, :conditions => ["plaque_id IS NULL AND of_a_plaque = 't'"]
-  scope :undecided, :conditions => ["plaque_id IS NULL AND of_a_plaque IS NULL"]
+  scope :unassigned, -> { where(plaque_id: nil, of_a_plaque: true) }
+  scope :undecided, -> { where(plaque_id: nil, of_a_plaque: nil) }
 
   def assign_from_photo_url
     if @photo_url
