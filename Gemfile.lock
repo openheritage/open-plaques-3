@@ -145,5 +145,5 @@ DEPENDENCIES
   sass-rails (~> 4.0.3)
   spring
   thin
-  will_paginate
   tzinfo-data
+  will_paginate
