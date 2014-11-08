@@ -22,4 +22,5 @@ group :test do
   gem 'rspec-rails',        :group => :development
 end
 
-gem 'thin'
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
+gem 'thin', platforms: [:ruby]
