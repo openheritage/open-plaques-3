@@ -14,8 +14,8 @@ class Colour < ActiveRecord::Base
 
   has_many :plaques
 
-  scope :common, where(:common => true)
-  scope :uncommon, where(:common => false)
+  scope :common, -> { where(common: true) }
+  scope :uncommon, ->  { where(common: false) }
 
   include ApplicationHelper
 
