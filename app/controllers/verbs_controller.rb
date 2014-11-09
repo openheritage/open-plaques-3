@@ -26,7 +26,7 @@ class VerbsController < ApplicationController
   end
 
   def create
-    @verb = Verb.new(params[:verb])
+    @verb = Verb.new(verb_params)
     if @verb.save
       redirect_to verb_path(@verb)
     else
@@ -40,5 +40,13 @@ class VerbsController < ApplicationController
     @verb.destroy
     redirect_to verbs_path
   end
+
+  private
+
+    def verb_params
+      params.require(:verb).permit(
+        :name,
+      )
+    end
 
 end
