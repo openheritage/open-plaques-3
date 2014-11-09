@@ -54,7 +54,7 @@ class AreasController < ApplicationController
   end
 
   def edit
-    @countries = Country.find(:all)
+    @countries = Country.all
   end
 
   def update
