@@ -19,7 +19,7 @@ class CountriesController < ApplicationController
   end
 
   def create
-    @country = Country.new(params[:country])
+    @country = Country.new(country_params)
     if @country.save
       redirect_to country_path(@country)
     else
