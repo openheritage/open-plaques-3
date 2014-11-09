@@ -1,0 +1,17 @@
+<% content_for :page_title, "Add a plaque colour" %>
+
+<div class="panel">
+  <h1>Add colour</h1>
+
+  <%= form_for @colour do |colour| %>
+    <%= colour.label :name, "Name" %>
+    <%= colour.text_field :name %>
+
+    <p>
+      <%= colour.label :dbpedia_uri %>
+      <%= colour.text_field :dbpedia_uri %>
+    </p>
+
+    <%= colour.submit "Save" %>
+  <% end %>
+</div>

@@ -18,7 +18,7 @@ class ColoursController < ApplicationController
 
   def show
     begin
-      @colour = Colour.find_by_slug!(params[:id])
+      @colour = Colour.find_by_slug!([:id])
     rescue
       @colour = Colour.find(params[:id])
       redirect_to(colour_url(@colour.name), :status => :moved_permanently) and return
@@ -40,7 +40,7 @@ class ColoursController < ApplicationController
   end
 
   def create
-    @colour = Colour.new(params[:colour])
+    @colour = Colour.new(colour_params)
 
     if @colour.save
       redirect_to colour_path(@colour.slug)
@@ -52,7 +52,7 @@ class ColoursController < ApplicationController
   def update
     old_slug = @colour.slug
 
-    if @colour.update_attributes(params[:colour])
+    if @colour.update_attributes(colour_params)
       redirect_to colour_path(@colour.slug)
     else
       @colour.slug = old_slug
@@ -66,4 +66,12 @@ class ColoursController < ApplicationController
       @colour = Colour.find_by_slug!(params[:id])
     end
 
+  private
+
+    def colour_params
+      params.require(:colour).permit(
+        :name,
+        :dbpedia_uri,
+      )
+    end
 end
