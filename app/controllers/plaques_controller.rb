@@ -222,7 +222,7 @@ class PlaquesController < ApplicationController
       end
     end
     respond_to do |format|
-      if @plaque.update_attributes(params[:plaque])
+      if @plaque.update_attributes(plaque_params)
         flash[:notice] = 'Plaque was successfully updated.'
         format.html { redirect_to(@plaque) }
         format.xml  { head :ok }
@@ -259,10 +259,13 @@ class PlaquesController < ApplicationController
     include PlaquesHelper
   end
 
-  protected
+  private 
 
     def find_plaque
       @plaque = Plaque.find(params[:id])
     end
 
+	def plaque_params
+      params.require(:plaque).permit(:inscription,:inscription_is_stub,:language_id,:inscription_in_english)
+	end
 end
