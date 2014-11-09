@@ -25,7 +25,7 @@ class SeriesController < ApplicationController
   end
 
   def create
-    @series = Series.new(params[:series])
+    @series = Series.new(series_params)
     if @series.save
       redirect_to series_path(@series)
     end

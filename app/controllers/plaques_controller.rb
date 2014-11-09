@@ -140,7 +140,7 @@ class PlaquesController < ApplicationController
   # POST /plaques
   # POST /plaques.xml
   def create
-    @plaque = Plaque.new(params[:plaque])
+    @plaque = Plaque.new(plaque_params)
 
     if current_user
       @plaque.user = current_user

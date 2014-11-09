@@ -40,7 +40,7 @@ class PhotosController < ApplicationController
   end
 
   def create
-    @photo = Photo.new(params[:photo])
+    @photo = Photo.new(photo_params)
     @photo.wikimedia_data
     @photo.save
     redirect_to :back

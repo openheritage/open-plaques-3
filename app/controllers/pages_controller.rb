@@ -24,7 +24,7 @@ class PagesController < ApplicationController
   end
 
   def create
-    @page = Page.new(params[:page])
+    @page = Page.new(page_params)
 
     if @page.save
       redirect_to pages_path
