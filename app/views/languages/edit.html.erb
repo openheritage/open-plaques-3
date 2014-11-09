@@ -1,0 +1,18 @@
+<% content_for :page_title, "Edit " + @language.name %>
+<h1>Edit <%= @language %></h1>
+
+<%= form_for(@language) do |f| %>
+  <p>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </p>
+
+  <p>
+    <%= f.label :alpha2, "Alpha2 code" %>
+    <%= f.text_field :alpha2 %>
+  </p>
+
+  <p>
+    <%= f.submit "Update", :class => :button %>
+  </p>
+<% end %>

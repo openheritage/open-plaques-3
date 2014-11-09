@@ -1,0 +1,30 @@
+<% content_for :page_title, "Edit " + @location.name %>
+
+<%= render 'plaques/edit_bar', :plaque => @location.plaques.first %>
+
+<div class="panel clearfix">
+  <h1>Edit location <%= link_to @location.full_address, @location %></h1>
+  <p>The plaque at this location is...
+    <%= render @location.plaques %>
+  </p>
+</div>
+
+<div class="panel clearfix">
+  <%= form_for @location do |f| %>
+    <p>
+      <%= f.text_field :name %>
+      <% if @areas.size > 0 %>
+        <%= f.collection_select :area_id, @areas, :id, :name, {:include_blank => true} %>
+      <% end %>
+      <%= f.submit "Update", :class => :button %>
+    </p>
+  <% end %>
+  <br/>
+  <p>Add a new area in: 
+    <% @countries.each do |country| %>
+      <%= link_to(country.name, "/places/" + country.alpha2 + "/areas/new") %>
+    <% end %>
+  </p>
+  <br/>
+  <p><%= button_to "Delete location", location_path(@location), {:method => :delete, :class => :button} if current_user.try(:is_admin?) %></p>
+</div>

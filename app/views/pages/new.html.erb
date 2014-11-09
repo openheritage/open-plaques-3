@@ -1,0 +1,23 @@
+<% content_for :page_title, "Add a page" %>
+
+<div class="panel">
+  <h1>New page</h1>
+
+  <%= form_for @page do |f| %>
+
+    <p>
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+    </p>
+
+    <p>
+      <%= f.label :slug %>
+      <%= f.text_field :slug %>
+    </p>
+
+    <%= f.text_area :body, {:rows => "40", :cols => "160"} %>
+
+    <%= f.submit "Save", :class => :button %>
+
+  <% end %>
+</div>

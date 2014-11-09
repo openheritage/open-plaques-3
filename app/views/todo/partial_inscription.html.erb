@@ -1,0 +1,13 @@
+﻿<% content_for :page_title, "To do: plaques with partial inscriptions" %>
+
+<div class="panel">
+  <h1>Plaques with partial inscriptions</h1>
+  <section class="admin_panel"><%= link_to("All to-do lists", "/todo") %></section>
+  <% if @plaques.size > 0 %>
+    <%= will_paginate @plaques %>
+    <%= list @plaques, :partial_inscription %>
+    <%= will_paginate @plaques %>
+  <% else %>
+    <p>All plaques have inscriptions. Bravo!</p>
+  <% end %>
+</div>

@@ -1,0 +1,34 @@
+<% content_for :page_title, "Edit inscription for plaque \#" + @plaque.id.to_s %>
+
+<%= render 'plaques/edit_bar', :plaque => @plaque %>
+
+<div class="panel">
+  <h1>What does <%= link_to("plaque \#" + @plaque.id.to_s, @plaque)%> say?</h1>
+  <p><%= button_to "Not sure. Give me another one", todo_path('microtask'), :method => :get, :class => :button %></p>
+  <br/>
+  <%= render @plaque.main_photo if @plaque.main_photo  %>
+</div>
+
+<%= form_for @plaque do |f| %>
+  <div class="primary">
+    <fieldset>
+      <div class="row">
+        <%= f.label :inscription, "All the words written on the plaque excluding the organisation in sentence case are:" %>
+        <%= f.text_area :inscription, {:placeholder => "Joe Bloggs lived here", :autofocus => 'true',  :rows => "6", :cols => "50"} %>
+      </div>
+      <div class="row">
+        <%= f.label :inscription_is_stub, "We don't have the full, exact wording yet" %><%= f.check_box :inscription_is_stub %>
+      </div>
+      <div class="row">
+        <%= f.label :language_id, "It's written in" %>
+        <%= f.collection_select :language_id, @languages, :id, :name %>
+      </div>
+      <div class="row">
+        <%= f.label :inscription_in_english, "If the inscription is not in English, optionally include a translation here" %>
+        <%= f.text_area :inscription_in_english, {:rows => "6", :cols => "50"} %>
+      </div>
+    </fieldset>
+    <%= f.submit "Update", :class => :button %>
+  </div>
+<% end %>
+

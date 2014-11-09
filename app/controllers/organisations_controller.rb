@@ -9,7 +9,7 @@ class OrganisationsController < ApplicationController
       limit = params[:limit] ? params[:limit] : 5
       @organisations = Organisation.name_contains(params[:name_starts_with]).limit(limit).most_plaques_order
     else
-      @organisations = Organisation.all(:order => :name)
+      @organisations = Organisation.all
     end
     respond_to do |format|
       format.html
@@ -94,7 +94,7 @@ class OrganisationsController < ApplicationController
 
   def update
     old_slug = @organisation.slug
-    if @organisation.update_attributes(params[:organisation])
+    if @organisation.update_attributes(organisation_params)
       flash[:notice] = 'Updates to organisation saved.'
       redirect_to organisation_path(@organisation.slug)
     else
@@ -121,4 +121,16 @@ class OrganisationsController < ApplicationController
       include PlaquesHelper
     end
 
+  private
+
+    def organisation_params
+      params.require(:organisation).permit(
+        :name,
+        :slug,
+        :latitude,
+        :longitude,
+        :website,
+        :description,
+        :notes)
+    end
 end

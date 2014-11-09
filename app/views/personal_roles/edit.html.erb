@@ -1,0 +1,17 @@
+<%= render 'people/minimal', :person => @personal_role.person %>
+
+<%= form_for @personal_role do |f| %>
+  <p>was a <%= link_to @personal_role.role.name, @personal_role.role %>
+  <% if @personal_role.role.relationship? %>of <%= f.collection_select :related_person_id, @people, :id, :name_and_dates, {:include_blank => true} , { "style" => "width:400px" } %><% end %>
+  <br/>
+    <%= f.label :started_at, "from" %> <%= f.text_field :started_at %>
+    <%= f.label :ended_at, "to" %> <%= f.text_field :ended_at %>
+  </p>
+
+  <p>
+    <%= f.label :ordinal, "ordinal" %>
+    <%= f.text_field :ordinal %>
+  </p>
+
+  <p><%= f.submit "Save", :class => :button %></p>
+<% end %>

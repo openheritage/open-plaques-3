@@ -1,0 +1,52 @@
+<% content_for :page_title, "Commemorated " + @role.name.pluralize %>
+
+<div class="panel clearfix">
+  <% if current_user && current_user.is_admin? %>
+    <section class="admin_panel">
+      <%= link_to("Edit this "+@role.type+" role", edit_role_path(@role), {:class => :edit, :title => "Edit this "+@role.type+" role"})%>
+    </section>
+  <% end %>
+  <h1>Commemorated <%= @role.name.pluralize %></h1>
+  <p>Read more about what <%= a_or_an @role.name, false %> <%= link_to @role.name, @role.wikipedia_url %> is on Wikipedia</p>
+</div>
+
+<ol class="results" id="people_results">
+  <% for personal_role in @role.personal_roles %>
+    <li class="vcard person" typeof="<%= if personal_role.person.person? then "foaf:Person" else "foaf:Agent" end %> vcard:VCard" about="#person">
+      <p class="result"><b><%= personal_role.ordinal.ordinalize + " " if personal_role.ordinal %></b><%= dated_person(personal_role.person) %> <%= personal_role.date_range %></b></p>
+      <% personal_role.person.relationships.each do |relationship| %>
+        <p><%= relationship.role.name %> of <%= dated_person(relationship.related_person) %></p>
+      <% end %>
+      <p class="count"><%= link_to pluralize(personal_role.person.plaques.size, "plaque"), personal_role.person %> in <%= list_of_area_links(personal_role.person.areas) %></p>
+    </li>	
+  <% end %>
+  
+  <% if @role.people.size == 0 %>
+    <li>
+      <p class="result">None</p>
+      <p class="count">There are no plaques mentioning this role.</p>
+    </li>
+  <% end %>
+</ol>
+
+<% if @related_roles.size > 0 %>
+  <div class="panel clearfix">
+    <h2>Related Roles</h2>
+  </div>
+  <ol class="results" id="people_results">
+    <% for related_role in @related_roles %>
+      <li class="role">
+        <p class="result"><%= link_to related_role.name, role_path(related_role) %></p>
+        <p class="count">
+          <% for person in related_role.people %>
+            <div class="vcard person" typeof="<%= if person.person? then "foaf:Person" else "foaf:Agent" end %> vcard:VCard" about="#person">
+              <%= dated_person(person) %>
+            </div>
+          <% end %>
+        </p>
+      </li>
+    <% end %>
+  </ol>
+<% end %>
+
+<p class="alternate_formats">Data about this role as <%= alternate_link_to "XML", role_path(@role, :format => :xml), :xml %> <%= alternate_link_to "JSON", role_path(@role, :format => :json), :json %></p>

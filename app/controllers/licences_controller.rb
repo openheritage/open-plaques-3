@@ -4,7 +4,7 @@ class LicencesController < ApplicationController
   before_filter :authorisation_required, :except => [:index, :show]
 
   def index
-    @licences = Licence.find(:all)
+    @licences = Licence.all
   end
 
   def show

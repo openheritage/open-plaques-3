@@ -1,0 +1,41 @@
+<% content_for :page_title, "Edit connections for plaque \#" + @plaque.id.to_s %>
+
+<%= render 'plaques/edit_bar', :plaque => @plaque %>
+
+<div class="panel">
+  <h1>Connections for the <%= link_to @plaque.title, @plaque %></h1>
+  <p>From <%= render 'plaques/minimal', :plaque => @plaque %> we can establish that</p>
+  <ul><% @plaque.personal_connections.all.each do |pc| %><li><%= link_to pc.person.name, person_path(pc.person) if pc.person %> <%= pc.verb.name if pc.verb %>
+    <%= "at " + pc.location.full_address if pc.location %>
+    <%= "from " + pc.started_at.year.to_s if pc.started_at %><%= " to " + pc.ended_at.year.to_s if pc.ended_at %> 
+    <%= link_to "Edit", edit_personal_connection_path(pc) %> <%= button_to("Delete", personal_connection_path(pc), :method => :delete, :class => :button)%> </li>
+  <% end %>
+  <% if @plaque.personal_connections.size == 0 %>
+    <li>No facts have been established yet</li>
+  <% end %>
+  </ul>
+  <%= form_for @personal_connection, :url => personal_connections_path(@plaque) do |f| %>
+    <fieldset>
+      <div class="row">
+        <%= f.collection_select :person_id, @people, :id, :name_and_dates, {} , { "style" => "width:400px" } %> <%= link_to("Add person", "/people/new") %>
+      </div>
+      <div class="row">
+        <%= f.collection_select :verb_id, @verbs, :id, :name, { :selected => "222"}, { "style" => "width:400px" } %>  <%= link_to("Add verb", "/verbs/new") %>
+      </div>
+      <% if @plaque.location %>
+        <div class="row">at <%= @plaque.location.full_address %><%= f.hidden_field :location_id, :value => @plaque.location.id %></div>
+      <% else %>
+        <div class="row">There is no location for this plaque. Probably shouldn't create a connection.</div>
+      <% end %>
+      <div class="row">
+        <%= f.label :started_at, "From" %>
+        <%= f.text_field :started_at %>
+      </div>
+      <div class="row">
+        <%= f.label :ended_at, "To" %>
+        <%= f.text_field :ended_at %>
+      </div>
+    </fieldset>
+    <%= f.submit "Add", :class => :button %>
+  <% end %>
+</div>

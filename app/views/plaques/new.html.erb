@@ -1,0 +1,251 @@
+<script>
+
+  $(function() {
+      $('#plaque_photos_attributes_0_photo_url').attr('disabled', 'disabled');
+      $('#plaque_photos_attributes_0_accept_cc_by_licence').attr('disabled', 'disabled');
+
+      $('input[name="photo"]').change(function() {
+        var val = $('input[name="photo"]:radio:checked"').val();
+        if (val == "web") {
+          $('#plaque_photos_attributes_0_photo_url').attr('disabled', '');
+          $('#plaque_photos_attributes_0_accept_cc_by_licence').attr('disabled', '');
+
+        } else {
+          $('#plaque_photos_attributes_0_photo_url').attr('disabled', 'disabled');
+          $('#plaque_photos_attributes_0_accept_cc_by_licence').attr('disabled', 'disabled');
+        }
+      });
+  });
+
+  $(function() {
+
+    $('#plaque_other_colour_id').attr('disabled', 'disabled');
+    $('input[name="plaque[colour_id]"]').change(function() {
+        var val = $('input[name="plaque[colour_id]"]:radio:checked"').val();
+        if (val == "other") {
+          $('#plaque_other_colour_id').attr('disabled', '');
+        } else {
+          $('#plaque_other_colour_id').attr('disabled', 'disabled');
+        }
+    });
+  });
+
+
+  $(function() {
+    $( "#area" ).autocomplete({
+      source: '/areas.json' ,
+      select: function(event, ui){
+            $('#country').val(ui.item.country_name);
+            $('#area_id').val(ui.item.id);
+            $('#plaque_country').val(ui.item.country_id);
+          },
+      delay: 10
+    });
+  });
+
+  $(function() {
+
+    $( "#organisation_name" ).autocomplete({
+      autofocus: true,
+      source: function(request, response) {
+        $.ajax({
+          url: "/organisations",
+          dataType: "json",
+          data: {
+            name_starts_with: request.term,
+            limit: 10
+          },
+          success: function(data) {
+            response($.map(data, function(item) {
+              return {
+                label: item.organisation.name,
+                id: item.organisation.id
+              }
+            }));
+          }
+        });
+      },
+      select: function(event, ui) {
+        $('#plaque_organisation_id').val(ui.item.id);
+      }
+    });
+  });
+  </script>
+
+<div class="panel">
+  <h1>Tell us about the plaque</h1>
+
+  <p>Thanks for identifying a plaque that is not already on this website. Fill in as much as you can and <em>anything you don't know can be left blank</em>.</p>
+  <br/>
+  <p>All of the data on Open Plaques is released into the public domain completely licence-free. By providing us with information you are agreeing that it will be public domain also.</p>
+</div>
+
+
+<% if params[:checked] && params[:checked] == "true" %>
+
+  <% if @plaque.errors.size > 0 %>
+    <div class="error_alert">
+      <p>There was an error adding your plaque. Please correct it below.</p>
+    </div>
+
+
+
+  <% end %>
+
+  <%= form_for(@plaque) do |f| %>
+
+    <div class="primary">
+      <fieldset>
+        <h2>What does the plaque say?</h2>
+        <div class="row">
+          <%= f.label :inscription, "Type in the words on the plaque, in sentence case, excluding the organisation. e.g. 'John Smith 1900-1980 lived here'." %>
+          <%= f.text_area :inscription, {:placeholder => "Joe Bloggs lived here", :autofocus => 'true',  :rows => "6", :cols => "50"} %>
+        </div>
+
+        <div class="row">
+          <%= f.label :inscription_is_stub, "I don't know the full, exact wording yet" %><%= f.check_box :inscription_is_stub %>
+        </div>
+
+        <div class="row">
+            <%= f.label :language_id, "What language is it in?" %>
+            <%= f.collection_select :language_id, @languages, :id, :name %>
+        </div>
+      </fieldset>
+<!--
+      <%= fieldset do %>
+        <h2>Have you taken a photo of it?</h2>
+
+          <div class="row radio">
+            <%= radio_button_tag :photo, "nil", true %>
+            <%= label_tag :photo_nil, "Not yet" %>
+          </div>
+
+          <div class="row radio">
+            <%= radio_button_tag :photo, :web %>
+            <%= label_tag :photo_web, "Yes, it's here:" %>
+            <%= f.fields_for :photos do |p| %>
+              <%= p.text_field :photo_url, :placeholder => "Photo URL" %>
+              <div class="checkbox confirmation">
+                <%= p.check_box(:accept_cc_by_licence) %>
+                <%= p.label(:accept_cc_by_licence, "I took this photo and agree to release it under a ".html_safe + link_to("Creative Commons Attribution licence", "http://creativecommons.org/licenses/by/3.0/") + ".")%>
+              </div>
+          <% end %>
+          </div>
+
+      <% end %>
+-->
+    </div>
+    <div class="secondary">
+      <fieldset>
+        <h2>Where is it?</h2>
+
+        <div class="row">
+          <label for="location">Street and number </label>
+          <%= text_field_tag :location, "", {:placeholder => "221B Baker Street"} %>
+        </div>
+
+        <div class="row ui-widget">
+          <label for="area">City/Town (just the town name please, no area or post code)</label>
+          <%= text_field_tag :area, "", :placeholder => "London" %>
+        </div>
+
+        <div class="row">
+          <%= f.label :country %>
+          <%= f.collection_select :country, @countries, :id, :name, :include_blank => true %>
+        </div>
+
+        <%= hidden_field_tag :area_id %>
+      </fieldset>
+
+      <fieldset>
+        <h2>Who put the plaque up, and when?</h2>
+
+        <%= f.fields_for :organisation do |g| %>
+          <div class="row">
+            <%= label_tag :organisation_name, "Name of organisation" %>
+            <%= text_field_tag :organisation_name, "", {:placeholder => "English Heritage"} %>
+            <%= f.hidden_field :organisation_id %>
+          </div>
+
+          <div class="row">
+            <div class="date_labels">
+              <%= f.label :erected_at_1i, "Year" %>
+              <%= f.label :erected_at_3i, "Date" %>
+            </div>
+            <%= f.date_select :erected_at, :include_blank => true, :start_year => Time.now.year, :end_year => 1800, :field_name => :plaque_erected_at_year, :order => [:year, :day, :month] %>
+          </div>
+
+        <% end %>
+
+      </fieldset>
+
+      <%= fieldset do %>
+        <%= content_tag("h2", "What colour is it?") %>
+
+          <div class="colour_options">
+          <% @common_colours.each do |colour| %>
+            <div class="row radio">
+              <%= f.radio_button :colour_id, colour.id %>
+              <%= f.label "colour_id_" + colour.id.to_s, colour.name, :class => colour.name.downcase %>
+            </div>
+          <% end %>
+
+            <div class="row radio other">
+              <%= f.radio_button :colour_id, "other" %>
+              <%= f.label :colour_id_other, "other:" %>
+              <%= f.collection_select :other_colour_id, @other_colours, :id, :name, :include_blank => true %>
+            </div>
+
+            <div class="row radio unknown">
+              <%= f.radio_button :colour_id, "nil", :checked => true %>
+              <%= f.label :colour_id_nil, "unknown" %>
+            </div>
+
+
+          </div>
+        <% end %>
+
+      <% unless current_user %>
+        <fieldset class="user">
+          <h2>About you</h2>
+
+          <%= f.fields_for :user do |g| %>
+            <div class="row">
+              <%= g.label :name, "Name" %>
+              <%= g.text_field :name %>
+            </div>
+
+            <div class="row">
+              <%= g.label :email, "E-mail address" %>
+              <%= g.text_field :email %>
+            </div>
+
+            <div class="row checkbox">
+              <%= g.check_box :opted_in %>
+              <%= g.label :opted_in, "Please keep me informed about the project" %>
+            </div>
+
+          <% end %>
+        </fieldset>
+      <% end %>
+
+      <%= f.submit "Add your plaque", :class => "button" %>
+
+    <% end %>
+
+  </div>
+
+<% else %>
+
+<div class="panel">
+
+  <p>First, let's just make sure it's not already in our database. Who or what is it about?</p>
+
+  <%= form_tag("/search", :method => "get") do %>
+    <%= label_tag(:phrase, "Search: ") %>
+    <%= text_field_tag(:phrase) %>
+    <%= hidden_field_tag(:from, :submission)%>
+    <%= submit_tag("Go", :name => nil) %>
+  <% end %>
+</div>
+<% end %>

@@ -25,8 +25,7 @@ class Role < ActiveRecord::Base
   include ApplicationHelper
 
   def related_roles
-    Role.find(:all, :conditions =>
-      ['lower(name) != ? and (lower(name) LIKE ? or lower(name) LIKE ? or lower(name) LIKE ? )', name.downcase, 
+    Role.where(['lower(name) != ? and (lower(name) LIKE ? or lower(name) LIKE ? or lower(name) LIKE ? )', name.downcase, 
     "#{name.downcase} %", "% #{name.downcase} %", "% #{name.downcase}"])
   end
   

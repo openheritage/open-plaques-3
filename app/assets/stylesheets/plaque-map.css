@@ -1,0 +1,15 @@
+#plaque-map {height: 300px;}
+
+#plaque-map.full {height: 600px;}
+
+#plaque-map.mini {height: 400px; }
+
+.plaque-marker {
+
+	background-color: rgba(56, 146, 227, 0.9);
+	height: 16px;
+	width: 16px;
+	border-radius: 8px;
+	border: 0;
+
+}

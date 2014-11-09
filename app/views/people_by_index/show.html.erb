@@ -1,0 +1,24 @@
+<% content_for :page_title, "Historical plaques about people by index - " + @index.upcase %>
+
+<div class="panel clearfix">
+  <h1>People - <%= @index.upcase %></h1>
+
+  <nav class="alphabet">
+    <%= content_tag("ol") do %>
+      <% for letter in "A".."Z" %>
+        <%= content_tag("li", navigation_link_to(letter, people_by_index_path(letter.downcase))) %>
+      <% end %>
+    <% end %>
+  </nav>
+</div>
+
+<%= content_tag("ol", :class => "results", :id => "people_results") do %>
+  <% @people.each do |person| %>
+    <li>
+      <p class="result"><%= render person %></p>
+      <p class="count"><%= pluralize(person.personal_connections.size, "plaque") %></p>
+    </li>
+  <% end %>
+<% end %>
+
+<p class="alternate_formats">Data about people as <%= alternate_link_to "XML", people_by_index_path(@index.downcase, :xml), :xml %> <%= alternate_link_to "JSON", people_by_index_path(@index.downcase, :json), :json %></p>

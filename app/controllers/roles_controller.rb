@@ -7,8 +7,8 @@ class RolesController < ApplicationController
 
   def index
     respond_to do |format|
-      format.html { redirect_to(roles_by_index_path) }
-      @roles = Role.find(:all, :order => :name)
+      format.html { redirect_to(roles_by_index_path('a')) }
+      @roles = Role.order(:name)
       format.kml {
         @parent = @roles
         render "colours/index"
@@ -70,7 +70,7 @@ class RolesController < ApplicationController
   # PUT /roles/1.xml
   def update
     respond_to do |format|
-      if @role.update_attributes(params[:role])
+    if @role.update_attributes(role_params)
         flash[:notice] = 'Role was successfully updated.'
         format.html { redirect_to(role_path(@role.slug)) }
         format.xml  { head :ok }
@@ -87,4 +87,16 @@ class RolesController < ApplicationController
       @role = Role.find_by_slug!(params[:id])
     end
 
+  private
+
+    def role_params
+      params.require(:role).permit(
+        :name,
+        :abbreviation,
+        :slug,
+        :wikipedia_stub,
+        :role_type,
+        :commit,
+        :id)
+    end
 end

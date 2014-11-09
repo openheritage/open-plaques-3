@@ -1,0 +1,24 @@
+<% content_for :page_title, "Forgotten your password?" %>
+
+<div class="panel clearfix">
+	<h1>Forgotten your password?</h1>
+</div>
+
+<%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f| %>
+	<%= devise_error_messages! %>
+
+	<fieldset>
+		<div class="row">
+			<%= f.label :email %>
+			<%= f.text_field :email, :autofocus => true %>
+		</div>
+		
+		<%= f.submit "Send me reset password instructions", :class => "button"  %>
+	</fieldset>
+	
+
+<% end %>
+
+<div class="panel">
+	<%= render :partial => "devise/shared/links" %>
+</div>

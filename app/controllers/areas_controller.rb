@@ -39,7 +39,7 @@ class AreasController < ApplicationController
   end
 
   def create
-    @area = @country.areas.new(params[:area])
+    @area = @country.areas.new(area_params)
     if @area.save
       redirect_to country_area_path(@area.country_alpha2, @area.slug)
     else
@@ -54,11 +54,11 @@ class AreasController < ApplicationController
   end
 
   def edit
-    @countries = Country.find(:all)
+    @countries = Country.all
   end
 
   def update
-    if @area.update_attributes(params[:area])
+    if @area.update_attributes(area_params)
       flash[:notice] = 'Area was successfully updated.'
       redirect_to(country_area_path(@area.country.alpha2, @area.slug))
     else
@@ -81,4 +81,10 @@ class AreasController < ApplicationController
       end
     end
 
+  private
+
+    def area_params
+      params.require(:area).permit(:name,:slug,:country_id,:latitude,:longitude,:streetview_url,:country_id)
+	end
+  
 end

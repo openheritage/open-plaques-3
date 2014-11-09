@@ -1,0 +1,13 @@
+<% @page_title = "Edit role " + @role.name %>
+
+<div class="panel">
+  <h1>Editing role <%= link_to @role.name, @role %></h1>
+  <%= form_for(@role) do |f| %>
+    <p><%= f.label :name %><%= f.text_field :name %></p>
+    <p><%= f.label :abbreviation %><%= f.text_field :abbreviation %></p>
+    <p><%= f.label :slug %><%= f.text_field :slug %></p>
+    <p><%= f.label :wikipedia_stub %><%= f.text_field :wikipedia_stub %></p>
+    <p>This is a <%= f.collection_select :role_type, Role.types, :to_s, :to_s, :include_blank => true %> type role</p>
+    <p><%= f.submit "Update", :class => :button %></p>
+  <% end %>
+</div>

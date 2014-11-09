@@ -28,6 +28,8 @@ class Area < ActiveRecord::Base
   has_many :locations
   has_many :plaques, :through => :locations
 
+  default_scope { order('name ASC') }
+
   include ApplicationHelper
   include PlaquesHelper
   

@@ -1,0 +1,11 @@
+<% content_for :page_title, "Verbs" %>
+
+<div class="panel">
+  <h1>Verbs</h1>
+    <% @verbs.each do |verb| %>
+    <div class="inside_panel"><%= pluralize verb.personal_connections.count, 'person' %> <%= link_to(verb.name, verb_path(verb))%></div>
+    <% end %>
+  </ul>
+</div>
+
+<p class="alternate_formats">Data about verbs as <%= alternate_link_to "XML", verbs_path(:xml), :xml %> <%= alternate_link_to "JSON", verbs_path(:json), :json %></p>

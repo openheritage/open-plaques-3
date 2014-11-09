@@ -6,12 +6,15 @@ class LocationsController < ApplicationController
   before_filter :find_location, :only => [:show, :edit, :update, :destroy]
 
   def index
-    @locations = Location.find(:all, :order => :name)
+    @locations = Location.order(:name)
   end
 
   def edit
-    @areas = Area.find(:all, :order => :name)
-    @countries = Country.find(:all)
+    @areas = Area.order(:name)
+    @countries = Country.all
+  end
+
+  def show
   end
 
   def update

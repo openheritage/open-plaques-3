@@ -11,6 +11,8 @@ gem 'jquery-rails'
 gem 'bootstrap-sass',    '~> 3.2.0'
 
 gem 'devise'
+gem 'meta-tags'
+gem 'will_paginate'
 
 group :development do
   gem 'spring'
@@ -21,4 +23,5 @@ group :test do
   gem 'rspec-rails',        :group => :development
 end
 
-gem 'thin'
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
+gem 'thin', platforms: [:ruby]

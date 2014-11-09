@@ -1,0 +1,13 @@
+﻿<% content_for :page_title, "To do: plaques with no connections" %>
+
+<div class="panel">
+  <h1>Plaques with no connections</h1>
+  <section class="admin_panel"><%= link_to("All to-do lists", "/todo") %></section>
+  <% if @plaques.size > 0 %>
+    <%= will_paginate @plaques %>
+    <%= list @plaques, :no_connection %>
+    <%= will_paginate @plaques %>
+  <% else %>
+    <p>All plaques have connections. Bravo!</p>
+  <% end %>
+</div>

@@ -1,0 +1,19 @@
+<% content_for :page_title, "Edit " + @country.name %>
+<h1>Edit <%= link_to @country.name, @country %></h1>
+
+<%= form_for @country do |f| %>
+  <p><%= f.label :alpha2, "Alpha-2 code" %><%= f.text_field :alpha2 %></p>
+  <p><%= f.label :name %><%= f.text_field :name %></p>
+  <p><%= f.label :dbpedia_uri, "DBpedia resource URI" %> <%= f.text_field :dbpedia_uri %></p>
+  <% if @areas && @areas.size > 0 %>
+  <p>
+    <%= f.label :area_id, "Area" %>
+    <%= f.collection_select :area_id, @areas, :id, :name, {:include_blank => true} %>
+  </p>
+  <% end %>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= content_tag("p", link_to("Add new area", new_country_area_path(@country.alpha2))) if current_user %>

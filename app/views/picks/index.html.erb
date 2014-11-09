@@ -1,0 +1,13 @@
+<% content_for :page_title, "Plaque picks" %>
+
+<%= content_tag(:section, link_to("Add a new pick", new_pick_path, {:class => :edit, :title => "Add a new pick"}), :class => :admin_panel) %>
+
+<div class="panel">
+  <h1>Plaque Picks</h1>
+  <p>These are our all-time favourite plaques. The weird and the wonderful, the odd and the personal.</p>
+  <p>The Open Plaques server rotates these 'picks' on the home page as 'Plaque of the day'. If you have a favourite then please suggest it to us with a reason why.</p>
+  <h2>Plaque of the day</h2>
+  <%= render Pick.todays %>
+  <h2>Other favourites</h2>
+  <%= render partial: 'picks/minimal', collection: @picks, as: :pick %>
+</div>

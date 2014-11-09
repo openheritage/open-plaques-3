@@ -1,0 +1,6 @@
+<% content_for :page_title, "People who were born in the year " + @year.year.to_s  %>
+
+<div class="panel">
+  <h1><%=pluralize(@people.size, "person") %> <a href="/people/born_on/">born in</a> <%= @year.year.to_s %></h1>
+  <ul><% @people.each do |person| %><li><%= link_to dated_roled_person(person) %></li><% end %></ul>
+</div>

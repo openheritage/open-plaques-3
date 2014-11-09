@@ -25,10 +25,10 @@ class Person < ActiveRecord::Base
 
   has_many :roles, -> { order('started_at asc') }, :through => :personal_roles
   has_many :personal_roles, -> { order('started_at asc') }
-  has_many :relationships, -> { where(related_person_id IS NOT NULL).order('started_at asc') }, :class_name => "PersonalRole"
-  has_many :straight_roles, -> { where(related_person_id IS NULL).order('started_at asc') }, :class_name => "PersonalRole"
-  has_many :personal_connections, -> { order('started_at asc') }
-#  has_many :locations, :through => :personal_connections, :uniq => true
+  has_many :relationships, -> { where('related_person_id IS NOT NULL').order('started_at asc') }, :class_name => "PersonalRole"
+  has_many :straight_roles, -> { where('related_person_id IS NULL').order('started_at asc') }, :class_name => "PersonalRole"
+  has_many :personal_connections #, -> { order('started_at asc') }
+  has_many :locations, -> { uniq }, :through => :personal_connections
   has_many :plaques, :through => :personal_connections #, :uniq => true
   has_one :birth_connection, -> { where('verb_id in (8,504)') }, :class_name => "PersonalConnection"
   has_one :death_connection, -> { where('verb_id in (3,49,161,1108)') }, :class_name => "PersonalConnection"
@@ -38,8 +38,8 @@ class Person < ActiveRecord::Base
 
   before_save :update_index
 
-  scope :no_role, :conditions => {:personal_roles_count => [nil,0]}
-  scope :no_dates, :conditions => ['born_on IS NULL and died_on IS NULL']
+  scope :no_role, -> { where(personal_roles_count: [nil,0]) }
+  scope :no_dates, -> { where('born_on IS NULL and died_on IS NULL') }
 
   DATE_REGEX = /c?[\d]{4}/
   DATE_RANGE_REGEX = /(?:\(#{DATE_REGEX}-#{DATE_REGEX}\)|#{DATE_REGEX}-#{DATE_REGEX})/
@@ -198,11 +198,11 @@ class Person < ActiveRecord::Base
   def dates
     r = ""
     r += " (" if born_on || died_on
-    r += person.creation_word + " " if born_on && !died_on
+    r += creation_word + " " if born_on && !died_on
     r += born_on.year.to_s if born_on
     r += "?-" if !born_on && died_on
     r += "-" if born_on && died_on
-    r += person.destruction_word + " " if !born_on && died_on
+    r += destruction_word + " " if !born_on && died_on
     r += died_on.year.to_s if died_on
     r += ")" if born_on || died_on
     return r

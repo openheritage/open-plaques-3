@@ -1,0 +1,28 @@
+<% content_for :page_title, "Explore historical blue plaques by location, person or type" %>
+
+<div class="panel clearfix">
+  <h1>Explore</h1>
+
+
+  <section class="location">
+    <h2>Location</h2>
+
+    <p>Discover where plaques are located.</p>
+
+    <div id="plaque-map" class="mini" data-latitude="51.5" data-longitude="0" data-zoom="8" data-view="all"></div>
+  </section>
+
+  <section>
+    <h2>People</h2>
+
+    <p>Many plaques commemorate important people from history.</p>
+
+    <nav>
+      <% for letter in "A".."Z" %>
+        <%= link_to(letter, people_by_index_path(letter.downcase)) %>
+      <% end %>
+    </nav>
+
+  </section>
+
+</div>

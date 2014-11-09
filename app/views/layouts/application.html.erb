@@ -1,18 +1,135 @@
-<%# The "application" layout is the default layout. It extends "base"  %>
-<%# to include things like header, footer, and alerts that are common  %>
-<%# to most (but not all) views.                                       %>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+   xmlns:foaf="http://xmlns.com/foaf/0.1/"
+   xmlns:vcard="http://www.w3.org/2006/vcard/ns#"
+   xmlns:owl="http://www.w3.org/2002/07/owl#"
+   xmlns:dbpprop="http://dbpedia.org/property/"
+   xmlns:op="http://openplaques.org/ontology/"
+   xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+   xmlns:sioc="http://rdfs.org/sioc/ns#"
+   xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
 
-<%= render("shared/navbar") %>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <title><%= yield :page_title %></title>
 
-<div class="container">
+    <%= stylesheet_link_tag "application" %>
+    <%#= stylesheet_link_tag 'jquery-ui-1.8.11.custom' %>
 
-  <%= render("shared/alerts") %>
-  <%= render("shared/page_header") %>
+    <%= javascript_include_tag 'application' %>
+    <%= javascript_include_tag 'http://openlayers.org/dev/OpenLayers.js' if @map %>
+    <%#= javascript_include_tag 'jquery-1.5.1.min.js' %>
+    <%#= javascript_include_tag 'jquery-ui-1.8.11.custom.min.js' %>
 
-  <%= yield %>
+  <%#= javascript_include_tag 'modernizr-1.7.min.js' %>
 
-  <%= render("shared/footer") %>
+    <%= tag("link", :rel => "shortcut icon", :href => image_path("openplaques-icon.png"))%>
+    <%= csrf_meta_tag %>
+    <%= display_meta_tags :site => 'My website' %>
+  </head>
 
-</div>
+  <body id="<%= params[:controller].parameterize %>_controller">
+    <%= content_tag("div", "This is a staging version of Open Plaques with out-of-date data. ".html_safe + link_to("Visit the live site", "http://www.openplaques.org".html_safe) + "", :class => "staging") if ::Rails.env == "staging" %>
+    <%= content_tag("div", "Development environment!", :class => "development") if ::Rails.env == "development" %>
 
-<% parent_layout "base" %>
+    <%= yield :site_message %>
+
+    <header>
+
+      <div class="container">
+
+        <div class="branding">
+          <%= navigation_link_to(image_tag("openplaques.png"), root_path, :class => "logo") %>
+        </div>
+
+        <span class="site_name">
+          O<span class="small-caps">pen</span> P<span class="small-caps">laques</span>
+        </span>
+
+<table id="navigation" cellpadding="0" cellspacing="0" border="0">
+  <tr>
+    <td id="primary_links">
+      <nav>
+        <%= content_tag("ul", :class => "clearfix") do %>
+          <%= navigation_list_link_to "People", people_path %>
+          <%= navigation_list_link_to "Places", countries_path %>
+          <% if current_user && current_user.is_admin? %>
+            <%= navigation_list_link_to "Organisations", organisations_path %>
+            <%= navigation_list_link_to "Roles", roles_path %>
+            <%= navigation_list_link_to "Verbs", verbs_path %>
+            <%= navigation_list_link_to "Photographers", photographers_path %>
+            <%= navigation_list_link_to "Todo lists", "/todo" %>
+          <% end %>
+          <%#= navigation_list_link_to "Explore", "#" %>
+          <%= navigation_list_link_to "Contribute", contribute_path %>
+          <%= navigation_list_link_to "About", about_path %>
+        <% end %>
+      </nav>
+    </td>
+    <td id="primary_search">
+      <div class="search_box">
+        <%= form_tag(search_path, :method => "get") do %>
+          <span id="magnifying_glass"></span>
+          <%= label_tag(:phrase, "Search: ") %>
+          <%= text_field_tag(:phrase, params[:phrase], :type => 'search', :placeholder => "Search for a person, place or organisation...") %>
+          <%= submit_tag("Go", :name => nil) %>
+        <% end %>
+      </div>
+    </td>
+  </tr>
+</table>
+
+        <%= user_menu %>
+
+        <%#= " ".html_safe + content_tag("span",SITE_STATUS, {:class => "status"}) if SITE_STATUS != "" %>
+
+
+
+
+      </div>
+
+    </header>
+    <div id="content">
+
+    <% if flash[:notice] %>
+      <div class="flash_notice">
+        <p><%= flash[:notice] %></p>
+      </div>
+    <% end %>
+
+    <% if alert %>
+      <div class="flash_alert">
+        <p><%= alert %></p>
+      </div>
+    <% end %>
+
+    <div class="container">
+      <%= yield  %>
+    </div>
+
+    </div>
+    <footer>
+      <nav>
+        <%= link_to "About", about_path %>
+        <%= link_to "Contact", contact_path %>
+        <%= link_to "The data", about_the_data_path %>
+        <%= link_to "Blog", "http://blog.openplaques.org/" %>
+        <%= link_to "Twitter", "http://twitter.com/openplaques" %>
+        <%= link_to "Facebook", "http://www.facebook.com/openplaques" %>
+      </nav>
+
+      <p class="about">A project of Open Heritage C.I.C.</p>
+
+      <p class="about">Supported by the <%= image_tag "rsa_fellowship_logo.png", :alt => "RSA Fellowship" %></p>
+    </footer>
+
+<% if ::Rails.env == "production" %>
+  <%= google_analytics_code(ENV['GOOGLE_ANALYTICS_ID']) if !(ENV['GOOGLE_ANALYTICS_ID'].nil? )%>
+<% end %>
+
+<%#= javascript_include_tag 'ToggleSearchValue' %>
+
+</body>
+</html>
+

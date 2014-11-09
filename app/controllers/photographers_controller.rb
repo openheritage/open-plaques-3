@@ -1,7 +1,7 @@
 class PhotographersController < ApplicationController
 
   def index
-    @photographers = Photo.count(:photographer, :group => 'photographer')
+    @photographers = Photo.where.not(plaque_id: nil).group('photographer').order('count_plaque_id desc').distinct.count(:plaque_id)
     respond_to do |format|
       format.html
       format.xml
@@ -54,7 +54,7 @@ class PhotographersController < ApplicationController
       attr_accessor :url
       
       def photos
-        return Photo.find(:all, :conditions => {:photographer => self.id})
+        return Photo.where(photographer: self.id)
       end
       
       def plaques

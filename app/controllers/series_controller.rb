@@ -4,11 +4,11 @@ class SeriesController < ApplicationController
   before_filter :find, :only => [:show, :edit, :update]
 
   def index
-    @series = Series.all(:order => :name)
+    @series = Series.all
   end
 
   def show
-    @plaques = @series.plaques.paginate(:page => params[:page], :per_page => 20, :order => 'series_ref ASC') # Postgres -> NULLS LAST
+    @plaques = @series.plaques.order('series_ref asc').paginate(:page => params[:page], :per_page => 20) # Postgres -> NULLS LAST
     @mean = help.find_mean(@plaques)
     respond_to do |format|
       format.html # show.html.erb
@@ -32,7 +32,7 @@ class SeriesController < ApplicationController
   end
 
   def update
-    if @series.update_attributes(params[:series])
+    if @series.update_attributes(series_params)
       redirect_to series_path(@series)
     else
       render :edit
@@ -53,5 +53,12 @@ class SeriesController < ApplicationController
     def find
       @series = Series.find(params[:id])
     end
-  
+
+  private
+
+    def series_params
+      params.require(:series).permit(
+        :name,
+        :description)
+    end  
 end

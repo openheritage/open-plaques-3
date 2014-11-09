@@ -1,0 +1,45 @@
+<% content_for :page_title, "Historical plaques - by language" %>
+<div class="panel">
+  <% if current_user && current_user.is_admin? %>
+    <section class="admin_panel">
+      <%= link_to("Add new language", new_language_path, {:class => :edit, :title => "Add new language"})%>
+    </section>
+  <% end %>
+
+  <h1>Languages</h1>
+  <canvas id="myCanvas" width="600" height="650">
+	<ul>
+      <% @languages.each do |language| %>
+        <li><%= language %> - <%= pluralize(language.plaques.size, "plaque") %></li>
+      <% end %>
+    </ul>
+  </canvas>
+</div>
+
+<script>
+    window.onload = function ()
+    {
+        var data = [<% @languages.sort{|a,b| b.plaques.size <=> a.plaques.size}.each do |language| %><%= language.plaques.size %>,<% end %>];
+        var hbar = new RGraph.HBar('myCanvas', data);
+        hbar.Set('chart.labels', [<% @languages.sort{|a,b| b.plaques.size <=> a.plaques.size}.each do |language| %>'<%= language %>',<% end %>]);
+        hbar.Set('chart.colors', [<% @languages.sort{|a,b| b.plaques.size <=> a.plaques.size}.each do |language| %>'<%= language %>',<% end %>]);
+
+        hbar.Set('chart.strokestyle', 'rgba(0,0,0,0)');
+        hbar.Set('chart.labels.above', true);
+        hbar.Set('chart.labels.above', true);
+        hbar.Set('chart.vmargin', 15);
+        hbar.Set('chart.background.grid', false);
+        
+        hbar.Set('chart.colors.sequential', true);
+
+        hbar.Set('chart.xlabels', false);
+        hbar.Set('chart.gutter.left', 100);
+        hbar.Set('chart.gutter.right', 50);
+        hbar.Set('chart.gutter.top', 25);
+
+		hbar.Set('chart.noxaxis', true);
+		hbar.Set('chart.noxtickmarks', true);
+		hbar.Set('chart.noytickmarks', true);
+        RGraph.isOld() ? hbar.Draw() : RGraph.Effects.HBar.Grow(hbar);
+    }
+</script>

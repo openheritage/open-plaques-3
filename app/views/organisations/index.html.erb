@@ -1,0 +1,23 @@
+<% content_for :page_title, "Organisations erecting historical plaques" %>
+
+<div class="panel clearfix">
+  <% if current_user && current_user.is_admin? %>
+    <section class="admin_panel">
+      <%= link_to("Add new organisation", new_organisation_path, {:class => :edit, :title => "Add new organisation"})%>
+    </section>
+  <% end %>  <h1>Organisations erecting plaques</h1>
+  <p><%= pluralize(@organisations.size, "organisation") %></p>
+</div>
+
+<ul id="organisations_results" class="results one_destination_results">
+<% @organisations.each do |organisation| %>
+  <li>
+    <a href="<%= url_for(organisation) %>">
+    <p class="result"><%= organisation.name %></p>
+      <p class="count"><%= pluralize(organisation.sponsorships.size, "plaque") if organisation.sponsorships.size > 0 %><%= "no plaques" if organisation.sponsorships.size == 0 %></p>
+    </a>
+  </li>
+<% end %>
+</ul>
+
+<p class="alternate_formats">Data about organisations as <%= alternate_link_to "XML", organisations_path(:xml), :xml %> <%= alternate_link_to "JSON", organisations_path(:json), :json %></p>

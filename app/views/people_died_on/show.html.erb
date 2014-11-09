@@ -1,0 +1,6 @@
+<% content_for :page_title,  "People who died in the year " + @year.year.to_s %>
+
+<div class="panel">
+  <h1><%=pluralize(@people.size, "person") %> <a href="/people/died_on/">died in</a> the year <%= @year.year.to_s %></h1>
+  <ul><% @people.each do |person| %><li><%= link_to dated_roled_person(person) %></li><% end %></ul>
+</div>

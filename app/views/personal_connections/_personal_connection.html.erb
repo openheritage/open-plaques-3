@@ -1,0 +1,6 @@
+<div class="inside_panel">
+  Open Plaques conclude that <%= render personal_connection.person %>
+  <strong><%= personal_connection.verb.name %></strong> at 
+  <%= render personal_connection.location if personal_connection.location %> from the plaque:
+  <div class="inside_panel"><%= render "plaques/minimal", :plaque => personal_connection.plaque if personal_connection.plaque %></div>
+</div>

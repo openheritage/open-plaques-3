@@ -1,0 +1,24 @@
+<% content_for :page_title, "Countries that have plaques" %>
+
+<div class="panel clearfix">
+  <h1>Countries that have plaques</h1>
+  <% if current_user && current_user.is_admin? %>
+  <section class="admin_panel">
+    <%= link_to("Add a country", new_country_path, {:class => :edit, :title => "Add a country"})%>
+  </section>
+  <% end %>
+  <p>There are commemorative plaques all over the world. Some countries honour people by naming roads after them and hence are less inclined to have markers at place of birth/death/etc.</p>
+</div>
+
+<%= content_tag("ol", :id => "places_results", :class => "results one_destination_results") do %>
+  <% @countries.each do |country| %>
+    <%= content_tag("li") do %>
+      <%= link_to country do %>
+          <p class="result"><%= country.name %></p>
+          <p class="count"><%= pluralize(country.plaques.size, "plaque") %></p>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<p class="alternate_formats">Data about countries as <%= alternate_link_to "XML", countries_path(:xml), :xml %> <%= alternate_link_to "JSON", countries_path(:json), :json %> </p>

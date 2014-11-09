@@ -1,0 +1,17 @@
+<%= content_for :site_message do %>
+
+  <% if @plaques_count == 0 %>
+
+    <% if User.count == 0 %>
+      <p class="development_message">
+        There aren’t any users for this site yet. <%= link_to "Setup first admin user", register_path %>.
+      </p>
+    <% else %>
+
+      <p class="development_message">
+        There aren’t any plaques yet. If you’re just testing the site out, you can import some plaques data by running <code>bundle exec rake import:plaque_examples</code>. Alternatively, add some plaques using the web interface and this message will disappear.
+      </p>
+    <% end %>
+
+  <% end %>
+<% end %>
