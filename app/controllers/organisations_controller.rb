@@ -84,7 +84,7 @@ class OrganisationsController < ApplicationController
   end
 
   def create
-    @organisation = Organisation.new(params[:organisation])
+    @organisation = Organisation.new(organisation_params)
     if @organisation.save
       redirect_to organisation_path(@organisation.slug)
     else
