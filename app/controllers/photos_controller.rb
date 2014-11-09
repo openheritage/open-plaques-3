@@ -24,7 +24,7 @@ class PhotosController < ApplicationController
 
   def update
     respond_to do |format|
-      if @photo.update_attributes(params[:photo])
+      if @photo.update_attributes(photo_params)
         flash[:notice] = 'Photo was successfully updated.'
         format.html { redirect_to :back }
         format.xml  { head :ok }
@@ -62,4 +62,9 @@ class PhotosController < ApplicationController
       @licences = Licence.all(:order => :name)
     end
 
+  private 
+
+  	def photo_params
+      params.require(:photo).permit(:shot)
+	end
 end
