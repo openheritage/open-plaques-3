@@ -59,7 +59,7 @@ class PhotosController < ApplicationController
     end
 
     def get_licences
-      @licences = Licence.all(:order => :name)
+      @licences = Licence.order(:name)
     end
 
   private 
