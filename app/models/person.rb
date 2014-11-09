@@ -38,8 +38,8 @@ class Person < ActiveRecord::Base
 
   before_save :update_index
 
-  scope :no_role, :conditions => {:personal_roles_count => [nil,0]}
-  scope :no_dates, :conditions => ['born_on IS NULL and died_on IS NULL']
+  scope :no_role, -> { where(personal_roles_count: [nil,0]) }
+  scope :no_dates, -> { where('born_on IS NULL and died_on IS NULL') }
 
   DATE_REGEX = /c?[\d]{4}/
   DATE_RANGE_REGEX = /(?:\(#{DATE_REGEX}-#{DATE_REGEX}\)|#{DATE_REGEX}-#{DATE_REGEX})/
