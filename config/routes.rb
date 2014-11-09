@@ -30,7 +30,7 @@ Rails.application.routes.draw do
     resource :inscription, :controller => :plaque_inscription, :only => :edit
     resource :description, :controller => :plaque_description, :only => [:edit, :show]
     resource :language, :controller => :plaque_language, :only => :edit
-#    resources :connections, :controller => "PersonalConnections", :as => :connections
+    resources :connections, :controller => "personal_connections", :as => :connections
     resource :photos, :controller => :plaque_photos, :only => :show
     resource :talk, :controller => :plaque_talk, :only => :create
     resources :sponsorships
@@ -59,7 +59,6 @@ Rails.application.routes.draw do
     resource :plaques, :controller => :organisation_plaques, :only => :show
     match 'plaques/tiles/:zoom/:x/:y' => 'organisation_plaques#show', :constraints => { :zoom => /\d{2}/, :x => /\d+/, :y => /\d+/ }, via: [:get]
   end
-  resources :sponsorships
 
   resources :verbs
 
