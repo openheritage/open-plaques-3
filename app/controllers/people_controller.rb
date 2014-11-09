@@ -15,7 +15,7 @@ class PeopleController < ApplicationController
   # GET /people/1.xml
   # GET /people/1.json
   def show
-    @person = Person.find(params[:id], :include => {:personal_roles => :role})
+    @person = Person.find(params[:id])
     respond_to do |format|
       format.html
       format.kml { @plaques = @person.plaques
