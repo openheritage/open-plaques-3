@@ -96,7 +96,7 @@ class PeopleController < ApplicationController
     end
 
     respond_to do |format|
-      if @person.update_attributes(params[:person])
+      if @person.update_attributes(person_params)
         flash[:notice] = 'Person was successfully updated.'
         format.html { redirect_to(@person) }
         format.xml  { head :ok }
@@ -121,6 +121,20 @@ class PeopleController < ApplicationController
 
     def find_person
       @person = Person.find(params[:id])
+    end
+
+  private
+
+    def person_params
+      params.require(:person).permit(
+        :name,
+        :surname_starts_with,
+        :introduction,
+        :wikipedia_url,
+        :wikipedia_paras,
+        :dbpedia_uri,
+        :born_on,
+        :died_on)
     end
 
 end
