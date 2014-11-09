@@ -18,7 +18,7 @@ class LocationsController < ApplicationController
   end
 
   def update
-    if @location.update_attributes(params[:location])
+    if @location.update_attributes(location_params)
       redirect_to location_path(@location)
     else
       render :edit
@@ -35,6 +35,15 @@ class LocationsController < ApplicationController
 
     def find_location
       @location = Location.find(params[:id])
+    end
+
+  private
+
+    def location_params
+      params.require(:location).permit(
+        :name,
+        :area_id,
+      )
     end
 
 end
