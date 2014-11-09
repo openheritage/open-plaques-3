@@ -21,7 +21,7 @@
         <p>Take a photo. Add it to Flickr or Wikimedia Commons and link it to our record</p>
         <p>Spot an innaccuracy. Tell us.</p>
         <% if current_user && current_user.is_admin? %>
-          <p>Or find something <%= link_to("Todo", "/todo", {:class => :edit, :title => "Todos"})%></p>
+          <p>Or find something <%= link_to("to do", "/todo", {:class => :edit, :title => "To do lists"})%></p>
         <% end %>
         <p>You are all part of our mission to find all of the plaques in the world!</p>
       </li>
