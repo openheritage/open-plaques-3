@@ -39,7 +39,7 @@ class AreasController < ApplicationController
   end
 
   def create
-    @area = @country.areas.new(params[:area])
+    @area = @country.areas.new(area_params)
     if @area.save
       redirect_to country_area_path(@area.country_alpha2, @area.slug)
     else
