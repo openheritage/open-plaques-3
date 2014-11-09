@@ -46,7 +46,7 @@ class PeopleController < ApplicationController
 
   # GET /people/1/edit
   def edit
-    @roles = Role.all(:order => :name)
+    @roles = Role.order(:name)
     @personal_role = PersonalRole.new
     @died_on = @person.died_on.year if @person.died_on
     @born_on = @person.born_on.year if @person.born_on

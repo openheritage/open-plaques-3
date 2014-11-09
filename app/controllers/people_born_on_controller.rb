@@ -6,7 +6,7 @@ class PeopleBornOnController < ApplicationController
 
   def show
     @year = Date.parse(params[:id] + "-01-01")
-    @people = Person.find(:all, :conditions => {:born_on => @year}, :order => :died_on)
+    @people = Person.where(:born_on => @year).order(:died_on)
     respond_to do |format|
       format.html
       format.kml { render "plaques/show" }
