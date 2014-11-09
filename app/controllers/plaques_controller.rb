@@ -118,10 +118,10 @@ class PlaquesController < ApplicationController
     @plaque = Plaque.new(:language_id => 1)
     @plaque.build_user
     @plaque.photos.build
-    @countries = Country.all(:order => :name)
-    @languages = Language.all(:order => :name)
-    @common_colours = Colour.common.all(:order => "plaques_count DESC")
-    @other_colours = Colour.uncommon.all(:order => :name)
+    @countries = Country.order(:name)
+    @languages = Language.order(:name)
+    @common_colours = Colour.common.order("plaques_count DESC")
+    @other_colours = Colour.uncommon.order(:name)
     if !current_user
       @user = User.new
     end
