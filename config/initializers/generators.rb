@@ -6,7 +6,7 @@ Rails.application.config.generators do |g|
                            :routing_specs => false
 
   # Use factory_girl for factories.
-  g.fixture_replacement :factory_girl, :dir => 'spec/factories'
+#  g.fixture_replacement :factory_girl, :dir => 'spec/factories'
 
   # Disable generators we don't need.
   g.stylesheets false
