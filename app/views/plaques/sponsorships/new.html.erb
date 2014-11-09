@@ -8,11 +8,11 @@
   <div>
     <% @plaque.sponsorships.all.each do |sponsorship| %>
       <% if sponsorship.organisation %>
-        <div><%= sponsorship.organisation.name %> <%= button_to "Delete", sponsorship, :method => :delete, :class => :button %></div>
+        <div><%= sponsorship.organisation.name %> <%= button_to "Delete", plaque_sponsorship_path(@plaque, sponsorship.id), :method => :delete, :class => :button %></div>
       <% end %>
     <% end %>
     <p>
-    <%= form_for @sponsorship do |f| %>
+    <%= form_for @sponsorship, :url => plaque_sponsorships_path(@plaque) do |f| %>
       <%= f.hidden_field :plaque_id, :value => @plaque.id %>
       <% if @plaque.sponsorships.all.count > 0 %>Also sponsored<% end %> by <%= f.collection_select :organisation_id, @organisations, :id, :name, {:include_blank => true} %>
       <%= f.submit "Add", :class => :button %>
