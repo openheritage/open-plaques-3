@@ -4,7 +4,7 @@ class VerbsController < ApplicationController
   before_filter :authenticate_user!, :except => [:index]
 
   def index
-    @verbs = Verb.find(:all, :order => :name)
+    @verbs = Verb.order(:name)
     respond_to do |format|
       format.html
       format.xml
