@@ -28,24 +28,19 @@
         var data = [<% @photographers.sort_by { |p| 1 - p[1] }.each_with_index do |photographer, idx| %><% if idx < 50 %><%= photographer[1] %>,<% end %><% end %>];
         var hbar = new RGraph.HBar('myCanvas', data);
         hbar.Set('chart.labels', [<% @photographers.sort_by { |p| 1 - p[1] }.each_with_index do |photographer, idx| %><% if idx < 50 %>'<%= photographer[0] %>',<% end %><% end %>]);
-        hbar.Set('chart.colors', [<% @photographers.sort_by { |p| 1 - p[1] }.each_with_index do |photographer, idx| %><% if idx < 50 %>'<%= photographer[0] %>',<% end %><% end %>]);
-
         hbar.Set('chart.strokestyle', 'rgba(0,0,0,0)');
         hbar.Set('chart.labels.above', true);
         hbar.Set('chart.labels.above', true);
         hbar.Set('chart.vmargin', 15);
         hbar.Set('chart.background.grid', false);
-        
         hbar.Set('chart.colors.sequential', true);
-
         hbar.Set('chart.xlabels', false);
         hbar.Set('chart.gutter.left', 100);
         hbar.Set('chart.gutter.right', 50);
         hbar.Set('chart.gutter.top', 25);
-
-		hbar.Set('chart.noxaxis', true);
-		hbar.Set('chart.noxtickmarks', true);
-		hbar.Set('chart.noytickmarks', true);
+        hbar.Set('chart.noxaxis', true);
+        hbar.Set('chart.noxtickmarks', true);
+        hbar.Set('chart.noytickmarks', true);
         RGraph.isOld() ? hbar.Draw() : RGraph.Effects.HBar.Grow(hbar);
     }
 </script>
