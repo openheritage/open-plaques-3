@@ -22,7 +22,7 @@
         var data = [<% @sorted_licences.each_with_index do |licence, idx| %><% if idx < 50 %><%= licence.photos.count %>,<% end %><% end %>];
         var hbar = new RGraph.HBar('myCanvas', data);
         hbar.Set('chart.labels', [<% @sorted_licences.each_with_index do |licence, idx| %><% if idx < 50 %>'<%= licence.name %>',<% end %><% end %>]);
-        hbar.Set('chart.colors', [<% @sorted_licences.each_with_index do |licence, idx| %><% if idx < 50 %>'<%= licence[0] %>',<% end %><% end %>]);
+        hbar.Set('chart.colors', [<% (40..200).step(50).each do |b| %><% (40..200).step(50).each do |g| %><% (40..200).step(50).each do |r| %>'rgb(<%= r %>,<%= g %>,<%= b %>)', <% end %><% end %><% end %>]);
 
         hbar.Set('chart.strokestyle', 'rgba(0,0,0,0)');
         hbar.Set('chart.labels.above', true);
