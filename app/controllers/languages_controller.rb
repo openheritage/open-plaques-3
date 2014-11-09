@@ -20,7 +20,7 @@ class LanguagesController < ApplicationController
   end
 
   def update
-    if @language.update_attributes(params[:language])
+    if @language.update_attributes(language_params)
       redirect_to languages_path
     else
       render :edit
@@ -33,4 +33,11 @@ class LanguagesController < ApplicationController
       @language = Language.find_by_alpha2!(params[:id])
     end
 
+  private
+
+    def language_params
+      params.require(:language).permit(
+        :name,
+        :alpha2)
+    end
 end
