@@ -11,7 +11,7 @@ class SearchController < ApplicationController
       if @street != nil && @street !=""
         @search_results = Plaque.find(:all, :joins => :location, :conditions => ["lower(inscription) LIKE ? and lower(locations.name) LIKE ?", "%" + @phrase.downcase + "%", "%" + @street.downcase + "%"], :include => [[:personal_connections => [:person]], [:location => [:area => :country]]])
       else
-        @search_results = Person.find(:all, :conditions => ["lower(name) LIKE ?", "%" + @phrase.downcase.gsub(" ","%").gsub(".","%") + "%"])
+        @search_results = Person.where(["lower(name) LIKE ?", "%" + @phrase.downcase.gsub(" ","%").gsub(".","%") + "%"])
         @search_results += Plaque.find(:all, :conditions => ["lower(inscription) LIKE ?", "%" + @phrase.downcase + "%"], :include => [[:personal_connections => [:person]], [:location => [:area => :country]]]).sort!{|t1,t2|t1.to_s <=> t2.to_s}
         @search_results += Plaque.find(:all, :conditions => ["lower(inscription_in_english) LIKE ?", "%" + @phrase.downcase + "%"], :include => [[:personal_connections => [:person]], [:location => [:area => :country]]]).sort!{|t1,t2|t1.to_s <=> t2.to_s}
       end
