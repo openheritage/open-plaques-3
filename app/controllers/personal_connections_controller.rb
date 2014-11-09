@@ -12,7 +12,7 @@ class PersonalConnectionsController < ApplicationController
   end
 
   def edit
-    @locations = Location.all(:order => :name)
+    @locations = Location.order(:name)
   end
 
   def update

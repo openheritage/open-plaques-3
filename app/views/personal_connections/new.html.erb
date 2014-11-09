@@ -8,13 +8,13 @@
   <ul><% @plaque.personal_connections.all.each do |pc| %><li><%= link_to pc.person.name, person_path(pc.person) if pc.person %> <%= pc.verb.name if pc.verb %>
     <%= "at " + pc.location.full_address if pc.location %>
     <%= "from " + pc.started_at.year.to_s if pc.started_at %><%= " to " + pc.ended_at.year.to_s if pc.ended_at %> 
-    <%= link_to "Edit", edit_personal_connection_path(pc) %> <%= button_to("Delete", personal_connection_path(pc), :method => :delete, :class => :button)%> </li>
+    <%= link_to "Edit", edit_plaque_connection_path(@plaque,pc) %> <%= button_to("Delete", plaque_connection_path(@plaque,pc), :method => :delete, :class => :button)%> </li>
   <% end %>
   <% if @plaque.personal_connections.size == 0 %>
     <li>No facts have been established yet</li>
   <% end %>
   </ul>
-  <%= form_for @personal_connection, :url => personal_connections_path(@plaque) do |f| %>
+  <%= form_for @personal_connection, :url => plaque_connections_path(@plaque) do |f| %>
     <fieldset>
       <div class="row">
         <%= f.collection_select :person_id, @people, :id, :name_and_dates, {} , { "style" => "width:400px" } %> <%= link_to("Add person", "/people/new") %>
