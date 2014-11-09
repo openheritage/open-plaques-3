@@ -14,7 +14,7 @@ class LanguagesController < ApplicationController
   end
 
   def create
-    @language = Language.new(params[:language])
+    @language = Language.new(language_params)
     @language.save
     redirect_to languages_path
   end
