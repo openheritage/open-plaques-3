@@ -33,7 +33,7 @@ class PagesController < ApplicationController
   end
 
   def update
-    if @page.update_attributes(params[:page])
+    if @page.update_attributes(page_params)
       redirect_to :action => :show, :id => @page.slug
     end
   end
@@ -42,6 +42,15 @@ class PagesController < ApplicationController
 
     def find_page
       @page = Page.find_by_slug!(params[:id])
+    end
+
+  private
+
+    def page_params
+      params.require(:page).permit(
+        :name,
+        :slug,
+        :body)
     end
 
 end
