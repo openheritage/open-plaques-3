@@ -60,6 +60,10 @@ Rails.application.routes.draw do
     match 'plaques/tiles/:zoom/:x/:y' => 'organisation_plaques#show', :constraints => { :zoom => /\d{2}/, :x => /\d+/, :y => /\d+/ }, via: [:get]
   end
 
+  scope '/unveilings' do
+    resource :upcoming, only: [:show], :controller => :upcoming_unveilings
+  end
+
   resources :verbs
 
   scope "/roles" do
