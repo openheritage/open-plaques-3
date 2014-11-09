@@ -10,8 +10,11 @@ class LocationsController < ApplicationController
   end
 
   def edit
-    @areas = Area.find(:all, :order => :name)
-    @countries = Country.find(:all)
+    @areas = Area.order(:name)
+    @countries = Country.all
+  end
+
+  def show
   end
 
   def update
