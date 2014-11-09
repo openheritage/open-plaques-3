@@ -198,11 +198,11 @@ class Person < ActiveRecord::Base
   def dates
     r = ""
     r += " (" if born_on || died_on
-    r += person.creation_word + " " if born_on && !died_on
+    r += creation_word + " " if born_on && !died_on
     r += born_on.year.to_s if born_on
     r += "?-" if !born_on && died_on
     r += "-" if born_on && died_on
-    r += person.destruction_word + " " if !born_on && died_on
+    r += destruction_word + " " if !born_on && died_on
     r += died_on.year.to_s if died_on
     r += ")" if born_on || died_on
     return r
