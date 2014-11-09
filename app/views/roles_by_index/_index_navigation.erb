@@ -1,7 +1,7 @@
 <nav class="alphabet">
 	<%= content_tag("ol", :class => "index_navigation") do %>
 	  <% for letter in "a".."z" %>
-	    <%= content_tag("li", navigation_link_to(letter, role_by_index_path(letter))) %>
+	    <%= content_tag("li", navigation_link_to(letter, roles_by_index_path(letter))) %>
 	  <% end %>
 	<% end %>	
 </nav>

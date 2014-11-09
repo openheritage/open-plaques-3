@@ -5,7 +5,7 @@ class RolesByIndexController < ApplicationController
     unless @index =~ /[a-z]/
       raise ActiveRecord::RecordNotFound and return
     end
-    @roles = Role.find(:all, :conditions => {:index => @index}, :order => "upper(name)")
+    @roles = Role.where(index: @index).order("upper(name)")
   end
 
   def index

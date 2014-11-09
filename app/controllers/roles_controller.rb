@@ -7,7 +7,7 @@ class RolesController < ApplicationController
 
   def index
     respond_to do |format|
-      format.html { redirect_to(roles_by_index_path) }
+      format.html { redirect_to(roles_by_index_path('a')) }
       @roles = Role.order(:name)
       format.kml {
         @parent = @roles
