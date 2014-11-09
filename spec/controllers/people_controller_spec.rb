@@ -18,4 +18,14 @@ describe PeopleController do
   end
 
 
+  describe "#index" do
+
+    it "should redirect to the 'a' page" do
+      get :index
+      expect(response).to redirect_to(people_by_index_path('a'))
+    end
+
+  end
+
+
 end
