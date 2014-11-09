@@ -173,7 +173,7 @@ class TodoController < ApplicationController
   end
 
   def create
-    @todo = TodoItem.new(params[:todo])
+    @todo = TodoItem.new(todo_params)
 
     if @todo.save
       redirect_to todo_path('lists_to_datacapture')
@@ -182,4 +182,13 @@ class TodoController < ApplicationController
     end
   end
 
+  private
+
+    def todo_params
+      params.require(:todo).permit(
+        :action,
+        :description,
+        :url,
+      )
+    end
 end
