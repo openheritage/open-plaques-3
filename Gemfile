@@ -21,6 +21,7 @@ end
 group :test do
   gem 'rspec', '~> 2.14.0'
   gem 'rspec-rails',        :group => :development
+  gem 'database_cleaner'  
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]

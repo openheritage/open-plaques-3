@@ -39,13 +39,13 @@ RSpec.configure do |config|
 
   # JavaScript tests break unless we disable transactional fixtures and
   # use database_cleaner gem instead.
-  # config.use_transactional_fixtures = false
-  # config.before(:each) do
-  #   DatabaseCleaner.strategy = example.metadata[:js] ? :truncation : :transaction
-  #   DatabaseCleaner.start
-  # end
-  # config.after(:each) do
-  #   DatabaseCleaner.clean
-  # end
+  config.use_transactional_fixtures = false
+  config.before(:each) do
+    DatabaseCleaner.strategy = example.metadata[:js] ? :truncation : :transaction
+    DatabaseCleaner.start
+  end
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
 
 end
