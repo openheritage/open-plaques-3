@@ -2,12 +2,12 @@
 ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
-require 'rspec/autorun'
-require 'capybara/rspec'
+# require 'rspec/autorun'
+# require 'capybara/rspec'
 # require 'capybara/email/rspec'
-require 'capybara/webkit/matchers'
+# require 'capybara/webkit/matchers'
 
-Capybara.javascript_driver = :webkit
+# Capybara.javascript_driver = :webkit
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -29,7 +29,7 @@ RSpec.configure do |config|
   # If true, the base class of anonymous controllers will be inferred
   # automatically. This will be the default behavior in future versions of
   # rspec-rails.
-  config.infer_base_class_for_anonymous_controllers = false
+  # config.infer_base_class_for_anonymous_controllers = false
 
   # Run specs in random order to surface order dependencies. If you find an
   # order dependency and want to debug it, you can fix the order by providing
@@ -39,14 +39,13 @@ RSpec.configure do |config|
 
   # JavaScript tests break unless we disable transactional fixtures and
   # use database_cleaner gem instead.
-  config.use_transactional_fixtures = false
-  config.before(:each) do
-    DatabaseCleaner.strategy = example.metadata[:js] ? :truncation : :transaction
-    DatabaseCleaner.start
-  end
-  config.after(:each) do
-    DatabaseCleaner.clean
-  end
+  # config.use_transactional_fixtures = false
+  # config.before(:each) do
+  #   DatabaseCleaner.strategy = example.metadata[:js] ? :truncation : :transaction
+  #   DatabaseCleaner.start
+  # end
+  # config.after(:each) do
+  #   DatabaseCleaner.clean
+  # end
 
-  config.include(Capybara::Webkit::RspecMatchers, :type => :feature)
 end
