@@ -98,7 +98,7 @@ class TodoController < ApplicationController
             @plaques = Plaque.photographed_not_coloured
             @plaque = @plaques[rand @plaques.length]
             if (@plaque)
-              @colours = Colour.find(:all, :order => :name)
+              @colours = Colour.order(:name)
               render 'plaque_colour/edit' and return
             end
           when 1

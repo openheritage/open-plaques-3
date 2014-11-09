@@ -6,7 +6,7 @@ class LocationsController < ApplicationController
   before_filter :find_location, :only => [:show, :edit, :update, :destroy]
 
   def index
-    @locations = Location.find(:all, :order => :name)
+    @locations = Location.order(:name)
   end
 
   def edit
