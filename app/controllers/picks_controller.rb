@@ -16,7 +16,7 @@ class PicksController < ApplicationController
   end
 
   def create
-    @pick = Pick.new(params[:pick])
+    @pick = Pick.new(pick_params)
     @plaque = Plaque.find(params[:pick][:plaque_id])
     @pick.plaque = @plaque
     @pick.save
