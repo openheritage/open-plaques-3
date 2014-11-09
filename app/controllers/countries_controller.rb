@@ -46,7 +46,7 @@ class CountriesController < ApplicationController
   end
 
   def update
-    if @country.update_attributes(params[:country])
+    if @country.update_attributes(country_params)
       redirect_to country_path(@country)
     else
       render :edit
@@ -59,4 +59,12 @@ class CountriesController < ApplicationController
       @country = Country.find_by_alpha2!(params[:id])
     end
 
+  private
+
+    def country_params
+      params.require(:country).permit(
+        :alpha2,
+        :name,
+        :dbpedia_uri)
+    end
 end
