@@ -29,7 +29,7 @@ class PicksController < ApplicationController
   end
 
   def update
-    if @pick.update_attributes(params[:pick])
+    if @pick.update_attributes(pick_params)
       redirect_to pick_path(@pick)
     else
       render :edit
@@ -40,6 +40,18 @@ class PicksController < ApplicationController
 
     def find_pick
       @pick = Pick.find(params[:id])
+    end
+
+  private
+
+    def pick_params
+      params.require(:pick).permit(
+        :plaque_id,
+        :description,
+        :proposer,
+        :feature_on,
+        :last_featured,
+        :featured_count)
     end
 
 end
