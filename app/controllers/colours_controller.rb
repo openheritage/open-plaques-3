@@ -18,7 +18,7 @@ class ColoursController < ApplicationController
 
   def show
     begin
-      @colour = Colour.find_by_slug!([:id])
+      @colour = Colour.find_by_slug!(params[:id])
     rescue
       @colour = Colour.find(params[:id])
       redirect_to(colour_url(@colour.name), :status => :moved_permanently) and return
