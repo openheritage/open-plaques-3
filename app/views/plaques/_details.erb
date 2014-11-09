@@ -21,7 +21,7 @@
     <td>
       <%= render plaque.colour if plaque.colour %>
 	    <% if !plaque.colour %>
-        <% @colours = Colour.find(:all) %>
+        <% @colours = Colour.all %>
         <%= form_for plaque do |f| %>
           <%= f.label :colour_id, "This plaque is" %>
           <%= f.collection_select :colour_id, @colours, :id, :name, {:include_blank => true} %>
