@@ -58,7 +58,7 @@ class AreasController < ApplicationController
   end
 
   def update
-    if @area.update_attributes(params[:area])
+    if @area.update_attributes(area_params)
       flash[:notice] = 'Area was successfully updated.'
       redirect_to(country_area_path(@area.country.alpha2, @area.slug))
     else
@@ -81,4 +81,10 @@ class AreasController < ApplicationController
       end
     end
 
+  private
+
+    def area_params
+      params.require(:area).permit(:name,:slug,:country_id,:latitude,:longitude,:streetview_url,:country_id)
+	end
+  
 end
