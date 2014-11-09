@@ -11,7 +11,9 @@ class PeopleAliveInController < ApplicationController
     raise ActiveRecord::RecordNotFound if year > Date.today.year
 
     @year = Date.parse(year.to_s + "-01-01")
-    @people = Person.find(:all, :conditions => ['born_on between ? and ? and died_on between ? and ?', @year - 120.years, @year, @year, @year + 120.years], :order => [:born_on, :surname_starts_with, :name])
+    @people = Person
+		.where(['born_on between ? and ? and died_on between ? and ?', @year - 120.years, @year, @year, @year + 120.years])
+		.order([:born_on, :surname_starts_with, :name])
     respond_to do |format|
       format.html
       format.kml { render "plaques/show" }
