@@ -16,7 +16,7 @@ class PagesController < ApplicationController
   end
 
   def index
-    @pages = Page.all(:order => :slug)
+    @pages = Page.order(:slug)
   end
 
   def new
