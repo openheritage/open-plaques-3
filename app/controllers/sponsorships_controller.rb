@@ -9,8 +9,13 @@ class SponsorshipsController < ApplicationController
   respond_to :json
 
   def destroy
+
+    @sponsorship = Sponsorship.find(params[:id])
+    plaque = @sponsorship.plaque
+
     @sponsorship.destroy
-    redirect_to :back
+
+    redirect_to plaque_sponsorships_path(plaque)
   end
 
   def new
@@ -20,7 +25,7 @@ class SponsorshipsController < ApplicationController
 
   def create
     @plaque = Plaque.find(params[:sponsorship][:plaque_id])
-    @sponsorship = @plaque.sponsorships.new(params[:sponsorship])
+    @sponsorship = @plaque.sponsorships.new(sponsorship_params)
     @sponsorship.save
     redirect_to :back
   end
@@ -37,21 +42,21 @@ class SponsorshipsController < ApplicationController
     end    
   end
 
-  protected
+  private
+
+  def sponsorship_params
+    params.require(:sponsorship).permit(:plaque_id, :organisation_id)
+  end
+
 
     def find_plaque
       if params[:plaque_id]
         @plaque = Plaque.find(params[:plaque_id])
       end
     end
-
-    def find_sponsorship
-      @sponsorship = Sponsorship.find(params[:id])
-      @plaque = @sponsorship.plaque
-    end
     
     def list_organisations
-      @organisations = Organisation.all(:order => :name, :select => 'id, name')
+      @organisations = Organisation.order('name')
     end
 
 end
