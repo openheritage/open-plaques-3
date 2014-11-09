@@ -33,7 +33,7 @@ class PersonalConnectionsController < ApplicationController
         @personal_connection.ended_at = ended_at
       end
     end
-    if @personal_connection.update_attributes(params[:personal_connection])
+    if @personal_connection.update_attributes(personal_connection_params)
       redirect_to edit_plaque_path(@plaque.id)
     else
       render :edit
@@ -45,7 +45,7 @@ class PersonalConnectionsController < ApplicationController
   end
 
   def create
-    @personal_connection = @plaque.personal_connections.new(params[:personal_connection])
+    @personal_connection = @plaque.personal_connections.new(personal_connection_params)
     if params[:personal_connection][:started_at] > ""
       started_at = params[:personal_connection][:started_at]
       if started_at =~/\d{4}/
@@ -85,6 +85,18 @@ class PersonalConnectionsController < ApplicationController
       @people = Person.order(:name).select('id, name, born_on, died_on')
       @verbs = Verb.order(:name).select('id, name')
       @common_verbs = Verb.common
+    end
+
+  private
+
+    def personal_connection_params
+      params.require(:personal_connection).permit(
+        :person_id,
+        :verb_id,
+        :location_id,
+        :started_at,
+        :ended_at,
+      )
     end
 
 end
