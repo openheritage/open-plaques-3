@@ -55,6 +55,12 @@ class SponsorshipsController < ApplicationController
       end
     end
     
+    def find_sponsorship
+      if params[:id]
+        @sponsorship = Sponsorship.find(params[:id])
+      end
+    end
+    
     def list_organisations
       @organisations = Organisation.order('name')
     end
