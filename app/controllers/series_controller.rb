@@ -32,7 +32,7 @@ class SeriesController < ApplicationController
   end
 
   def update
-    if @series.update_attributes(params[:series])
+    if @series.update_attributes(series_params)
       redirect_to series_path(@series)
     else
       render :edit
@@ -53,5 +53,12 @@ class SeriesController < ApplicationController
     def find
       @series = Series.find(params[:id])
     end
-  
+
+  private
+
+    def series_params
+      params.require(:series).permit(
+        :name,
+        :description)
+    end  
 end
