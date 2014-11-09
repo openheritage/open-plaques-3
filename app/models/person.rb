@@ -25,8 +25,8 @@ class Person < ActiveRecord::Base
 
   has_many :roles, -> { order('started_at asc') }, :through => :personal_roles
   has_many :personal_roles, -> { order('started_at asc') }
-  has_many :relationships, -> { where(related_person_id IS NOT NULL).order('started_at asc') }, :class_name => "PersonalRole"
-  has_many :straight_roles, -> { where(related_person_id IS NULL).order('started_at asc') }, :class_name => "PersonalRole"
+  has_many :relationships, -> { where('related_person_id IS NOT NULL').order('started_at asc') }, :class_name => "PersonalRole"
+  has_many :straight_roles, -> { where('related_person_id IS NULL').order('started_at asc') }, :class_name => "PersonalRole"
   has_many :personal_connections, -> { order('started_at asc') }
 #  has_many :locations, :through => :personal_connections, :uniq => true
   has_many :plaques, :through => :personal_connections #, :uniq => true

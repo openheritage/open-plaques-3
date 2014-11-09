@@ -1,0 +1,68 @@
+<% content_for :page_title, "Historical plaques about " + @person.name %>
+
+<div class="panel">
+  <%= content_tag(:section, link_to("Edit this "+@person.type, edit_person_path(@person), {:class => :edit, :title => "Edit this "+@person.type}), :class => :admin_panel) if current_user && current_user.is_admin? %>
+
+  <% #if @person.parental_relationships.size > 0 %>
+    <p>
+    <%#= 'parent'.pluralize @person.parental_relationships.size %>:
+      <% #@person.parental_relationships.each do |parental_relationship| %>
+        <%#= dated_person parental_relationship.related_person %>
+      <% #end %>
+    </p>
+  <% #end %>
+
+  <div class="vcard person" typeof="<%= if (@person.person?) then "foaf:Person" else "foaf:Agent" end %> vcard:VCard" about="#person">
+
+    <%= content_tag(:p, thumbnail_img(@person)) if @person.main_photo %>
+    <h1><%= dated_person(@person, {:links => :none}) %> <%= roles_list(@person) %></h1>
+    
+    <% if @person.spousal_relationships.size > 0 %>
+      <p>
+        <% @person.spousal_relationships.each_with_index do |relationship, index| %>
+          <%= relationship.role.name %> of <%= dated_person relationship.related_person %>
+          <% if index == @person.spousal_relationships.size - 2 %>and<% elsif index != @person.spousal_relationships.size - 1 %>,<% end %>
+        <% end %>
+      </p>
+    <% end %>
+
+    <% if @person.issue.size > 0 %>
+      <p><%= 'child'.pluralize @person.issue.size %>: <% @person.issue.each do |issue| %><%= dated_person issue %> <% end %></p>
+    <% end %>
+
+    <% if @person.siblings.size > 0 %>
+      <p>
+        <%= 'sibling'.pluralize @person.siblings.size %>:
+        <% @person.siblings.each_with_index do |sibling, index| %>
+          <%= dated_person sibling %><% if index == @person.siblings.size - 2 %> and<% elsif index != @person.siblings.size - 1 %>,<% end %>
+        <% end %>
+      </p>
+    <% end %>
+
+    <% if @person.non_family_relationships.size > 0 %>
+      <p>
+        <% @person.non_family_relationships.each_with_index do |relationship, index| %>
+          <%= relationship.role.name %> of <%= dated_person relationship.related_person %><% if index == @person.non_family_relationships.size - 2 %> and<% elsif index != @person.non_family_relationships.size - 1 %>,<% end %>
+        <% end %>
+      </p>
+    <% end %>
+
+    <p><%= "Died aged" if (@person.person? || @person.thing? || @person.animal?) && @person.dead? %><%= "Closed aged" if @person.place? && @person.dead? %><%= "Aged" if @person.alive? && @person.age%> <%= "c." + @person.age.to_s if @person.age%></p>
+
+    <%= simple_format(@person.introduction) if @person.introduction %>
+
+    <%= content_tag("p", "Read more on ".html_safe + link_to("Wikipedia", @person.default_wikipedia_url, :target => '_blank')) unless @person.default_wikipedia_url.blank? %>
+
+    <% if @person.plaques.size > 0 %>
+      <h2>Commemorated on <%= @person.plaques.size %> <%= 'plaque'.pluralize @person.plaques.size %></h2>
+    <% else %>
+      <h2>Is not commemorated on any plaques in our database (yet)</h2>
+    <% end %>
+    <% @person.plaques.each do |plaque| %>
+      <%= render 'plaques/minimal', :plaque => plaque %>
+    <% end %>
+  </div>
+
+  <p class="alternate_formats">Data about this <%= @person.type %> as <%= alternate_link_to "XML", person_path(@person, :xml), :xml %> <%= alternate_link_to "JSON", person_path(@person, :json), :json %> <%= alternate_link_to "KML", person_path(@person, :kml), :kml %>  <%= alternate_link_to "GMAP", "http://maps.google.co.uk/maps?q=" + person_url(@person, :kml), :html %></p>
+
+</div>

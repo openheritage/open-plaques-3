@@ -1,0 +1,35 @@
+<% content_for :page_title, "New person" %>
+<div class="panel">
+  <h1>New person</h1>
+</div>
+<div class="panel">
+
+  <%= form_for(@person) do |f| %>
+  
+  <fieldset>
+    <div class="row">
+      <%= f.label :name %> <%= f.text_field :name %>
+    </div>
+    <div class="row">
+      <%= f.label :surname_starts_with, "Surname starts with (optional)" %> <%= f.text_field :surname_starts_with %>
+    </div>
+    <div class="row">
+      <%= f.label :born_on, "Born in" %> <%= text_field_tag :born_on, "", {:maxlength => "4"} %>
+    </div>
+    <div class="row">
+      <%= f.label :died_on, "Died in" %> <%= text_field_tag :died_on, "", {:maxlength => "4"} %>
+    </div>
+    <div class="row">
+      <%= f.label :wikipedia_url, "Wikipedia link" %> <%= f.text_field :wikipedia_url %>
+    </div>
+    <div class="row">
+      <%= f.label :dbpedia_uri, "DBpedia resource URI" %> <%= f.text_field :dbpedia_uri %>
+    </div>
+
+    <%= f.submit "Create", :class => 'button' %>
+  </fieldset>
+    
+  <% end %>
+
+</div>
+
