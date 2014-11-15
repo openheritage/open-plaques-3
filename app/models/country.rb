@@ -65,7 +65,7 @@ class Country < ActiveRecord::Base
 
   def as_json(options={})
     find_centre
-    if option.size == 0
+    if options[:size] == 0
       options = {
         :only => [:name, :uri, :dbpedia_uri],
         :include => { :areas => {:only => [:name], :methods => :uri}},
