@@ -266,6 +266,7 @@ class PlaquesController < ApplicationController
     end
 
 	def plaque_params
-      params.require(:plaque).permit(:inscription,:inscription_is_stub,:language_id,:inscription_in_english, :description)
+      params.require(:plaque).permit(:inscription,:inscription_is_stub,:language_id,:inscription_in_english, :description, 
+        :latitude, :longitude, :is_accurate_geolocation)
 	end
 end
