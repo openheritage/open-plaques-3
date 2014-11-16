@@ -1,4 +1,4 @@
-require "google_spreadsheet"
+#require "google_spreadsheet"
 
 class MatchController < ApplicationController
 
