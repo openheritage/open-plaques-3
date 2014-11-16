@@ -14,6 +14,7 @@ gem 'devise'
 gem 'meta-tags'
 gem 'will_paginate'
 
+gem 'unicorn', platforms: [:ruby]
 
 gem 'rails_12factor'
 
@@ -28,5 +29,4 @@ group :test do
 end
 
 gem 'tzinfo-data'
-gem 'thin', platforms: [:ruby]
 gem 'dotenv-rails', :groups => [:development, :test]
