@@ -1,0 +1,15 @@
+# Localisation file for British English
+# See http://guides.rubyonrails.org/i18n.html
+
+en-GB:
+  explore: "Explore"
+  contribute: "Contribute"
+  news: "News"
+  plaque_of_the_day: "Plaque of the day"
+
+  # Used in array.to_sentence.
+  support:
+    array:
+      words_connector: ", "
+      two_words_connector: " and "
+      last_word_connector: ", and "
