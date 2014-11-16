@@ -33,7 +33,7 @@ class Plaque < ActiveRecord::Base
   belongs_to :colour, :counter_cache => true
   belongs_to :user, :counter_cache => true
   belongs_to :language, :counter_cache => true
-  belongs_to :series, :counter_cache => true
+  belongs_to :series
 
   has_one :area, :through => :location
   has_one :pick
