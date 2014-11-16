@@ -312,8 +312,7 @@ class Plaque < ActiveRecord::Base
   end
 
   def as_json(options={})
-    if options.size == 0
-      options = 
+    default_options = 
     {
       :only => [:id, :inscription, :erected_at, :is_current, :updated_at],
       :include =>
@@ -369,7 +368,6 @@ class Plaque < ActiveRecord::Base
       },
       :methods => [:uri, :title, :subjects, :colour_name, :machine_tag, :geolocated?, :photographed?, :photo_url, :thumbnail_url, :shot_name]
     }
-    end
 
     # use a geojson format wrapper
     {
@@ -381,7 +379,11 @@ class Plaque < ActiveRecord::Base
         is_accurate: self.is_accurate_geolocation
       },
       properties: 
-        super(options)
+        if options
+          {plaque: super(options)}
+        else
+          super(default_options)
+        end
     }
   end
 
