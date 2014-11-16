@@ -14,6 +14,9 @@ gem 'devise'
 gem 'meta-tags'
 gem 'will_paginate'
 
+
+gem 'rails_12factor'
+
 group :development do
   gem 'spring'
 end
