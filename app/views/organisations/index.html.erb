@@ -6,7 +6,7 @@
       <%= link_to("Add new organisation", new_organisation_path, {:class => :edit, :title => "Add new organisation"})%>
     </section>
   <% end %>  <h1>Organisations erecting plaques</h1>
-  <p><%= pluralize(@organisations.size, "organisation") %></p>
+  <p><%= pluralize(@organisations.length, "organisation") %></p>
 </div>
 
 <ul id="organisations_results" class="results one_destination_results">
