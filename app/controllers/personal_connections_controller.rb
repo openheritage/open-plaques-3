@@ -45,7 +45,12 @@ class PersonalConnectionsController < ApplicationController
   end
 
   def create
-    @personal_connection = @plaque.personal_connections.new(personal_connection_params)
+    @personal_connection = @plaque.personal_connections.new
+
+    @personal_connection.person_id = params[:personal_connection][:person_id]
+    @personal_connection.verb_id = params[:personal_connection][:verb_id]
+    @personal_connection.location_id = params[:personal_connection][:location_id]
+
     if params[:personal_connection][:started_at] > ""
       started_at = params[:personal_connection][:started_at]
       if started_at =~/\d{4}/
