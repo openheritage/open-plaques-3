@@ -6,6 +6,6 @@
 
 <ol class="results" id="people_results">
   <% @people.each do |person| %>
-    <li><%= age_icon(person.age_in(@year.year)) %><p class="result"><%= link_to person.name, person %> <%= dates(person) %></p><p class="count">aged c.<%= person.age_in(@year.year) %><p></li>
+    <li><p class="result"><%= link_to person.name, person %> <%= dates(person) %></p><p class="count">aged c.<%= person.age_in(@year.year) %><p></li>
   <% end %>
 </ol>
