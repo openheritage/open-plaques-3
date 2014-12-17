@@ -5,6 +5,10 @@ class LicencesController < ApplicationController
 
   def index
     @licences = Licence.all
+    respond_to do |format|
+      format.html
+      format.json { render :json => @licences }
+    end
   end
 
   def show

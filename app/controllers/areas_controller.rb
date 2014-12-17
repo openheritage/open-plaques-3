@@ -7,7 +7,7 @@ class AreasController < ApplicationController
   before_filter :find_area, :only => [:show, :edit, :update, :destroy]
 
   def index
-    @areas = @country.areas.all(:order => :name)
+    @areas = @country.areas.all
     respond_to do |format|
       format.html
       format.kml {

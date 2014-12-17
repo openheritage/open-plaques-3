@@ -43,16 +43,18 @@ class Area < ActiveRecord::Base
 
   # cannot use this yet as the plaque.new screen relies on a short format
   def as_json_new(options={})
-    default_options = {
-      :only => :name,
-      :include => { 
-        :country => {
-          :only => [:name],
-          :methods => :uri
-        }
-      },
-      :methods => [:uri, :plaques_uri]
-    }
+    if options.size == 0
+      options = {
+        :only => :name,
+        :include => { 
+          :country => {
+            :only => [:name],
+            :methods => :uri
+          }
+        },
+        :methods => [:uri, :plaques_uri]
+      }
+    end
 
     {
       type: 'Feature',
@@ -61,13 +63,7 @@ class Area < ActiveRecord::Base
         coordinates: [self.longitude, self.latitude]
       },
       properties: 
-        if options.size > 0
-#          super(options)
-          as_json(options)
-        else
-#          super(default_options)
-          as_json(default_options)
-        end
+        as_json(options)
     }
   end
 

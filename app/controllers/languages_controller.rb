@@ -7,6 +7,10 @@ class LanguagesController < ApplicationController
 
   def index
     @languages = Language.all
+    respond_to do |format|
+      format.html
+      format.json { render :json => @languages }
+    end
   end
 
   def new

@@ -167,109 +167,12 @@ class Plaque < ActiveRecord::Base
     end
   end
 
-  def parse_inscription
-    inscription = self.inscription
-    if inscription
-
-      inscription_regex = /\A(.+?),?\s(([a-z]+ed|was born|grew up|taught|wrote\s\'[a-zA-Zü\s]+\')(\sand\s(([a-z]+ed)|was born|grew up|taught|wrote\s\'[a-zA-Zü\s]+\'))?)\s(at\s)?(.+?)(\.?)\Z/
-
-      if inscription =~ inscription_regex
-
-        subject = inscription[inscription_regex, 1]
-        predicates = inscription[inscription_regex, 2]
-        object = inscription[inscription_regex, 8]
-
-        subjects = []
-
-        subjects_regex =
-            %r{
-                (
-                  (
-                    \'?[A-Z][a-züA-Z]+\'?|    # First name
-                    ([A-Z]\.)+         # or initial
-                  )
-                  (
-                  \s
-                  (
-                    [A-Z][a-züA-Z]+|                # additional name
-                    de\s[A-Z][a-zA-Zü]+|                         # or de
-                    [A-Z]\.)|(                     # or initial  - eg F.
-                    \,\sEarl\sof[A-Z][a-z]+|
-                    \salias\s\'[A-Za-z]+\'|   # alias
-                    \s\'[A-Z][a-z]+\'|
-                    \sof\s[A-Z][a-z]+|
-                    \s\([A-Z][A-Za-zü\s]+\)
-                  ))+
-                )
-                (\s\(c?[\d]{4}-c?[\d]{4}\))?  # Dates - eg {1934-2004}
-                (
-                  \,?\s     # optional comma, followed by a space
-                  [a-zA-Z\s\,\d\-\'\&]+   # roles
-                )?
-              }x
-
-
-        subject.gsub(subjects_regex) do |s|
-          subjects << s
-        end
-
-
-
-        subjects.each do |subject|
-
-          person = Person.find_or_create_by_name_and_dates_and_roles(subject)
-
-          predicates.split(" and ").each do |predicate|
-            verb = Verb.find_or_create_by_name(predicate)
-
-            if object =~ /here(\s(in\s)?\d{4}-\d{4})?\.?/
-              if self.location
-                location = self.location
-                if object =~ /here\s(in\s)?\d{4}-\d{4}?\.?/
-  #                started_at = Date.today
-  #                ended_at = Date.today
-                  started_at = DateTime.parse(object[/here\s(in\s)?(\d{4})-\d{4}\.?/, 2] + "-01-01")
-                  ended_at = DateTime.parse(object[/here\s(in\s)?\d{4}-(\d{4})\.?/, 2] + "-01-01")
-                  personal_connection = PersonalConnection.new(:person => person, :verb => verb, :location => location, :started_at => started_at, :ended_at => ended_at, :plaque => self)
-                else
-                  personal_connection = PersonalConnection.new(:person => person, :verb => verb, :location => location,:plaque => self)
-                end
-              else
-                # Can't create connection as 'here' refers to
-                # an unspecified location.
-                break
-              end
-            else
-              location = Location.find_or_create_by_name(object)
-              personal_connection = PersonalConnection.new(:person => person, :verb => verb, :location => location, :plaque => self)
-            end
-
-            personal_connection.save!
-
-          end
-        end
-      end
-
-      return personal_connections
-
-    end
-
-  end
-
   def geolocated?
     !(latitude.nil?)
   end
 
   def photographed?
     photos_count > 0
-  end
-
-  def unparse_inscription
-    if personal_connections.size > 0
-      personal_connections.each do |personal_connection|
-        personal_connection.destroy
-      end
-    end
   end
 
   def first_person
@@ -312,7 +215,8 @@ class Plaque < ActiveRecord::Base
   end
 
   def as_json(options={})
-    default_options = 
+    if options.size == 0
+      options = 
     {
       :only => [:id, :inscription, :erected_at, :is_current, :updated_at],
       :include =>
@@ -368,6 +272,7 @@ class Plaque < ActiveRecord::Base
       },
       :methods => [:uri, :title, :subjects, :colour_name, :machine_tag, :geolocated?, :photographed?, :photo_url, :thumbnail_url, :shot_name]
     }
+    end
 
     # use a geojson format wrapper
     {
@@ -379,11 +284,7 @@ class Plaque < ActiveRecord::Base
         is_accurate: self.is_accurate_geolocation
       },
       properties: 
-        if options
-          {plaque: super(options)}
-        else
-          super(default_options)
-        end
+        super(options)
     }
   end
 
@@ -426,9 +327,7 @@ class Plaque < ActiveRecord::Base
   end
 
   def thumbnail_url
-    if main_photo == nil
-      return nil
-    end
+    return nil if main_photo == nil
     main_photo.thumbnail_url != "" ? main_photo.thumbnail_url : main_photo.file_url
   end
 
