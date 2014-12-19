@@ -39,11 +39,7 @@ Rails.application.configure do
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 
-  # Raises error for missing translations
-  # config.action_view.raise_on_missing_translations = true
+  # We only want to log errors and warnings when running tests
+  config.log_level = :warn
 
-  # Limit log file size to 20MB with one backup
-  log_file = open(config.paths['log'].first, 'a')
-  log_file.binmode
-  config.logger = Logger.new(log_file, 1, 20971520)
 end
