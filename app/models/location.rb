@@ -33,6 +33,19 @@ class Location < ActiveRecord::Base
 	  address += ", " + area.country.name if area and area.country
   end
 
+  def as_json(options={})
+    super(
+      :only => [],
+      :include => {
+ #       :area => {:only => :name}
+      },
+      :methods => [
+        :full_address, 
+        :uri
+      ]
+    )
+  end
+
   private
 
   def update_country_id

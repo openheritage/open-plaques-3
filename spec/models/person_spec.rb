@@ -13,7 +13,7 @@ describe Person do
         end
         it 'uses the last word in the name to index on' do
           @person.update_index
-          expect(@person.surname_starts_with).to eq('S')
+          expect(@person.surname_starts_with).to eq('s')
         end
     end
 
@@ -30,7 +30,6 @@ describe Person do
     context 'a vicar' do
        before do
          @person = Person.new(name: 'Malcolm McBonny')
-         @person.roles << Role.new(name: 'Baronet')
          @person.roles << Role.new(name: 'Vicar', role_type: 'clergy', abbreviation: 'Revd')
        end
        it 'is a clergyman' do
@@ -39,20 +38,29 @@ describe Person do
        it 'is a Reverend' do
           expect(@person.title).to eq('Revd')
        end
+    end
+
+    context 'a vicar who is titled' do
+       before do
+         @person = Person.new(name: 'Malcolm McBonny')
+         @person.roles << Role.new(name: 'Vicar', role_type: 'clergy', abbreviation: 'Revd')
+         @person.roles << Role.new(name: 'Baronet')
+       end
        it 'does not get called Sir' do
           expect(@person.full_name).to eq('Revd Malcolm McBonny')
        end
     end
 
-    context 'a member of the Commonwealth' do
-       before do
-         @person = Person.new(name: 'Malcolm McBonny')
-         @person.roles << Role.new(name: 'Baronet')
-       end
-       it 'does not get called Sir' do
-         expect(@person.full_name).to eq('Malcolm McBonny')
-       end
-    end
+#    context 'a member of the Commonwealth' do
+#       before do
+#         @person = Person.new(name: 'Malcolm McBonny')
+#         @person.roles << Role.new(name: 'Baronet')
+#         @person.roles << Role.new(name: 'Member of the Commonwealth')  ??
+#       end
+#       it 'does not get called Sir' do
+#         expect(@person.full_name).to eq('Malcolm McBonny')
+#       end
+#    end
 
     context 'a title role' do
        before do

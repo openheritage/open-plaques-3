@@ -53,55 +53,6 @@ class Person < ActiveRecord::Base
     end
   end
 
-  def self.find_or_create_by_name_and_dates(string)
-    name_and_dates_regex = /\A(.*)\s\(?(c?)([\d]{4})-(c?)([\d]{4})\)?\Z/
-    if string =~ name_and_dates_regex
-      person = find_or_create_by_name(string[name_and_dates_regex, 1])
-      unless person.born_on or person.died_on
-        person.born_on = Date.parse(string[name_and_dates_regex, 3] + "-01-01")
-        if string[name_and_dates_regex, 2] == "c"
-          person.born_on_is_circa = true
-        end
-        person.died_on = Date.parse(string[name_and_dates_regex, 5] + "-01-01")
-        if string[name_and_dates_regex, 4] == "c"
-          person.died_on_is_circa = true
-        end
-        person.save!
-      end
-      return Person.find(person.id)
-    else
-      find_or_create_by_name(string)
-    end
-  end
-
-  def self.find_or_create_by_name_and_dates_and_roles(string)
-    name_dates_roles_regex = /\A(.*\s#{DATE_RANGE_REGEX}),?\s?(.*)?\Z/
-    name_roles_re = /\A([A-Z][a-zA-Z\.,]+(\s(([A-Z][a-z]+|[A-Z]\.|de))|\,\sEarl\sof\s[A-Z][a-z]+)*)((\s|,\s)(.*?))?\Z/
-    if string =~ name_dates_roles_regex
-      person = find_or_create_by_name_and_dates(string[name_dates_roles_regex, 1])
-      person.find_or_create_roles(string[name_dates_roles_regex, 2])
-    elsif string =~ name_roles_re
-      person = find_or_create_by_name(string[name_roles_re, 1].strip)
-      person.find_or_create_roles(string[name_roles_re, 7])
-    else
-      person = find_or_create_by_name_and_dates(string)
-    end
-    return person
-  end
-
-  def find_or_create_roles(roles)
-    if roles
-      roles = roles.split(/,?\sand\s|,?\s\&\s|,\s/)
-      roles.each do |role|
-        role = Role.find_or_create_by_name_and_slug(role, role.downcase.gsub(" ", "_").gsub("-", "_").gsub("'", ""))
-        unless self.roles.exists?(role)
-          self.roles << role
-        end
-      end
-    end
-    return self
-  end
-
   def person?
     !(animal? or thing? or group? or place?)
   end
@@ -253,7 +204,7 @@ class Person < ActiveRecord::Base
       title += (role.abbreviated? ? role.abbreviation : role.name) + " " if role.used_as_a_prefix? and !title.include?(role.abbreviated? ? role.abbreviation : role.name)
     }
     title += sir
-    title
+    title.strip!
   end
 
   def titled?
@@ -274,7 +225,8 @@ class Person < ActiveRecord::Base
   end
   
   def full_name
-    fullname = title + name 
+    fullname = name 
+    fullname = title + " " + name if title
     fullname += letters if !letters.blank?
     fullname
   end
@@ -391,7 +343,8 @@ class Person < ActiveRecord::Base
   end
 
   def as_json(options={})
-    super(:only => [],
+    super(
+      :only => [],
       :include => {
 #        :main_photo => {:only => [], :methods => :uri},
         :personal_roles => {
@@ -418,11 +371,24 @@ class Person < ActiveRecord::Base
  #         :methods => [:uri, :from, :to]
  #       }
       },
-      :methods => [:uri, :name_and_dates, :full_name, :surname, :born_in, :born_at, :died_in, :died_at, :type, :sex, :wikipedia_url, :dbpedia_uri, :default_wikipedia_url, :default_dbpedia_uri]
+      :methods => [
+        :uri,
+        :name_and_dates,
+        :full_name,
+        :surname,
+        :born_in,
+        :born_at,
+        :died_in,
+        :died_at,
+        :type,
+        :sex,
+        :default_wikipedia_url,
+        :default_dbpedia_uri
+      ]
     )
   end
 
-  private
+#  protected
 
     def update_index
       self.index = self.name[0,1].downcase

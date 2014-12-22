@@ -91,6 +91,7 @@ class Role < ActiveRecord::Base
   
   def used_as_a_prefix?
     return true if "title" == role_type
+    return true if "clergy" == role_type
     return false
   end
   
