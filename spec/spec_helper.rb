@@ -48,4 +48,8 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 
+  # only accept new RSpec syntax
+  config.expect_with :rspec do |c|
+    c.syntax = :expect
+  end
 end
