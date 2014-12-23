@@ -114,10 +114,10 @@ class Person < ActiveRecord::Base
   end
 
   def age
-    "unknown"
     return died_in - born_in if died_in && born_in
     return Time.now.year - born_in if born_in && thing?
     return Time.now.year - born_in if born_in && born_in > 1900
+    "unknown"
    end
 
   def age_in(year)
@@ -143,15 +143,14 @@ class Person < ActiveRecord::Base
   end
 
   def name_and_dates
-    name + dates
+    (name + " " + dates).trim!
   end
 
   def dates
     r = ""
-    r += " (" if born_on || died_on
+    r += "(" if born_on || died_on
     r += creation_word + " " if born_on && !died_on
     r += born_on.year.to_s if born_on
-    r += "?-" if !born_on && died_on
     r += "-" if born_on && died_on
     r += destruction_word + " " if !born_on && died_on
     r += died_on.year.to_s if died_on

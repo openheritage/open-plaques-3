@@ -53,17 +53,17 @@ describe Person do
       end
     end
 
-    context 'a member of the Commonwealth' do
+    context 'a member of the Commonwealth who has been ennobled' do
       it 'does not get called Sir/Lady'
     end
 
-    context 'a title role' do
+    context 'a person with a role that confers a title' do
       before do
         @person = Person.new(name: 'Harry Bean')
         @role = Role.new(name: 'Smiter', role_type: 'title')
         @person.roles << @role
       end
-      it 'says the title before the name' do
+      it 'has the title displayed before their name' do
         expect(@person.full_name).to eq('Smiter Harry Bean')
       end
     end
@@ -116,18 +116,16 @@ describe Person do
       end
     end
  
-    context 'a princess who became a queen' do
+    context 'a princess who became queen' do
       before do
         @victoria = Person.new(name: 'Victoria')
-        @queen = Role.new(name: 'Queen of the United Kingdom', abbreviation: 'Queen', role_type: 'title')
-        @victoria.roles << @queen
-        @victoria_is_a_queen = @victoria.personal_roles.first
+        @victoria.roles << Role.new(name: 'Queen of the United Kingdom', abbreviation: 'Queen', role_type: 'title')
         @princess = Role.new(name: 'Princess', abbreviation: 'Princess', role_type: 'title')
         @victoria.roles << @princess
         @victoria_is_a_princess = @victoria.personal_roles.last
         @victoria_is_a_princess.ended_at = "1902-01-01"
       end
-      it 'only has the titles they had when they died displayed before their name' do
+      it 'is called \'Queen\' and not \'Princess Queen\'' do
         expect(@victoria.full_name).to eq('Queen Victoria')
       end
     end
@@ -151,7 +149,7 @@ describe Person do
         @person.roles << Role.new(name: 'vicar', role_type: 'clergy', abbreviation: 'Revd')
       end
       it 'is in the clergy' do
-        expect(@person.clergy?).to eq(true)
+        expect(@person).to be_clergy
       end
     end
 
@@ -161,7 +159,7 @@ describe Person do
         @person.roles << Role.new(name: 'farmer')
       end
       it 'is not in the clergy' do
-        expect(@person.clergy?).to eq(false)
+        expect(@person).to_not be_clergy
       end
     end
 
@@ -172,12 +170,12 @@ describe Person do
         @person.roles << Role.new(name: 'vicar', role_type: 'clergy', abbreviation: 'Revd')
       end
       it 'is in the clergy' do
-        expect(@person.clergy?).to eq(true)
+        expect(@person).to be_clergy
       end
     end
   end
 
-  describe 'type' do
+  describe '#type' do
     context 'a subject' do
       before do
         @person = Person.new(name: 'Malcolm McBonny')
@@ -230,7 +228,7 @@ describe Person do
     end
   end
 
-  describe 'surname_starts_with' do
+  describe '#surname_starts_with' do
     context 'a regularly named person' do
       before do
         @person = Person.new(name: 'John Smith')
@@ -248,7 +246,7 @@ describe Person do
         @person = Person.new()
       end
       it 'is still alive' do
-        expect(@person.dead?).to eq(false)
+        expect(@person).to be_alive
       end
     end
 
@@ -258,7 +256,7 @@ describe Person do
         @person.died_on = Date.new(2009, 1, 1)
       end
       it 'is dead' do
-        expect(@person.dead?).to eq(true)
+        expect(@person).to be_dead
       end
     end
 
@@ -269,7 +267,7 @@ describe Person do
         @person.died_on = Date.new(2009, 1, 1)
       end
       it 'is dead' do
-        expect(@person.dead?).to eq(true)
+        expect(@person).to be_dead
       end
     end
 
@@ -279,7 +277,7 @@ describe Person do
         @person.born_on = Date.new(1980, 1, 1)
       end
       it 'is alive' do
-        expect(@person.dead?).to eq(false)
+        expect(@person).to be_alive
       end
     end
 
@@ -289,7 +287,7 @@ describe Person do
         @person.born_on = Date.new(1880, 1, 1)
       end
       it 'is dead by now' do
-        expect(@person.dead?).to eq(true)
+        expect(@person).to be_dead
       end
     end
 
@@ -300,7 +298,123 @@ describe Person do
         @person.roles << Role.new(name: 'building', role_type: 'thing')
       end
       it 'is still standing' do
-        expect(@person.dead?).to eq(false)
+        expect(@person).to be_alive
+      end
+    end
+  end
+
+  describe '#age' do
+    context 'a person with no dates' do
+      before do
+        @person = Person.new()
+      end
+      it 'is of unknown age' do
+        expect(@person.age).to eq('unknown')
+      end
+    end
+
+    context 'a person with only a date of death' do
+      before do
+        @person = Person.new()
+        @person.died_on = Date.new(2009, 1, 1)
+      end
+      it 'is of unknown age' do
+        expect(@person.age).to eq('unknown')
+      end
+    end
+
+    context 'a person born in 1932 and died in 2009' do
+      before do
+        @person = Person.new()
+        @person.born_on = Date.new(1932, 7, 8)
+        @person.died_on = Date.new(2009, 1, 1)
+      end
+      it 'was 77' do
+        expect(@person.age).to be > 76
+      end
+    end
+
+    context 'a person with a date of birth and no date of death' do
+      before do
+        @person = Person.new()
+        @person.born_on = Date.new(1980, 1, 1)
+      end
+      it 'has an age' do
+        expect(@person.age).to be > 33
+      end
+    end
+
+    context 'a person born in 1880 with no date of death' do
+      before do
+        @person = Person.new()
+        @person.born_on = Date.new(1880, 1, 1)
+      end
+      it 'is of unknown age' do
+        expect(@person.age).to eq('unknown')
+      end
+    end
+
+    context 'a building built before 1900' do
+      before do
+        @person = Person.new()
+        @person.born_on = Date.new(1880, 1, 1)
+        @person.roles << Role.new(name: 'building', role_type: 'thing')
+      end
+      it 'is over a hundred years old' do
+        expect(@person.age).to be > 133
+      end
+    end
+  end
+
+  describe '#dates' do
+    context 'a person born in 1932 and died in 2009' do
+      before do
+        @person = Person.new()
+        @person.born_on = Date.new(1932, 7, 8)
+        @person.died_on = Date.new(2009, 1, 1)
+      end
+      it 'displays a date range' do
+        expect(@person.dates).to eq('(1932-2009)')
+      end
+    end
+
+    context 'a person with no dates' do
+      before do
+        @person = Person.new()
+      end
+      it 'can\'t display a date range' do
+        expect(@person.dates).to eq('')
+      end
+    end
+
+    context 'a person who died in 2009' do
+      before do
+        @person = Person.new()
+        @person.died_on = Date.new(2009, 1, 1)
+      end
+      it 'displays a death date' do
+        expect(@person.dates).to eq('(died in 2009)')
+      end
+    end
+
+    context 'a person born in 1980 with no date of death' do
+      before do
+        @person = Person.new()
+        @person.born_on = Date.new(1980, 1, 1)
+      end
+      it 'displays a birth date' do
+        expect(@person.dates).to eq('(born in 1980)')
+      end
+    end
+
+    context 'a building built in 1880' do
+      before do
+        @person = Person.new()
+        @person.born_on = Date.new(1880, 1, 1)
+        @person.roles << Role.new(name: 'building', role_type: 'place')
+      end
+      it 'displays a built date' do
+        expect(@person.dates).to eq('(built in 1880)')
       end
     end
   end
