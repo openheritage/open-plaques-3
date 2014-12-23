@@ -99,9 +99,9 @@ class Person < ActiveRecord::Base
   end
 
   def dead?
-    false
     return true if died_in
     return true if (person? || animal?) && born_in && born_in < 1900
+    false
   end
 
   def alive?
@@ -191,19 +191,20 @@ class Person < ActiveRecord::Base
   
   def title
     title = ""
-    sir = ""
+    honourific = ""
     current_roles = []
     personal_roles.each do |pr|
       current_roles << pr.role if pr.ended_at == nil or pr.ended_at == ''
     end
     current_roles.each{|role|
       # a clergyman or Commonwealth citizen does not get called 'Sir'
-      sir = "Sir " if role.confers_honourific_title? && !clergy?
+      honourific = "Sir " if role.confers_honourific_title? && !clergy? && male?
+      honourific = "Lady " if role.confers_honourific_title? && !clergy? && female?
       # use an abbreviation if available
       # multiple prefix roles could confer the same title and we only want it once
       title += (role.abbreviated? ? role.abbreviation : role.name) + " " if role.used_as_a_prefix? and !title.include?(role.abbreviated? ? role.abbreviation : role.name)
     }
-    title += sir
+    title += honourific
     title.strip!
   end
 

@@ -108,6 +108,7 @@ class Role < ActiveRecord::Base
   
   def confers_honourific_title?
     return true if "Baronet" == name
+    return true if "Baroness" == name
     return true if "Knight Bachelor" == name
     return true if "Knight of the Order of the Garter" == name
     return true if "Knight of the Order of the Thistle" == name
