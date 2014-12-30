@@ -5,7 +5,7 @@
 # * +url+ - a permanent URL at which the licence.
 #
 # === Associations
-# * Plaques - plaques which are mainly written in this language.
+# * Photos - photographed which are published under this licence
 class Licence < ActiveRecord::Base
 
   validates_presence_of :name, :url
@@ -35,6 +35,10 @@ class Licence < ActiveRecord::Base
       puts "Couldn't find license"
       return nil
     end
+  end
+
+  def to_s
+    name
   end
 
 end

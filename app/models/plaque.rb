@@ -83,18 +83,6 @@ class Plaque < ActiveRecord::Base
     end
   end
 
-  def to_csv
-   [id, inscription_csv, erected_at_string, language_name, colour_name.to_s, location_name, area_name, country_name, '"' + coordinates + '"'].join(",")
-  end
-
-  def inscription_csv
-    if inscription
-      '"' + inscription.gsub('"', '""') + '"'
-    else
-      ""
-    end
-  end
-
   def coordinates
     if geolocated?
       latitude.to_s + "," + longitude.to_s
@@ -302,14 +290,15 @@ class Plaque < ActiveRecord::Base
         first_4_people << pluralize(people.size - 4, "other")
         first_4_people.to_sentence
       elsif people.size > 0
-        people.collect(&:name).to_sentence + " " + (colour_name || '') + " plaque"
+        t = people.collect(&:name).to_sentence
+        t += " " + colour_name if colour_name && "unknown"!=colour_name
+        t + " plaque"
       elsif colour_name && "unknown"!=colour_name
         colour_name.to_s.capitalize + " plaque № #{id}"
       else
         "plaque № #{id}"
       end << (area_name != "" ? " in " : "") + area_name
     rescue Exception => e
-#      Airbrake.notify(e)
       "plaque № #{id}"
     end
   end
@@ -383,7 +372,7 @@ class Plaque < ActiveRecord::Base
   end
 
   def uri
-    "http://openplaques.org" + Rails.application.routes.url_helpers.plaque_path(self, :format => :json)
+    "http://openplaques.org" + Rails.application.routes.url_helpers.plaque_path(self, :format => :json) if id
   end
 
   def to_s

@@ -88,11 +88,11 @@ class Area < ActiveRecord::Base
   end
 
   def uri
-    "http://openplaques.org" + Rails.application.routes.url_helpers.country_area_path(self.country, self, :format => :json)
+    "http://openplaques.org" + Rails.application.routes.url_helpers.country_area_path(self.country, self, :format => :json) if id && country
   end
 
   def plaques_uri
-    "http://openplaques.org" + Rails.application.routes.url_helpers.country_area_plaques_path(self.country, self, :format => :json)
+    "http://openplaques.org" + Rails.application.routes.url_helpers.country_area_plaques_path(self.country, self, :format => :json) if id && country
   end
 
 end
