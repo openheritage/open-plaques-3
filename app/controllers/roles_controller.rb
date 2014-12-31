@@ -2,18 +2,12 @@ class RolesController < ApplicationController
 
   before_filter :authenticate_admin!, :only => :destroy
   before_filter :authenticate_user!, :except => [:index, :show]
-
   before_filter :find, :only => [:show, :edit, :update]
 
   def index
     respond_to do |format|
       format.html { redirect_to(roles_by_index_path('a')) }
-      @roles = Role.order(:name)
-      format.kml {
-        @parent = @roles
-        render "colours/index"
-      }
-      format.xml
+      @roles = Role.by_popularity
       format.json { render :json => @roles }
     end
   end
@@ -34,8 +28,6 @@ class RolesController < ApplicationController
     @zoom = 7
     respond_to do |format|
       format.html
-      format.kml { render "plaques/show" }
-      format.xml
       format.json { render :json => @role }
     end
   end
@@ -44,10 +36,6 @@ class RolesController < ApplicationController
   # GET /roles/new.xml
   def new
     @role = Role.new
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @role }
-    end
   end
 
   # POST /roles

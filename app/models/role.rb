@@ -13,6 +13,7 @@
 class Role < ActiveRecord::Base
 
   before_validation :make_slug_not_war
+  before_save :update_index, :filter_name
   validates_presence_of :name, :slug
   validates_uniqueness_of :name, :slug
 #  validates_format_of :slug, :with => /^[a-z\_]+$/, :message => "can only contain lowercase letters and underscores"
@@ -20,7 +21,8 @@ class Role < ActiveRecord::Base
   has_many :personal_roles, -> { order('started_at') }
   has_many :people, -> { order('name') }, :through => :personal_roles
 
-  before_save :update_index, :filter_name
+  scope :by_popularity, -> { order("personal_roles_count DESC nulls last") }
+  scope :alphabetically, -> { order("name ASC nulls last") }
 
   include ApplicationHelper
 
@@ -155,7 +157,26 @@ class Role < ActiveRecord::Base
   def uri
     "http://openplaques.org" + Rails.application.routes.url_helpers.role_path(self.slug, :format => :json)
   end
-  
+
+  def to_s
+    name
+  end
+
+  def as_json(options={})
+    options = {
+      :only => [:name, :personal_roles_count, :role_type, :abbreviation],
+      :include => 
+        { :people=> 
+          {
+            :only => [], 
+            :methods => [:full_name, :uri]
+          }
+        },
+      :methods => [:type, :full_name, :male?, :relationship?, :confers_honourific_title?]
+    } if !options[:prefixes].blank?
+    super(options)
+  end
+
   private
 
     def update_index

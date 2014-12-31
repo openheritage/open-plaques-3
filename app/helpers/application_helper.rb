@@ -1,6 +1,11 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
+  ActiveSupport::Inflector.inflections do |inflection|
+    inflection.irregular "is", "are"
+    inflection.irregular "was", "were"
+  end
+
   def alternate_link_to(text, path, format)
     link_to text, path, :type => Mime::Type.lookup_by_extension(format.to_s).to_s, :rel => [:alternate,:nofollow]
   end
@@ -136,6 +141,9 @@ module ApplicationHelper
     return word + " " + pluralize(number, name)
   end
 
+  def pluralize_no_count(count, singular, plural = nil)
+    ((count == 1 || count == '1') ? singular : (plural || singular.pluralize))
+  end
 
   # A persistant navigation link, as used in "top navs" or "left navs".
   # The main difference is that the link is replaced by a <span> tag when

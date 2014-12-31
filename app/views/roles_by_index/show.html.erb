@@ -4,6 +4,8 @@
 	<%= render :partial => "index_navigation" %>
 </div>
 
+<div class="panel clearfix">
+
 	<%= content_tag("ul", :id => 'roles_results', :class => 'results') do %>
 	  <% @roles.each do |role| %>
 	    <%= content_tag("li") do %>
@@ -11,8 +13,7 @@
 	    <% end %>
 	  <% end %>
 	<% end %>
+
 </div>
 
-<!--
-<p class="alternate_formats">Data about roles as <%= alternate_link_to "XML", roles_by_index_path(@index.downcase, :xml), :xml %> <%= alternate_link_to "JSON", roles_by_index_path(@index.downcase, :json), :json %></p>
--->
+<p class="alternate_formats">Data about roles as <%= alternate_link_to "JSON", roles_by_index_path(@index.downcase, :json), :json %></p>

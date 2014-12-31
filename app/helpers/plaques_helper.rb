@@ -398,8 +398,14 @@ module PlaquesHelper
           search_for = connection.person.full_name # Sir Joseph Aloysius Hansom 
           matched = true if inscription.index(search_for) != nil
 
+puts nameparts
+puts nameparts.first
+puts nameparts.last
+puts connection.person.title
+
           if (!matched && connection.person.titled? && nameparts.length > 2)
             search_for = connection.person.title + nameparts.first + " " + nameparts.last # Sir Joseph Hansom 
+            puts 'search for' + search_for
           end
           matched = true if inscription.index(search_for) != nil
 

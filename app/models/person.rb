@@ -208,7 +208,7 @@ class Person < ActiveRecord::Base
   end
 
   def titled?
-    title != ""
+    title != nil
   end
   
   def clergy?
