@@ -2,8 +2,7 @@ class LanguagesController < ApplicationController
 
   before_filter :authenticate_admin!, :only => :destroy
   before_filter :authenticate_user!, :except => [:index]
-
-  before_filter :find_language, :only => [:edit, :update]
+  before_filter :find, :only => [:edit, :update]
 
   def index
     @languages = Language.all
@@ -33,7 +32,7 @@ class LanguagesController < ApplicationController
 
   protected
 
-    def find_language
+    def find
       @language = Language.find_by_alpha2!(params[:id])
     end
 
