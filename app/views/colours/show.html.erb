@@ -1,9 +1,0 @@
-<% content_for :page_title, @colour.name.capitalize + " plaques" %>
-
-<div class="panel clearfix">
-  <h1><%= @colour.to_s.capitalize %> plaques</h1>
-</div>
-
-<%= will_paginate @plaques %>
-<%= list(@plaques) %>
-<%= will_paginate @plaques %>

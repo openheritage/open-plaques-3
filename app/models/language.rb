@@ -13,13 +13,24 @@ class Language < ActiveRecord::Base
 #  validates_format_of :alpha2, :with => /^[a-z]{2}$/, :message => "must be a 2 letter code"
 
   has_many :plaques
-  
+
+  scope :most_plaques_order, -> { order("plaques_count DESC nulls last") }
+
   def to_param
     alpha2
   end
   
   def to_s
     name
+  end
+
+  def as_json(options={})
+    options = {
+      :only => [:name, :alpha2, :plaques_count],
+      :include => { },
+      :methods => []
+    } if !options[:prefixes].blank?
+    super(options)
   end
 
 end

@@ -5,7 +5,7 @@ class LanguagesController < ApplicationController
   before_filter :find, :only => [:edit, :update]
 
   def index
-    @languages = Language.all
+    @languages = Language.all.most_plaques_order
     respond_to do |format|
       format.html
       format.json { render :json => @languages }

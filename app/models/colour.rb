@@ -18,16 +18,12 @@ class Colour < ActiveRecord::Base
 
   scope :common, -> { where(common: true) }
   scope :uncommon, ->  { where(common: false) }
-  scope :most_plaques_order, -> { order("plaques_count DESC") }
+  scope :most_plaques_order, -> { order("plaques_count DESC nulls last") }
 
   include ApplicationHelper # for help with making slugs
 
   def to_param
     slug
-  end
-
-  def uri
-    "http://openplaques.org" + Rails.application.routes.url_helpers.colour_path(self, :format => :json)
   end
   
   def to_s
@@ -38,7 +34,7 @@ class Colour < ActiveRecord::Base
     options = {
       :only => [:name, :plaques_count, :common],
       :include => { },
-      :methods => [:uri]
+      :methods => []
     } if !options[:prefixes].blank?
     super(options)
   end
