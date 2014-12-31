@@ -143,7 +143,7 @@ class Person < ActiveRecord::Base
   end
 
   def name_and_dates
-    (name + " " + dates).trim!
+    (name + " " + dates).strip!
   end
 
   def dates
