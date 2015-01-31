@@ -199,6 +199,7 @@ class Person < ActiveRecord::Base
       # a clergyman or Commonwealth citizen does not get called 'Sir'
       honourific = "Sir " if role.confers_honourific_title? && !clergy? && male?
       honourific = "Lady " if role.confers_honourific_title? && !clergy? && female?
+      honourific = "Dame " if "letters" == role.role_type && ("DBE" == role.abbreviation or "GBE" == role.abbreviation)
       # use an abbreviation if available
       # multiple prefix roles could confer the same title and we only want it once
       title += (role.abbreviated? ? role.abbreviation : role.name) + " " if role.used_as_a_prefix? and !title.include?(role.abbreviated? ? role.abbreviation : role.name)
