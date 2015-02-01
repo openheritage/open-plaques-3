@@ -14,7 +14,7 @@
   </tr>
   <tr>
     <th>Language</th>
-    <td><%= render plaque.language %></td>
+    <td><%= plaque.language.try(:name) %></td>
   </tr>
   <tr>
     <th>Colour</th>
