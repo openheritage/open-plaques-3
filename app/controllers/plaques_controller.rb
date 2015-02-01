@@ -21,9 +21,7 @@ class PlaquesController < ApplicationController
   # GET /plaques.poi
   def index
     conditions = {}
-
-    puts "**** hello ****"
-
+    
     if params[:box]
       coords = params[:box][1,params[:box].length-2].split("],[")
       top_left = coords[0].split(",")
