@@ -190,21 +190,22 @@ class Person < ActiveRecord::Base
   
   def title
     title = ""
-    honourific = ""
     current_roles = []
     personal_roles.each do |pr|
       current_roles << pr.role if pr.ended_at == nil or pr.ended_at == ''
     end
     current_roles.each{|role|
       # a clergyman or Commonwealth citizen does not get called 'Sir'
-      honourific = "Sir " if role.confers_honourific_title? && !clergy? && male?
-      honourific = "Lady " if role.confers_honourific_title? && !clergy? && female?
-      honourific = "Dame " if "letters" == role.role_type && ("DBE" == role.abbreviation or "GBE" == role.abbreviation)
-      # use an abbreviation if available
-      # multiple prefix roles could confer the same title and we only want it once
-      title += (role.abbreviated? ? role.abbreviation : role.name) + " " if role.used_as_a_prefix? and !title.include?(role.abbreviated? ? role.abbreviation : role.name)
+      if role.confers_honourific_title? && !clergy? && male? && !title.include?("Sir ")
+        title += "Sir "
+      elsif role.confers_honourific_title? && !clergy? && female? && !title.include?("Lady ")
+        title += "Lady "
+      elsif ("DBE" == role.abbreviation or "GBE" == role.abbreviation or "DCVO" == role.abbreviation) && !title.include?("Dame ")
+        title += "Dame "
+      elsif role.used_as_a_prefix? and !title.include?(role.display_name)
+        title += role.display_name + " " 
+      end
     }
-    title += honourific
     title.strip!
   end
 
@@ -220,7 +221,7 @@ class Person < ActiveRecord::Base
   def letters
     letters = ""
     roles.each{|role|
-      letters += " " + role.abbreviation if role.used_as_a_suffix?
+      letters += " " + role.letters
     }
     letters
   end

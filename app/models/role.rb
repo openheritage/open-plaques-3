@@ -97,10 +97,20 @@ class Role < ActiveRecord::Base
     return false
   end
   
-  def used_as_a_suffix?
-    return true if "letters" == role_type
+  def military_medal?
     return true if "military medal" == role_type
     return false
+  end
+
+  def used_as_a_suffix?
+    return true if "letters" == role_type
+    return true if military_medal?
+    return false
+  end
+
+  def letters
+    return abbreviation if used_as_a_suffix?
+    ""
   end
   
   def abbreviated?
@@ -122,6 +132,7 @@ class Role < ActiveRecord::Base
     return true if "Knight Grand Cross of the Royal Victorian Order" == name
     return true if "Knight Commander of the Order of the British Empire" == name
     return true if "Knight Grand Cross of the Order of the British Empire" == name
+    return true if "Lady" == name
     false
   end
 
@@ -152,6 +163,10 @@ class Role < ActiveRecord::Base
   def full_name
     return abbreviation + " - " + name if abbreviated?
     name
+  end
+
+  def display_name
+    abbreviated? ? abbreviation : name
   end
   
   def uri

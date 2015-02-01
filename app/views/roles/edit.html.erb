@@ -2,6 +2,16 @@
 
 <div class="panel">
   <h1>Editing role <%= link_to @role.name, @role %></h1>
+  <% if @role.used_as_a_suffix? %>
+    <p>
+      <% if @role.military_medal? %>
+        A military medal that confers
+      <% else %>
+        Confers
+      <% end %>
+      the letters <strong><%= @role.letters %></strong> after the name.
+    </p>
+  <% end %>
   <%= form_for(@role) do |f| %>
     <p><%= f.label :name %><%= f.text_field :name %></p>
     <p><%= f.label :abbreviation %><%= f.text_field :abbreviation %></p>

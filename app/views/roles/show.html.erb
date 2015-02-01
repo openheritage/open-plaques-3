@@ -7,6 +7,16 @@
     </section>
   <% end %>
   <h1>Commemorated <%= @role.name.pluralize %></h1>
+  <% if @role.used_as_a_suffix? %>
+    <p>
+      <% if @role.military_medal? %>
+        A military medal that confers
+      <% else %>
+        Confers
+      <% end %>
+      the letters <strong><%= @role.letters %></strong> after the name.
+    </p>
+  <% end %>
   <p>Read more about what <%= a_or_an @role.name, false %> <%= link_to @role.name, @role.wikipedia_url %> is on Wikipedia</p>
 </div>
 

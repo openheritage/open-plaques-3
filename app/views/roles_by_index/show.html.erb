@@ -9,7 +9,7 @@
 	<%= content_tag("ul", :id => 'roles_results', :class => 'results') do %>
 	  <% @roles.each do |role| %>
 	    <%= content_tag("li") do %>
-	      <%= link_to pluralize(role.personal_roles_count, role.name), role_path(role) %>
+	      <%= link_to pluralize(role.personal_roles_count, role.full_name), role_path(role) %>
 	    <% end %>
 	  <% end %>
 	<% end %>
