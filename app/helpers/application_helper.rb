@@ -27,24 +27,6 @@ module ApplicationHelper
     concat(content_tag(tag, capture(&block), options), block.binding)
   end
 
-  def google_analytics_code(code)
-
-    var = "var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', '#{code}']);
-    _gaq.push(['_setDomainName', '.openplaques.org']);
-    _gaq.push(['_trackPageview']);
-    "
-    var += "_gaq.push(['_setVar', 'admin']);\n" if current_user.try(:is_admin?)
-
-    function = "(function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();"
-
-    return javascript_tag(var + function)
-  end
-
   # h() replaces some characters, but not apostrophes or carriage returns
   def html_safe(phrase)
     return h(phrase).gsub(/'/,'&#39;').gsub(/\r\n/,"<br/>")
