@@ -15,4 +15,4 @@
   <%= will_paginate @sponsorships %>
 </div>
 
-<p class="alternate_formats">Data about <%= @organisation %> as <%= alternate_link_to "XML", organisation_path(@organisation, :format => :xml), :xml %> <%= alternate_link_to "JSON", organisation_path(@organisation, :format => :json), :json %> <%= alternate_link_to "KML", organisation_path(@organisation, :format => :kml), :kml %> <%= alternate_link_to "GMAP", "http://maps.google.co.uk/maps?q=" + organisation_url(@organisation, :format => :kml), :html %></p>
+<p class="alternate_formats">Data about <%= @organisation %> as <%= alternate_link_to "XML", organisation_path(@organisation, :format => :xml), :xml %> <%= alternate_link_to "JSON", organisation_path(@organisation, :format => :json), :json %> <%= alternate_link_to "KML", organisation_path(@organisation, :format => :kml), :kml %></p>

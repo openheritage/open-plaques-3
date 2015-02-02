@@ -63,6 +63,6 @@
     <% end %>
   </div>
 
-  <p class="alternate_formats">Data about this <%= @person.type %> as <%= alternate_link_to "XML", person_path(@person, :xml), :xml %> <%= alternate_link_to "JSON", person_path(@person, :json), :json %> <%= alternate_link_to "KML", person_path(@person, :kml), :kml %>  <%= alternate_link_to "GMAP", "http://maps.google.co.uk/maps?q=" + person_url(@person, :kml), :html %></p>
+  <p class="alternate_formats">Data about this <%= @person.type %> as <%= alternate_link_to "XML", person_path(@person, :xml), :xml %> <%= alternate_link_to "JSON", person_path(@person, :json), :json %> <%= alternate_link_to "KML", person_path(@person, :kml), :kml %></p>
 
 </div>

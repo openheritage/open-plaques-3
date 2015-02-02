@@ -21,5 +21,5 @@
 </div>
 
 <div class="panel clearfix">
-  <p class="alternate_formats">Data about <%= @area %> plaques as <%= alternate_link_to "XML", area_plaques_path(@area, :xml), :xml %> <%= alternate_link_to "JSON", area_plaques_path(@area, :json), :json %> <%= alternate_link_to "KML", area_plaques_path(@area, :kml), :kml %>  <%= alternate_link_to "GMAP", "http://maps.google.co.uk/maps?q=" + area_plaques_url(@area, :kml), :html %></p>
+  <p class="alternate_formats">Data about <%= @area %> plaques as <%= alternate_link_to "XML", area_plaques_path(@area, :xml), :xml %> <%= alternate_link_to "JSON", area_plaques_path(@area, :json), :json %> <%= alternate_link_to "KML", area_plaques_path(@area, :kml), :kml %></p>
 </div>
