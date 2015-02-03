@@ -271,8 +271,8 @@ module PlaquesHelper
 
   def erected_information(plaque)
     info = "".html_safe
-    if plaque.erected_at? or !plaque.organisations.empty?
-      info += "by ".html_safe if !plaque.organisations.empty?
+    if plaque.erected_at? || plaque.organisations.size > 0
+      info += "by ".html_safe if plaque.organisations.size > 0
       org_list = []
       plaque.organisations.each do |organisation|
         org_list << link_to(h(organisation.name), organisation)
