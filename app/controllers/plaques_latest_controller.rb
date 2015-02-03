@@ -1,7 +1,7 @@
 class PlaquesLatestController < ApplicationController
 
   def show
-    @plaques = Plaque.find(:all, :limit => 25, :order => "created_at DESC")
+    @plaques = Plaque.order('created_at desc').limit(25)
     respond_to do |format|
       format.html
       format.kml { render "plaques/index" }
