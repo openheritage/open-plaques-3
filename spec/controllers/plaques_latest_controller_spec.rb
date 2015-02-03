@@ -13,6 +13,13 @@ describe PlaquesLatestController do
       end
     end
 
+    context 'json' do 
+      before { get :show, format: :json }
+      
+      it 'should render 200' do
+        expect(response).to be_success
+      end
+    end
 
   end
 
