@@ -58,19 +58,19 @@ class Person < ActiveRecord::Base
   end
 
   def animal?
-    roles.any?{|role| role.animal?}
+    roles.find(&:animal?)
   end
 
   def thing?
-    roles.any?{|role| role.thing?}
+    roles.find(&:thing?)
   end
 
   def group?
-    roles.any?{|role| role.group?}
+    roles.find(&:group?)
   end
 
   def place?
-    roles.any?{|role| role.place?}
+    roles.find(&:place?)
   end
 
   def type
