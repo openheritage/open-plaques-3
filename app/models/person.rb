@@ -23,8 +23,8 @@ class Person < ActiveRecord::Base
 
   validates_presence_of :name
 
-  has_many :roles, -> { order('started_at asc') }, :through => :personal_roles
-  has_many :personal_roles, -> { order('started_at asc') }
+  has_many :roles, :through => :personal_roles
+  has_many :personal_roles
   has_many :relationships, -> { where('related_person_id IS NOT NULL').order('started_at asc') }, :class_name => "PersonalRole"
   has_many :straight_roles, -> { where('related_person_id IS NULL').order('started_at asc') }, :class_name => "PersonalRole"
   has_many :personal_connections #, -> { order('started_at asc') }
