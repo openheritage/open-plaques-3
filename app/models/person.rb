@@ -220,9 +220,9 @@ class Person < ActiveRecord::Base
   
   def letters
     letters = ""
-    roles.each{|role|
+    roles.each do |role|
       letters += " " + role.letters
-    }
+    end
     letters
   end
   
