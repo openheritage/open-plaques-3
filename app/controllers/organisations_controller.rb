@@ -42,39 +42,14 @@ class OrganisationsController < ApplicationController
         @plaques = @organisation.plaques
         render "plaques/index"
       }
-      format.osm { 
-        @plaques = @organisation.plaques
-        render "plaques/index" 
-      }
       format.xml
       format.json {
-      if request.env["HTTP_USER_AGENT"].include? "bot"
-        puts "** rejecting a bot call to json by "+env["HTTP_USER_AGENT"]
-        render :json => {:error => "no-bots"}.to_json, :status => 406
-      else
-        conditions = {}
-
-        # Bounding-box query
-        if params[:box]
-          # TODO: Should really do some validation here...
-          coords = params[:box][1,params[:box].length-2].split("],[")
-          top_left = coords[0].split(",")
-          bottom_right = coords[1].split(",")
-          conditions[:latitude] = bottom_right[0].to_s..top_left[0].to_s
-          conditions[:longitude] = top_left[1].to_s..bottom_right[1].to_s
-        end
-        if params[:limit] && params[:limit].to_i <= 2000
-          limit = params[:limit]
-        elsif params[:limit]
-          limit = 2000
+        if request.env["HTTP_USER_AGENT"].include? "bot"
+          puts "** rejecting a bot call to json by "+env["HTTP_USER_AGENT"]
+          render :json => {:error => "no-bots"}.to_json, :status => 406
         else
-          limit = 20
+          render :json => @organisation
         end
-        @plaques = Plaque.joins(:sponsorships).where('sponsorships.organisation_id' => @organisation.id).all(:conditions => conditions, :order => "created_at DESC", :limit => limit)
-        render :json => @plaques.as_json(:only => [:id, :latitude, :longitude, :inscription],
-          :methods => [:uri, :title, :colour_name, :machine_tag, :thumbnail_url])
-#        render :json => @organisation.sponsorships(:conditions => conditions, :limit => limit).as_json
-      end
       }
     end
   end

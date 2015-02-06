@@ -11,18 +11,15 @@ class PeopleController < ApplicationController
 
   # GET /people/1
   # GET /people/1.kml
-  # GET /people/1.osm
-  # GET /people/1.xml
   # GET /people/1.json
   def show
     @person = Person.find(params[:id])
     respond_to do |format|
       format.html
-      format.kml { @plaques = @person.plaques
-	  render "plaques/index" }
-      format.osm { @plaques = @person.plaques
-	  render "plaques/index" }
-      format.xml
+      format.kml { 
+        @plaques = @person.plaques
+        render "plaques/index"
+      }
       format.json {
         if request.env["HTTP_USER_AGENT"].include? "bot"
           puts "** rejecting a bot call to json by "+env["HTTP_USER_AGENT"]
