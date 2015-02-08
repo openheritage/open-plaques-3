@@ -1,0 +1,15 @@
+<div class="panel">
+  <h1>Latest plaques</h1>
+
+  <% @plaques.each do |plaque| %>
+
+    <div class="plaque">
+      <%= link_to plaque do %>
+        <div class="number">Plaque #<%= plaque.id %></div>
+        <div class="inscription"><%= truncate(plaque.inscription, length: 200) %></div>
+        <div class="added-info">Added on <%= plaque.created_at.to_s(:long) %></div>
+      <% end %>
+    </div>
+
+  <% end %>
+</div>
