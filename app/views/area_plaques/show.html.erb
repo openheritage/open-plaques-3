@@ -15,8 +15,8 @@
     or <%= link_to "ungeolocated plaques", area_ungeolocated_path(@area) %>
   <% end %>
   </p>
-  <% if @area.latitude && @display!='ungeolocated' %>
-    <div id="plaque-map" data-latitude="<%= @area.latitude %>" data-longitude="<%= @area.longitude %>" data-view="<%= @display %>"></div>
+  <% if @display!='ungeolocated' && @area.latitude %>
+    <div id="plaque-map" class="full" data-latitude="<%= @area.latitude %>" data-longitude="<%= @area.longitude %>" data-view="<%= @display %>"></div>
   <% end %>
   <%= will_paginate @plaques %>
   <%= render @plaques %>
@@ -24,5 +24,5 @@
 </div>
 
 <div class="panel clearfix">
-  <p class="alternate_formats">Data about <%= @area %> plaques as <%= alternate_link_to "XML", area_plaques_path(@area, :xml), :xml %> <%= alternate_link_to "JSON", area_plaques_path(@area, :json), :json %> <%= alternate_link_to "KML", area_plaques_path(@area, :kml), :kml %></p>
+  <p class="alternate_formats">Data about <%= @area %> plaques as <%= alternate_link_to "JSON", area_plaques_path(@area, :json), :json %></p>
 </div>

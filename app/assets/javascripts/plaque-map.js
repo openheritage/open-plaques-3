@@ -137,6 +137,10 @@ function initmap()
         geojsonURL = "/plaques/unphotographed/tiles/{z}/{x}/{y}.json";
         data_view = "all"
       };
+      if (plaque_map.attr("context"))
+      {
+        geojsonURL = plaque_map.attr("context") + geojsonURL
+      }
   		if (data_view == "all")
       {
  //       console.log(geojsonURL);
@@ -147,9 +151,12 @@ function initmap()
           {
             onEachFeature: function(feature, layer)
             {
-              if (feature.properties && feature.properties.plaque)
+              if (feature.properties)
               {
-                var plaque = feature.properties.plaque;
+                var plaque = feature.properties;
+                if (feature.properties.plaque) {
+                  plaque = feature.properties.plaque
+                }
                 var plaque_description = '<div class="inscription">' + truncate(plaque.inscription, 255) + '</div><div class="info">' +
                 '<a class="link" href="http://openplaques.org/plaques/' + plaque.id + '">Plaque ' + plaque.id + '</a>';
                 layer.bindPopup(plaque_description);
