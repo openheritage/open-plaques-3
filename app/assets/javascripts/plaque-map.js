@@ -77,6 +77,7 @@ function initmap()
   var plaque_map = $("#plaque-map");
   if (plaque_map)
   {
+    L.Icon.Default.imagePath = '/assets';
     map = L.map('plaque-map');
 
     // basemap
