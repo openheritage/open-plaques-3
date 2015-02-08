@@ -1,0 +1,14 @@
+<% content_for :page_title, "Photos" %>
+
+<div class="panel">
+  <h1>Photos</h1>
+  <p>To identify the location, inscription, <%= link_to "colour", colours_path %>
+  and <%= link_to "organisation", organisations_path %> of a plaque Open Plaques collates data
+  from <a href="http://flickr.com/">Flickr</a>, Geograph, or Wikimedia Commons images. Read the page on how to contribute for details.</p>
+  <%= will_paginate @plaques %>
+  <%= render partial: 'photos/tile', :collection => @photos, as: :photo %>
+  <br style="clear: left;"/>
+  <%= will_paginate @plaques %>
+</div>
+
+<p class="alternate_formats">Data about photos as <%= alternate_link_to "XML", photos_path(:xml), :xml %> <%= alternate_link_to "JSON", photos_path(:json), :json %></p>

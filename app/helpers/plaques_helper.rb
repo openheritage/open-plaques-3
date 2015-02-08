@@ -400,7 +400,6 @@ module PlaquesHelper
 
           if (!matched && connection.person.titled? && nameparts.length > 2)
             search_for = connection.person.title + nameparts.first + " " + nameparts.last # Sir Joseph Hansom 
-            puts 'search for' + search_for
           end
           matched = true if inscription.index(search_for) != nil
 
@@ -422,7 +421,6 @@ module PlaquesHelper
           if (!matched && nameparts.length > 1)
             search_for = ""
             nameparts.each_with_index do |namepart, index|
-              puts index
               search_for += namepart[0,1] + ". " if index != nameparts.length - 1
               search_for += namepart if index == nameparts.length - 1 # J. A. Hansom, J. R. R. Tolkien
             end
