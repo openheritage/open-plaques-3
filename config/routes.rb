@@ -83,7 +83,10 @@ Rails.application.routes.draw do
 
   resources :languages
   resources :colours
-  resources :series
+  resources :series do
+    resource :plaques, :controller => :series_plaques, :only => :show
+    match 'plaques/tiles/:zoom/:x/:y' => 'series_plaques#show', :constraints => { :zoom => /\d{2}/, :x => /\d+/, :y => /\d+/ }, via: [:get]
+  end
   resources :todo
   resources :picks
 
