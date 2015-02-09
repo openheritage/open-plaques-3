@@ -44,6 +44,10 @@ class Person < ActiveRecord::Base
   DATE_REGEX = /c?[\d]{4}/
   DATE_RANGE_REGEX = /(?:\(#{DATE_REGEX}-#{DATE_REGEX}\)|#{DATE_REGEX}-#{DATE_REGEX})/
 
+  def uniq_plaques
+    return plaques.inject([]){|s,e| s | [e] }
+  end
+
   def areas
     areas = []
     locations.each do |location|

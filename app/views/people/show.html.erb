@@ -53,14 +53,12 @@
 
     <%= content_tag("p", "Read more on ".html_safe + link_to("Wikipedia", @person.default_wikipedia_url, :target => '_blank')) unless @person.default_wikipedia_url.blank? %>
 
-    <% if @person.plaques.size > 0 %>
-      <h2>Commemorated on <%= @person.plaques.size %> <%= 'plaque'.pluralize @person.plaques.size %></h2>
+    <% if @person.uniq_plaques.size > 0 %>
+      <h2>Commemorated on <%= @person.uniq_plaques.size %> <%= 'plaque'.pluralize @person.uniq_plaques.size %></h2>
     <% else %>
       <h2>Is not commemorated on any plaques in our database (yet)</h2>
     <% end %>
-    <% @person.plaques.each do |plaque| %>
-      <%= render 'plaques/minimal', :plaque => plaque %>
-    <% end %>
+    <%= render @person.uniq_plaques %>
   </div>
 
   <p class="alternate_formats">Data about this <%= @person.type %> as <%= alternate_link_to "JSON", person_path(@person, :json), :json %></p>
