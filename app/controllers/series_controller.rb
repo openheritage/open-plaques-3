@@ -15,7 +15,11 @@ class SeriesController < ApplicationController
       format.kml { render "plaques/index" }
       format.xml { render "plaques/index" }
       format.json {
-        render :json => @series.plaques
+        if @series.id != 42 && @series.id != 15
+          render :json => @series.plaques
+        else
+          render :json => @series
+        end
       }
     end
   end
