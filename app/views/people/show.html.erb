@@ -3,20 +3,15 @@
 <div class="panel">
   <%= content_tag(:section, link_to("Edit this "+@person.type, edit_person_path(@person), {:class => :edit, :title => "Edit this "+@person.type}), :class => :admin_panel) if current_user && current_user.is_admin? %>
 
-  <% #if @person.parental_relationships.size > 0 %>
-    <p>
-    <%#= 'parent'.pluralize @person.parental_relationships.size %>:
-      <% #@person.parental_relationships.each do |parental_relationship| %>
-        <%#= dated_person parental_relationship.related_person %>
-      <% #end %>
-    </p>
-  <% #end %>
-
   <div class="vcard person" typeof="<%= if (@person.person?) then "foaf:Person" else "foaf:Agent" end %> vcard:VCard" about="#person">
 
     <%= content_tag(:p, thumbnail_img(@person)) if @person.main_photo %>
     <h1><%= dated_person(@person, {:links => :none}) %> <%= roles_list(@person) %></h1>
-    
+
+    <% if @person.parents.size > 0 %>
+      <p><%= 'parent'.pluralize @person.parents.size %>:<%= render @person.parents %></p>
+    <% end %>
+
     <% if @person.spousal_relationships.size > 0 %>
       <p>
         <% @person.spousal_relationships.each_with_index do |relationship, index| %>
@@ -26,17 +21,12 @@
       </p>
     <% end %>
 
-    <% if @person.issue.size > 0 %>
-      <p><%= 'child'.pluralize @person.issue.size %>: <% @person.issue.each do |issue| %><%= dated_person issue %> <% end %></p>
+    <% if @person.children.size > 0 %>
+      <p><%= 'child'.pluralize @person.children.size %>:<%= render @person.children %></p>
     <% end %>
 
     <% if @person.siblings.size > 0 %>
-      <p>
-        <%= 'sibling'.pluralize @person.siblings.size %>:
-        <% @person.siblings.each_with_index do |sibling, index| %>
-          <%= dated_person sibling %><% if index == @person.siblings.size - 2 %> and<% elsif index != @person.siblings.size - 1 %>,<% end %>
-        <% end %>
-      </p>
+      <p><%= 'sibling'.pluralize @person.siblings.size %>:<%= render @person.siblings %></p>
     <% end %>
 
     <% if @person.non_family_relationships.size > 0 %>
