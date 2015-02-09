@@ -3,11 +3,11 @@ class PlaquesController < ApplicationController
   before_filter :authenticate_user!, :only => [:edit, :new]
   before_filter :authenticate_admin!, :only => :destroy
 
-  before_filter :find_plaque, :only => [:show, :parse_inscription, :unparse_inscription, :flickr_search, :flickr_search_all, :update, :destroy, :edit]
+  before_filter :find, :only => [:show, :parse_inscription, :unparse_inscription, :flickr_search, :flickr_search_all, :update, :destroy, :edit]
 #	before_filter :set_cache_header, :only => :index
 #  after_filter :set_access_control_headers, :only => :index
 
-  respond_to :html, :xml, :json, :kml, :poi, :rss, :csv
+  respond_to :html, :xml, :json
 
   # box = top_left, bottom_right
   # e.g. http://0.0.0.0:3000/plaques?box=[52.00,-1],[50.00,0.01]
@@ -101,12 +101,15 @@ class PlaquesController < ApplicationController
     }
     respond_to do |format|
       format.html
-      format.kml { render "plaques/index" }
       format.xml { render "plaques/index" }
       format.json {
-        render :json => @plaque.as_json
+        if request.env["HTTP_USER_AGENT"].include? "bot"
+          puts "** rejecting a bot call to json by "+env["HTTP_USER_AGENT"]
+          render :json => {:error => "no-bots"}.to_json, :status => 406
+        else
+          render :json => @plaque.as_json
+        end
       }
-      format.csv { render "plaques/index" }
     end
   end
 
@@ -259,7 +262,7 @@ class PlaquesController < ApplicationController
 
   private 
 
-    def find_plaque
+    def find
       @plaque = Plaque.find(params[:id])
     end
 
