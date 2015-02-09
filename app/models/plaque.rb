@@ -333,7 +333,7 @@ class Plaque < ActiveRecord::Base
         also << plaque unless plaque == self
       end
     end
-	  also
+	  return also.inject([]){|s,e| s | [e] }
   end
   
   def inscription_preferably_in_english
