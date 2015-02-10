@@ -2,24 +2,18 @@ class PeopleController < ApplicationController
 
   before_filter :authenticate_admin!, :only => :destroy
   before_filter :authenticate_user!, :except => [:index, :show, :update]
-
-  before_filter :find_person, :only => [:edit, :update, :destroy]
+  before_filter :find, :only => [:edit, :update, :destroy]
 
   def index
     redirect_to(:controller => :people_by_index, :action => "show", :id => "a")
   end
 
   # GET /people/1
-  # GET /people/1.kml
   # GET /people/1.json
   def show
     @person = Person.find(params[:id])
     respond_to do |format|
       format.html
-      format.kml { 
-        @plaques = @person.plaques
-        render "plaques/index"
-      }
       format.json {
         if request.env["HTTP_USER_AGENT"].include? "bot"
           puts "** rejecting a bot call to json by "+env["HTTP_USER_AGENT"]
@@ -116,7 +110,7 @@ class PeopleController < ApplicationController
 
   protected
 
-    def find_person
+    def find
       @person = Person.find(params[:id])
     end
 
