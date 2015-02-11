@@ -304,7 +304,7 @@ class Plaque < ActiveRecord::Base
   end
 
   def main_photo
-    @main_photo ||= photos.detail_order.first
+    @main_photo ||= photos.first
   end
   
   def main_photo_reverse

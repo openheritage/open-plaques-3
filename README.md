@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/openheritage/open-plaques-3.svg?branch=master)](https://travis-ci.org/openheritage/open-plaques-3)
+
 # Open Plaques
 
 The website behind [Open Plaques](http://openplaques.org)
