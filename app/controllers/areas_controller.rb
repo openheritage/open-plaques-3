@@ -2,18 +2,13 @@ class AreasController < ApplicationController
 
   before_filter :authenticate_admin!, :only => :destroy
   before_filter :authenticate_user!, :except => [:index, :show]
-
   before_filter :find_country, :only => [:index, :new, :show, :create, :edit, :update, :destroy]
-  before_filter :find_area, :only => [:show, :edit, :update, :destroy]
+  before_filter :find, :only => [:show, :edit, :update, :destroy]
 
   def index
     @areas = @country.areas.all
     respond_to do |format|
       format.html
-      format.kml {
-        @parent = @areas
-        render "plaques/index"
-      }
       format.xml
       format.json { render :json => @areas }
     end
@@ -24,15 +19,11 @@ class AreasController < ApplicationController
   end
 
   def show
-    @plaques = @area.plaques.paginate(:page => params[:page], :per_page => 20)
-    @zoom = 11
     respond_to do |format|
-      format.html
-      format.kml { 
-        @plaques = @area.plaques.all
-        render "plaques/index"
+      format.html { 
+        @zoom = 11
+        @plaques = @area.plaques.paginate(:page => params[:page], :per_page => 20)
       }
-      format.osm { render "plaques/index" }
       format.xml
       format.json {
         # plaque.new page expects a cut-down json feed, so logical one is currently under its own method
@@ -76,7 +67,7 @@ class AreasController < ApplicationController
       @country = Country.find_by_alpha2!(params[:country_id])
     end
 
-    def find_area
+    def find
       @area = @country.areas.find_by_slug!(params[:id])
       if !@area.geolocated?
         @area.find_centre

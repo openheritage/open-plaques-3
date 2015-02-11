@@ -2,7 +2,7 @@ class CountriesController < ApplicationController
 
   before_filter :authenticate_admin!, :only => :destroy
   before_filter :authenticate_user!, :except => [:index, :show]
-  before_filter :find_country, :only => [:edit, :update]
+  before_filter :find, :only => [:edit, :update]
 
   def index
     @countries = Country.all.to_a
@@ -39,9 +39,6 @@ class CountriesController < ApplicationController
       format.html
       format.xml
       format.json { render :json => @country.as_json }
-      format.kml { render "plaques/index" }
-      format.osm { render "plaques/index" }
-      format.csv { render "plaques/index" }
     end
   end
 
@@ -55,7 +52,7 @@ class CountriesController < ApplicationController
 
   protected
 
-    def find_country
+    def find
       @country = Country.find_by_alpha2!(params[:id])
     end
 
