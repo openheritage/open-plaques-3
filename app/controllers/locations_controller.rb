@@ -2,8 +2,7 @@ class LocationsController < ApplicationController
 
   before_filter :authenticate_admin!, :only => :destroy
   before_filter :authenticate_user!, :except => [:index, :show]
-
-  before_filter :find_location, :only => [:show, :edit, :update, :destroy]
+  before_filter :find, :only => [:show, :edit, :update, :destroy]
 
   def index
     @locations = Location.order(:name)
@@ -14,16 +13,12 @@ class LocationsController < ApplicationController
     @countries = Country.all
   end
 
-  def show
-  end
-
   def update
     if @location.update_attributes(location_params)
       redirect_to location_path(@location)
     else
       render :edit
     end
-
   end
 
   def destroy
@@ -33,7 +28,7 @@ class LocationsController < ApplicationController
 
   protected
 
-    def find_location
+    def find
       @location = Location.find(params[:id])
     end
 
