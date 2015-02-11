@@ -5,19 +5,20 @@
     <section class="admin_panel">
       <%= link_to("Add new organisation", new_organisation_path, {:class => :edit, :title => "Add new organisation"})%>
     </section>
-  <% end %>  <h1>Organisations erecting plaques</h1>
+  <% end %>
+  <h1>Organisations erecting plaques</h1>
   <p><%= pluralize(@organisations.length, "organisation") %></p>
 </div>
 
 <ul id="organisations_results" class="results one_destination_results">
-<% @organisations.each do |organisation| %>
-  <li>
-    <a href="<%= url_for(organisation) %>">
-    <p class="result"><%= organisation.name %></p>
-      <p class="count"><%= pluralize(organisation.sponsorships.size, "plaque") if organisation.sponsorships.size > 0 %><%= "no plaques" if organisation.sponsorships.size == 0 %></p>
-    </a>
-  </li>
-<% end %>
+  <% @organisations.each do |organisation| %>
+    <li>
+      <a href="<%= url_for(organisation) %>">
+        <p class="result"><%= organisation.name %></p>
+        <p class="count"><%= pluralize(organisation.sponsorships.size, "plaque") if organisation.sponsorships.size > 0 %><%= "no plaques" if organisation.sponsorships.size == 0 %></p>
+      </a>
+    </li>
+  <% end %>
 </ul>
 
 <p class="alternate_formats">Data about organisations as <%= alternate_link_to "XML", organisations_path(:xml), :xml %> <%= alternate_link_to "JSON", organisations_path(:json), :json %></p>
