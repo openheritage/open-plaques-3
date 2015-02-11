@@ -24,7 +24,7 @@ class AreasController < ApplicationController
   end
 
   def show
-    @plaques = @area.plaques.paginate(:page => params[:page], :per_page => 100)
+    @plaques = @area.plaques.paginate(:page => params[:page], :per_page => 20)
     @zoom = 11
     respond_to do |format|
       format.html
@@ -34,7 +34,10 @@ class AreasController < ApplicationController
       }
       format.osm { render "plaques/index" }
       format.xml
-      format.json { render :json => @area.as_json_new({}) }
+      format.json {
+        # plaque.new page expects a cut-down json feed, so logical one is currently under its own method
+        render :json => @area.as_json_new({})
+      }
     end
   end
 
