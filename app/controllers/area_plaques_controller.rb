@@ -1,6 +1,7 @@
 class AreaPlaquesController < ApplicationController
 
   before_filter :find, :only => [:show]
+  respond_to :html, :xml, :json
 
   def show
     @display = 'all'
