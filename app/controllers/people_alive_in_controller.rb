@@ -16,8 +16,6 @@ class PeopleAliveInController < ApplicationController
 		.order([:born_on, :surname_starts_with, :name])
     respond_to do |format|
       format.html
-      format.kml { render "plaques/show" }
-      format.xml { render :xml => @people }
       format.json { render :json => @people }
     end
   end
