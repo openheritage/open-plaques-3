@@ -1,10 +1,8 @@
 <% content_for :page_title, @licence.name %>
 <div class="panel">
   <h1><%= @licence.name %></h1>
-
   <p><%= @licence.photos.count %> <%= link_to "photos",photos_path %> in Open Plaques have been made available under the <%= @licence.name %>.
   More information about this licence can be found at <%= link_to @licence.url, {:rel => "owl:sameAs"} %>
   </p>
-  <p>Other <%= link_to "licences",licences_path %> are also utilised by Open Plaques</p>
-
 </div>
+<p class="alternate_formats">Data about <%= @licence %> as <%= alternate_link_to "JSON", licence_path(@licence, :format => :json), :json %></p>
