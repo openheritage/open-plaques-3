@@ -12,8 +12,8 @@ class ApplicationController < ActionController::Base
   end
 
   def global_request_logging
-  	if request.format == :json
-      puts "USERAGENT: #{request.path} #{request.headers['HTTP_USER_AGENT']}"
+    puts "USERAGENT: #{request.path} #{request.headers['HTTP_USER_AGENT']}"
+  	if request.format == :json or request.format == :xml or request.format == :kml
       if request.env["HTTP_USER_AGENT"].include? "bot"
         render :json => {:error => "no-bots"}.to_json, :status => 406 and return
       end 
