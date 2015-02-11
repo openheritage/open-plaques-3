@@ -11,8 +11,13 @@ class ApplicationController < ActionController::Base
     raise UnAuthorised, "NotAuthorised" unless current_user.try(:is_admin?)
   end
 
-  def global_request_logging 
-    puts "USERAGENT: #{request.path} #{request.headers['HTTP_USER_AGENT']}"
+  def global_request_logging
+  	if request.format == :json
+      puts "USERAGENT: #{request.path} #{request.headers['HTTP_USER_AGENT']}"
+      if request.env["HTTP_USER_AGENT"].include? "bot"
+        render :json => {:error => "no-bots"}.to_json, :status => 406
+      end 
+    end
     begin 
       yield 
     ensure 
