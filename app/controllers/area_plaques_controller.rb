@@ -1,7 +1,6 @@
 class AreaPlaquesController < ApplicationController
 
-  before_filter :find_area, :only => [:show]
-  respond_to :html, :kml, :osm, :xml, :json
+  before_filter :find, :only => [:show]
 
   def show
     @display = 'all'
@@ -34,8 +33,6 @@ class AreaPlaquesController < ApplicationController
     end
     respond_with @plaques do |format|
       format.html
-      format.kml { render "plaques/index" }
-      format.osm { render "plaques/index" }
       format.xml
       format.json { render :json => @plaques.as_json() }
     end
@@ -43,7 +40,7 @@ class AreaPlaquesController < ApplicationController
 
   protected
 
-    def find_area
+    def find
       @country = Country.find_by_alpha2!(params[:country_id])
       @area = @country.areas.find_by_slug!(params[:area_id])
     end
