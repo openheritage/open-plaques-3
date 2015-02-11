@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
   	if request.format == :json
       puts "USERAGENT: #{request.path} #{request.headers['HTTP_USER_AGENT']}"
       if request.env["HTTP_USER_AGENT"].include? "bot"
-        render :json => {:error => "no-bots"}.to_json, :status => 406
+        render :json => {:error => "no-bots"}.to_json, :status => 406 and return
       end 
     end
     begin 
