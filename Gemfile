@@ -14,7 +14,7 @@ gem 'devise'
 gem 'meta-tags'
 gem 'will_paginate'
 
-gem 'unicorn', platforms: [:ruby]
+gem 'puma'
 
 gem 'rails_12factor'
 
