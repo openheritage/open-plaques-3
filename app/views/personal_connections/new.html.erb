@@ -17,7 +17,7 @@
   <%= form_for @personal_connection, :url => plaque_connections_path(@plaque) do |f| %>
     <fieldset>
       <div class="row">
-        <%= f.collection_select :person_id, @people, :id, :name_and_dates, {} , { "style" => "width:400px" } %> <%= link_to("Add person", "/people/new") %>
+        <%= f.collection_select :person_id, @people, :id, :name_and_raw_dates, {} , { "style" => "width:400px" } %> <%= link_to("Add person", "/people/new") %>
       </div>
       <div class="row">
         <%= f.collection_select :verb_id, @verbs, :id, :name, { :selected => "222"}, { "style" => "width:400px" } %>  <%= link_to("Add verb", "/verbs/new") %>
