@@ -18,6 +18,11 @@ class ApplicationController < ActionController::Base
         render :json => {:error => "no-bots"}.to_json, :status => 406 and return
       end 
     end
+    if request.path.end_with?("/new") || request.path.end_with?("/edit")
+      if request.env["HTTP_USER_AGENT"].include? "bot"
+        render :json => {:error => "no-bots"}.to_json, :status => 406 and return
+      end 
+    end
     begin 
       yield 
     ensure 
