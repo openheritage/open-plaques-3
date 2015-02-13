@@ -15,7 +15,7 @@
     <%= content_tag("li") do %>
       <%= link_to country do %>
           <p class="result"><%= country.name %></p>
-          <p class="count"><%= pluralize(country.plaques.size, "plaque") %></p>
+          <p class="count"><%= pluralize(@plaque_counts[country.id], "plaque") %></p>
       <% end %>
     <% end %>
   <% end %>
