@@ -1,8 +1,14 @@
 <% content_for :page_title, "Historical plaques - by series" %>
 <div class="panel">
+  <% if current_user %>
+    <section class="admin_panel">
+      <%= link_to("Add new series", new_series_path, {:class => :edit, :title => "Add new series"})%>
+    </section>
+  <% end %>
   <h1>Plaque series</h1>
   <p>Plaques are issued by numerous organisations, and sometimes they are also part of a special set or series.
   We endeavour to identify the series and also the series identifier</p>
   <%= render @series %>
-  <%= button_to("New series", new_series_path, {:method => :get, :class => :button}) if current_user %>
 </div>
+
+<p class="alternate_formats">Data about series as <%= alternate_link_to "JSON", series_path(:json), :json %></p>
