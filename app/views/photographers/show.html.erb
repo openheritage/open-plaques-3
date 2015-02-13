@@ -1,14 +1,9 @@
 <% content_for :page_title,  "Blue plaque photos by " + @photographer.id %>
 
 <div class="panel">
-  <p><%= pluralize(@photographer.photos.size,"photo") %> taken by <%= link_to("photographer", "/photographers/") %> <%= @photographer.id %></p>
-
-  <% @photographer.photos.each do |photo| %>
-    <div style="float: left;">
-      <%= link_to(thumbnail_img(photo), photo) %>
-    </div>
-  <% end %>
+  <h1><%= pluralize(@photographer.photos.size,"photo") %> taken by <%= link_to("photographer", "/photographers/") %> <%= @photographer.id %></h1>
+  <%= render partial: 'photos/tile', :collection => @photographer.photos, as: :photo %>
   <br style="clear: left;"/>
 </div>
 
-<p class="alternate_formats">Data about this photographer as <%= alternate_link_to "XML", photographer_path(@photographer.id, :format => :xml), :xml %> <%= alternate_link_to "JSON", photographer_path(@photographer.id, :format => :json), :json %> <%= alternate_link_to "KML", photographer_path(@photographer.id, :format => :kml), :kml %></p>
+<p class="alternate_formats">Data about this photographer as <%= alternate_link_to "JSON", photographer_path(@photographer.id, :format => :json), :json %></p>
