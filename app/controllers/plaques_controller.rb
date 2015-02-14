@@ -66,7 +66,7 @@ class PlaquesController < ApplicationController
       @plaques = Plaque.all(:select => [:id, :latitude, :longitude, :inscription])
     else
       puts "asking for all data"
-      @plaques = Plaque.all(:conditions => conditions, :order => "created_at DESC", :limit => limit, :include => [:language, :organisations, :colour, [:location => [:area => :country]]])
+      @plaques = Plaque.where(conditions).order("created_at DESC").limit(limit).preload(:language, :organisations, :colour, [:location => [:area => :country]])
     end
 
     respond_with @plaques do |format|
