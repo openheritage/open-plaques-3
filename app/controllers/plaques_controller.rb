@@ -69,7 +69,8 @@ class PlaquesController < ApplicationController
       @plaques = Plaque.where(conditions).order("created_at DESC").limit(limit).preload(:language, :organisations, :colour, [:location => [:area => :country]])
     end
 
-    respond_with @plaques do |format|
+    respond_to do |format|
+      format.html      
       format.json {
         if params[:data] && params[:data] == "simple"
           render :json => @plaques.as_json(:only => [:id, :latitude, :longitude, :inscription],
@@ -83,6 +84,7 @@ class PlaquesController < ApplicationController
           }
         end
       }
+      format.rss
     end
   end
 
