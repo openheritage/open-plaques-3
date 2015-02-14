@@ -44,8 +44,6 @@ Rails.application.routes.draw do
     end
   end
   resources :locations, :only => [:show, :edit, :update, :destroy]
-  resources :areas, :controller => :all_areas, :only => :show
-  resource :areas, :controller => :all_areas, :only => :show
 
   resources :photos
   resources :photographers, :as => :photographers, :only => [:create, :index, :show, :new]
