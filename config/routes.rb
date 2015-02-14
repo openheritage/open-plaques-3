@@ -44,8 +44,6 @@ Rails.application.routes.draw do
     end
   end
   resources :locations, :only => [:show, :edit, :update, :destroy]
-  resources :areas, :controller => :all_areas, :only => :show
-  resource :areas, :controller => :all_areas, :only => :show
 
   resources :photos
   resources :photographers, :as => :photographers, :only => [:create, :index, :show, :new]
@@ -82,7 +80,7 @@ Rails.application.routes.draw do
   end
 
   resources :languages
-  resources :colours
+  resources :colours, only: [:index, :new, :create, :update]
   resources :series do
     resource :plaques, :controller => :series_plaques, :only => :show
     match 'plaques/tiles/:zoom/:x/:y' => 'series_plaques#show', :constraints => { :zoom => /\d{2}/, :x => /\d+/, :y => /\d+/ }, via: [:get]

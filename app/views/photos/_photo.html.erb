@@ -1,4 +1,4 @@
-<div id="photo-<%= photo.id %>" class="col-md-<% if photo == photo.plaque.main_photo %>12<%else%>3<%end%> col-xs-<% if photo == photo.plaque.main_photo %>12<%else%>6<%end%>">
+<div id="photo-<%= photo.id %>" class="col-md-<% if photo.plaque && photo == photo.plaque.main_photo %>12<%else%>3<%end%> col-xs-<% if photo.plaque && photo == photo.plaque.main_photo %>12<%else%>6<%end%>">
   
   <% if photo.plaque %>
       <%= content_tag(:span, link_to(image_tag(photo.file_url, {:class => "img-thumbnail", :alt => "Photo of " + photo.plaque.to_s, :rel => "foaf:depiction"}), photo.url)) if photo.file_url %>
