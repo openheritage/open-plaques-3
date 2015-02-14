@@ -30,8 +30,8 @@ Rollbar.configure do |config|
   # Valid levels: 'critical', 'error', 'warning', 'info', 'debug', 'ignore'
   # 'ignore' will cause the exception to not be reported at all.
   config.exception_level_filters.merge!(
-    'ActiveRecord::RecordNotFound' => 'none', 
-    'ActionController::UnknownFormat' => 'none'
+    'RecordNotFound' => 'none', 
+    'UnknownFormat' => 'none'
   )
   #
   # You can also specify a callable, which will be called with the exception instance.
