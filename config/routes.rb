@@ -82,7 +82,7 @@ Rails.application.routes.draw do
   end
 
   resources :languages
-  resources :colours
+  resources :colours, only: [:index, :new, :create, :update]
   resources :series do
     resource :plaques, :controller => :series_plaques, :only => :show
     match 'plaques/tiles/:zoom/:x/:y' => 'series_plaques#show', :constraints => { :zoom => /\d{2}/, :x => /\d+/, :y => /\d+/ }, via: [:get]
