@@ -102,6 +102,9 @@ class PlaquesController < ApplicationController
     respond_to do |format|
       format.html
       format.xml { render "plaques/index" }
+      format.kml {
+          render :json => {:error => "format unsupported"}.to_json, :status => 406        
+      }
       format.json {
         if request.env["HTTP_USER_AGENT"].include? "bot"
           puts "** rejecting a bot call to json by "+env["HTTP_USER_AGENT"]
