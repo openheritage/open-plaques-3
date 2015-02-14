@@ -5,7 +5,7 @@
 
   <%= form_for @personal_connection, :url => plaque_connection_path(@plaque, @personal_connection) do |f| %>
     <p>
-      <%= f.collection_select :person_id, @people, :id, :name_and_dates %>
+      <%= f.collection_select :person_id, @people, :id, :name_and_raw_dates %>
       <%= link_to("Add person", new_person_path) %>
     </p>
     <p>
