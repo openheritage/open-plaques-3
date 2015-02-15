@@ -25,8 +25,6 @@ class Person < ActiveRecord::Base
 
   has_many :roles, :through => :personal_roles
   has_many :personal_roles
-  has_many :relationships, -> { where('related_person_id IS NOT NULL').order('started_at asc') }, :class_name => "PersonalRole"
-  has_many :straight_roles, -> { where('related_person_id IS NULL').order('started_at asc') }, :class_name => "PersonalRole"
   has_many :personal_connections #, -> { order('started_at asc') }
   has_many :locations, -> { uniq }, :through => :personal_connections
   has_many :plaques, :through => :personal_connections #, :uniq => true
@@ -43,6 +41,28 @@ class Person < ActiveRecord::Base
 
   DATE_REGEX = /c?[\d]{4}/
   DATE_RANGE_REGEX = /(?:\(#{DATE_REGEX}-#{DATE_REGEX}\)|#{DATE_REGEX}-#{DATE_REGEX})/
+
+  def relationships
+    @relationships ||= begin
+      
+      relationships = personal_roles.select do |personal_role|
+        personal_role.related_person_id != nil
+      end
+      
+      relationships.sort { |a,b| a.started_at <=> b.started_at }
+    end
+  end
+
+  def straight_roles
+    @straight_roles ||= begin
+      
+      straight_roles = personal_roles.select do |personal_role|
+        personal_role.related_person_id == nil
+      end
+      
+      straight_roles.sort { |a,b| a.started_at <=> b.started_at }
+    end
+  end
 
   def uniq_plaques
     return plaques.inject([]){|s,e| s | [e] }
