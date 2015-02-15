@@ -15,12 +15,7 @@ class PeopleController < ApplicationController
     respond_to do |format|
       format.html
       format.json {
-        if request.env["HTTP_USER_AGENT"].include? "bot"
-          puts "** rejecting a bot call to json by "+env["HTTP_USER_AGENT"]
-          render :json => {:error => "no-bots"}.to_json, :status => 406
-        else
-          render :json => @person
-        end
+        render :json => @person
       }
     end
   end

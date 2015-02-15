@@ -2,7 +2,7 @@ class OrganisationsController < ApplicationController
 
   before_filter :authenticate_admin!, :only => :destroy
   before_filter :authenticate_user!, :except => [:index, :show]
-  before_filter :find_organisation, :only => [:edit, :update]
+  before_filter :find, :only => [:edit, :update]
 
   def index
     if params[:name_starts_with]
@@ -44,12 +44,7 @@ class OrganisationsController < ApplicationController
       }
       format.xml
       format.json {
-        if request.env["HTTP_USER_AGENT"].include? "bot"
-          puts "** rejecting a bot call to json by "+env["HTTP_USER_AGENT"]
-          render :json => {:error => "no-bots"}.to_json, :status => 406
-        else
-          render :json => @organisation
-        end
+        render :json => @organisation
       }
     end
   end
@@ -80,7 +75,7 @@ class OrganisationsController < ApplicationController
 
   protected
 
-    def find_organisation
+    def find
       @organisation = Organisation.find_by_slug!(params[:id])
       if (!@organisation.geolocated? && @organisation.plaques.geolocated.size > 3)
         @organisation.save
