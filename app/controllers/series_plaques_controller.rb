@@ -1,7 +1,6 @@
 class SeriesPlaquesController < ApplicationController
 
   before_filter :find, :only => [:show]
-  respond_to :json
 
   def show
     zoom = params[:zoom].to_i
@@ -10,15 +9,11 @@ class SeriesPlaquesController < ApplicationController
       y = params[:y].to_i
       @plaques = @series.plaques.tile(zoom, x, y, '')
     else
-      @plaques = @organisation.plaques
+      @plaques = @series.plaques
     end
-    respond_with @plaques do |format|
-      format.html { render @plaques }
+    respond_to do |format|
       format.json {
-        render :json => @plaques.as_json(
-        :only => [:id, :latitude, :longitude, :inscription],
-        :methods => [:title, :uri, :colour_name]
-        ) 
+        render :json => @plaques.as_json(Plaque.as_minimal_geojson)
       }
     end
   end

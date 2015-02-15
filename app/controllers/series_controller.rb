@@ -5,6 +5,12 @@ class SeriesController < ApplicationController
 
   def index
     @series = Series.all
+    respond_to do |format|
+      format.html
+      format.json {
+        render :json => @series.as_json()
+      }
+    end
   end
 
   def show
@@ -16,14 +22,8 @@ class SeriesController < ApplicationController
     @mean = help.find_mean(@plaques)
     respond_to do |format|
       format.html # show.html.erb
-      format.kml { render "plaques/index" }
-      format.xml { render "plaques/index" }
       format.json {
-        if @series.id != 42 && @series.id != 15
-          render :json => @series.plaques
-        else
-          render :json => @series
-        end
+        render :json => @series.as_json()
       }
     end
   end
