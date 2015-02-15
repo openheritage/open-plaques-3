@@ -2,8 +2,7 @@ class PersonalRolesController < ApplicationController
 
   before_filter :authenticate_admin!, :only => :destroy
   before_filter :authenticate_user!
-
-  before_filter :find_personal_role, :only => [:destroy, :update, :edit]
+  before_filter :find, :only => [:destroy, :update, :edit]
 
   # POST /personal_roles
   # POST /personal_roles.xml
@@ -97,7 +96,7 @@ class PersonalRolesController < ApplicationController
 
   protected
 
-    def find_personal_role
+    def find
       @personal_role = PersonalRole.find(params[:id])
     end
 

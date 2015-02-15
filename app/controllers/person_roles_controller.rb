@@ -2,8 +2,7 @@ class PersonRolesController < ApplicationController
 
   before_filter :authenticate_admin!, :only => :destroy
   before_filter :authenticate_user!, :except => [:index, :show]
-
-  before_filter :find_person, :only => [:show]
+  before_filter :find, :only => [:show]
 
   # GET /people/1/roles
   def show
@@ -15,7 +14,7 @@ class PersonRolesController < ApplicationController
 
   protected
 
-    def find_person
+    def find
       @person = Person.find(params[:person_id], :include => {:personal_roles => :role})
     end
 

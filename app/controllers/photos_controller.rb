@@ -2,7 +2,7 @@ class PhotosController < ApplicationController
 
   before_filter :authenticate_admin!, :only => :destroy
   before_filter :authenticate_user!, :except => [:index, :show, :update, :create]
-  before_filter :find_photo, :only => [:destroy, :edit, :show, :update]
+  before_filter :find, :only => [:destroy, :edit, :show, :update]
   before_filter :get_licences, :only => [:new, :create, :edit]
 
   def index
@@ -52,7 +52,7 @@ class PhotosController < ApplicationController
 
   protected
 
-    def find_photo
+    def find
       @photo = Photo.find(params[:id])
     end
 

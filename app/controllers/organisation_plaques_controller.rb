@@ -19,7 +19,7 @@ class OrganisationPlaquesController < ApplicationController
     respond_with @plaques do |format|
       format.html { render @plaques }
       format.json {
-        # used by the new plaque form, so careful if trying to alter
+        # used by the map, so careful if trying to alter
         render :json => @plaques.as_json(
         :only => [:id, :latitude, :longitude, :inscription],
         :methods => [:title, :uri, :colour_name]

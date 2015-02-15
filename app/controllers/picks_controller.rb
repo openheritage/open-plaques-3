@@ -1,6 +1,6 @@
 class PicksController < ApplicationController
 
-  before_filter :find_pick, :only => [:edit, :update, :show, :destroy]
+  before_filter :find, :only => [:edit, :update, :show, :destroy]
   respond_to :json
   
   def index
@@ -38,7 +38,7 @@ class PicksController < ApplicationController
 
   protected
 
-    def find_pick
+    def find
       @pick = Pick.find(params[:id])
     end
 
