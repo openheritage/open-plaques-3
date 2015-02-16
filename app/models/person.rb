@@ -49,7 +49,7 @@ class Person < ActiveRecord::Base
         personal_role.related_person_id != nil
       end
       
-      relationships.sort { |a,b| a.started_at <=> b.started_at }
+      relationships.sort { |a,b| a.started_at.to_s <=> b.started_at.to_s }
     end
   end
 
@@ -60,7 +60,7 @@ class Person < ActiveRecord::Base
         personal_role.related_person_id == nil
       end
       
-      straight_roles.sort { |a,b| a.started_at <=> b.started_at }
+      straight_roles.sort { |a,b| a.started_at.to_s <=> b.started_at.to_s }
     end
   end
 
@@ -420,9 +420,9 @@ class Person < ActiveRecord::Base
         :full_name,
         :surname,
         :born_in,
-        :born_at,
+#        :born_at,
         :died_in,
-        :died_at,
+#        :died_at,
         :type,
         :sex,
         :default_wikipedia_url,
