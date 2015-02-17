@@ -32,6 +32,7 @@ Rollbar.configure do |config|
   config.exception_level_filters.merge!(
     'ActiveRecord::RecordNotFound' => 'ignore', 
     'ActionController::UnknownFormat' => 'ignore'
+    'ActionController::RoutingError' => 'ignore'
   )
   #
   # You can also specify a callable, which will be called with the exception instance.
