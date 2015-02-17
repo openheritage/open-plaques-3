@@ -15,7 +15,7 @@ gem 'meta-tags'
 gem 'will_paginate'
 
 gem 'rollbar', '~> 1.4.4'
-gem 'rack-timeout'
+# gem 'rack-timeout'
 gem 'puma'
 
 gem 'rails_12factor'
