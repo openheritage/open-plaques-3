@@ -31,7 +31,7 @@ Rollbar.configure do |config|
   # 'ignore' will cause the exception to not be reported at all.
   config.exception_level_filters.merge!(
     'ActiveRecord::RecordNotFound' => 'ignore', 
-    'ActionController::UnknownFormat' => 'ignore'
+    'ActionController::UnknownFormat' => 'ignore',
     'ActionController::RoutingError' => 'ignore'
   )
   #
