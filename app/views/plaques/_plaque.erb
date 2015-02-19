@@ -3,14 +3,16 @@
 <% rescue %>
   <% plaque = plaque.plaque %>
 <% end %>
-<div class="inside_panel" summary="Plaque details for #<%= plaque.id %>" id="plaque_<%= plaque.id %>">
-  <%= render 'plaques/tile', :plaque => plaque %>
-  <%= content_tag('h1', new_linked_inscription(plaque), :class => 'inscription') %>
-  <% if plaque.foreign? && plaque.inscription_in_english  %>
-    <%= content_tag('span', plaque.inscription_in_english, :class => 'inscription') %>
-  <% end %>
-  <div><%= render plaque.location if plaque.location %><% if @person %> where <%= @person.personal_pronoun %> <%= verbs(@person,plaque).to_sentence.html_safe %><% end %><% '. As far as we know, it is not currently on display.' if !plaque.is_current %></div>
-  <% if plaque.series %>
-    <div><% if plaque.series_ref? %>#<%= content_tag(:span, plaque.series_ref )%><% else %>part<% end %> of the <%= link_to plaque.series.name, plaque.series %> series</div>
-  <% end %>
-</div>
+<% if plaque %>
+  <div class="inside_panel" summary="Plaque details for #<%= plaque.id %>" id="plaque_<%= plaque.id %>">
+    <%= render 'plaques/tile', :plaque => plaque %>
+    <%= content_tag('h1', new_linked_inscription(plaque), :class => 'inscription') %>
+    <% if plaque.foreign? && plaque.inscription_in_english  %>
+      <%= content_tag('span', plaque.inscription_in_english, :class => 'inscription') %>
+    <% end %>
+    <div><%= render plaque.location if plaque.location %><% if @person %> where <%= @person.personal_pronoun %> <%= verbs(@person,plaque).to_sentence.html_safe %><% end %><% '. As far as we know, it is not currently on display.' if !plaque.is_current %></div>
+    <% if plaque.series %>
+      <div><% if plaque.series_ref? %>#<%= content_tag(:span, plaque.series_ref )%><% else %>part<% end %> of the <%= link_to plaque.series.name, plaque.series %> series</div>
+    <% end %>
+  </div>
+<% end %>
