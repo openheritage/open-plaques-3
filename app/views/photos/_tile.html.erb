@@ -1,3 +1,5 @@
-<div style="float: left;">
-  <%= link_to(thumbnail_img(photo), photo) %>
-</div>
+<% if photo %>
+  <div class='col-xs-1' style='float: left;'>
+    <%= link_to(thumbnail_img(photo), photo) %>
+  </div>
+<% end %>
