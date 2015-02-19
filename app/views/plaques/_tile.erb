@@ -1,3 +1,8 @@
+<% begin %>
+  <% plaque.inscription %>
+<% rescue %>
+  <% plaque = plaque.plaque %>
+<% end %>
 <% if plaque %>
   <div class='col-xs-1' style='float: left;'>
     <%= link_to(thumbnail_img(plaque), plaque_path(plaque)) %>
