@@ -101,6 +101,15 @@ class PlaquesController < ApplicationController
       :title => @plaque.title,
       :description => @plaque.inscription,
     }
+    set_meta_tags :twitter => {
+      :card  => "photo",
+      :image => {
+        :_      => @plaque.main_photo ? @plaque.main_photo.file_url : view_context.root_url[0...-1] + view_context.image_path("openplaques-icon.png"),
+        :width  => 100,
+        :height => 100,
+      }
+    }
+
     respond_to do |format|
       format.html
       format.xml { render "plaques/index" }
