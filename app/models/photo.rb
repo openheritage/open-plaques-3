@@ -209,7 +209,11 @@ class Photo < ActiveRecord::Base
   def linked?
     !(plaque.nil?)
   end
-  
+
+  def geolocated?
+    !(latitude.nil?)
+  end
+
   def as_json(options={})
     # this example ignores the user's options
     super(:only => [:file_url, :photographer, :photographer_url, :shot, :url],
@@ -239,9 +243,10 @@ class Photo < ActiveRecord::Base
     end
     
     def geolocate_plaque
-      if plaque && self.longitude && self.latitude && !plaque.geolocated?
+      if plaque && self.geolocated? && (!plaque.geolocated? || (plaque.geolocated? && !plaque.is_accurate_geolocation))
         plaque.longitude = self.longitude
         plaque.latitude = self.latitude
+        plaque.is_accurate_geolocation = true
         plaque.save
       end  
       return true      
