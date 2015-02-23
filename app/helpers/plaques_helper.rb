@@ -62,22 +62,24 @@ module PlaquesHelper
     key = "86c115028094a06ed5cd19cfe72e8f8b"
     content_type = "1" # Photos only
     machine_tag_key = "openplaques:id=".to_s
+    repeat = 20 # 100 per page, we will check the 2000 most recently created Flickr images
     if (plaque)
       machine_tag_key += plaque.id.to_s
+      repeat = 1 # 100 per page, so I hope that one plaque has fewer than 100 Flickr images
     end
 
     flickr_url = "https://api.flickr.com/services/rest/"
     method = "flickr.photos.search"
     license = "1,2,3,4,5,6,7" # All the CC licencses that allow commercial re-use
 
-    20.times do |page|
+    repeat.times do |page|
 
       url = flickr_url + "?api_key=" + key + "&method=" + method + "&page=" + page.to_s + "&license=" + license + "&content_type=" + content_type + "&machine_tags=" + machine_tag_key +  "&extras=date_taken,owner_name,license,geo,machine_tags"
 
       if (flickr_user_id)
         url += "&user_id=" + flickr_user_id
       end
-      puts url
+      puts "Flickr: " + url
 
       new_photos_count = 0
       response = open(url)
@@ -94,12 +96,13 @@ module PlaquesHelper
         @photo = Photo.find_by_url(photo_url)
 
         if @photo
+          # we've already got that one
         else
           plaque_id = photo.attributes["machine_tags"][/openplaques\:id\=(\d+)/, 1]
 
-          puts photo.attributes["title"]
+          puts "Flickr: photo of plaque " + plaque_id.to_s + " '" + photo.attributes["title"] + "'"
 
-          @plaque = Plaque.find(:first, :conditions => {:id => plaque_id})
+          @plaque = Plaque.find(plaque_id)
           if @plaque
             @photo = Photo.new
             @photo.plaque = @plaque
