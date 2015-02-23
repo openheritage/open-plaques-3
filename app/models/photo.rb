@@ -182,7 +182,7 @@ class Photo < ActiveRecord::Base
       self.file_url = wikimedia_special
       self.licence = Licence.find_or_create_by_name_and_url("Attribution License", "http://creativecommons.org/licenses/by/3.0/")
     end
-    if (geograph?)   
+    if (geograph?)
       query_url = "http://api.geograph.org.uk/api/oembed?&&url=" + self.url + "&output=json"
       begin
         ch = Curl::Easy.perform(query_url) do |curl| 
@@ -201,6 +201,7 @@ class Photo < ActiveRecord::Base
         self.latitude = parsed_json['geo']['lat']
         self.longitude = parsed_json['geo']['long']
       rescue
+        puts 'Geograph Curl call failed'
       end
     end
   end
