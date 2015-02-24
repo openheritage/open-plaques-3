@@ -276,9 +276,10 @@ class Person < ActiveRecord::Base
   def parents
     parents = []
     relationships.each do |relationship|
-      parents << relationship.related_person if relationship.role.name=="son" or relationship.role.name=="daughter"
+      parents << relationship.related_person if (relationship.role.name=="son" or relationship.role.name=="daughter") && relationship.related_person!=nil
     end
-    parents.sort! { |a,b| a.born_on <=> b.born_on }
+    parents
+    parents.sort! { |a,b| a.born_on ? a.born_on : 0 <=> b.born_on ? b.born_on : 0 }
   end
 
   def children
@@ -286,7 +287,7 @@ class Person < ActiveRecord::Base
     relationships.each do |relationship|
       issue << relationship.related_person if relationship.role.name=="father" or relationship.role.name=="mother"
     end
-    issue.sort! { |a,b| a.born_on <=> b.born_on }
+    issue.sort! { |a,b| a.born_on ? a.born_on : 0 <=> b.born_on ? b.born_on : 0 }
   end
   
   def siblings
@@ -295,7 +296,7 @@ class Person < ActiveRecord::Base
     relationships.each do |relationship|
       siblings << relationship.related_person if relationship.role.name=="brother" or relationship.role.name=="sister" or relationship.role.name=="half-brother" or relationship.role.name=="half-sister"
     end
-    siblings.sort! { |a,b| a.born_on <=> b.born_on }   
+    siblings.sort! { |a,b| a.born_on ? a.born_on : 0 <=> b.born_on ? b.born_on : 0 }   
   end
   
   def spousal_relationships
