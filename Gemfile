@@ -9,6 +9,7 @@ gem 'curb'
 
 gem 'sass-rails',        '~> 4.0.3'
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
 gem 'bootstrap-sass',    '~> 3.2.0'
 
 gem 'devise'
