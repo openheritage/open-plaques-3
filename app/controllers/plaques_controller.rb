@@ -1,6 +1,6 @@
 class PlaquesController < ApplicationController
 
-  before_filter :authenticate_user!, :only => [:edit]
+  before_filter :authenticate_user!, :only => [:edit, :new]
   before_filter :authenticate_admin!, :only => :destroy
   before_filter :find, :only => [:show, :flickr_search, :flickr_search_all, :update, :destroy, :edit]
 #	 before_filter :set_cache_header, :only => :index
