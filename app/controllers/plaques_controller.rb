@@ -183,7 +183,7 @@ class PlaquesController < ApplicationController
     end
 
     unless params[:organisation_name].empty?
-      organisation = Organisation.find_or_create_by_name(params[:organisation_name])
+      organisation = Organisation.where(:name => params[:organisation_name]).first_or_create
       @plaque.organisations << organisation if organisation.valid?
     end
 
@@ -194,10 +194,10 @@ class PlaquesController < ApplicationController
     else
       params[:checked] = "true"
       @plaque.photos.build if @plaque.photos.size == 0
-      @countries = Country.all(:order => :name)
-      @languages = Language.all(:order => :name)
-      @common_colours = Colour.common.all(:order => "plaques_count DESC")
-      @other_colours = Colour.uncommon.all(:order => :name)
+      @countries = Country.order(:name)
+      @languages = Language.order(:name)
+      @common_colours = Colour.common.order("plaques_count DESC")
+      @other_colours = Colour.uncommon.order(:name)
       render :new
     end
   end
