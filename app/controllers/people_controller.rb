@@ -41,7 +41,7 @@ class PeopleController < ApplicationController
   # POST /people
   # POST /people.xml
   def create
-    @person = Person.new(params[:person])
+    @person = Person.new(person_params)
     if params[:born_on].blank?
       @person.born_on = nil
     else
@@ -122,5 +122,4 @@ class PeopleController < ApplicationController
         :born_on,
         :died_on)
     end
-
 end
