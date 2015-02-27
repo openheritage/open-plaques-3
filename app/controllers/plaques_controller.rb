@@ -1,6 +1,6 @@
 class PlaquesController < ApplicationController
 
-  before_filter :authenticate_user!, :only => [:edit, :new]
+  before_filter :authenticate_user!, :only => [:edit]
   before_filter :authenticate_admin!, :only => :destroy
   before_filter :find, :only => [:show, :flickr_search, :flickr_search_all, :update, :destroy, :edit]
 #	 before_filter :set_cache_header, :only => :index
@@ -274,8 +274,23 @@ class PlaquesController < ApplicationController
       @plaque = Plaque.find(params[:id])
     end
 
-	def plaque_params
-      params.require(:plaque).permit(:inscription,:inscription_is_stub,:language_id,:inscription_in_english, :description, 
-        :latitude, :longitude, :is_accurate_geolocation, :erected_at_string, :series_id, :series_ref)
-	end
+  	def plaque_params
+        params.require(:plaque).permit(
+          # for new plaque form
+          :inscription,:inscription_is_stub,
+          :language_id,
+          :location,:area,:country,
+          :organisation_name,:organisation_id,
+          'erected_at(1i)', 'erected_at(3i)', 'erected_at(2i)',
+          :colour_id,
+          # for plaque update
+          :inscription_in_english,
+          :description, 
+          :latitude, :longitude, :is_accurate_geolocation,
+          :erected_at_string, 
+          :series_id, :series_ref,
+          # for new plaque form
+          user_attributes: [ :name, :email ]
+        )
+  	end
 end
