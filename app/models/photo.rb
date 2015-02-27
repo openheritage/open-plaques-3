@@ -154,19 +154,6 @@ class Photo < ActiveRecord::Base
     # http://commons.wikimedia.org/wiki/File:George_Dance_plaque.JPG
     # http://commons.wikimedia.org/wiki/File:Abney1.jpg
     if (wikimedia?)
-#      query_url = "http://commons.wikimedia.org/w/api.php?action=query&iiprop=url|user&prop=imageinfo&format=json&titles=File:"+wikimedia_filename
-#      begin
-#        ch = Curl::Easy.perform(query_url) do |curl| 
-#          curl.headers["User-Agent"] = "openplaques"
-#          curl.verbose = true
-#        end
-#        parsed_json = JSON.parse(ch.body_str)
-#        parsed_json['query']['pages'].each do |page, pageInfo|
-#          self.photographer = pageInfo['imageinfo'][0]['user']
-#        end
-#        self.photographer_url = "http://commons.wikimedia.org/wiki/User:"+photographer.gsub(' ','_')
-#      rescue
-#      end
       doc = Nokogiri::HTML(open("http://commons.wikimedia.org/wiki/File:"+wikimedia_filename))
       doc.xpath('//td[@class="description"]').each do |v|
         self.subject = Sanitize.clean(v.content)[0,255]
@@ -180,7 +167,7 @@ class Photo < ActiveRecord::Base
         self.photographer_url = "http://commons.wikimedia.org" + value if value.start_with?('/')
       end
       self.file_url = wikimedia_special
-      self.licence = Licence.find_or_create_by_name_and_url("Attribution License", "http://creativecommons.org/licenses/by/3.0/")
+      self.licence = Licence.find_by_name("Attribution License")
     end
     if (geograph?)
       query_url = "http://api.geograph.org.uk/api/oembed?&&url=" + self.url + "&output=json"
