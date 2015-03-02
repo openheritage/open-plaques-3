@@ -19,6 +19,18 @@
       <div class="row">
         <%= f.collection_select :person_id, @people, :id, :name_and_raw_dates, {} , { "style" => "width:400px" } %> <%= link_to("Add person", "/people/new") %>
       </div>
+
+      <% if @common_verbs %>
+        <%= fieldset do %>
+          <% @common_verbs.each do |verb| %>
+            <div class="row radio">
+              <%= f.radio_button :verb_id, verb.id %>
+              <%= f.label "verb_id_" + verb.id.to_s, verb.name, :class => verb.name.downcase %>
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
+
       <div class="row">
         <%= f.collection_select :verb_id, @verbs, :id, :name, { :selected => "222"}, { "style" => "width:400px" } %>  <%= link_to("Add verb", "/verbs/new") %>
       </div>

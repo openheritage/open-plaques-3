@@ -17,11 +17,15 @@ class Verb < ActiveRecord::Base
   has_many :people, :through => :personal_connections
 
   def self.common
-    [Verb.find_by_name("was born"),Verb.find_by_name("born"),Verb.find_by_name("lived"),Verb.find_by_name("died")].compact!
+    [Verb.find_by_name("was born"),Verb.find_by_name("lived"),Verb.find_by_name("died")].compact
   end
 
   def to_param
     "#{name.gsub('.', '_').gsub(' ', '_')}"
+  end
+
+  def to_s
+    return name
   end
 
   def uri

@@ -1,9 +1,8 @@
 class PersonalConnectionsController < ApplicationController
 
   before_filter :authenticate_admin!, :only => :destroy
-
+  before_filter :find, :only => [:edit, :destroy]
   before_filter :find_plaque, :only => [:edit, :update, :new, :create]
-  before_filter :find_personal_connection, :only => [:edit, :destroy]
   before_filter :list_people_and_verbs, :only => [:new, :edit]
 
   def destroy
@@ -46,7 +45,6 @@ class PersonalConnectionsController < ApplicationController
 
   def create
     @personal_connection = @plaque.personal_connections.new
-
     @personal_connection.person_id = params[:personal_connection][:person_id]
     @personal_connection.verb_id = params[:personal_connection][:verb_id]
     @personal_connection.location_id = params[:personal_connection][:location_id]
@@ -78,18 +76,18 @@ class PersonalConnectionsController < ApplicationController
 
   protected
 
+    def find
+      @personal_connection = PersonalConnection.find(params[:id])
+    end
+
     def find_plaque
       @plaque = Plaque.find(params[:plaque_id])
     end
-
-    def find_personal_connection
-      @personal_connection = PersonalConnection.find(params[:id])
-    end
     
     def list_people_and_verbs
-      @people = Person.order(:name).select('id, name, born_on, died_on')
+      @people = Person.order(:name, :born_on).select('id, name, born_on, died_on')
       @verbs = Verb.order(:name).select('id, name')
-      @common_verbs = Verb.common
+      @common_verbs = nil # Verb.common
     end
 
   private
