@@ -19,6 +19,7 @@ class OrganisationsController < ApplicationController
       }
       format.xml
       format.json { render :json => @organisations }
+      format.geojson { render :geojson => @organisations }
     end
   end
 
@@ -43,10 +44,9 @@ class OrganisationsController < ApplicationController
         render "plaques/index"
       }
       format.xml
-      format.json {
-        render :json => @organisation
-      }
-    end
+      format.json { render :json => @organisation }
+      format.geojson { render :geojson => @organisation }
+      end
   end
 
   def new

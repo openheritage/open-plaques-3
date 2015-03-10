@@ -55,7 +55,20 @@ class Organisation < ActiveRecord::Base
   def as_json(options={})
     super(:only => [:id,:name],:methods => :uri)
   end
-  
+
+  def as_geojson(options={})
+    {
+      type: 'Feature',
+      geometry: 
+      {
+        type: 'Point',
+        coordinates: [self.longitude, self.latitude]
+      },
+      properties:
+        as_json(options)
+    }
+  end
+
   def to_param
     slug
   end
