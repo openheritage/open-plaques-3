@@ -1,1 +1,0 @@
-<%= role.full_name %>

@@ -36,7 +36,7 @@ class PersonalRolesController < ApplicationController
       flash[:notice] = 'PersonalRole was successfully created.'
       redirect_to(edit_person_path(@personal_role.person))
     else
-      @roles = Role.all(:order => :name)
+      @roles = Role.all.order(:name)
 
       render "people/edit"
     end
@@ -91,7 +91,7 @@ class PersonalRolesController < ApplicationController
   end
 
   def edit
-    @people = Person.all(:order => :name)
+    @people = Person.all.order(:name)
   end
 
   protected
