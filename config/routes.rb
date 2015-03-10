@@ -17,7 +17,7 @@ Rails.application.routes.draw do
       post 'parse_inscription'
       post 'unparse_inscription'
       post 'flickr_search'
-      post 'flickr_search_all'
+      get 'flickr_search_all'
     end
     resource :location, :controller => :plaque_location, :only => :edit
     resource :erected, :controller => :plaque_erected, :only => :edit
