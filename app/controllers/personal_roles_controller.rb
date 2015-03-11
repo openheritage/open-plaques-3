@@ -91,7 +91,9 @@ class PersonalRolesController < ApplicationController
   end
 
   def edit
-    @people = Person.all.order(:name)
+    if @personal_role.role.relationship?
+      @people = Person.all.order(:name, :born_on).select('id, name, born_on, died_on')
+    end
   end
 
   protected
