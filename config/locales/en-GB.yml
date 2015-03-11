@@ -2,10 +2,14 @@
 # See http://guides.rubyonrails.org/i18n.html
 
 en-GB:
-  explore: "Explore"
-  contribute: "Contribute"
-  news: "News"
-  plaque_of_the_day: "Plaque of the day"
+  home:
+    index:
+      page_title: Open Plaques - linking historical people and places
+      strapline_html: Documenting the historical links between <strong>people</strong> and <strong>places</strong>, as recorded by commemorative <strong>plaques</strong>.
+      explore: Explore
+      contribute: Contribute
+      news: News
+      plaque_of_the_day: Plaque of the day
 
   # Used in array.to_sentence.
   support:

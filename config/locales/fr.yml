@@ -1,0 +1,19 @@
+# Localisation file for British English
+# See http://guides.rubyonrails.org/i18n.html
+
+fr:
+  home:
+    index:
+      page_title: Open Plaques - reliant les gens et les lieux historiques
+      strapline_html: Documenter les liens historiques entre <strong>les gens</strong> et <strong>endroits</strong>, enregistrée par commémoratives <strong>plaques</strong>.
+      explore: Explorer
+      contribute: Contribuer
+      news: News
+      plaque_of_the_day: Plaque de la journée
+
+  # Used in array.to_sentence.
+  support:
+    array:
+      words_connector: ", "
+      two_words_connector: " et "
+      last_word_connector: ", et "

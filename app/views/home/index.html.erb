@@ -1,4 +1,4 @@
-<% content_for :page_title, "Open Plaques - linking historical people and places" %>
+<% content_for(:page_title) {t('.page_title')} %>
 
 <% if Rails.env == 'development' %>
   <%= render 'development_message' %>
@@ -8,7 +8,7 @@
 
   <div id="homepage_content">
 
-    <p class="intro">Documenting the historical links between <strong>people</strong> and <strong>places</strong>, as recorded by commemorative <strong>plaques</strong>.</p>
+    <p class="intro"><%= t '.strapline_html' %></p>
 
     <ul id="homepage_modules">
       <li>
