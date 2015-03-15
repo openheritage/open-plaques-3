@@ -2,14 +2,30 @@
 # See http://guides.rubyonrails.org/i18n.html
 
 en-GB:
+
+  update: update
+  edit: edit
+  
   home:
     index:
       page_title: Open Plaques - linking historical people and places
       strapline_html: Documenting the historical links between <strong>people</strong> and <strong>places</strong>, as recorded by commemorative <strong>plaques</strong>.
       explore: Explore
       contribute: Contribute
+      contribute1: Spotted one? Anyone can help us and 
+      add_a_plaque: add a plaque
+      take_a_photo: Take a photo. Add it to Wikimedia Commons or Flickr and link it to our record
+      spot_an_innaccuracy: Spot an innaccuracy. Tell us.
+      mission: You are all part of our mission to find all of the plaques in the world!
       news: News
       plaque_of_the_day: Plaque of the day
+
+  colours:
+    index:
+      page_title: Historical plaques - by colour
+      page_heading: Colours
+      add_a_colour: add a colour
+      data_about: Data about colours as
 
   # Used in array.to_sentence.
   support:

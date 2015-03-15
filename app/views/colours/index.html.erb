@@ -1,13 +1,14 @@
-<% content_for :page_title, "Historical plaques - by colour" %>
+
+<% content_for(:page_title) {t '.page_title'} %>
 
 <div class="panel">
   <% if current_user && current_user.is_admin? %>
     <section class="admin_panel">
-      <%= link_to("Add new colour", new_colour_path(), {:class => :edit, :title => "Add new colour"}) %>
+      <%= link_to t('.add_a_colour'), new_colour_path(), {:class => :edit, :title => "Add new colour"} %>
     </section>
   <% end %>
   
-  <h1>Colours</h1>
+  <h1><%= t '.page_heading' %></h1>
 
   <canvas id="myCanvas" width="600" height="650">
 	<ul>
