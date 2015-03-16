@@ -1,4 +1,3 @@
-
 <% content_for(:page_title) {t '.page_title'} %>
 
 <div class="panel">
@@ -15,7 +14,7 @@
       <div><%= colour %> - <%= colour.plaques.size %></div>
     <% end %>
   </canvas>
-  <p class="alternate_formats"><%= t '.data_about' %><%= alternate_link_to "JSON", colours_path(:json), :json %></p>
+  <p class="alternate_formats"><%= t 'data_about_things_as', :thing => 'colours' %> <%= alternate_link_to "JSON", colours_path(:json), :json %></p>
 </div>
 
 <script>

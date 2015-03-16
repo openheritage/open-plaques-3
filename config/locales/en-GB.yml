@@ -8,6 +8,9 @@ en-GB:
   update: update
   edit: edit
   
+  data_about_thing_as: Data about this %{thing} as
+  data_about_things_as: Data about %{thing} as
+
   home:
     index:
       page_title: Open Plaques - linking historical people and places
@@ -27,7 +30,15 @@ en-GB:
       page_title: Historical plaques - by colour
       page_heading: Colours
       add_a_colour: add a colour
-      data_about: Data about colours as
+
+  roles:
+    edit:
+      page_title: Historical plaques - by colour
+    new:
+      page_title: Historical plaques - by colour
+    show:
+      page_title: Commemorated %{role}
+      page_heading: Commemorated %{role}
 
   # Used in array.to_sentence.
   support:
