@@ -52,17 +52,19 @@
   });
   </script>
 
+<% content_for(:page_title) {t('.page_title')} %>
+
 <div class="panel">
-  <h1>Tell us about the plaque</h1>
-  <p>Thanks for identifying a plaque that is not already on this website. Fill in as much as you can and <em>anything you don't know can be left blank</em>.</p>
+  <h1><%= t '.page_heading' %></h1>
+  <p><%= t '.thanks' %></p>
   <br/>
-  <p>All of the data on Open Plaques is released into the public domain completely licence-free. By providing us with information you are agreeing that it will be public domain also.</p>
+  <p><%= t '.you_agree_to_open_licence' %></p>
 </div>
 
 <% if params[:checked] && params[:checked] == "true" %>
 
   <% if @plaque.errors.size > 0 %>
-    <div class="error_alert"><p>There was an error adding your plaque. Please correct it below.</p></div>
+    <div class="error_alert"><p><%= t '.error' %></p></div>
   <% end %>
 
   <%= form_for(@plaque) do |f| %>

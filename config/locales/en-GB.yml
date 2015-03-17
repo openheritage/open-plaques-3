@@ -5,9 +5,10 @@ en-GB:
 
   plaque: plaque
 
-  update: update
-  edit: edit
-  
+  update: Update
+  edit: Edit
+  delete: Delete
+
   data_about_thing_as: Data about this %{thing} as
   data_about_things_as: Data about %{thing} as
 
@@ -31,14 +32,40 @@ en-GB:
       page_heading: Colours
       add_a_colour: add a colour
 
+  countries:
+    edit:
+      page_title: Edit ${country}
+      page_heading: Edit ${country}
+    index:
+    new:
+    show:
+
+  people:
+    edit:
+    new:
+    show:
+      page_title: Historical plaques about ${person}
+      not_commemorated: Is not commemorated on any plaques in our database (yet)
+
+  plaques:
+    new:
+      page_title: Open Plaques - new plaque
+      page_heading: Tell us about the plaque
+      thanks: Thanks for identifying a plaque that is not already on this website. Fill in as much as you can and anything you don't know can be left blank.
+      you_agree_to_open_licence: All of the data on Open Plaques is released into the public domain completely licence-free. By providing us with information you are agreeing that it will be public domain also.
+      error: There was an error adding your plaque. Please correct it below.
+
   roles:
     edit:
-      page_title: Historical plaques - by colour
+      page_title: Edit role %{role}
     new:
       page_title: Historical plaques - by colour
     show:
       page_title: Commemorated %{role}
       page_heading: Commemorated %{role}
+      read_more_html: Read more about what %{link} is on Wikipedia
+      related_roles: Related roles
+      edit: Edit this role
 
   # Used in array.to_sentence.
   support:

@@ -1,5 +1,5 @@
-<% content_for :page_title, "Edit " + @country.name %>
-<h1>Edit <%= link_to @country.name, @country %></h1>
+<% content_for(:page_title) {t '.page_title', :country => @country.name } %>
+<h1><%= t 'edit' %> <%= link_to @country.name, @country %></h1>
 
 <%= form_for @country do |f| %>
   <p><%= f.label :alpha2, "Alpha-2 code" %><%= f.text_field :alpha2 %></p>
@@ -11,9 +11,7 @@
     <%= f.collection_select :area_id, @areas, :id, :name, {:include_blank => true} %>
   </p>
   <% end %>
-  <p>
-    <%= f.submit "Update" %>
-  </p>
+  <p><%= f.submit t('update'), :class => :button %></p>
 <% end %>
 
 <%= content_tag("p", link_to("Add new area", new_country_area_path(@country.alpha2))) if current_user %>

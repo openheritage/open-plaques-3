@@ -3,7 +3,7 @@
 <div class="panel clearfix">
   <% if current_user && current_user.is_admin? %>
     <section class="admin_panel">
-      <%= link_to("Edit this "+@role.type+" role", edit_role_path(@role), {:class => :edit, :title => "Edit this "+@role.type+" role"})%>
+      <%= link_to((t '.edit'), edit_role_path(@role), {:class => :edit, :title => (t '.edit')})%>
     </section>
   <% end %>
   <h1><%= t '.page_heading', :role => @role.name.pluralize %></h1>
@@ -17,7 +17,7 @@
       the letters <strong><%= @role.letters %></strong> after the name.
     </p>
   <% end %>
-  <p>Read more about what <%= a_or_an @role.name, false %> <%= link_to @role.name, @role.wikipedia_url %> is on Wikipedia</p>
+  <p><%= t '.read_more_html', :link => link_to(a_or_an(@role.name, true), @role.wikipedia_url) %></p>
 </div>
 
 <ol class="results" id="people_results">
@@ -41,7 +41,7 @@
 
 <% if @related_roles.size > 0 %>
   <div class="panel clearfix">
-    <h2>Related Roles</h2>
+    <h2><%= t '.related_roles'%></h2>
   </div>
   <ol class="results" id="people_results">
     <% for related_role in @related_roles %>
