@@ -1,12 +1,12 @@
-<% content_for :page_title, "Organisations erecting historical plaques" %>
+<% content_for(:page_title) {t '.page_title'} %>
 
 <div class="panel clearfix">
   <% if current_user && current_user.is_admin? %>
     <section class="admin_panel">
-      <%= link_to("Add new organisation", new_organisation_path, {:class => :edit, :title => "Add new organisation"})%>
+      <%= link_to(t('buttons.add'), new_organisation_path, {:class => :edit, :title => t('buttons.add')})%>
     </section>
   <% end %>
-  <h1>Organisations erecting plaques</h1>
+  <h1><%= t '.page_heading' %></h1>
   <p><%= pluralize(@organisations.length, "organisation") %></p>
 </div>
 

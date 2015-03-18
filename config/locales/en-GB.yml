@@ -123,8 +123,8 @@ en-GB:
       page_title: Edit %{organisation}
       page_heading: Edit %{organisation}
     index:
-      page_title: Organisations
-      page_heading: Organisations
+      page_title: Organisations erecting historical plaques
+      page_heading: Organisations erecting plaques
     new:
       page_title: New organisation
       page_heading: New organisation
