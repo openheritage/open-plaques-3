@@ -29,8 +29,12 @@ en-GB:
       add_a_plaque: add a plaque
       take_a_photo: Take a photo. Add it to Wikimedia Commons or Flickr and link it to our record
       spot_an_innaccuracy: Spot an innaccuracy. Tell us.
+      find_something: Or find something 
+      to_do: to do
       mission: You are all part of our mission to find all of the plaques in the world!
       news: News
+      news_detail_html: Subscribe to <a href="http://blog.openplaques.org">our blog</a>, follow us on <a href="http://www.twitter.com/openplaques">Twitter</a> for updates.
+      like_us_on_Facebook: us on Facebook for features and trivia.
       plaque_of_the_day: Plaque of the day
 
   area_plaques:

@@ -7,9 +7,7 @@
 <div class="panel clearfix">
 
   <div id="homepage_content">
-
     <p class="intro"><%= t '.strapline_html' %></p>
-
     <ul id="homepage_modules">
       <li>
         <h2><%=t '.explore' %></h2>
@@ -21,46 +19,45 @@
         <p><%=t '.take_a_photo' %></p>
         <p><%=t '.spot_an_innaccuracy' %></p>
         <% if current_user && current_user.is_admin? %>
-          <p>Or find something <%= link_to("to do", "/todo", {:class => :edit, :title => "To do lists"})%></p>
+          <p><%= t '.find_something' %> <%= link_to(t('.to_do'), "/todo", {:class => :edit, :title => t('.to_do')})%></p>
         <% end %>
         <p><%=t '.mission' %></p>
       </li>
       <li>
         <h2><%=t '.news' %></h2>
-        <p>Subscribe to <a href="http://blog.openplaques.org">our blog</a>, follow us on <a href="http://www.twitter.com/openplaques">Twitter</a> for updates.</p>
+        <p><%=t '.news_detail_html' %></p>
         <div class="like_button">
-          <iframe src="http://www.facebook.com/plugins/like.php?href=https://www.facebook.com/OpenPlaques&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action=like&amp;font&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:75px; height:20px; text-align:right;" allowTransparency="true"></iframe> us on Facebook for features and trivia.
+          <iframe src="http://www.facebook.com/plugins/like.php?href=https://www.facebook.com/OpenPlaques&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action=like&amp;font&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:75px; height:20px; text-align:right;" allowTransparency="true"></iframe>
+          <%= t '.like_us_on_Facebook' %>
         </div>
       </li>
       <% if @todays %>
-      <li id="plaque_of_the_day">
-        <h2><%= t '.plaque_of_the_day' %></h2>
-        <div>
-          <div class="thumb">
-            <%= link_to thumbnail_img(@todays.plaque), @todays.plaque %>
+        <li id="plaque_of_the_day">
+          <h2><%= t '.plaque_of_the_day' %></h2>
+          <div>
+            <div class="thumb">
+              <%= link_to thumbnail_img(@todays.plaque), @todays.plaque %>
+            </div>
+            <div><%= link_to @todays.plaque.title, @todays.plaque %><br/>"<%= @todays.description %>" - <%= @todays.proposer %></div>
           </div>
-          <div><%= link_to @todays.plaque.title, @todays.plaque %><br/>"<%= @todays.description %>" - <%= @todays.proposer %></div>
-        </div>
-        <p><%= link_to "more...", picks_path %></p>
-      </li>
+        </li>
       <% end %>
     </ul>
-
   </div>
 
   <ol id="recent_photographed_plaques">
-  <% @recent_plaques.each do |plaque| %>
-    <% if plaque.photos.first %>
-      <li class="first option_one">
-        <%= link_to plaque_path(plaque) do %>
-          <img src="<%= plaque.photos.first.file_url %>" width="200" alt="Plaque inscription" />
-          <div class="info">
-            <p><%= truncate(plaque.inscription, :length => 150) %></p>
-          </div>
-        <% end %>
-      </li>
+    <% @recent_plaques.each do |plaque| %>
+      <% if plaque.photos.first %>
+        <li class="first option_one">
+          <%= link_to plaque_path(plaque) do %>
+            <img src="<%= plaque.photos.first.file_url %>" width="200" alt="Plaque inscription" />
+            <div class="info">
+              <p><%= truncate(plaque.inscription, :length => 150) %></p>
+            </div>
+          <% end %>
+        </li>
+      <% end %>
     <% end %>
-  <% end %>
   </ol>
 
 </div>
