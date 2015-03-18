@@ -1,6 +1,0 @@
-<h1>Ungeolocated plaques in <%= link_to @area.name, area_path(@area) %></h1>
-
-<% unless @plaques.nil? %>
-  <p>There <%= pluralize_is_or_are(@plaques.size, "plaque") %> in this area that <%= havent_or_hasnt(@plaques.size) %> been geolocated yet.</p>
-  <%= render @plaques %>
-<% end %>
