@@ -1,18 +1,10 @@
-<% content_for :page_title, "Edit " + @language.name %>
-<h1>Edit <%= @language %></h1>
+<% content_for(:page_title) {t '.page_title', :language => @language.name } %>
 
-<%= form_for(@language) do |f| %>
-  <p>
-    <%= f.label :name %>
-    <%= f.text_field :name %>
-  </p>
-
-  <p>
-    <%= f.label :alpha2, "Alpha2 code" %>
-    <%= f.text_field :alpha2 %>
-  </p>
-
-  <p>
-    <%= f.submit "Update", :class => :button %>
-  </p>
-<% end %>
+<div class="panel">
+  <h1><%= t '.page_heading', :language => @language.name %></h1>
+  <%= form_for(@language) do |f| %>
+    <p><%= f.label :alpha2, t('.alpha2_code') %> <%= f.text_field :alpha2 %></p>
+    <p><%= f.label :name, t('.name') %> <%= f.text_field :name %></p>
+    <p><%= f.submit "Update", :class => :button %></p>
+  <% end %>
+</div>

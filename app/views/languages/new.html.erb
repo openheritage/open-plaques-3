@@ -1,13 +1,10 @@
 <% content_for :page_title, "Add language" %>
 
 <div class="panel">
-
   <h1>Add a language</h1>
-
   <%= form_for @language do |f| %>
     <p><%= f.label :name %> <%= f.text_field :name %></p>
     <p><%= f.label :alpha2, "Alpha-2 code" %> <%= f.text_field :alpha2 %></p>
     <%= f.submit "Add", :class => :button %>
   <% end %>
-
 </div>

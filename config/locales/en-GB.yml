@@ -99,12 +99,16 @@ en-GB:
     edit:
       page_title: Edit %{language}
       page_heading: Edit %{language}
+      alpha2_code: Alpha2 code
+      name: Name
     index:
-      page_title: Languages
+      page_title: Historical plaques - by language
       page_heading: Languages
     new:
       page_title: New language
       page_heading: New language
+      alpha2_code: Alpha2 code
+      name: Name
 
   licences:
     index:
