@@ -1,7 +1,7 @@
 module AreasHelper
 
   def area_path(area, options = {})
-    country_area_path(area.country, area, options)
+    country_area_plaques_path(area.country, area, options)
   end
 
   def area_plaques_path(area, options = {})
@@ -9,7 +9,7 @@ module AreasHelper
   end
 
   def area_url(area, options = {})
-    country_area_url(area.country, area, options)
+     country_area_plaques_url(area.country, area, options)
   end
 
   def area_plaques_url(area, options = {})
