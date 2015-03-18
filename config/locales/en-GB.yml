@@ -3,14 +3,21 @@
 
 en-GB:
 
-  plaque: plaque
+  buttons:
+    add: add
+    update: update
+    edit: edit
+    delete: delete
+    all: all
+    save: save
+    unphotographed: unphotographed
+    ungeolocated: ungeolocated
+    or: or
 
-  update: Update
-  edit: Edit
-  delete: Delete
-
-  data_about_thing_as: Data about this %{thing} as
+  data_about_thing_as: Data about %{thing} as
+  data_about_this_thing_as: Data about this %{thing} as
   data_about_things_as: Data about %{thing} as
+  unphotographed_plaques: unphotographed plaques
 
   home:
     index:
@@ -26,25 +33,116 @@ en-GB:
       news: News
       plaque_of_the_day: Plaque of the day
 
+  area_plaques:
+    show:
+      page_title: Plaques in %{area}
+      page_title_unphotographed: Unphotographed plaques in %{area}
+      page_heading:
+      plaques: plaques
+
+  area_ungeolocated_plaques:
+    show:
+      page_title: xx
+      page_heading: yy
+
+  areas:
+    edit:
+      page_title: Edit %{area}
+      page_heading_html: Edit %{area}
+      name: Name
+      slug: Slug
+      country: Country
+      find_on_google_maps_html: Find on <a href="http://maps.google.co.uk/maps?q=%{area}&z=18" target="_new">Google Maps</a>
+      geolocation: Geolocation
+      latitude: Latitude
+      longitude: Longitude
+      google_streetview_url: Google Streetview url
+      must_be_underscored: (must be lowercase with underscores)
+    new:
+      page_title: New area in %{country}
+      page_heading_html: New area in %{country}
+      new_area_in: 
+    show:
+      page_title: Plaques in %{area}
+      page_title_unphotographed: Unphotographed plaques in %{area}
+      page_heading_html: Show %{area}
+
   colours:
     index:
       page_title: Historical plaques - by colour
       page_heading: Colours
-      add_a_colour: add a colour
+    new:
+      page_title: Add a colour
+      page_heading_html: Add a colour
+      name: Name
+      dbpedia_uri: DbPedia uri
 
   countries:
     edit:
-      page_title: Edit ${country}
-      page_heading: Edit ${country}
+      page_title: Edit %{country}
+      page_heading: Edit %{country}
     index:
+      page_title: xx
+      page_heading: yy
     new:
+      page_title: xx
+      page_heading: yy
     show:
+      page_title: xx
+      page_heading: yy
+
+  languages:
+    edit:
+      page_title: Edit %{language}
+      page_heading: Edit %{language}
+    index:
+      page_title: Languages
+      page_heading: Languages
+    new:
+      page_title: New language
+      page_heading: New language
+
+  licences:
+    index:
+      page_title: Licences
+      page_heading: Licences
+    show:
+      page_title: Licence %{licence}
+      page_heading: Licence %{licence}
+
+  organisations:
+    edit:
+      page_title: Edit %{organisation}
+      page_heading: Edit %{organisation}
+    index:
+      page_title: Organisations
+      page_heading: Organisations
+    new:
+      page_title: New organisation
+      page_heading: New organisation
+    show:
+      page_title: Organisation %{organisation}
+      page_heading: Organisation %{organisation}
+
+  pages:
+    edit:
+      page_title: Edit %{page}
+      page_heading: Edit %{page}
+    index:
+      page_title: Pages
+      page_heading: Pages
+    new:
+      page_title: New page
+      page_heading: New page
+    show:
+      page_title: Open Plaques - %{page}
+      page_heading: '%{page}'
 
   people:
     edit:
     new:
     show:
-      page_title: Historical plaques about ${person}
+      page_title: Historical plaques about %{person}
       not_commemorated: Is not commemorated on any plaques in our database (yet)
 
   plaques:

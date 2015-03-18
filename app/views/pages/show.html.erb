@@ -1,12 +1,11 @@
-<% content_for :page_title, @page.name %>
-
-<% if current_user && current_user.is_admin? %>
-  <section class="admin_panel">
-    <%= link_to("Edit this page", edit_page_path(@page.slug), {:class => :edit, :title => "Edit this page"})%>
-  </section>
-<% end %>
+<% content_for(:page_title) {t '.page_title', :page => @page.name } %>
 
 <div class="panel clearfix">
+  <% if current_user && current_user.is_admin? %>
+    <section class="admin_panel">
+      <%= link_to t('buttons.edit'), edit_page_path(@page.slug), {:class => :edit, :title => t('buttons.edit')} %>
+    </section>
+  <% end %>
   <h1><%= @page.name %></h1>
 </div>
 

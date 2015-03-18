@@ -1,7 +1,11 @@
 <% content_for(:page_title) {t '.page_title', :person => @person.name } %>
 
 <div class="panel">
-  <%= content_tag(:section, link_to("Edit this "+@person.type, edit_person_path(@person), {:class => :edit, :title => "Edit this "+@person.type}), :class => :admin_panel) if current_user && current_user.is_admin? %>
+  <% if current_user && current_user.is_admin? %>
+    <section class="admin_panel">
+      <%= link_to t('buttons.edit'), edit_person_path(@person), {:class => :edit, :title => t('buttons.edit')} %>
+    </section>
+  <% end %>
 
   <div class="vcard person" typeof="<%= if (@person.person?) then "foaf:Person" else "foaf:Agent" end %> vcard:VCard" about="#person">
 

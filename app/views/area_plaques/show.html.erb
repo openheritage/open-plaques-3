@@ -1,19 +1,36 @@
-<% content_for :page_title, "Unphotographed plaques in " + @area.name + ", " + @area.country.name %>
+<% if @display!='unphotographed' %>
+  <% content_for(:page_title) {t '.page_title', :area => @area.name + ", " + @area.country.name } %>
+<% else %>
+  <% content_for(:page_title) {t '.page_title_unphotographed', :area => @area.name + ", " + @area.country.name } %>
+<% end %>
+
 <div class="panel clearfix">
   <% if current_user && current_user.is_admin? %>
     <section class="admin_panel">
-      <%= link_to("Edit this area", edit_area_path(@area), {:class => :edit, :title => "Edit this area"})%>
+      <%= link_to t('buttons.edit'), edit_area_path(@area), {:class => :edit, :title => t('buttons.edit')} %>
     </section>
   <% end %>
-  <%= link_to(@area.country.name, @area.country) if @area.country %>
-  <h1><%= @area.name %> (<%= @display %>)</h1>
-  <p>See <%= link_to "all plaques", area_path(@area) %>
-  <% if @display!='unphotographed' %>
-    or <%= link_to "unphotographed plaques", area_unphotographed_path(@area) %>
-  <% end %>  
-  <% if current_user && current_user.is_admin? && @display!='ungeolocated' %>
-    or <%= link_to "ungeolocated plaques", area_ungeolocated_path(@area) %>
-  <% end %>
+  <h1><%= @area.name %>, <%= link_to(@area.country.name, @area.country) if @area.country %></h1>
+  <p>
+    <% if @display!='all' %>
+      <%= link_to t('buttons.all'), area_path(@area) %>
+    <% else %>
+      <strong><%= t 'buttons.all' %></strong>
+    <% end %>
+      or
+    <% if @display!='unphotographed' %>
+      <%= link_to t('buttons.unphotographed'), area_unphotographed_path(@area) %>
+    <% else %>
+      <strong><%= t 'buttons.unphotographed' %></strong>
+    <% end %>
+    <% if current_user && current_user.is_admin? %>
+      or
+      <% if @display!='ungeolocated' %>
+        <%= link_to t('buttons.ungeolocated'), area_ungeolocated_path(@area) %>
+      <% else %>
+        <strong><%= t 'buttons.ungeolocated' %></strong>
+      <% end %>
+    <% end %>
   </p>
   <% if @display!='ungeolocated' && @area.latitude %>
     <div id="plaque-map" class="full" data-latitude="<%= @area.latitude %>" data-longitude="<%= @area.longitude %>" data-view="<%= @display %>"></div>
@@ -24,5 +41,5 @@
 </div>
 
 <div class="panel clearfix">
-  <p class="alternate_formats">Data about <%= @area %> plaques as <%= alternate_link_to "JSON", area_plaques_path(@area, :json), :json %></p>
+  <p class="alternate_formats"><%= t 'data_about_thing_as', :thing => @area.name + ", " + @area.country.name %> <%= t '.plaques' %> <%= alternate_link_to "JSON", area_plaques_path(@area, :json), :json %></p>
 </div>

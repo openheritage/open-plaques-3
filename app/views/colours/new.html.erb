@@ -1,17 +1,10 @@
-<% content_for :page_title, "Add a plaque colour" %>
+<% content_for(:page_title) {t '.page_title' } %>
 
 <div class="panel">
-  <h1>Add colour</h1>
-
-  <%= form_for @colour do |colour| %>
-    <%= colour.label :name, "Name" %>
-    <%= colour.text_field :name %>
-
-    <p>
-      <%= colour.label :dbpedia_uri %>
-      <%= colour.text_field :dbpedia_uri %>
-    </p>
-
-    <%= colour.submit "Save" %>
+  <h1><%= t '.page_heading_html' %></h1>
+  <%= form_for @colour do |f| %>
+    <p><%= f.label :name, t('.name') %> <%= f.text_field :name %></p>
+    <p><%= f.label :dbpedia_uri, t('.dbpedia_uri') %> <%= f.text_field :dbpedia_uri %></p>
+    <%= f.submit t('buttons.save'), :class => :button %>
   <% end %>
 </div>

@@ -1,19 +1,10 @@
-<% content_for :page_title, "Add an area" %>
-<h1>New area in <%= link_to @country.name, country_path(@country)%></h1>
+<% content_for(:page_title) {t '.page_title', :country => @country.name } %>
 
-<%= form_for(@area, :url => country_areas_path(@country.alpha2)) do |f| %>
-
-  <p>
-    <%= f.label :name %>
-    <%= f.text_field :name %>
-  </p>
-
-  <p>
-    <%= f.label :slug %>
-    <%= f.text_field :slug %> (must be lowercase, and have no spaces)
-  </p>
-
-
-  <%= f.submit "Save" %>
-
-<% end %>
+<div class="panel">
+  <h1><%= t '.page_heading_html', :country => link_to(@country.name , country_path(@country)) %></h1>
+  <%= form_for(@area, :url => country_areas_path(@country.alpha2)) do |f| %>
+    <p><%= f.label :name %> <%= f.text_field :name %></p>
+    <p><%= f.label :slug %> <%= f.text_field :slug %> (must be lowercase, and have no spaces)</p>
+    <%= f.submit t('buttons.save'), :class => :button %>
+  <% end %>
+</div>

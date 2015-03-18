@@ -3,7 +3,7 @@
 <div class="panel">
   <% if current_user && current_user.is_admin? %>
     <section class="admin_panel">
-      <%= link_to t('.add_a_colour'), new_colour_path(), {:class => :edit, :title => t('.add_a_colour')} %>
+      <%= link_to t('buttons.add'), new_colour_path(), {:class => :edit, :title => t('buttons.add')} %>
     </section>
   <% end %>
   
