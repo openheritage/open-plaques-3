@@ -1,47 +1,38 @@
-<% content_for :page_title, "Photos licences" %>
-
-<% @sorted_licences = @licences.sort_by { |p| 1 - p.photos.count } %>
+<% content_for(:page_title) {t '.page_title'} %>
 
 <div class="panel">
-  <h1>Photo licences</h1>
-
-  <p><%= pluralize(@licences.size, "licence") %></p>
-
-  <canvas id="myCanvas" width="1000" height="1000"></canvas>
-
-  <ul>
-  <% for licence in @sorted_licences %>
-    <li><%= link_to(licence.name, licence_url(licence)) %> - <%= pluralize(licence.photos.count, "photo") %> <%= link_to(licence.url, licence.url) %> </li>
-  <% end %>
-  </ul>
+  <h1><%= t '.page_heading' %></h1>
+  <canvas id="myCanvas" width="1000" height="1000">
+    <%= render @licences %>    
+  </canvas>
+  <p class="alternate_formats"><%= t 'data_about_things_as' %> <%= alternate_link_to "JSON", licences_path(:json), :json %></p>
 </div>
 
-<p class="alternate_formats">Data about licences as <%= alternate_link_to "JSON", licences_path(:json), :json %></p>
-
 <script>
-    window.onload = function ()
-    {
-        var data = [<% @sorted_licences.each_with_index do |licence, idx| %><% if idx < 50 %><%= licence.photos.count %>,<% end %><% end %>];
-        var hbar = new RGraph.HBar('myCanvas', data);
-        hbar.Set('chart.labels', [<% @sorted_licences.each_with_index do |licence, idx| %><% if idx < 50 %>'<%= licence.name %>',<% end %><% end %>]);
-        hbar.Set('chart.colors', [<% (40..200).step(50).each do |b| %><% (40..200).step(50).each do |g| %><% (40..200).step(50).each do |r| %>'rgb(<%= r %>,<%= g %>,<%= b %>)', <% end %><% end %><% end %>]);
+  window.onload = function ()
+  {
+    var data = [<% @licences.each_with_index do |licence, idx| %><% if idx < 50 %><%= licence.photos.count %>,<% end %><% end %>];
+    var hbar = new RGraph.HBar('myCanvas', data);
+    hbar.Set('chart.labels', [<% @licences.each_with_index do |licence, idx| %><% if idx < 50 %>'<%= licence.name %>',<% end %><% end %>]);
+    hbar.Set('chart.colors', [<% (40..200).step(50).each do |b| %><% (40..200).step(50).each do |g| %><% (40..200).step(50).each do |r| %>'rgb(<%= r %>,<%= g %>,<%= b %>)', <% end %><% end %><% end %>]);
 
-        hbar.Set('chart.strokestyle', 'rgba(0,0,0,0)');
-        hbar.Set('chart.labels.above', true);
-        hbar.Set('chart.labels.above', true);
-        hbar.Set('chart.vmargin', 15);
-        hbar.Set('chart.background.grid', false);
-        
-        hbar.Set('chart.colors.sequential', true);
+    hbar.Set('chart.strokestyle', 'rgba(0,0,0,0)');
+    hbar.Set('chart.labels.above', true);
+    hbar.Set('chart.labels.above', true);
+    hbar.Set('chart.vmargin', 15);
+    hbar.Set('chart.background.grid', false);
+    
+    hbar.Set('chart.colors.sequential', true);
 
-        hbar.Set('chart.xlabels', false);
-        hbar.Set('chart.gutter.left', 300);
-        hbar.Set('chart.gutter.right', 50);
-        hbar.Set('chart.gutter.top', 25);
+    hbar.Set('chart.xlabels', false);
+    hbar.Set('chart.gutter.left', 300);
+    hbar.Set('chart.gutter.right', 50);
+    hbar.Set('chart.gutter.top', 25);
 
-		hbar.Set('chart.noxaxis', true);
-		hbar.Set('chart.noxtickmarks', true);
-		hbar.Set('chart.noytickmarks', true);
-        RGraph.isOld() ? hbar.Draw() : RGraph.Effects.HBar.Grow(hbar);
-    }
+    hbar.Set('chart.noxaxis', true);
+    hbar.Set('chart.noxtickmarks', true);
+    hbar.Set('chart.noytickmarks', true);
+    
+    RGraph.isOld() ? hbar.Draw() : RGraph.Effects.HBar.Grow(hbar);
+  }
 </script>

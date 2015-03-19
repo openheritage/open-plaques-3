@@ -6,17 +6,11 @@
       <%= link_to(t('buttons.add'), new_language_path, {:class => :edit, :title => t('buttons.add')})%>
     </section>
   <% end %>
-
   <h1><%= t '.page_heading' %></h1>
   <canvas id="myCanvas" width="600" height="650">
     <%= render @languages %>
-    <ul>
-      <% @languages.each do |language| %>
-        <div><%= language %> - <%= pluralize(language.plaques.size, "plaque") %></div>
-      <% end %>
-    </ul>
   </canvas>
-  <p class="alternate_formats"><%= t 'data_about_things_as', :thing => 'languages' %> <%= alternate_link_to "JSON", languages_path(:json), :json %></p>
+  <p class="alternate_formats"><%= t 'data_about_things_as' %> <%= alternate_link_to "JSON", languages_path(:json), :json %></p>
 </div>
 
 <script>

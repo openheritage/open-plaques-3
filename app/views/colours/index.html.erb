@@ -6,15 +6,11 @@
       <%= link_to t('buttons.add'), new_colour_path(), {:class => :edit, :title => t('buttons.add')} %>
     </section>
   <% end %>
-  
   <h1><%= t '.page_heading' %></h1>
-
   <canvas id="myCanvas" width="600" height="650">
-    <% @colours.each do |colour| %>
-      <div><%= colour %> - <%= colour.plaques.size %></div>
-    <% end %>
+    <%= render @colours %>
   </canvas>
-  <p class="alternate_formats"><%= t 'data_about_things_as', :thing => 'colours' %> <%= alternate_link_to "JSON", colours_path(:json), :json %></p>
+  <p class="alternate_formats"><%= t 'data_about_things_as' %> <%= alternate_link_to "JSON", colours_path(:json), :json %></p>
 </div>
 
 <script>

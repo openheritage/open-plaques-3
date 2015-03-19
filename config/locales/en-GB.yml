@@ -14,9 +14,9 @@ en-GB:
     ungeolocated: ungeolocated
     or: or
 
-  data_about_thing_as: Data about %{thing} as
+  data_about_thing_as: Data about this as
   data_about_this_thing_as: Data about this %{thing} as
-  data_about_things_as: Data about %{thing} as
+  data_about_things_as: Data about these as
   unphotographed_plaques: unphotographed plaques
 
   home:
@@ -112,8 +112,9 @@ en-GB:
 
   licences:
     index:
-      page_title: Licences
-      page_heading: Licences
+      page_title: Photo licences
+      page_heading: Photo licences
+      data_about_licences_as: data about licences as
     show:
       page_title: Licence %{licence}
       page_heading: Licence %{licence}
