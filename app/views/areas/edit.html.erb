@@ -1,4 +1,4 @@
-<% content_for(:page_title) {t '.page_title', :area => @area.name + ", " + @area.country.name } %>
+<% content_for(:page_title) {t '.page_title', :area => @area.name + ", " + @area.country.name} %>
 
 <div class="panel clearfix">
   <h1><%= t '.page_heading_html', :area => link_to(@area.name, @area) + ', ' + link_to(@area.country.name, @area.country) %></h1>

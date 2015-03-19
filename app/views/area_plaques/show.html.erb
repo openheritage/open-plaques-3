@@ -17,14 +17,14 @@
     <% else %>
       <strong><%= t 'buttons.all' %></strong>
     <% end %>
-      or
+      <%= t 'buttons.or' %>
     <% if @display!='unphotographed' %>
       <%= link_to t('buttons.unphotographed'), area_unphotographed_path(@area) %>
     <% else %>
       <strong><%= t 'buttons.unphotographed' %></strong>
     <% end %>
     <% if current_user && current_user.is_admin? %>
-      or
+      <%= t 'buttons.or' %>
       <% if @display!='ungeolocated' %>
         <%= link_to t('buttons.ungeolocated'), area_ungeolocated_path(@area) %>
       <% else %>
@@ -41,5 +41,5 @@
 </div>
 
 <div class="panel clearfix">
-  <p class="alternate_formats"><%= t 'data_about_thing_as', :thing => @area.name + ", " + @area.country.name %> <%= t '.plaques' %> <%= alternate_link_to "JSON", area_plaques_path(@area, :json), :json %></p>
+  <p class="alternate_formats"><%= t 'data_about_thing_as' %> <%= alternate_link_to "JSON", area_plaques_path(@area, :json), :json %></p>
 </div>
