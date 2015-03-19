@@ -104,6 +104,15 @@ en-GB:
       page_title: Historical plaques in %{country}
       page_heading: Historical plaques in %{country}
 
+  explore:
+    show:
+      page_title: Explore historical blue plaques by location, person or type
+      page_heading: Explore
+      people: People
+      people_blurb: Many plaques commemorate important people from history.
+      location: Location
+      location_blurb: Discover where plaques are located.
+
   languages:
     edit:
       page_title: Edit %{language}
