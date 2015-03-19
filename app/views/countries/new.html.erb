@@ -1,18 +1,11 @@
-<% content_for :page_title, "Add country" %>
+<% content_for(:page_title) {t '.page_title'} %>
+
 <div class="panel">
-  <h1>Add country</h1>
-
+  <h1><%= t '.page_heading' %></h1>
   <%= form_for @country, :url => countries_path do |f| %>
-
-    <%#= f.error_messages %>
-
-    <p><%= f.label :name %> <%= f.text_field :name %></p>
-
-    <p><%= f.label :alpha2, "Alpha-2 code" %> <%= f.text_field :alpha2 %> <a target="new" href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">ISO 3166</a></p>
-
-    <p><%= f.label :dbpedia_uri, "DBpedia resource URI" %> <%= f.text_field :dbpedia_uri %></p>
-
-    <%= f.submit "Add" %>
-
+    <p><%= f.label :name, t('.name') %> <%= f.text_field :name %></p>
+    <p><%= f.label :alpha2, t('.alpha2_code') %> <%= f.text_field :alpha2 %> <a target="new" href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">ISO 3166</a></p>
+    <p><%= f.label :dbpedia_uri, t('.dbpedia_uri') %> <%= f.text_field :dbpedia_uri %></p>
+    <p><%= f.submit t('buttons.save'), :class => :button %></p>
   <% end %>
 </div>

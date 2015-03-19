@@ -84,16 +84,25 @@ en-GB:
   countries:
     edit:
       page_title: Edit %{country}
-      page_heading: Edit %{country}
+      page_heading_html: Edit %{country}
+      alpha2_code: Alpha2 code
+      name: Name
+      dbpedia_uri: DbPedia uri
+      area: Area
+      add_an_area: Add an area
     index:
-      page_title: xx
-      page_heading: yy
+      page_title: Countries that have plaques
+      page_heading: Countries that have plaques
+      different_strokes: There are commemorative plaques all over the world. Some countries honour people by naming roads after them and hence are less inclined to have markers at place of birth/death/etc.
     new:
-      page_title: xx
-      page_heading: yy
+      page_title: Add country
+      page_heading: Add country
+      alpha2_code: Alpha2 code
+      name: Name
+      dbpedia_uri: DbPedia uri
     show:
-      page_title: xx
-      page_heading: yy
+      page_title: Historical plaques in %{country}
+      page_heading: Historical plaques in %{country}
 
   languages:
     edit:
@@ -116,8 +125,8 @@ en-GB:
       page_heading: Photo licences
       data_about_licences_as: data about licences as
     show:
-      page_title: Licence %{licence}
-      page_heading: Licence %{licence}
+      page_title: Licence - %{licence}
+      page_heading: Licence - %{licence}
 
   organisations:
     edit:

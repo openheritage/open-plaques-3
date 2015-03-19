@@ -1,14 +1,13 @@
-<% content_for :page_title, "Historical plaques in " + @country.name %>
+<% content_for(:page_title) {t '.page_title', :country => @country.name} %>
 
 <div class="panel clearfix">
   <% if current_user && current_user.is_admin? %>
     <section class="admin_panel">
-      <%= link_to("Add a new area", new_country_area_path(@country.alpha2), {:class => :edit, :title => "Add new area to " + @country.name})%>
+      <%= link_to t('buttons.edit'), edit_country_path(@country), {:class => :edit, :title => t('buttons.edit')} %>
+      <%= link_to(t('buttons.add'), new_country_area_path(@country.alpha2), {:class => :edit, :title => t('buttons.add')})%>
     </section>
   <% end %>
-
   <h1><%= @country.name %></h1>
-
   <h2>We have <%= pluralize @country.plaques.size, "plaque record" %> in <%= pluralize @country.areas.size, "area" %></h2>
   <%= content_tag("ol", :class => "results one_destination_results", :id => "people_results") do %>
     <% @areas.each do |area| %>
@@ -19,6 +18,5 @@
       <% end %>
     <% end %>
   <% end unless @areas.size <=0 %>
-
-  <p class="alternate_formats"><%= t 'data_about_thing_as', :thing => @country %> <%= alternate_link_to "JSON", country_path(@country, :json), :json %></p>
+  <p class="alternate_formats"><%= t 'data_about_thing_as' %> <%= alternate_link_to "JSON", country_path(@country, :json), :json %></p>
 </div>

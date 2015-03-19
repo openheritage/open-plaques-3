@@ -1,13 +1,13 @@
-<% content_for :page_title, "Countries that have plaques" %>
+<% content_for(:page_title) {t '.page_title'} %>
 
 <div class="panel clearfix">
-  <h1>Countries that have plaques</h1>
   <% if current_user && current_user.is_admin? %>
-  <section class="admin_panel">
-    <%= link_to("Add a country", new_country_path, {:class => :edit, :title => "Add a country"})%>
-  </section>
+    <section class="admin_panel">
+      <%= link_to(t('buttons.add'), new_country_path, {:class => :edit, :title => t('buttons.add')})%>
+    </section>
   <% end %>
-  <p>There are commemorative plaques all over the world. Some countries honour people by naming roads after them and hence are less inclined to have markers at place of birth/death/etc.</p>
+  <h1><%= t '.page_heading' %></h1>
+  <p><%= t '.different_strokes' %></p>
 </div>
 
 <%= content_tag("ol", :id => "places_results", :class => "results one_destination_results") do %>
@@ -21,4 +21,4 @@
   <% end %>
 <% end %>
 
-<p class="alternate_formats">Data about countries as <%= alternate_link_to "XML", countries_path(:xml), :xml %> <%= alternate_link_to "JSON", countries_path(:json), :json %> </p>
+<p class="alternate_formats"><%= t 'data_about_things_as' %> <%= alternate_link_to "JSON", countries_path(:json), :json %> </p>
