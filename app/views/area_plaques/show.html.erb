@@ -10,6 +10,7 @@
       <%= link_to t('buttons.edit'), edit_area_path(@area), {:class => :edit, :title => t('buttons.edit')} %>
     </section>
   <% end %>
+
   <h1><%= @area.name %>, <%= link_to(@area.country.name, @area.country) if @area.country %></h1>
   <p>
     <% if @display!='all' %>
