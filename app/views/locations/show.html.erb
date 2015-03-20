@@ -1,19 +1,14 @@
-<% @page_title = @location.name  
-@page_title += ", " + @location.area.name if @location.area %>
-<% content_for :page_title, "Historical plaques at " + @page_title %>
+<% content_for(:page_title) {t '.page_title', :location => @location.name } %>
 
 <div class="panel clearfix">
   <% if current_user && current_user.is_admin? %>
     <section class="admin_panel">
-      <%= link_to("Edit this location", edit_location_path(@location), {:class => :edit, :title => "Edit this location"})%>
+      <%= link_to(t('buttons.edit'), edit_location_path(@location), {:class => :edit, :title => t('buttons.edit')})%>
     </section>
   <% end %>
 
   <div class="location" typeof="geo:Point">
     <h1><%= @location.name %><% if @location.area %>, <%= link_to @location.area.name, @location.area %><% end %></h1>
   </div>
-
   <%= render @location.plaques %>
-
 </div>
-

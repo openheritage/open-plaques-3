@@ -1,10 +1,10 @@
-<% content_for :page_title, "Edit " + @location.name %>
+<% content_for(:page_title) {t '.page_title', :location => @location.name} %>
 
 <%= render 'plaques/edit_bar', :plaque => @location.plaques.first %>
 
 <div class="panel clearfix">
-  <h1>Edit location <%= link_to @location.full_address, @location %></h1>
-  <p>The plaque at this location is...
+  <h1><%= t '.page_heading', :location => @location.full_address %></h1>
+  <p><%= t '.plaque_at_location' %>
     <%= render @location.plaques %>
   </p>
 </div>
@@ -16,15 +16,15 @@
       <% if @areas.size > 0 %>
         <%= f.collection_select :area_id, @areas, :id, :name, {:include_blank => true} %>
       <% end %>
-      <%= f.submit "Update", :class => :button %>
+      <%= f.submit t('buttons.update'), :class => :button %>
     </p>
   <% end %>
   <br/>
-  <p>Add a new area in: 
+  <p><%= t '.add_an_area' %>
     <% @countries.each do |country| %>
       <%= link_to(country.name, "/places/" + country.alpha2 + "/areas/new") %>
     <% end %>
   </p>
   <br/>
-  <p><%= button_to "Delete location", location_path(@location), {:method => :delete, :class => :button} if current_user.try(:is_admin?) %></p>
+  <p><%= button_to t('buttons.delete'), location_path(@location), {:method => :delete, :class => :button} if current_user.try(:is_admin?) %></p>
 </div>
