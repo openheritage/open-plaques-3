@@ -1,19 +1,21 @@
 <% content_for :page_title, "#{@organisation.name} plaques" %>
 
-<%= content_tag(:section, link_to("Edit this organisation", edit_organisation_path(@organisation), {:class => :edit, :title => "Edit this organisation"}), :class => :admin_panel) if current_user && current_user.is_admin? %>
-
 <div class="panel clearfix">
-  <h1 property="dc:title rdfs:label foaf:name" about="#this"><%= h @organisation.name %> plaques</h1>
+  <% if current_user && current_user.is_admin? %>
+    <section class="admin_panel">
+      <%= link_to t('buttons.edit'), edit_organisation_path(@organisation), {:class => :edit, :title => t('buttons.edit')} %>
+    </section>
+  <% end %>
+  <h1 property="dc:title rdfs:label foaf:name" about="#this"><%= t '.page_heading', :organisation => @organisation.name %></h1>
 </div>
 
 <div id="organisation_info" typeof="foaf:Organization">
   <%= content_tag("p", link_to(h(@organisation.website),@organisation.website), {:rel => "foaf:homepage vcard:url"}) unless @organisation.website.blank? %>
   <%= simple_format(@organisation.description) if @organisation.description %>
-   <div id="plaque-map" data-latitude="<%= @organisation.latitude %>" data-longitude="<%= @organisation.longitude %>" data-view="all" context="<%= request.path %>"></div>
- </div>
+  <div id="plaque-map" data-latitude="<%= @organisation.latitude %>" data-longitude="<%= @organisation.longitude %>" data-view="all" context="<%= request.path %>"></div>
   <%= will_paginate @sponsorships %>
   <%= render partial: 'plaques/plaque', collection: @sponsorships, as: :plaque %>
   <%= will_paginate @sponsorships %>
 </div>
 
-<p class="alternate_formats">Data about <%= @organisation %> as <%= alternate_link_to "JSON", organisation_path(@organisation, :format => :json), :json %></p>
+<p class="alternate_formats"><%= t 'data_about_thing_as' %> <%= alternate_link_to "JSON", organisation_path(@organisation, :format => :json), :json %></p>

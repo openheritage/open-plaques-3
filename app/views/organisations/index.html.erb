@@ -15,7 +15,7 @@
     <li>
       <a href="<%= url_for(organisation) %>">
         <p class="result"><%= organisation.name %></p>
-        <p class="count"><%= pluralize(organisation.sponsorships.size, "plaque") if organisation.sponsorships.size > 0 %><%= "no plaques" if organisation.sponsorships.size == 0 %></p>
+        <p class="count"><%= pluralize(organisation.sponsorships.size, "plaque") if organisation.sponsorships.size > 0 %><%= t('.no_plaques') if organisation.sponsorships.size == 0 %></p>
       </a>
     </li>
   <% end %>

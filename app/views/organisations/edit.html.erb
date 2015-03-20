@@ -1,17 +1,17 @@
-<% @page_title = "Edit " + @organisation.name + "" %>
-<div class="panel clearfix">
-  <h1>Edit <%= link_to(h(@organisation.name), @organisation) %></h1>
+<% content_for(:page_title) {t '.page_title', :organisation => @organisation.name} %>
 
+<div class="panel clearfix">
+  <h1><%= t '.page_heading', :organisation => @organisation.name %></h1>
   <%= form_for(@organisation) do |f| %>
-    <p><%= f.label :name %><%= f.text_field :name %></p>
-    <p><%= f.label :slug %><%= f.text_field :slug %></p>
+    <p><%= f.label :name, t('.name') %> <%= f.text_field :name %></p>
+    <p><%= f.label :slug, t('.slug') %> <%= f.text_field :slug %></p>
     <p>
-      <%= f.label :latitude %><%= f.text_field :latitude %>
-      <%= f.label :longitude %><%= f.text_field :longitude %>
+      <%= f.label :latitude, t('.latitude') %> <%= f.text_field :latitude %>
+      <%= f.label :longitude, t('.longitude') %> <%= f.text_field :longitude %>
     </p>
-    <p><%= f.label :website %><%= f.text_field :website %></p>
-    <p><%= f.label :description %><%= f.text_area :description %></p>
-    <p><%= f.label :notes %><%= f.text_area :notes %></p>
-    <p><%= f.submit "Update", :class => :button %></p>
+    <p><%= f.label :website, t('.website') %> <%= f.text_field :website %></p>
+    <p><%= f.label :description, t('.description') %> <%= f.text_area :description %></p>
+    <p><%= f.label :notes, t('.notes') %> <%= f.text_area :notes %></p>
+    <p><%= f.submit t('buttons.save') , :class => :button %></p>
   <% end %>
 </div>

@@ -1,12 +1,13 @@
-<% content_for :page_title, "Add organisation" %>
-<h1>Add an organisation</h1>
+<% content_for(:page_title) {t '.page_title'} %>
 
-<%= form_for @organisation do |f| %>
-
-  <p><%= f.label :name %> <%= f.text_field :name %> (Note: please don't include the word 'The' unless it is absolutely an indivisible part of the name.)</p>
-  <h2>Optional fields</h2>
-  <p><%= f.label :website %> <%= f.text_field :website %></p>
-  <p><%= f.label :description %><%= f.text_area :description %> (Displayed on the page)</p>
-  <p><%= f.label :notes %> <%= f.text_area :notes %> (Internal use only)</p>
-  <p><%= f.submit "Save", :class => :button %></p>
-<% end %>
+<div class="panel">
+  <h1><%= t '.page_heading' %></h1>
+  <%= form_for @organisation do |f| %>
+    <p><%= f.label :name, t('.name') %> <%= f.text_field :name %> <%= t '.note_about_name' %></p>
+    <h2>Optional fields</h2>
+    <p><%= f.label :website, t('.website') %> <%= f.text_field :website %></p>
+    <p><%= f.label :description, t('.description') %><%= f.text_area :description %> <%= t '.note_about_description' %></p>
+    <p><%= f.label :notes, t('.notes') %> <%= f.text_area :notes %> <%= t '.note_about_notes' %></p>
+    <p><%= f.submit t('buttons.save'), :class => :button %></p>
+  <% end %>
+</div>
