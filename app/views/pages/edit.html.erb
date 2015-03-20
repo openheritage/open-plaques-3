@@ -1,21 +1,11 @@
-<h1>Edit <%= link_to @page.name, {:action => :show, :id => @page.slug }%></h1>
+<% content_for(:page_title) {t '.page_title', :page => @page.name} %>
 
-<div class="panel">
+<div class="panel clearfix">
+  <h1><%= t '.page_heading', :page => @page.name %></h1>
   <%= form_for @page, :url => "/pages/" + @page.slug do |f| %>
-
-    <p>
-      <%= f.label :name %>
-      <%= f.text_field :name %>
-    </p>
-
-    <p>
-      <%= f.label :slug %>
-      <%= f.text_field :slug %>
-    </p>
-
-    <%= f.text_area :body, {:rows => "40", :cols => "160"} %>
-
-    <%= f.submit "Save", :class => :button  %>
-
+    <p><%= f.label :name, t('.name') %> <%= f.text_field :name %></p>
+    <p><%= f.label :slug, t('.slug') %> <%= f.text_field :slug %></p>
+    <%= f.text_area :body, {:rows => "40", :cols => "80"} %>
+    <%= f.submit t('buttons.save'), :class => :button  %>
   <% end %>
 </div>
