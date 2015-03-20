@@ -136,20 +136,47 @@ en-GB:
     show:
       page_title: Licence - %{licence}
       page_heading: Licence - %{licence}
+      quantity: in Open Plaques have been made available under the %{licence}.
+      more_information: More information about this licence can be found at
+
+  locations:
+    edit:
+      page_title: Edit %{location}
+      page_heading: Edit %{location}
+      plaque_at_location: The plaque at this location is...
+    show:
+      page_title: Location %{location}
+      page_heading: Location %{location}
+      add_an_area: Add a new area in
 
   organisations:
     edit:
       page_title: Edit %{organisation}
       page_heading: Edit %{organisation}
+      name: Name
+      slug: Slug
+      latitude: Latitude
+      longitude: Longitude
+      website: website
+      description: description
+      notes: notes
     index:
       page_title: Organisations erecting historical plaques
       page_heading: Organisations erecting plaques
+      no_plaques: no plaques
     new:
       page_title: New organisation
       page_heading: New organisation
+      name: Name
+      note_about_name: please don't include the word 'The' unless it is absolutely an indivisible part of the name
+      website: website
+      description: description
+      note_about_description: (Displayed on the page)
+      notes: notes
+      note_about_notes: (Internal use only)
     show:
       page_title: Organisation %{organisation}
-      page_heading: Organisation %{organisation}
+      page_heading: Organisation - %{organisation}
 
   pages:
     edit:
@@ -161,13 +188,20 @@ en-GB:
     new:
       page_title: New page
       page_heading: New page
+      name: Name
+      slug: Slug
     show:
       page_title: Open Plaques - %{page}
       page_heading: '%{page}'
 
   people:
     edit:
+      add_a_role: add a role
     new:
+      page_title: New person
+      page_heading: New person
+      born_in: Born in
+      died_in: Died in
     show:
       page_title: Historical plaques about %{person}
       not_commemorated: Is not commemorated on any plaques in our database (yet)

@@ -1,25 +1,20 @@
-<% content_for :page_title, "New person" %>
-<div class="panel">
-  <h1>New person</h1>
-</div>
-<div class="panel">
+<% content_for(:page_title) {t '.page_title'} %>
 
+<div class="panel">
+  <h1><%= t '.page_heading' %></h1>
   <%= form_for(@person) do |f| %>
-  
   <fieldset>
     <div class="row">
       <%= f.label :name %> <%= f.text_field :name %>
     </div>
     <div class="row">
-      <%= f.label :born_on, "Born in" %> <%= text_field_tag :born_on, "", {:maxlength => "4"} %>
+      <%= f.label :born_on, t('.born_in') %> <%= text_field_tag :born_on, "", {:maxlength => "4"} %>
     </div>
     <div class="row">
-      <%= f.label :died_on, "Died in" %> <%= text_field_tag :died_on, "", {:maxlength => "4"} %>
+      <%= f.label :died_on, t('.died_in') %> <%= text_field_tag :died_on, "", {:maxlength => "4"} %>
     </div>
-    <%= f.submit "Create", :class => 'button' %>
+    <%= f.submit t('buttons.save'), :class => 'button' %>
   </fieldset>
-    
   <% end %>
-
 </div>
 

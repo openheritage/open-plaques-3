@@ -10,7 +10,10 @@
   <div class="vcard person" typeof="<%= if (@person.person?) then "foaf:Person" else "foaf:Agent" end %> vcard:VCard" about="#person">
 
     <%= content_tag(:p, thumbnail_img(@person)) if @person.main_photo %>
-    <h1><%= dated_person(@person, {:links => :none}) %> <%= roles_list(@person) %></h1>
+    <h1>
+      <%= dated_person(@person, {:links => :none}) %>
+      <%= roles_list(@person) %>
+    </h1>
 
     <% if @person.parents.size > 0 %>
       <p><%= 'parent'.pluralize @person.parents.size %>:<%= render @person.parents %></p>

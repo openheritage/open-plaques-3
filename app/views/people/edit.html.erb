@@ -1,8 +1,7 @@
-<% content_for :page_title, "Editing " + @person.name %>
+<% content_for(:page_title) {t '.page_title', :person => @person.full_name} %>
 
 <div class="panel">
-  <h1>Details about <%= link_to @person.name, @person %></h1>
-
+  <h1><%= t '.page_heading', :person => @person.full_name %></h1>
   <p><%= @person.name %> features on plaques...
   <% @person.plaques.each do |plaque| %>
     <%= render 'plaques/minimal', :plaque => plaque %>
@@ -69,5 +68,5 @@
       <%= f.submit "Add", :class => :button %>
     <% end %>
   </p>
-  <%= content_tag("p", link_to("Add new role", new_role_path)) if current_user %>
+  <%= content_tag("p", link_to(t('.add_a_role'), new_role_path)) if current_user %>
 </div>
