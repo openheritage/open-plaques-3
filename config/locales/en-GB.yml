@@ -247,11 +247,19 @@ en-GB:
 
   personal_connections:
     edit:
-      page_title: xx
-      page_heading: yy
+      page_title: Edit connections for plaque #%{plaque}
+      page_heading: Edit connections for plaque #%{plaque}
     new:
-      page_title: xx
-      page_heading: yy
+      page_title: New connection for plaque #%{plaque}
+      page_heading: Connections
+      from_which_we_can_establish: From this plaque we establish that...
+      nothing_yet: nothing yet
+      new_person: new person
+      new_verb: new verb
+      at: at
+      no_location: There is no location for this plaque. Probably shouldn't create a connection.
+      from: From
+      to: To
 
   personal_roles:
     edit:
@@ -263,8 +271,8 @@ en-GB:
       page_title: Photographers
       page_heading: Photographers
     new:
-      page_title: New photographer
-      page_heading: New photographer
+      page_title: Find Flickr photos for a photographer
+      page_heading: Find Flickr photos for a photographer
     show:
       page_title: Photographer %{photographer}
       page_heading: Photographer %{photographer}

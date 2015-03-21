@@ -1,6 +1,5 @@
-<div class="inside_panel">
-  Open Plaques conclude that <%= render personal_connection.person %>
-  <strong><%= personal_connection.verb.name %></strong> at 
-  <%= render personal_connection.location if personal_connection.location %> from the plaque:
-  <div class="inside_panel"><%= render "plaques/minimal", :plaque => personal_connection.plaque if personal_connection.plaque %></div>
-</div>
+ <div>
+   <%= link_to personal_connection.person.name, person_path(personal_connection.person) if personal_connection.person %> <%= personal_connection.verb.name if personal_connection.verb %>
+   <%= "at " + personal_connection.location.full_address if personal_connection.location %>
+   <%= "from " + personal_connection.started_at.year.to_s if personal_connection.started_at %><%= " to " + personal_connection.ended_at.year.to_s if personal_connection.ended_at %>
+ </div>
