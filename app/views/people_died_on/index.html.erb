@@ -1,20 +1,21 @@
 <% content_for(:page_title) {t '.page_title'} %>
 
-<h1>died in</h1>
-
-<p>We have records of when <%=pluralize(Person.count(:died_on), "person") %> died</p>
-<table cellspacing="0" cellpadding="0" summary="Years in which commemorated people died">
-  <caption align="top"><br /><br /></caption>
-  <tr>
-	<th scope="col">Year </th>
-	<th scope="col">Count </th>
-  </tr>
-  <% for count in @counts %>
-    <% if count[0] != nil %>
-      <tr>
-	    <td><%= link_to(count[0].to_s[0,4], people_died_in_path(count[0].to_s[0,4]), {:class => "bday"}) %></td>
-	    <td class="value"><%= image_tag("bar.png", :alt=>"", :width=>count[1]*10, :height=>"16") %><%= pluralize(count[1], "person") %></td>
-      </tr>
-	<% end %>
-  <% end %>
-</table>
+<div class="panel clearfix">
+  <h1><%= t '.page_heading' %></h1>
+  <p>We have records of when <%=pluralize(Person.count(:died_on), "person") %> died</p>
+  <table cellspacing="0" cellpadding="0" summary="Years in which commemorated people died">
+    <caption align="top"><br /><br /></caption>
+    <tr>
+  	<th scope="col">Year </th>
+  	<th scope="col">Count </th>
+    </tr>
+    <% for count in @counts %>
+      <% if count[0] != nil %>
+        <tr>
+  	    <td><%= link_to(count[0].to_s[0,4], people_died_in_path(count[0].to_s[0,4]), {:class => "bday"}) %></td>
+  	    <td class="value"><%= image_tag("bar.png", :alt=>"", :width=>count[1]*10, :height=>"16") %><%= pluralize(count[1], "person") %></td>
+        </tr>
+  	<% end %>
+    <% end %>
+  </table>
+</div>

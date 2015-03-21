@@ -197,10 +197,22 @@ en-GB:
 
   people:
     edit:
+      page_title: Edit %{person}
+      page_heading: Edit %{person}
+      features_on: From the plaques...
+      from_which_we_can_establish: ...we can establish that
+      name: Name
+      display_name: with titles and letters is displayed as
+      introduction: Introduction
+      wikipedia_url: Wikipedia url
+      wikipedia_comment: overrides the default generated one if it's incorrect. Set it to blank if there is no Wikipedia page.
+      conferring_the_letters: conferring the letters
+      conferring_the_title: conferring the title
       add_a_role: add a role
     new:
       page_title: New person
       page_heading: New person
+      name: Name
       born_in: Born in
       died_in: Died in
     show:

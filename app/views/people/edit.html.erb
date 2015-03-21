@@ -2,70 +2,54 @@
 
 <div class="panel">
   <h1><%= t '.page_heading', :person => @person.full_name %></h1>
-  <p><%= @person.name %> features on plaques...
-  <% @person.plaques.each do |plaque| %>
-    <%= render 'plaques/minimal', :plaque => plaque %>
-  <% end %>
-
-  <p>...from which we can establish that:</p>
-
+  <p><%= t '.features_on' %></p>
+  <%= render @person.plaques %>
+  <p><%= t '.from_which_we_can_establish' %></p>
   <%= form_for @person do |f| %>
-    <p><%= f.label :name, @person.possessive + " name " + @person.existence_word %> <%= f.text_field :name %>, or with titles "<%= @person.full_name %>"</p>
+    <p><%= f.label :name, @person.possessive + " name " + @person.existence_word %> <%= f.text_field :name %></p>
+    <p><%= t '.display_name' %> "<%= @person.full_name %>"</p>
     <p><%= @person.possessive %> surname <%= @person.existence_word %> "<%= @person.surname %>" which <%= f.label :surname_starts_with, "starts with" %> <%= f.text_field :surname_starts_with, :maxlength => 1 %></p>
     <p><%= @person.personal_pronoun %> was <%= f.label :born_on, @person.creation_word %> <%= text_field_tag :born_on, @born_on, {:maxlength => "4"} %> and <%= f.label :died_on, @person.destruction_word %> <%= text_field_tag :died_on, @died_on, {:maxlength => "4"} %></p>
-
-    <p><%= f.label :introduction %></p>
+    <p><%= f.label :introduction, t('.introduction') %></p>
     <%= f.text_area :introduction, :cols => 80, :rows => 15 %>
-
-    <p>The <%= f.label :wikipedia_url %> <%= f.text_field :wikipedia_url %> overrides the default generated one if it's incorrect. Set it to blank if there is no Wikipedia page.</p>
+    <p><%= f.label :wikipedia_url, t('.wikipedia_url') %> <%= f.text_field :wikipedia_url %> <%= t '.wikipedia_comment' %></p>
     <%= content_tag("p", "Read more about ".html_safe + link_to(@person.name, @person.default_wikipedia_url, :target => '_blank') + " on Wikipedia.".html_safe) unless @person.default_wikipedia_url.blank? %>
-    <p><%= f.label :wikipedia_paras %> <%= f.text_field :wikipedia_paras %> e.g. "[1,4,5]", "1,2" or "2 4 7"<br/>
-      <br/>
-      "<%= wikipedia_summary(@person.default_wikipedia_url) %>"</p>
     <p><%= f.label :dbpedia_uri %> <%= f.text_field :dbpedia_uri %></p>
-    <p><%= f.submit "Update", :class => :button %></p>
+    <p><%= f.submit t('buttons.save'), :class => :button %></p>
   <% end %>
 
+  <section id="using_wikimedia" class="inside_panel">
+    <p><img src="http://upload.wikimedia.org/wikipedia/commons/7/79/Wiki-commons.png"/></p>
+    <h2>I found, or would like to add, a photo of this person on Wikimedia Commons...</h2>
+    <p>A great place to donate your image to the world is <a href="http://commons.wikimedia.org/">Wikimedia Commons</a>.
+    It is free, fairly easy to use, and your image will live forever (probably) as part of the awesome Wikipedia platform.
+    When you are done, paste the page url in here and Open Plaques will link to the photo.</p>
+    <p>
+      <% @photo = Photo.new %>
+      <%= form_for @photo do |f| %>
+        <%= f.label(:url, "The Wikimedia photo page url is") %> <%= f.text_field :url %>
+        <%= f.hidden_field :person_id, :value => @person.id %>
+        <%= f.hidden_field :of_a_plaque, :value => false %>
+        <%= submit_tag(t('buttons.save'), :class=>'button secondary_button') %>
+      <% end %>
+    </p>
+  </section>
 </div>
 
-<section id="using_wikimedia" class="inside_panel">
-  <p><img src="http://upload.wikimedia.org/wikipedia/commons/7/79/Wiki-commons.png"/></p>
-  <h2>I found, or would like to add, a photo of this person on Wikimedia Commons...</h2>
-  <p>A great place to donate your image to the world is <a href="http://commons.wikimedia.org/">Wikimedia Commons</a>.
-  It is free, fairly easy to use, and your image will live forever (probably) as part of the awesome Wikipedia platform.
-  When you are done, paste the page url in here and Open Plaques will link to the photo.</p>
-  <p>
-  <% @photo = Photo.new %>
-  <%= form_for @photo do |f| %>
-    <%= f.label(:url, "The Wikimedia photo page url is") %> <%= f.text_field :url %>
-    <%= f.hidden_field :person_id, :value => @person.id %>
-    <%= f.hidden_field :of_a_plaque, :value => false %>
-    <%= submit_tag("Add it", :class=>'button secondary_button') %>
-  <% end %>
-  </p>
-</section>
-
 <div class="panel">
-  <h1><%= @person.possessive %> roles</h1>
-
-  <p><%= @person.name %> features on plaques...
-  <% @person.plaques.each do |plaque| %>
-    <%= render 'plaques/minimal', :plaque => plaque %>
-  <% end %>
-  <p>...from which we can establish that:</p>
   <% @person.personal_roles.each do |personal_role| %>
-    <div>
+    <div class="inside_panel">
       <%= @person.name %> <%= @person.existence_word %> a <%= dated_role(personal_role).html_safe %> 
-      <%= 'conferring the letters ' + personal_role.role.abbreviation if personal_role.role.used_as_a_suffix? %><%= 'conferring the title ' + personal_role.role.abbreviation if personal_role.role.used_as_a_prefix? %>
-      <%= link_to "Edit", edit_personal_role_path(personal_role) %>
-      <%= button_to "Delete", personal_role, :method => :delete, :class => :button%>
+      <%= t('.conferring_the_letters') + ' ' + personal_role.role.abbreviation if personal_role.role.used_as_a_suffix? %><%= t('.conferring_the_title') + ' ' + personal_role.role.abbreviation if personal_role.role.used_as_a_prefix? %>
+      <%= link_to t('buttons.edit'), edit_personal_role_path(personal_role) %>
+      <%= button_to t('buttons.delete'), personal_role, :method => :delete, :class => :button%>
     </div>
   <% end %>
   <p>
     <%= form_for @personal_role do |f| %>
       <%= f.hidden_field :person_id, :value => @person.id %>
       <%= @person.name %> <%= @person.existence_word %> a <%= f.collection_select :role, @roles, :id, :full_name %> from <%= f.text_field :started_at %> to <%= f.text_field :ended_at %>
-      <%= f.submit "Add", :class => :button %>
+      <%= f.submit t('buttons.add'), :class => :button %>
     <% end %>
   </p>
   <%= content_tag("p", link_to(t('.add_a_role'), new_role_path)) if current_user %>

@@ -5,7 +5,7 @@
   <%= form_for(@person) do |f| %>
   <fieldset>
     <div class="row">
-      <%= f.label :name %> <%= f.text_field :name %>
+      <%= f.label :name, t('.name') %> <%= f.text_field :name %>
     </div>
     <div class="row">
       <%= f.label :born_on, t('.born_in') %> <%= text_field_tag :born_on, "", {:maxlength => "4"} %>
