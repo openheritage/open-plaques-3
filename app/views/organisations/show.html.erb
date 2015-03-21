@@ -1,4 +1,4 @@
-<% content_for :page_title, "#{@organisation.name} plaques" %>
+<% content_for(:page_title) {t '.page_title', :organisation => @organisation.name } %>
 
 <div class="panel clearfix">
   <% if current_user && current_user.is_admin? %>

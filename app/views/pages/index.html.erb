@@ -1,14 +1,11 @@
 <% content_for(:page_title) {t '.page_title'} %>
 
-<% if current_user && current_user.is_admin? %>
-  <section class="admin_panel">
-    <%= link_to(t('buttons.add'), new_page_path, {:class => :edit, :title => t('buttons.add')})%>
-  </section>
-<% end %>
-
 <div class="panel clearfix">
+  <% if current_user && current_user.is_admin? %>
+    <section class="admin_panel">
+      <%= link_to(t('buttons.add'), new_page_path, {:class => :edit, :title => t('buttons.add')})%>
+    </section>
+  <% end %>
   <h1><%= t '.page_heading' %></h1>
-    <% for page in @pages %>
-      <div><%= link_to page.name, {:action => :show, :id => page.slug} %>. Last updated <%= page.updated_at.to_s(:long) %> <%= link_to "[Edit]", edit_page_path(page.slug) %></div>
-    <% end %>
+  <%= render @pages %>
 </div>

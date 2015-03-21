@@ -1,4 +1,5 @@
-<% @page_title = "People who died in"  %>
+<% content_for(:page_title) {t '.page_title'} %>
+
 <h1>died in</h1>
 
 <p>We have records of when <%=pluralize(Person.count(:died_on), "person") %> died</p>

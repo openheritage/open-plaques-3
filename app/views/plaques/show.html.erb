@@ -1,3 +1,4 @@
+
 <% content_for :page_title, @plaque %>
 
 <%= content_tag(:section, link_to("Edit this plaque", edit_plaque_path(@plaque), {:class => :edit, :title => "Edit this plaque"}), :class => :admin_panel) if current_user && current_user.is_admin? %>

@@ -4,7 +4,9 @@
 
 <div class="panel clearfix">
   <section id="photos" class="inside_panel">
+    <h1><%= t '.page_heading' %></h1>
     <h2>Photos of the <%= link_to(@plaque.title, @plaque) %></h2>
+    <%= render @plaque %>
     <% if @plaque.photos.size < 1 %>
       <p>We don't have a photo of this plaque yet. You could be the first!</p>
     <% else %>

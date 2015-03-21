@@ -1,3 +1,4 @@
+<% content_for(:page_title) {t '.page_title', :person => @person.name } %>
 <% content_for :page_title, "Edit connections for plaque \#" + @plaque.id.to_s %>
 
 <%= render 'plaques/edit_bar', :plaque => @plaque %>

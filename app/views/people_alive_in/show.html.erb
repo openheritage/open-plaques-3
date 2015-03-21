@@ -1,11 +1,6 @@
-<% content_for :page_title, "Commemorated people who were alive in " + @year.year.to_s  %>
+<% content_for(:page_title) {t '.page_title', :year => @year.year.to_s } %>
 
 <div class="panel clearfix">
-  <h1><%=pluralize(@people.size, "Commemorated person") %> alive in <%= @year.year.to_s %></h1>
+  <h1><%= t '.page_heading', :year => @year.year.to_s %></h1>
+  <%= render @people %>
 </div>
-
-<ol class="results" id="people_results">
-  <% @people.each do |person| %>
-    <li><p class="result"><%= link_to person.name, person %> <%= dates(person) %></p><p class="count">aged c.<%= person.age_in(@year.year) %><p></li>
-  <% end %>
-</ol>
