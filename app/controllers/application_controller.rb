@@ -14,12 +14,12 @@ class ApplicationController < ActionController::Base
   def global_request_logging
     puts "USERAGENT: #{request.path} #{request.headers['HTTP_USER_AGENT']}"
   	if request.format == :json or request.format == :xml or request.format == :kml
-      if request.env["HTTP_USER_AGENT"] && (request.env["HTTP_USER_AGENT"].include?("bot") || request.env["HTTP_USER_AGENT"].include?("BingPreview") || request.env["HTTP_USER_AGENT"].include?("slurp"))
+      if request.env["HTTP_USER_AGENT"] && (request.env["HTTP_USER_AGENT"].include?("bot") || request.env["HTTP_USER_AGENT"].include?("spider") || request.env["HTTP_USER_AGENT"].include?("BingPreview") || request.env["HTTP_USER_AGENT"].include?("slurp"))
         render :json => {:error => "no-bots"}.to_json, :status => 406 and return
       end 
     end
     if request.path.end_with?("/new") || request.path.end_with?("/edit")
-      if request.env["HTTP_USER_AGENT"] && (request.env["HTTP_USER_AGENT"].include?("bot") || request.env["HTTP_USER_AGENT"].include?("BingPreview") || request.env["HTTP_USER_AGENT"].include?("slurp"))
+      if request.env["HTTP_USER_AGENT"] && (request.env["HTTP_USER_AGENT"].include?("bot") || request.env["HTTP_USER_AGENT"].include?("spider") || request.env["HTTP_USER_AGENT"].include?("BingPreview") || request.env["HTTP_USER_AGENT"].include?("slurp"))
         render :json => {:error => "no-bots"}.to_json, :status => 406 and return
       end 
     end
