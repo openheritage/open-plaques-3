@@ -58,6 +58,6 @@
     <%= render @person.uniq_plaques %>
   </div>
 
-  <p class="alternate_formats"><%= t 'data_about_thing_as', :thing => @person.type %> <%= alternate_link_to "JSON", person_path(@person, :json), :json %></p>
+  <p class="alternate_formats"><%= t 'data_about_thing_as' %> <%= alternate_link_to "JSON", person_path(@person, :json), :json %></p>
 
 </div>

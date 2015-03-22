@@ -1,46 +1,50 @@
-<% content_for :page_title, "Blue plaque photographers" %>
+<% content_for(:page_title) {t '.page_title'} %>
 
-<div class="panel">
-  <section class="admin_panel">
-    <%= link_to("Add a new photographer", new_photographer_path, {:class => :edit, :title => "Add a new photographer"})%>
-  </section>
-  
-  <p>Open Plaques links to photographs on the internet taken by <%= pluralize(@photographers.size, "different photographer") %>. These images are held on Flickr, Wikimedia Commons, and Geograph. They are all licenced with permissive <a href="http://creativecommons.org/">Creative Commons</a> licences meaning that the owner has declared via a copyright notice that other people may reuse their photograph.</p>
-
-  <p>The top 50 are:</p>
-  <canvas id="myCanvas" width="1000" height="1000"></canvas>
-
-  <h3>Plaques photographed</h3>
-  <ol>
-    <% for photographer in @photographers %>
-      <% if photographer[0] != nil %>
-        <li><%= link_to(photographer[0], photographer_url(photographer[0].gsub(/\./,'_').gsub('/','_'))) rescue photographer[0] %> - <%= pluralize(photographer[1], "") %> </li>
+<div class="panel clearfix">
+  <% if current_user && current_user.is_admin? %>
+    <section class="admin_panel">
+      <%= link_to(t('buttons.add'), new_photographer_path, {:class => :edit, :title => t('buttons.add')})%>
+    </section>
+  <% end %>
+  <h1><%= t '.page_heading' %></h1>
+  <p>
+    <%= t '.how_many', :count =>  @photographers.size%>
+    <%= t '.where' %>
+    <%= t '.how_they_are_licenced_html' %>
+  </p>
+  <h2><%= t '.the_top_50' %></h2>
+  <canvas id="myCanvas" width="1000" height="1000">
+    <ol>
+      <% for photographer in @photographers %>
+        <% if photographer[0] != nil %>
+          <li><%= link_to(photographer[0], photographer_url(photographer[0].gsub(/\./,'_').gsub('/','_'))) rescue photographer[0] %> - <%= pluralize(photographer[1], "") %> </li>
+        <% end %>
       <% end %>
-    <% end %>
- </ol>
+   </ol>
+ </canvas>
 </div>
 
-<p class="alternate_formats">Data about photographers as <%= alternate_link_to "JSON", photographers_path(:json), :json %></p>
+<p class="alternate_formats"><%= t 'data_about_things_as' %> <%= alternate_link_to "JSON", photographers_path(:json), :json %></p>
 
 <script>
-    window.onload = function ()
-    {
-        var data = [<% @photographers.sort_by { |p| 1 - p[1] }.each_with_index do |photographer, idx| %><% if idx < 50 %><%= photographer[1] %>,<% end %><% end %>];
-        var hbar = new RGraph.HBar('myCanvas', data);
-        hbar.Set('chart.labels', [<% @photographers.sort_by { |p| 1 - p[1] }.each_with_index do |photographer, idx| %><% if idx < 50 %>'<%= photographer[0] %>',<% end %><% end %>]);
-        hbar.Set('chart.strokestyle', 'rgba(0,0,0,0)');
-        hbar.Set('chart.labels.above', true);
-        hbar.Set('chart.vmargin', 15);
-        hbar.Set('chart.background.grid', false);
-        hbar.Set('chart.colors', ['gold', 'silver', 'brown', <% (40..200).step(50).each do |b| %><% (40..200).step(50).each do |g| %><% (40..200).step(50).each do |r| %>'rgb(<%= r %>,<%= g %>,<%= b %>)', <% end %><% end %><% end %>]);
-        hbar.Set('chart.colors.sequential', true);
-        hbar.Set('chart.xlabels', false);
-        hbar.Set('chart.gutter.left', 100);
-        hbar.Set('chart.gutter.right', 50);
-        hbar.Set('chart.gutter.top', 25);
-        hbar.Set('chart.noxaxis', true);
-        hbar.Set('chart.noxtickmarks', true);
-        hbar.Set('chart.noytickmarks', true);
-        RGraph.isOld() ? hbar.Draw() : RGraph.Effects.HBar.Grow(hbar);
-    }
+  window.onload = function ()
+  {
+    var data = [<% @photographers.sort_by { |p| 1 - p[1] }.each_with_index do |photographer, idx| %><% if idx < 50 %><%= photographer[1] %>,<% end %><% end %>];
+    var hbar = new RGraph.HBar('myCanvas', data);
+    hbar.Set('chart.labels', [<% @photographers.sort_by { |p| 1 - p[1] }.each_with_index do |photographer, idx| %><% if idx < 50 %>'<%= photographer[0] %>',<% end %><% end %>]);
+    hbar.Set('chart.strokestyle', 'rgba(0,0,0,0)');
+    hbar.Set('chart.labels.above', true);
+    hbar.Set('chart.vmargin', 15);
+    hbar.Set('chart.background.grid', false);
+    hbar.Set('chart.colors', ['gold', 'silver', 'brown', <% (40..200).step(50).each do |b| %><% (40..200).step(50).each do |g| %><% (40..200).step(50).each do |r| %>'rgb(<%= r %>,<%= g %>,<%= b %>)', <% end %><% end %><% end %>]);
+    hbar.Set('chart.colors.sequential', true);
+    hbar.Set('chart.xlabels', false);
+    hbar.Set('chart.gutter.left', 100);
+    hbar.Set('chart.gutter.right', 50);
+    hbar.Set('chart.gutter.top', 25);
+    hbar.Set('chart.noxaxis', true);
+    hbar.Set('chart.noxtickmarks', true);
+    hbar.Set('chart.noytickmarks', true);
+    RGraph.isOld() ? hbar.Draw() : RGraph.Effects.HBar.Grow(hbar);
+  }
 </script>
