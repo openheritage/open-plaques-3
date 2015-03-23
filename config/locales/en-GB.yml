@@ -368,10 +368,15 @@ en-GB:
   roles:
     edit:
       page_title: Edit role %{role}
-      page_heading: yy
+      page_heading: Edit role %{role}
     new:
-      page_title: Historical plaques - by colour
-      page_heading: yy
+      page_title: New role
+      page_heading: New role
+      name: name
+      abbreviation: abbreviation
+      this_is_a: this is a
+      type_role: type role
+      optional: (optional)
     show:
       page_title: Commemorated %{role}
       page_heading: Commemorated %{role}
