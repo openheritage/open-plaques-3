@@ -24,6 +24,8 @@ module OpenPlaques
 
     config.logger = Logger.new(STDOUT)
 
+    config.action_mailer.default_url_options = { host: ENV['HOST'] || "http://localhost:#{ENV['PORT']}"  }
+
     config.assets.version = '1.0'
 
  #   config.i18n.enforce_available_locales = false
