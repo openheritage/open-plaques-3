@@ -5,6 +5,11 @@
 <% end %>
 
 <div class="panel clearfix">
+  <% if current_user && current_user.is_admin? %>
+    <section class="admin_panel">
+      <%= link_to(t('.pages'), pages_path, {:class => :edit, :title => t('.pages')})%>
+    </section>
+  <% end %>
   <div id="homepage_content">
     <p class="intro"><%= t '.strapline_html' %></p>
     <ul id="homepage_modules">

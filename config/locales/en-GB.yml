@@ -22,6 +22,7 @@ en-GB:
   home:
     index:
       page_title: Open Plaques - linking historical people and places
+      pages: pages
       page_heading: yy
       strapline_html: Documenting the historical links between <strong>people</strong> and <strong>places</strong>, as recorded by commemorative <strong>plaques</strong>.
       explore: Explore
