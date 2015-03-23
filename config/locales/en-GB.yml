@@ -394,17 +394,22 @@ en-GB:
 
   series:
     edit:
-      page_title: xx
-      page_heading: yy
+      page_title: Edit series %{series}
+      page_heading: Edit series %{series}
+      name: name
+      description: description
     index:
-      page_title: xx
-      page_heading: yy
+      page_title: Series
+      page_heading: Series
+      explanation: Plaques are issued by numerous organisations, and sometimes they are also part of a special set or series. We endeavour to identify the series and also the series identifier
     new:
-      page_title: xx
-      page_heading: yy
+      page_title: New series
+      page_heading: New series
+      name: name
+      description: description
     show:
-      page_title: xx
-      page_heading: yy
+      page_title: Series '%{series}'
+      page_heading: Series '%{series}'
 
   # Used in array.to_sentence.
   support:
