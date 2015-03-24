@@ -285,17 +285,31 @@ en-GB:
 
   photos:
     edit:
-      page_title: xx
-      page_heading: yy
+      page_title: Edit photo
+      page_heading: Edit photo
+      of_a_plaque: This is a photo of a plaque
+      url: Url
+      file_url: File url
+      taken_on: Taken on
+      photographer: Photographer
+      photographer_url: Photographer url
+      thumbnail_url: Thumbnail url
+      licence: The image was licenced by its copyright owner as
+      plaque: It depicts plaque number
+      person: It depicts person number
+      subject: This may be about
+      description: More details are
+      shot: This is a
     index:
-      page_title: xx
-      page_heading: yy
+      page_title: Photos
+      page_heading: Photos
+      explanation_html: To identify the location, inscription, colour and organisation of a plaque Open Plaques collates data from <a href="http://commons.wikimedia.org/">Wikimedia Commons</a>, <a href="http://www.geograph.org.uk/">Geograph UK</a>, or <a href="http://flickr.com/">Flickr</a> images. Read the page on how to contribute for details.
     new:
-      page_title: xx
-      page_heading: yy
+      page_title: New photo
+      page_heading: New photo
     show:
-      page_title: xx
-      page_heading: yy
+      page_title: '%{photo}'
+      page_heading: '%{photo}'
 
   picks:
     edit:

@@ -1,9 +1,12 @@
-<% content_for :page_title, @photo.title %>
+<% content_for(:page_title) {t '.page_title', :photo => @photo.title } %>
 
-<%= content_tag(:section, link_to("Edit this photo", edit_photo_path(@photo), {:class => :edit, :title => "Edit this photo"}), :class => :admin_panel) if current_user && current_user.is_admin? %>
-
-<div class="panel">
-  <h1><%= @photo.title %></h1>
+<div class="panel clearfix">
+  <% if current_user && current_user.is_admin? %>
+    <section class="admin_panel">
+      <%= link_to t('buttons.edit'), edit_photo_path(@photo), {:class => :edit, :title => t('buttons.edit')} %>
+    </section>
+  <% end %>
+  <h1 property="dc:title rdfs:label foaf:name" about="#this"><%= t '.page_heading', :photo => @photo.title %></h1>
   <%= render @photo %>
   <br style="clear: both;"/>
   <p>This is a <%= @photo.shot_name %> photo of:</p>
@@ -15,9 +18,13 @@
     <p>has not been linked to a plaque <% if @photo.of_a_plaque? %>yet<% else %> because it has been flagged as not being of a plaque<% end %>.</p>
   <% end %>
   <p>It was taken <%= content_tag("span", " on " + @photo.taken_at.to_s(:long)) unless @photo.taken_at.blank? %> by <%= link_to @photo.photographer, photographer_url(@photo.photographer.gsub(".","_").gsub("/","_")) if @photo.photographer rescue @photo.photographer %> and licenced under a <%= link_to @photo.licence.name, @photo.licence if @photo.licence %>. It can be found on <%= @photo.source %> at <%= link_to(@photo.file_url, @photo.file_url) %>.<p>
-  <p><%= thumbnail_img(@photo) %> Thumbnail url <%= link_to(@photo.thumbnail_url, @photo.thumbnail_url) %><p>	
-  <p>This may be about <%= @photo.subject %></p>
-  <p>More details are: <%= @photo.description %></p>
+  <p><%= thumbnail_img(@photo) %> Thumbnail url <%= link_to(@photo.thumbnail_url, @photo.thumbnail_url) %><p>
+  <% if @photo.subject %>
+    <p>This may be about <%= @photo.subject %></p>
+  <% end %>
+  <% if @photo.description %>
+    <p>More details are: <%= @photo.description %></p>
+  <% end %>
 </div>
 
-<p class="alternate_formats">Data about this photo as <%= alternate_link_to "JSON", photo_path(@photo, :format => :json), :json %></p>
+<p class="alternate_formats"><%= t 'data_about_thing_as' %> <%= alternate_link_to "JSON", photo_path(@photo, :format => :json), :json %></p>
