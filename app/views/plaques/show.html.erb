@@ -68,7 +68,7 @@
       <%= link_to(image_tag(first_photo.file_url, {:id => "primary_image", :alt => "Photo of plaque", :rel => "foaf:depiction"}), first_photo.url) %>
       <div id="photo_information" >
         <p class="photo_credit">Photographed by <% if first_photo.photographer_url %><%= link_to(first_photo.photographer, first_photo.photographer_url) %><% else %><%= first_photo.photographer %>.<% end %></p>
-        <p class="photo_licence"><%= link_to(first_photo.licence.name, first_photo.licence.url) %></p>
+        <p class="photo_licence"><%= link_to(first_photo.licence.name, first_photo.licence.url) if first_photo.licence %></p>
       </div>
       <div id="secondary_images">
         <% @plaque.photos.detail_order.each do |image| %>
