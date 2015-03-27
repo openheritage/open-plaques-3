@@ -430,6 +430,30 @@ en-GB:
       page_title: Series '%{series}'
       page_heading: Series '%{series}'
 
+  users:
+    index:
+      page_title: Users
+      page_heading: Users
+    new:
+      page_title: New verb
+      page_heading: New verb
+    show:
+      page_title: '%{verb}'
+      page_heading: '%{verb}'
+
+  verbs:
+    index:
+      page_title: Verbs
+      page_heading: Verbs
+    new:
+      page_title: New verb
+      page_heading: New verb
+      explanation: Verbs should be in the past tense and should be as close as possible to the wording used on a plaque, e.g. 'lived' or 'died', so that they indicate what happened at a particular location.
+    show:
+      page_title: '%{verb}'
+      page_heading: '%{verb}'
+
+
   # Used in array.to_sentence.
   support:
     array:

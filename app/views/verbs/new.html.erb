@@ -1,9 +1,10 @@
-<% content_for :page_title, "Add a verb" %>
-  <h1>Add a verb</h1>
-  
-  <p>Verbs should be in the past tense and should be as close as possible to the wording used on a plaque, e.g. 'lived' or 'died', so that they indicate what happened at a particular location.</p>
+<% content_for(:page_title) {t '.page_title'} %>
 
-<%= form_for :verb, :url => verbs_path do |f| -%>
-  <p><%= f.label :name %><br/><%= f.text_field :name %></p>
-  <p><%= f.submit "Add" %></p>
-<% end %>
+<div class="panel">
+  <h1><%= t '.page_heading' %></h1>
+  <p><%= t '.explanation' %></p>
+  <%= form_for :verb, :url => verbs_path do |f| -%>
+    <p><%= f.label :name %><br/><%= f.text_field :name %></p>
+    <%= f.submit t('buttons.save'), :class => 'button' %>
+  <% end %>
+</div>

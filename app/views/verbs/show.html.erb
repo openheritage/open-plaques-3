@@ -1,10 +1,10 @@
-<% content_for :page_title, "Blue plaques for people who " + @verb.name %>
+<% content_for(:page_title) {t '.page_title', :verb => @verb.name } %>
 
 <div class="panel">
+
   <h1><%= pluralize @verb.personal_connections.count, 'person' %> '<%= @verb.name %>'</h1>
   <%= render @verb.personal_connections %>
-
-  <%= button_to("Delete verb", verb_path(@verb.id), {:method => :delete, :class => :button}) if current_user.try(:is_admin?) && @verb.personal_connections.count == 0 %>
+  <%= button_to(t('buttons.delete'), verb_path(@verb.id), {:method => :delete, :class => :button}) if current_user.try(:is_admin?) && @verb.personal_connections.count == 0 %>
 </div>
 
-<p class="alternate_formats">Data about this verb as <%= alternate_link_to "XML", verb_path(@verb, :format => :xml), :xml %> <%= alternate_link_to "JSON", verb_path(@verb, :format => :json), :json %></p>
+<p class="alternate_formats"><%= t 'data_about_thing_as' %> <%= alternate_link_to "JSON", verb_path(@verb, :format => :json), :json %></p>
