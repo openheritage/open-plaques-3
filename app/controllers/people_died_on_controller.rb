@@ -10,7 +10,12 @@ class PeopleDiedOnController < ApplicationController
 
   def show
     @year = Date.parse(params[:id] + "-01-01")
-    @people = Person.where(died_on: @year).order(:born_on)
+    @people = Person
+      .where(:died_on => @year)
+      .preload(:roles, :main_photo)
+      .order(born_on: :asc)
+      .to_a
+    @people.reject! {|subject| !subject.person? }
     respond_to do |format|
       format.html
       format.json { render :json => @people }
