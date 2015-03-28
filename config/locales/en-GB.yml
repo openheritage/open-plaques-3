@@ -169,6 +169,8 @@ en-GB:
     new:
       page_title: New organisation
       page_heading: New organisation
+      required: Required
+      optional: Optional
       name: Name
       note_about_name: please don't include the word 'The' unless it is absolutely an indivisible part of the name
       website: website
@@ -307,6 +309,21 @@ en-GB:
     new:
       page_title: New photo
       page_heading: New photo
+      required: Required
+      optional: Optional
+      of_a_plaque: This is a photo of a plaque
+      url: Url
+      file_url: File url
+      taken_on: Taken on
+      photographer: Photographer
+      photographer_url: Photographer url
+      thumbnail_url: Thumbnail url
+      licence: The image was licenced by its copyright owner as
+      plaque: It depicts plaque number
+      person: It depicts person number
+      subject: This may be about
+      description: More details are
+      shot: This is a
     show:
       page_title: '%{photo}'
       page_heading: '%{photo}'

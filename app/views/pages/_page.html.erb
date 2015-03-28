@@ -1,1 +1,3 @@
-<div><%= link_to page.name, {:action => :show, :id => page.slug} %>. Last updated <%= page.updated_at.to_s(:long) %> <%= link_to "[Edit]", edit_page_path(page.slug) %></div>
+<div>
+  <%= link_to page.name, {:action => :show, :id => page.slug} %>. Last updated <%= page.updated_at.to_s(:long) %> <%= link_to "[Edit]", edit_page_path(page.slug) %>
+</div>

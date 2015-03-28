@@ -3,14 +3,15 @@
 <div class="panel">
   <h1><%= t '.page_heading' %></h1>
   <%= form_for @photo do |f| %>
-    <p><%= f.label :url %> <%= f.text_field :url %></p>
-    <p><%= f.label :licence_id %> <%= f.collection_select :licence_id, @licences, :id, :name, {:include_blank => true} %></p>
-    <br/>
-    <p><%= f.label :photographer %> <%= f.text_field :photographer %></p>
-    <p><%= f.label :photographer_url %> <%= f.text_field :photographer_url %></p>
-    <p><%= f.label :file_url %> <%= f.text_field :file_url %></p>
-    <p><%= f.label :plaque_id %> <%= f.text_field :plaque_id %></p>
-    <p>This is a <%= f.collection_select :shot, Photo.shots, :to_s, :to_s, :include_blank => true %> shot</p> 
-    <%= f.submit "Create" %>
+    <h2><%= t '.required' %></h2>
+    <p><%= f.label :url, t('.url') %> <%= f.text_field :url %></p>
+    <p><%= f.label :licence_id, t('.licence') %> <%= f.collection_select :licence_id, @licences, :id, :name, {:include_blank => true} %></p>
+    <h2><%= t '.optional' %></h2>
+    <p><%= f.label :photographer, t('.photographer') %> <%= f.text_field :photographer %></p>
+    <p><%= f.label :photographer_url, t('.photographer_url') %> <%= f.text_field :photographer_url %></p>
+    <p><%= f.label :file_url, t('.file_url') %> <%= f.text_field :file_url %></p>
+    <p><%= f.label :plaque_id, t('.plaque') %> <%= f.text_field :plaque_id %></p>
+    <p><%= t('.shot') %> <%= f.collection_select :shot, Photo.shots, :to_s, :to_s, :include_blank => true %></p> 
+    <p><%= f.submit t('buttons.save'), :class => :button %></p>
   <% end %>
 </div>

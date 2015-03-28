@@ -3,11 +3,12 @@
 <div class="panel">
   <h1><%= t '.page_heading' %></h1>
   <%= form_for @organisation do |f| %>
+    <h2><%= t '.required' %></h2>
     <p><%= f.label :name, t('.name') %> <%= f.text_field :name %> <%= t '.note_about_name' %></p>
-    <h2>Optional fields</h2>
+    <h2><%= t '.optional' %></h2>
     <p><%= f.label :website, t('.website') %> <%= f.text_field :website %></p>
-    <p><%= f.label :description, t('.description') %><%= f.text_area :description %> <%= t '.note_about_description' %></p>
-    <p><%= f.label :notes, t('.notes') %> <%= f.text_area :notes %> <%= t '.note_about_notes' %></p>
+    <p><%= f.label :description, t('.description') %><%= f.text_area :description, {:rows => "5", :cols => "80"} %> <%= t '.note_about_description' %></p>
+    <p><%= f.label :notes, t('.notes') %> <%= f.text_area :notes, {:rows => "5", :cols => "80"} %> <%= t '.note_about_notes' %></p>
     <p><%= f.submit t('buttons.save'), :class => :button %></p>
   <% end %>
 </div>

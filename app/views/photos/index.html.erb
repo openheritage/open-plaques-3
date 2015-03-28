@@ -8,10 +8,10 @@
   <% end %>
   <h1><%= t '.page_heading' %></h1>
   <p><%= t '.explanation_html' %></p>
-  <%= will_paginate @plaques %>
+  <%= will_paginate @photos %>
   <%= render partial: 'photos/tile', :collection => @photos, as: :photo %>
   <br style="clear: left;"/>
-  <%= will_paginate @plaques %>
+  <%= will_paginate @photos %>
 </div>
 
 <p class="alternate_formats"><%= t 'data_about_things_as' %> <%= alternate_link_to "JSON", photos_path(:json), :json %></p>
