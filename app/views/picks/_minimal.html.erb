@@ -1,7 +1,0 @@
-<div class="inside_panel">
-  <div>
-  	<%= link_to(pick.title, pick_path(pick)) %> <%= pick.description %> It was proposed by <%= pick.proposer %> and has been featured <%= pluralize(pick.featured_count, "time") %>.
-  	<% if pick.feature_on %>It would be great to specifically feature it on <%= pick.feature_on.strftime('%d/%m/%Y') %><% end %>
-  </div>
-  <%= render "plaques/minimal", :plaque => pick.plaque %>
-</div>

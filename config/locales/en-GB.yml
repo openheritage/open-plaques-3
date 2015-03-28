@@ -313,17 +313,24 @@ en-GB:
 
   picks:
     edit:
-      page_title: xx
-      page_heading: yy
+      page_title: Edit %{pick}
+      page_heading: Edit %{pick}
+      plaque_id: Plaque id
+      description: Description
+      proposer: Proposer
+      feature_on: Feature on
+      last_featured: last featured
+      featured_count: Times featured
     index:
-      page_title: xx
-      page_heading: yy
+      page_title: Picks
+      page_heading: Picks
+      explanation: These are our all-time favourite plaques. The weird and the wonderful, the odd and the personal. The Open Plaques server rotates these 'picks' on the home page as 'Plaque of the day'. If you have a favourite then please suggest it to us with a reason why.
     new:
-      page_title: xx
-      page_heading: yy
+      page_title: New pick
+      page_heading: New pick
     show:
-      page_title: xx
-      page_heading: yy
+      page_title: '%{pick}'
+      page_heading: '%{pick}'
 
   plaques:
     colour:

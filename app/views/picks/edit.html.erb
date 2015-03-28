@@ -1,18 +1,17 @@
-<% content_for :page_title, "Edit pick " + @pick.id.to_s %>
+<% content_for(:page_title) {t '.page_title', :pick => @pick.title } %>
 
-<div class="panel">
-  <h1>Edit <%= link_to(h("pick " + @pick.id.to_s), @pick) %></h1>
-
+<div class="panel clearfix">
+  <h1><%= t '.page_heading', :pick => @pick.title %></h1>
+  <%= render @pick %>
   <%= form_for(@pick) do |f| %>
-    <p><%= f.label :plaque_id %><%= f.text_field :plaque_id %></p>
-    <p><%= f.label :description %><%= f.text_area :description %></p>
-    <p><%= f.label :proposer %><%= f.text_field :proposer %></p>
-    <p><%= f.label :feature_on %><%= f.text_field :feature_on %></p>
-    <p><%= f.label :last_featured %><%= f.text_field :last_featured %></p>
-    <p><%= f.label :featured_count %><%= f.text_field :featured_count %></p>
-
-    <p><%= f.submit "Update", :class => :button %></p>
+    <p><%= f.label :plaque_id, t('.plaque_id') %> <%= f.text_field :plaque_id %></p>
+    <p><%= f.label :description, t('.description') %> <%= f.text_area :description %></p>
+    <p><%= f.label :proposer, t('.proposer')  %> <%= f.text_field :proposer %></p>
+    <p><%= f.label :feature_on, t('.feature_on') %> <%= f.text_field :feature_on %></p>
+    <p><%= f.label :last_featured, t('.last_featured') %> <%= f.text_field :last_featured %></p>
+    <p><%= f.label :featured_count, t('.featured_count') %> <%= f.text_field :featured_count %></p>
+    <p><%= f.submit t('buttons.save'), :class => :button %></p>
   <% end %>
-
-  <%= button_to("Delete pick", pick_path(@pick), {:method => :delete, :class => :button}) if current_user.try(:is_admin?) %>
 </div>
+
+<%= button_to(t('buttons.delete'), pick_path(@pick), {:method => :delete, :class => :button}) if current_user.try(:is_admin?) %>

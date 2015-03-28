@@ -1,7 +1,11 @@
-<% content_for :page_title, "plaque pick " + @pick.id.to_s %>
+<% content_for(:page_title) {t '.page_title', :pick => @pick.title } %>
 
-<%= content_tag(:section, link_to("Edit this pick", edit_pick_path(@pick), {:class => :edit, :title => "Edit this pick"}), :class => :admin_panel) if current_user && current_user.is_admin? %>
-
-<div class="panel">
+<div class="panel clearfix">
+  <% if current_user && current_user.is_admin? %>
+    <section class="admin_panel">
+      <%= link_to t('buttons.edit'), edit_pick_path(@pick), {:class => :edit, :title => t('buttons.edit')} %>
+    </section>
+  <% end %>
+  <h1 property="dc:title rdfs:label foaf:name" about="#this"><%= t '.page_heading', :pick => @pick.title %></h1>
   <%= render @pick %>
 </div>
