@@ -6,7 +6,6 @@ Rails.application.routes.draw do
   root 'home#index'
 
   devise_for :users
-  resources :users, :only => [:index, :show, :new, :create]
 
   scope "/plaques" do
     resource :latest, :as => :latest, :controller => :plaques_latest, :only => :show
@@ -58,7 +57,7 @@ Rails.application.routes.draw do
     resource :upcoming, only: [:show], :controller => :upcoming_unveilings
   end
 
-  resources :verbs
+  resources :verbs, :only => [:create, :index, :show, :new]
 
   scope "/roles" do
     resources "a-z", :controller => :roles_by_index, :as => "roles_by_index", :only => [:show, :index]
@@ -80,7 +79,7 @@ Rails.application.routes.draw do
   end
 
   resources :languages
-  resources :colours, only: [:index, :new, :create, :update]
+  resources :colours, only: [:index, :new, :create]
   resources :series do
     resource :plaques, :controller => :series_plaques, :only => :show
     match 'plaques/tiles/:zoom/:x/:y' => 'series_plaques#show', :constraints => { :zoom => /\d{2}/, :x => /\d+/, :y => /\d+/ }, via: [:get]
