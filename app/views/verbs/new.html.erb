@@ -1,6 +1,6 @@
 <% content_for(:page_title) {t '.page_title'} %>
 
-<div class="panel">
+<div class="panel clearfix">
   <h1><%= t '.page_heading' %></h1>
   <p><%= t '.explanation' %></p>
   <%= form_for :verb, :url => verbs_path do |f| -%>

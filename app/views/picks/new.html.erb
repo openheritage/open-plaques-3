@@ -3,9 +3,9 @@
 <div class="panel">
   <h1><%= t '.page_heading' %></h1>
   <%= form_for @picks, :url => picks_path do |f| %>
-    <p>One of my favourite plaques is #<%= f.text_field :plaque_id, :maxlength => "5" %></p>
-    <p>I like it because:<br/><%= f.text_area :description, :rows=>5, :cols=>80 %></p>
-    <p>Please say that <%= f.text_field :proposer, :maxlength => "40" %> proposed it.</p>
-    <%= f.submit "Add", :class => :button %>
+    <p><%= t '.plaque_id' %> #<%= f.text_field :plaque_id, :maxlength => "5" %></p>
+    <p><%= t '.description' %><br/><%= f.text_area :description, :rows=>5, :cols=>80 %></p>
+    <p><%= t '.proposer' %> <%= f.text_field :proposer, :maxlength => "40" %></p>
+    <%= f.submit t('buttons.add'), :class => :button %>
   <% end %>
 </div>

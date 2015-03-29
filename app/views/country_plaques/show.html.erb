@@ -2,7 +2,7 @@
 <div class="panel clearfix">
   <% if current_user && current_user.is_admin? %>
     <section class="admin_panel">
-      <%= link_to("Edit this country", edit_country_path(@country), {:class => :edit, :title => "Edit this country"})%>
+      <%= link_to(t('buttons.edit'), edit_country_path(@country), {:class => :edit, :title => "Edit this country"})%>
     </section>
   <% end %>
   <h1><%= @country.name %> (<%= @display %>)</h1>

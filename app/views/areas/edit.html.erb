@@ -3,16 +3,16 @@
 <div class="panel clearfix">
   <h1><%= t '.page_heading_html', :area => link_to(@area.name, @area) + ', ' + link_to(@area.country.name, @area.country) %></h1>
   <%= form_for(@area) do |f| %>
-    <p><%= f.label :name, t('.name') %> <%= f.text_field :name %></p>
-    <p><%= f.label :slug, t('.slug') %> <%= f.text_field :slug %> <%= t '.must_be_underscored' %></p>
-    <p><%= f.label :country_id, t('.country') %> <%= f.collection_select :country_id, @countries, :id, :name %></p>
-    <p><%= t '.find_on_google_maps_html', :area => @area.name + ', ' + @area.country.name %></p>
+    <p><%= f.label :name %> <%= f.text_field :name %></p>
+    <p><%= f.label :slug %> <%= f.text_field :slug %> <%= t '.must_be_underscored' %></p>
+    <p><%= f.label :country_id %> <%= f.collection_select :country_id, @countries, :id, :name %></p>
     <fieldset>
-      <legend>Geolocation</legend>
-      <%= f.label :latitude, t('.latitude') %> <%= f.text_field :latitude %>
-      <%= f.label :longitude, t('.longitude') %> <%= f.text_field :longitude %>
+      <legend><%= t '.geolocation' %></legend>
+      <%= f.label :latitude %> <%= f.text_field :latitude %>
+      <%= f.label :longitude %> <%= f.text_field :longitude %>
+      <p><%= t '.find_on_google_maps_html', :area => @area.name + ', ' + @area.country.name %></p>
+      <p><%= label_tag(:streetview_url, t('.google_streetview_url')) %> <%= text_field_tag(:streetview_url) %></p>
     </fieldset>
-    <p><%= label_tag(:streetview_url, t('.google_streetview_url')) %> <%= text_field_tag(:streetview_url) %></p>
     <%= f.submit t('buttons.save'), :class => :button %>
   <% end %>
 

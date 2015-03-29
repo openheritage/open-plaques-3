@@ -1,7 +1,6 @@
-<% content_for :page_title, "Page Not Found" %>
+<% content_for(:page_title) {t '.page_title'} %>
 
 <div class="panel clearfix">
-  <h1>Page Not Found</h1>
-
-  <p>The page you are looking for cannot be found. You may have followed a bad link, or mis-typed a URL.</p>
+  <h1><%= t '.page_heading' %></h1>
+  <p><%= t '.explanation' %></p>
 </div>

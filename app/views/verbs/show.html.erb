@@ -1,7 +1,11 @@
 <% content_for(:page_title) {t '.page_title', :verb => @verb.name } %>
 
-<div class="panel">
-
+<div class="panel clearfix">
+  <% if current_user && current_user.is_admin? %>
+    <section class="admin_panel">
+      &nbsp;
+    </section>
+  <% end %>
   <h1><%= pluralize @verb.personal_connections.count, 'person' %> '<%= @verb.name %>'</h1>
   <%= render @verb.personal_connections %>
   <%= button_to(t('buttons.delete'), verb_path(@verb.id), {:method => :delete, :class => :button}) if current_user.try(:is_admin?) && @verb.personal_connections.count == 0 %>

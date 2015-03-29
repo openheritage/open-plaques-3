@@ -1,11 +1,11 @@
 <% content_for(:page_title) {t '.page_title'} %>
 
-<div class="panel">
+<div class="panel clearfix">
   <h1><%= t '.page_heading' %></h1>
   <%= form_for(@role) do |f| %>
-    <p><%= f.label :name, t('.name') %> <%= f.text_field :name %></p>
-    <p><%= f.label :abbreviation, t('.abbreviation') %> <%= f.text_field :abbreviation %></p>
-    <p><%= t '.this_is_a' %> <%= f.collection_select :role_type, Role.types, :to_s, :to_s, :include_blank => true %> <%= t '.type_role' %> <%= t '.optional' %></p>
+    <p><%= f.label :name %> <%= f.text_field :name %></p>
+    <p><%= f.label :abbreviation %> <%= f.text_field :abbreviation %></p>
+    <p><%= f.label :role_type %> <%= f.collection_select :role_type, Role.types, :to_s, :to_s, :include_blank => true %></p>
     <p><%= f.submit t('buttons.save'), :class => :button %></p>
   <% end %>
 </div>

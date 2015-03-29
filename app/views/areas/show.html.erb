@@ -8,5 +8,5 @@
 </div>
 
 <div class="panel clearfix">
-  <p class="alternate_formats"><%= t 'data_about_thing_as', :thing => @area.name + ", " + @area.country.name %> <%= t '.plaques' %> <%= alternate_link_to "JSON", country_area_path(@area.country, @area, :json), :json  %></p>
+  <p class="alternate_formats"><%= t 'data_about_thing_as' %> <%= alternate_link_to "JSON", country_area_path(@area.country, @area, :json), :json  %></p>
 </div>

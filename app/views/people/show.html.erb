@@ -4,11 +4,11 @@
   <% if current_user && current_user.is_admin? %>
     <section class="admin_panel">
       <%= link_to t('buttons.edit'), edit_person_path(@person), {:class => :edit, :title => t('buttons.edit')} %>
+      <%= link_to t('buttons.add'), new_person_path, {:class => :edit, :title => t('buttons.add')} %>
     </section>
   <% end %>
 
   <div class="vcard person" typeof="<%= if (@person.person?) then "foaf:Person" else "foaf:Agent" end %> vcard:VCard" about="#person">
-
     <%= content_tag(:p, thumbnail_img(@person)) if @person.main_photo %>
     <h1>
       <%= dated_person(@person, {:links => :none}) %>

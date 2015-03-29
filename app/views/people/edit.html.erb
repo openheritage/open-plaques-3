@@ -10,9 +10,9 @@
     <p><%= t '.display_name' %> "<%= @person.full_name %>"</p>
     <p><%= @person.possessive %> surname <%= @person.existence_word %> "<%= @person.surname %>" which <%= f.label :surname_starts_with, "starts with" %> <%= f.text_field :surname_starts_with, :maxlength => 1 %></p>
     <p><%= @person.personal_pronoun %> was <%= f.label :born_on, @person.creation_word %> <%= text_field_tag :born_on, @born_on, {:maxlength => "4"} %> and <%= f.label :died_on, @person.destruction_word %> <%= text_field_tag :died_on, @died_on, {:maxlength => "4"} %></p>
-    <p><%= f.label :introduction, t('.introduction') %></p>
+    <p><%= f.label :introduction %></p>
     <%= f.text_area :introduction, :cols => 80, :rows => 15 %>
-    <p><%= f.label :wikipedia_url, t('.wikipedia_url') %> <%= f.text_field :wikipedia_url %> <%= t '.wikipedia_comment' %></p>
+    <p><%= f.label :wikipedia_url %> <%= f.text_field :wikipedia_url %> <%= t '.wikipedia_comment' %></p>
     <%= content_tag("p", "Read more about ".html_safe + link_to(@person.name, @person.default_wikipedia_url, :target => '_blank') + " on Wikipedia.".html_safe) unless @person.default_wikipedia_url.blank? %>
     <p><%= f.label :dbpedia_uri %> <%= f.text_field :dbpedia_uri %></p>
     <p><%= f.submit t('buttons.save'), :class => :button %></p>

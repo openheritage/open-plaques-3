@@ -3,8 +3,8 @@
 <div class="panel">
   <h1><%= t '.page_heading', :language => @language.name %></h1>
   <%= form_for @language do |f| %>
-    <p><%= f.label :alpha2, t('.alpha2_code') %> <%= f.text_field :alpha2 %></p>
-    <p><%= f.label :name, t('.name') %> <%= f.text_field :name %></p>
+    <p><%= f.label :alpha2 %> <%= f.text_field :alpha2 %></p>
+    <p><%= f.label :name %> <%= f.text_field :name %></p>
     <p><%= f.submit t('buttons.save'), :class => :button %></p>
   <% end %>
 </div>

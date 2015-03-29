@@ -2,6 +2,72 @@
 # See http://guides.rubyonrails.org/i18n.html
 
 en-GB:
+  activerecord:
+    models:
+      area: Area
+    attributes:
+      area:
+        name: Name
+        slug: Slug
+        latitude: Latitude
+        longitude: Longitude
+        country_id: Country
+      colour:
+        name: Name
+        dbpedia_uri: DbPedia uri
+      country:
+        alpha2_code: Alpha2 code
+        name: Name
+        dbpedia_uri: DbPedia uri
+        area: Area
+      language:
+        alpha2: Alpha2 code
+        name: Name
+      organisation:
+        name: Name
+        slug: Slug
+        latitude: Latitude
+        longitude: Longitude
+        website: Website
+        description: Description
+        notes: Notes
+      page:
+        name: Name
+        slug: Slug
+      person:
+        name: Name
+        born_in: Born in
+        died_in: Died in
+      photo:
+        of_a_plaque: This is a photo of a plaque
+        url: Url
+        file_url: File url
+        taken_on: Taken on
+        photographer: Photographer
+        photographer_url: Photographer url
+        thumbnail_url: Thumbnail url
+        licence_id: The image was licenced by its copyright owner as
+        plaque_id: It depicts plaque number
+        person_id: It depicts person number
+        subject: This may be about
+        description: More details are
+        shot: This is a
+      pick:
+        plaque_id: Plaque
+        description: Description
+        proposer: Proposer
+        feature_on: Feature on
+        last_featured: Last featured
+        featured_count: Times featured
+      role:
+        name: Name
+        abbreviation: Abbreviation
+        slug: Slug
+        wikipedia_stub: Wikipedia url
+        role_type: This is a
+      series:
+        name: Name
+        description: Description
 
   buttons:
     add: add
@@ -55,19 +121,14 @@ en-GB:
     edit:
       page_title: Edit %{area}
       page_heading_html: Edit %{area}
-      name: Name
-      slug: Slug
-      country: Country
       find_on_google_maps_html: Find on <a href="http://maps.google.co.uk/maps?q=%{area}&z=18" target="_new">Google Maps</a>
       geolocation: Geolocation
-      latitude: Latitude
-      longitude: Longitude
       google_streetview_url: Google Streetview url
-      must_be_underscored: (must be lowercase with underscores)
+      must_be_underscored: must be lowercase with underscores
     new:
       page_title: New area in %{country}
       page_heading_html: New area in %{country}
-      new_area_in: 
+      must_be_underscored: must be lowercase with underscores
     show:
       page_title: Plaques in %{area}
       page_title_unphotographed: Unphotographed plaques in %{area}
@@ -79,18 +140,12 @@ en-GB:
       page_heading: Colours
     new:
       page_title: Add a colour
-      page_heading_html: Add a colour
-      name: Name
-      dbpedia_uri: DbPedia uri
+      page_heading: Add a colour
 
   countries:
     edit:
       page_title: Edit %{country}
       page_heading_html: Edit %{country}
-      alpha2_code: Alpha2 code
-      name: Name
-      dbpedia_uri: DbPedia uri
-      area: Area
       add_an_area: Add an area
     index:
       page_title: Countries that have plaques
@@ -99,12 +154,18 @@ en-GB:
     new:
       page_title: Add country
       page_heading: Add country
-      alpha2_code: Alpha2 code
-      name: Name
-      dbpedia_uri: DbPedia uri
     show:
       page_title: Historical plaques in %{country}
       page_heading: Historical plaques in %{country}
+
+  country_plaques:
+    show:
+
+  errors:
+    not_found:
+      page_title: Page not found
+      page_heading: Page not found
+      explanation: The page you are looking for cannot be found. You may have followed a bad link, or mis-typed a URL.
 
   explore:
     show:
@@ -119,16 +180,12 @@ en-GB:
     edit:
       page_title: Edit %{language}
       page_heading: Edit %{language}
-      alpha2_code: Alpha2 code
-      name: Name
     index:
       page_title: Historical plaques - by language
       page_heading: Languages
     new:
       page_title: New language
       page_heading: New language
-      alpha2_code: Alpha2 code
-      name: Name
 
   licences:
     index:
@@ -155,13 +212,7 @@ en-GB:
     edit:
       page_title: Edit %{organisation}
       page_heading: Edit %{organisation}
-      name: Name
-      slug: Slug
-      latitude: Latitude
-      longitude: Longitude
-      website: website
-      description: description
-      notes: notes
+
     index:
       page_title: Organisations erecting historical plaques
       page_heading: Organisations erecting plaques
@@ -171,13 +222,9 @@ en-GB:
       page_heading: New organisation
       required: Required
       optional: Optional
-      name: Name
       note_about_name: please don't include the word 'The' unless it is absolutely an indivisible part of the name
-      website: website
-      description: description
-      note_about_description: (Displayed on the page)
-      notes: notes
-      note_about_notes: (Internal use only)
+      note_about_description: is displayed on the page
+      note_about_notes: is for internal use only
     show:
       page_title: Organisation %{organisation}
       page_heading: Organisation - %{organisation}
@@ -215,9 +262,6 @@ en-GB:
     new:
       page_title: New person
       page_heading: New person
-      name: Name
-      born_in: Born in
-      died_in: Died in
     show:
       page_title: Historical plaques about %{person}
       not_commemorated: Is not commemorated on any plaques in our database (yet)
@@ -289,19 +333,7 @@ en-GB:
     edit:
       page_title: Edit photo
       page_heading: Edit photo
-      of_a_plaque: This is a photo of a plaque
-      url: Url
-      file_url: File url
-      taken_on: Taken on
-      photographer: Photographer
-      photographer_url: Photographer url
-      thumbnail_url: Thumbnail url
-      licence: The image was licenced by its copyright owner as
-      plaque: It depicts plaque number
-      person: It depicts person number
-      subject: This may be about
-      description: More details are
-      shot: This is a
+
     index:
       page_title: Photos
       page_heading: Photos
@@ -311,19 +343,6 @@ en-GB:
       page_heading: New photo
       required: Required
       optional: Optional
-      of_a_plaque: This is a photo of a plaque
-      url: Url
-      file_url: File url
-      taken_on: Taken on
-      photographer: Photographer
-      photographer_url: Photographer url
-      thumbnail_url: Thumbnail url
-      licence: The image was licenced by its copyright owner as
-      plaque: It depicts plaque number
-      person: It depicts person number
-      subject: This may be about
-      description: More details are
-      shot: This is a
     show:
       page_title: '%{photo}'
       page_heading: '%{photo}'
@@ -332,12 +351,6 @@ en-GB:
     edit:
       page_title: Edit %{pick}
       page_heading: Edit %{pick}
-      plaque_id: Plaque id
-      description: Description
-      proposer: Proposer
-      feature_on: Feature on
-      last_featured: last featured
-      featured_count: Times featured
     index:
       page_title: Picks
       page_heading: Picks
@@ -345,6 +358,9 @@ en-GB:
     new:
       page_title: New pick
       page_heading: New pick
+      plaque_id: One of my favourite plaques is
+      description: I like it because
+      proposer: Please say that it was proposed by
     show:
       page_title: '%{pick}'
       page_heading: '%{pick}'
@@ -410,25 +426,16 @@ en-GB:
     new:
       page_title: New role
       page_heading: New role
-      name: name
-      abbreviation: abbreviation
-      this_is_a: this is a
-      type_role: type role
-      optional: (optional)
     show:
       page_title: Commemorated %{role}
       page_heading: Commemorated %{role}
       read_more_html: Read more about what %{link} is on Wikipedia
       related_roles: Related roles
-      edit: Edit this role
 
   roles_by_index:
-    index:
-      page_title: xx
-      page_heading: yy
     show:
-      page_title: xx
-      page_heading: yy
+      page_title: Roles - %{letter}
+      page_heading: Roles - %{letter}
 
   search:
     index:
@@ -439,8 +446,6 @@ en-GB:
     edit:
       page_title: Edit series %{series}
       page_heading: Edit series %{series}
-      name: name
-      description: description
     index:
       page_title: Series
       page_heading: Series
@@ -448,8 +453,6 @@ en-GB:
     new:
       page_title: New series
       page_heading: New series
-      name: name
-      description: description
     show:
       page_title: Series '%{series}'
       page_heading: Series '%{series}'

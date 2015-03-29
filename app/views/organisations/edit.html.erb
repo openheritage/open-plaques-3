@@ -3,15 +3,72 @@
 <div class="panel clearfix">
   <h1><%= t '.page_heading', :organisation => @organisation.name %></h1>
   <%= form_for(@organisation) do |f| %>
-    <p><%= f.label :name, t('.name') %> <%= f.text_field :name %></p>
-    <p><%= f.label :slug, t('.slug') %> <%= f.text_field :slug %></p>
+    <p><%= f.label :name %> <%= f.text_field :name %></p>
+    <p><%= f.label :slug %> <%= f.text_field :slug %></p>
     <p>
-      <%= f.label :latitude, t('.latitude') %> <%= f.text_field :latitude %>
-      <%= f.label :longitude, t('.longitude') %> <%= f.text_field :longitude %>
+      <%= f.label :latitude %> <%= f.text_field :latitude %>
+      <%= f.label :longitude %> <%= f.text_field :longitude %>
     </p>
-    <p><%= f.label :website, t('.website') %> <%= f.text_field :website %></p>
-    <p><%= f.label :description, t('.description') %> <%= f.text_area :description %></p>
-    <p><%= f.label :notes, t('.notes') %> <%= f.text_area :notes %></p>
+    <p><%= f.label :website %> <%= f.text_field :website %></p>
+    <p><%= f.label :description %> <%= f.text_area :description %></p>
+    <p><%= f.label :notes %> <%= f.text_area :notes %></p>
     <p><%= f.submit t('buttons.save') , :class => :button %></p>
   <% end %>
 </div>
+
+  <div id="map" style="height: 400px; width: 100%; margin-top: 15px;"></div>
+
+  <script>
+    var map = null;
+    var lat_element = null;
+    var lon_element = null;
+    var geolocation = new L.LatLng(52, 0);  
+    var view = 5;
+
+    document.addEventListener("DOMContentLoaded", function()
+    {
+      lat_element = document.getElementById('organisation_latitude');
+      lon_element = document.getElementById('organisation_longitude');
+
+      lat_element.addEventListener('blur', update_map);
+      lon_element.addEventListener('blur', update_map);
+
+      update_geolocation_from_text_fields();
+
+      var plaque_icon = new L.DivIcon({ className: 'plaque-marker', html: '', iconSize : 16 });
+
+      map = L.map('map').setView(geolocation, view);
+
+      L.tileLayer('http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        subdomains: ['otile1','otile2','otile3','otile4']
+      }).addTo(map);
+
+      marker = L.marker(geolocation, {draggable: true, icon: plaque_icon});
+      marker.on('dragend', update_text_fields_from_marker);
+      marker.addTo(map);
+
+      function update_geolocation_from_text_fields()
+      {
+        if (lat_element && lat_element.value != '' && lon_element && lon_element.value != '')
+        {
+          geolocation.lat = lat_element.value;
+          geolocation.lng = lon_element.value;
+          view = 18;
+        } 
+      }
+
+      function update_map()
+      {
+        update_geolocation_from_text_fields();
+        marker.setLatLng(geolocation);
+        map.setView(geolocation, view);
+      }
+      
+      function update_text_fields_from_marker()
+      {
+        lat_element.value = marker.getLatLng().lat;
+        lon_element.value = marker.getLatLng().lng;
+      }
+    });
+  </script>

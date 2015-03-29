@@ -1,6 +1,11 @@
 <% content_for(:page_title) {t '.page_title', :letter => @index.upcase} %>
 
 <div class="panel clearfix">
+  <% if current_user && current_user.is_admin? %>
+    <section class="admin_panel">
+      <%= link_to t('buttons.add'), new_person_path, {:class => :edit, :title => t('buttons.add')} %>
+    </section>
+  <% end %>
   <h1><%= t '.page_heading', :letter => @index.upcase %></h1>
   <nav class="alphabet">
     <%= content_tag("ol") do %>

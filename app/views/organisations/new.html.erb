@@ -4,11 +4,11 @@
   <h1><%= t '.page_heading' %></h1>
   <%= form_for @organisation do |f| %>
     <h2><%= t '.required' %></h2>
-    <p><%= f.label :name, t('.name') %> <%= f.text_field :name %> <%= t '.note_about_name' %></p>
+    <p><%= f.label :name %> <%= f.text_field :name %> <%= t '.note_about_name' %></p>
     <h2><%= t '.optional' %></h2>
-    <p><%= f.label :website, t('.website') %> <%= f.text_field :website %></p>
-    <p><%= f.label :description, t('.description') %><%= f.text_area :description, {:rows => "5", :cols => "80"} %> <%= t '.note_about_description' %></p>
-    <p><%= f.label :notes, t('.notes') %> <%= f.text_area :notes, {:rows => "5", :cols => "80"} %> <%= t '.note_about_notes' %></p>
+    <p><%= f.label :website %> <%= f.text_field :website %></p>
+    <p><%= f.label :description %><%= f.text_area :description, {:rows => "5", :cols => "80"} %> <%= t '.note_about_description' %></p>
+    <p><%= f.label :notes %> <%= f.text_area :notes, {:rows => "5", :cols => "80"} %> <%= t '.note_about_notes' %></p>
     <p><%= f.submit t('buttons.save'), :class => :button %></p>
   <% end %>
 </div>

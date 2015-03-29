@@ -1,10 +1,10 @@
 <% content_for(:page_title) {t '.page_title'} %>
 
 <div class="panel">
-  <h1><%= t '.page_heading_html' %></h1>
+  <h1><%= t '.page_heading' %></h1>
   <%= form_for @colour do |f| %>
-    <p><%= f.label :name, t('.name') %> <%= f.text_field :name %></p>
-    <p><%= f.label :dbpedia_uri, t('.dbpedia_uri') %> <%= f.text_field :dbpedia_uri %></p>
+    <p><%= f.label :name %> <%= f.text_field :name %></p>
+    <p><%= f.label :dbpedia_uri %> <%= f.text_field :dbpedia_uri %></p>
     <%= f.submit t('buttons.save'), :class => :button %>
   <% end %>
 </div>

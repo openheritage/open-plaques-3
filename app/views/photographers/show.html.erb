@@ -1,6 +1,6 @@
 <% content_for(:page_title) {t '.page_title', :photographer => @photographer.id } %>
 
-<div class="panel">
+<div class="panel clearfix">
   <h1><%= pluralize(@photographer.photos.size,"photo") %> taken by <%= link_to("photographer", "/photographers/") %> <%= @photographer.id %></h1>
   <%= render partial: 'photos/tile', :collection => @photographer.photos, as: :photo %>
   <br style="clear: left;"/>
