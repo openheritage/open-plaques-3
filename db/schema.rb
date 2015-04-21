@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140102135735) do
+ActiveRecord::Schema.define(version: 20150420214720) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -231,8 +231,11 @@ ActiveRecord::Schema.define(version: 20140102135735) do
     t.boolean  "is_current",                 default: true
     t.text     "inscription_in_english"
     t.string   "series_ref"
+    t.string   "address"
+    t.integer  "area_id"
   end
 
+  add_index "plaques", ["area_id"], name: "index_plaques_on_area_id", using: :btree
   add_index "plaques", ["colour_id"], name: "index_plaques_on_colour_id", using: :btree
   add_index "plaques", ["latitude", "longitude"], name: "geo", using: :btree
   add_index "plaques", ["location_id"], name: "index_plaques_on_location_id", using: :btree
