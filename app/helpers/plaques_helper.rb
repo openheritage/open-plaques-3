@@ -70,7 +70,7 @@ module PlaquesHelper
 
     flickr_url = "https://api.flickr.com/services/rest/"
     method = "flickr.photos.search"
-    license = "1,2,3,4,5,6,7" # All the CC licencses that allow commercial re-use
+    license = "1,2,3,4,5,6,7,8,9,10"
 
     repeat.times do |page|
 
@@ -94,15 +94,12 @@ module PlaquesHelper
         photo_url = "http://www.flickr.com/photos/" + photo.attributes["owner"] + "/" + photo.attributes["id"] + "/"
 
         @photo = Photo.find_by_url(photo_url)
-
         if @photo
           # we've already got that one
         else
           plaque_id = photo.attributes["machine_tags"][/openplaques\:id\=(\d+)/, 1]
-
           puts "Flickr: photo of plaque " + plaque_id.to_s + " '" + photo.attributes["title"] + "'"
-
-          @plaque = Plaque.find(plaque_id)
+          @plaque = Plaque.find_by_id(plaque_id)
           if @plaque
             @photo = Photo.new
             @photo.plaque = @plaque
@@ -111,41 +108,16 @@ module PlaquesHelper
             @photo.taken_at = photo.attributes["datetaken"]
             @photo.photographer_url = photo_url = "http://www.flickr.com/photos/" + photo.attributes["owner"] + "/"
             @photo.photographer = photo.attributes["ownername"]
-            if photo.attributes["license"] == "4"
-              @photo.licence = Licence.find_by_url("http://creativecommons.org/licenses/by/2.0/")
-            elsif photo.attributes["license"] == "6"
-              @photo.licence = Licence.find_by_url("http://creativecommons.org/licenses/by-nd/2.0/")
-            elsif photo.attributes["license"] == "3"
-              @photo.licence = Licence.find_by_url("http://creativecommons.org/licenses/by-nc-nd/2.0/")
-            elsif photo.attributes["license"] == "2"
-              @photo.licence = Licence.find_by_url("http://creativecommons.org/licenses/by-nc/2.0/")
-            elsif photo.attributes["license"] == "1"
-              @photo.licence = Licence.find_by_url("http://creativecommons.org/licenses/by-nc-sa/2.0/")
-            elsif photo.attributes["license"] == "5"
-              @photo.licence = Licence.find_by_url("http://creativecommons.org/licenses/by-sa/2.0/")
-            elsif photo.attributes["license"] == "7"
-              @photo.licence = Licence.find_by_url("http://www.flickr.com/commons/usage/")
-            elsif photo.attributes["license"] == "0"
-              @photo.licence = Licence.find_by_url("http://en.wikipedia.org/wiki/All_rights_reserved/")
-            else
-              puts "Couldn't find license"
+            @photo.licence = Licence.find_by_flickr_licence_id(photo.attributes["license"])
+            if photo.attributes["latitude"] != "0"
+              @photo.latitude = photo.attributes["latitude"]
+              @photo.longitude = photo.attributes["longitude"]
             end
             if @photo.save
               new_photos_count += 1
               puts "New photo found and saved"
             else
 #            puts "Error saving photo" + @photo.errors.each_full{|msg| puts msg }
-            end
-
-            if photo.attributes["latitude"] != "0" && photo.attributes["longitude"] != "0" && !@plaque.geolocated?
-              puts "New geolocation found"
-              @plaque.latitude = photo.attributes["latitude"]
-              @plaque.longitude = photo.attributes["longitude"]
-              if @plaque.save
-                puts "New geolocation added to photo"
-              else
-                puts "Error adding geolocation to photo" + plaque.errors.full_messages.to_s #methods.join(" ")
-              end
             end
           else
             puts "Photo's machine tag doesn't match a plaque."
@@ -478,7 +450,6 @@ module PlaquesHelper
         end
         @centre.latitude = @lat / @count
         @centre.longitude = @lon / @count
-#        puts ("****** lat= " + @centre.latitude.to_s + ",lon= " + @centre.longitude.to_s + " from " + thing.size.to_s + " plaques, " + @count.to_s + " are geolocated")
         return @centre
       rescue
         # oh, maybe it's a thing that has plaques

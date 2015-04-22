@@ -177,7 +177,6 @@ class Photo < ActiveRecord::Base
           curl.verbose = true
         end
         parsed_json = JSON.parse(ch.body_str)
-        puts parsed_json
         self.photographer = parsed_json['author_name']
         self.photographer_url = parsed_json['author_url']
         self.thumbnail = parsed_json['thumbnail_url']
@@ -203,7 +202,7 @@ class Photo < ActiveRecord::Base
 
   def as_json(options={})
     # this example ignores the user's options
-    super(:only => [:file_url, :photographer, :photographer_url, :shot, :url],
+    super(:only => [:file_url, :photographer, :photographer_url, :shot, :url, :longitude, :latitude],
       :include => {
         :licence => {:only => [:name], :methods => [:uri]},
         :plaque => {:only => [], :methods => [:uri]}
@@ -211,7 +210,20 @@ class Photo < ActiveRecord::Base
       :methods => [:title, :uri, :thumbnail, :shot_name, :source]
     )
   end
-  
+
+  def as_geojson(options={})
+    {
+      type: 'Feature',
+      geometry: 
+      {
+        type: 'Point',
+        coordinates: [self.longitude, self.latitude]
+      },
+      properties:
+        as_json(options)
+    }
+  end
+
   def uri
     "http://openplaques.org" + Rails.application.routes.url_helpers.photo_path(self, :format => :json)
   end
