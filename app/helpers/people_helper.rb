@@ -7,7 +7,6 @@ module PeopleHelper
   def roles_list(person)
     if person.roles.size > 0
       list = [person.type]
-
       person.straight_roles.each do |personal_role|
         list <<  dated_role(personal_role)
       end
