@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150426165908) do
+ActiveRecord::Schema.define(version: 20150426174340) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,13 +20,13 @@ ActiveRecord::Schema.define(version: 20150426165908) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "locations_count"
     t.integer  "woeid"
     t.string   "dbpedia_uri"
     t.integer  "country_id"
     t.string   "slug"
     t.float    "latitude"
     t.float    "longitude"
+    t.integer  "plaques_count"
   end
 
   add_index "areas", ["country_id"], name: "index_areas_on_country_id", using: :btree
@@ -43,18 +43,11 @@ ActiveRecord::Schema.define(version: 20150426165908) do
 
   add_index "colours", ["slug"], name: "index_colours_on_slug", using: :btree
 
-  create_table "connections", force: true do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "countries", force: true do |t|
     t.string   "name"
     t.string   "alpha2"
     t.integer  "areas_count"
     t.integer  "plaques_count"
-    t.integer  "locations_count"
     t.string   "dbpedia_uri"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -134,7 +127,6 @@ ActiveRecord::Schema.define(version: 20150426165908) do
   create_table "personal_connections", force: true do |t|
     t.integer  "person_id"
     t.integer  "verb_id"
-    t.integer  "location_id"
     t.integer  "plaque_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -143,7 +135,6 @@ ActiveRecord::Schema.define(version: 20150426165908) do
     t.integer  "plaque_connections_count"
   end
 
-  add_index "personal_connections", ["location_id"], name: "index_personal_connections_on_location_id", using: :btree
   add_index "personal_connections", ["person_id"], name: "index_personal_connections_on_person_id", using: :btree
   add_index "personal_connections", ["plaque_id"], name: "index_personal_connections_on_plaque_id", using: :btree
   add_index "personal_connections", ["verb_id"], name: "index_personal_connections_on_verb_id", using: :btree
@@ -196,13 +187,6 @@ ActiveRecord::Schema.define(version: 20150426165908) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "proposer"
-  end
-
-  create_table "plaque_erected_years", force: true do |t|
-    t.string   "name"
-    t.integer  "plaques_count"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   create_table "plaques", force: true do |t|
@@ -262,6 +246,7 @@ ActiveRecord::Schema.define(version: 20150426165908) do
     t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "plaques_count"
   end
 
   create_table "sponsorships", force: true do |t|
