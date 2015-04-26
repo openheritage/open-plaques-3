@@ -62,31 +62,6 @@ module ApplicationHelper
     content_tag("li", link_to(link_text, options, html_options))
   end
 
-  def linked_personal_connections(personal_connections)
-    locations = []
-    personal_connections.each do |personal_connection|
-      locations << personal_connection.location
-    end
-    locations.uniq!
-    ret = "".html_safe
-    locations.each do |location|
-      verbs = []
-      personal_connections.each do |personal_connection|
-        if personal_connection.location == location
-#          verbs << link_to(personal_connection.verb.name, verb_path(personal_connection.verb))
-        end
-      end
-      ret += verbs.to_sentence + " at " + link_to(location.name, location)
-    end
-    return ret
-  end
-
-  def linked_personal_connection(personal_connection)
-    s = dated_roled_person(personal_connection.person) + " " + link_to(personal_connection.verb.name, personal_connection.verb) + " at " + link_to(personal_connection.place.name, personal_connection.place)
-    s += " from "+ personal_connection.started_at.year.to_s + " to " + personal_connection.ended_at.year.to_s if personal_connection.started_at && personal_connection.ended_at
-    return s + "."
-  end
-
   # Returns 'a' or 'an' depending on whether the word starts with a vowel or not
   #
   # ==== Parameters

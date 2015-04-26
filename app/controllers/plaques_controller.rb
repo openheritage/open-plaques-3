@@ -65,7 +65,7 @@ class PlaquesController < ApplicationController
       @plaques = Plaque.all(:select => [:id, :latitude, :longitude, :inscription])
     else
       puts "asking for all data"
-      @plaques = Plaque.where(conditions).order("created_at DESC").limit(limit).preload(:language, :organisations, :colour, [:location => [:area => :country]])
+      @plaques = Plaque.where(conditions).order("created_at DESC").limit(limit).preload(:language, :organisations, :colour, [:area => :country])
     end
 
     respond_to do |format|
@@ -173,14 +173,6 @@ class PlaquesController < ApplicationController
         area = country.areas.create!(:name => params[:area])
       end
     end
-    if area
-      if params[:location] && !params[:location].blank?
-        location = area.locations.create!(:name => params[:location])
-      else
-        location = area.locations.create!(:name => "?")
-      end
-      @plaque.location = location if location
-    end
 
     unless params[:organisation_name].empty?
       organisation = Organisation.where(:name => params[:organisation_name]).first_or_create
@@ -210,17 +202,6 @@ class PlaquesController < ApplicationController
       if !point.latitude.blank? && !point.longitude.blank?
         params[:plaque][:latitude] = point.latitude
         params[:plaque][:longitude] = point.longitude
-      end
-    end
-
-    if params[:location]
-      unless @plaque.location && params[:location] == @plaque.location.name
-        if @plaque.location && @plaque.location.plaques_count == 1
-          @plaque.location.update_attributes(:name => params[:location])
-        else
-          @location = Location.find_or_create_by_name(params[:location])
-          @plaque.location = @location
-        end
       end
     end
     if params[:plaque] && params[:plaque][:colour_id]
@@ -253,10 +234,6 @@ class PlaquesController < ApplicationController
   end
   
   def edit
-    if @plaque.location.blank?
-      @plaque.location = Location.new(:name => "?")
-      @plaque.save
-    end
   end
 
   def help
@@ -279,7 +256,7 @@ class PlaquesController < ApplicationController
           # for new plaque form
           :inscription,:inscription_is_stub,
           :language_id,
-          :location,:area,:country,
+          :address,:area,:country,
           :organisation_name,:organisation_id,
           'erected_at(1i)', 'erected_at(3i)', 'erected_at(2i)',
           :colour_id,

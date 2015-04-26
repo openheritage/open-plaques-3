@@ -4,10 +4,10 @@
 # * +name+ - The name of the verb, in past tense, eg 'lived'.
 #
 # === Associations
-# * +plaques+ - The plaques on which this verb is used.
-# * +people+ - The people associated with this verb.
-# * +locations+ - The locations associated with this verb.
 # * +personal_connections+ - The personal connections (joining model) which connect with this verb.
+#
+# === Indirect Associations
+# * +people+ - The people associated with this verb.
 class Verb < ActiveRecord::Base
 
   validates_presence_of :name
@@ -33,7 +33,6 @@ class Verb < ActiveRecord::Base
   end
 
   def as_json(options={})
-    # this ignores the user's options
     super(:only => [:name],
       :include => {
         :people => {:only => [:name], :methods => [:uri]}

@@ -30,11 +30,7 @@
         <% end %>
       <% end %>
       <div class="row"><%= f.collection_select :verb_id, @verbs, :id, :name, { :selected => "222"}, { "style" => "width:400px" } %>  <%= link_to(t('.new_verb'), "/verbs/new") %></div>
-      <% if @plaque.location %>
-        <div class="row"><%= t '.at' %> <%= @plaque.location.full_address %><%= f.hidden_field :location_id, :value => @plaque.location.id %></div>
-      <% else %>
-        <div class="row"><%= t '.no_location' %></div>
-      <% end %>
+      <div class="row"><%= t '.at' %> <%= @plaque.full_address %></div>
       <div class="row"><%= f.label :started_at, t('.from') %> <%= f.text_field :started_at %></div>
       <div class="row"><%= f.label :ended_at, t('.to') %> <%= f.text_field :ended_at %></div>
     </fieldset>

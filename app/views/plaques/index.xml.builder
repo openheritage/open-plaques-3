@@ -15,26 +15,19 @@ xml.openplaques(){
         if plaque.geolocated?
           xml.geo(:reference_system => "WGS84", :latitude => plaque.latitude, :longitude => plaque.longitude, :is_accurate => plaque.is_accurate_geolocation)
         end
-        if plaque.location or plaque.geolocated?
-          xml.location {
-            if plaque.location
-              xml.address plaque.location.full_address
-              xml.street(:uri => location_url(plaque.location)) {
-                xml.text! plaque.location.name
-              }
-              if plaque.location.area
-                xml.locality(:uri => area_url(plaque.location.area)) {
-                  xml.text! plaque.location.area.name
-                }
-              end
-              if plaque.location.country
-                xml.country(:uri => country_url(plaque.location.country)) {
-                  xml.text! plaque.location.country.name
-                }
-              end
-            end
-          }
-        end
+        xml.location {
+          xml.address plaque.address
+          if plaque.area
+            xml.locality(:uri => area_url(plaque.area)) {
+              xml.text! plaque.area.name
+            }
+          end
+          if plaque.area.country
+            xml.country(:uri => country_url(plaque.area.country)) {
+              xml.text! plaque.area.country.name
+            }
+          end
+        }
         plaque.organisations.each do |organisation|
           xml.organisation(:uri => organisation_url(organisation)) {
             xml.text! organisation.name

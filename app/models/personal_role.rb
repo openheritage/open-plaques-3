@@ -1,14 +1,15 @@
 # This class represents a connection between a Person and a Role.
+# === Attributes
+# * +started_at+ - when the person started doing what they did at the place
+# * +ended_at+ - when the person stopped doing what they did at the place
+# * +ordinal+ - whether they were the first, second, third, or not stated
 # === Associations
 # * Person - the person to whom this connection applies
 # * Role - the role referenced in this connection.
 # * Related Person - optional related person for special roles like 'wife' or 'mother'
-# * Started_at
-# * Ended_at
-# * Ordinal - whether they were the first, second, third, or not stated
 class PersonalRole < ActiveRecord::Base
 
-  validates_presence_of :role_id, :person_id
+  validates_presence_of :person_id, :role_id
 
   belongs_to :person, :counter_cache => true
   belongs_to :role, :counter_cache => true

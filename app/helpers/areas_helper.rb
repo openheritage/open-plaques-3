@@ -36,5 +36,4 @@ module AreasHelper
     links.to_sentence.html_safe
   end
 
-
 end

@@ -8,7 +8,9 @@
 # * +latitude+ - Mean location of plaques
 # * +longitude+ - Mean location of plaques
 # === Associations
-# * Plaques - plaques erected by this organisation.
+# * Sponsorships - plaques erected by this organisation.
+# === Indirect Associations
+# * Plaques - plaques thtough a sponsorship
 class Organisation < ActiveRecord::Base
 
   before_validation :make_slug_not_war, :find_centre

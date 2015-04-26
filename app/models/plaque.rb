@@ -14,9 +14,9 @@
 # * +notes+ - A general purpose notes field for internal admin and data-collection purposes.
 # * +is_current+ - Whether the plaque is currently on display (or has it been stolen!)
 # * +inscription_in_english+ - Manual translation
+# * +address+ - the physical street address
 #
 # === Associations
-# * Location - The location where the plaque is (or was) installed. Optional.
 # * Area - The area in which the plaque is (or was) installed. Optional.
 # * Colour - The colour of the plaque. Optional.
 # * Organisation - The organisation responsible for the plaque. Optional.
@@ -29,13 +29,12 @@ class Plaque < ActiveRecord::Base
 
   validates_presence_of :user
 
-  belongs_to :location, :counter_cache => true
   belongs_to :colour, :counter_cache => true
   belongs_to :user, :counter_cache => true
   belongs_to :language, :counter_cache => true
   belongs_to :series
+  belongs_to :area
 
-  has_one :area, :through => :location
   has_one :pick
 
   has_many :personal_connections
@@ -52,8 +51,8 @@ class Plaque < ActiveRecord::Base
   scope :unphotographed, -> { where(:photos_count => 0, :is_current => true).order("id DESC") }
   scope :coloured, -> { where("colour_id IS NOT NULL") }
   scope :photographed_not_coloured, -> { where(["photos_count > 0 AND colour_id IS NULL"]) }
-  scope :geo_no_location, -> { where(["latitude IS NOT NULL AND location_id IS NULL"]) }
-  scope :detailed_address_no_geo, -> { where(latitude: nil).where("location_id is not null") }  # TODO fix this
+  scope :geo_no_location, -> { where(["latitude IS NOT NULL AND address IS NULL"]) }
+  scope :detailed_address_no_geo, -> { where(latitude: nil).where("address is not null") }  # TODO fix this
   scope :no_connection, -> { where(personal_connections_count: 0).order("id DESC") }
   scope :no_description, -> { where("description = '' OR description IS NULL") }
   scope :partial_inscription, -> { where(inscription_is_stub: true).order("id DESC") }
@@ -91,48 +90,9 @@ class Plaque < ActiveRecord::Base
     end
   end
 
-  def location_name
-    if location && location.name
-      '"' + location.name.gsub('"', '""') + '"'
-    else
-      ""
-    end
-  end
-
-  def area_name
-    if location && location.area
-      location.area.name
-    else
-      ""
-    end
-  end
-
-  def country_name
-    if location && location.area && location.area.country
-      location.area.country.name
-    else
-      ""
-    end
-  end
-  
-  def address
-    location_name.gsub('"', '') + ", " + area_name
-  end
-  
-  def organisation_name
-    if organisation
-      organisation.name
-    else
-      ""
-    end
-  end
-
-  def location_string
-    if location
-      location.name
-    else
-      nil
-    end
+  def full_address
+    a = address
+    a += ", " + area.name + ", " + area.country.name if area
   end
 
   def erected_at_string
@@ -219,33 +179,22 @@ class Plaque < ActiveRecord::Base
           :only => [:name],
           :methods => [:uri]
         },
-        :colour =>
-        {
-          :only => :name
-        },
         :language =>
         {
           :only => [:name, :alpha2]
         },
-        :location => 
+        :area => 
         {
-          :only => :name,
+          :only => :name, 
           :include => 
           {
-            :area => 
+            :country => 
             {
-              :only => :name, 
-              :include => 
-              {
-                :country => 
-                {
-                  :only => [:name, :alpha2],
-                  :methods => :uri
-                }
-              },
+              :only => [:name, :alpha2],
               :methods => :uri
             }
-          }
+          },
+          :methods => :uri
         },
         :people => 
         {
@@ -258,7 +207,7 @@ class Plaque < ActiveRecord::Base
           :methods => [:uri]
         }
       },
-      :methods => [:uri, :title, :subjects, :colour_name, :machine_tag, :geolocated?, :photographed?, :photo_url, :thumbnail_url, :shot_name]
+      :methods => [:uri, :title, :address, :subjects, :colour_name, :machine_tag, :geolocated?, :photographed?, :photo_url, :thumbnail_url, :shot_name]
     }
     end
 

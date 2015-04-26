@@ -9,6 +9,8 @@
 #
 # === Associations
 # * +personal_roles+ - how people are connected to this role
+#
+# === Indirect Associations
 # * +people+ - The people who have been ascribed this role.
 class Role < ActiveRecord::Base
 
@@ -16,7 +18,6 @@ class Role < ActiveRecord::Base
   before_save :update_index, :filter_name
   validates_presence_of :name, :slug
   validates_uniqueness_of :name, :slug
-#  validates_format_of :slug, :with => /^[a-z\_]+$/, :message => "can only contain lowercase letters and underscores"
 
   has_many :personal_roles, -> { order('started_at') }
   has_many :people, -> { order('name') }, :through => :personal_roles

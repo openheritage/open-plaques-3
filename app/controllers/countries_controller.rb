@@ -6,7 +6,7 @@ class CountriesController < ApplicationController
 
   def index
     @countries = Country.all.to_a
-    @plaque_counts = Plaque.joins(:location).group("locations.country_id").count
+    @plaque_counts = Plaque.joins(:area).group("areas.country_id").count
     @countries.sort! { |a,b| @plaque_counts[b.id].to_i <=> @plaque_counts[a.id].to_i }
     respond_to do |format|
       format.html

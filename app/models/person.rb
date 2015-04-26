@@ -11,22 +11,23 @@ require 'open-uri'
 # * +died_on+ - The date on which the person died. Optional.
 # * +born_on_is_circa+ - True or False. Whether the +born_on+ date is 'circa' or not. Optional.
 # * +died_on_is_circa+ - True or False. Whether the +died_on+ date is 'circa' or not. Optional.
-
+#
 # === Associations
+# * PersonalRoles
+# * PersonalConnections - link to a time and place via a mention on a plaque
+# * MainPhoto - image showing the person (via photos)
+#
+# === Indirect Associations
 # * Plaques - plaques on which this person is commemorated.
 # * Roles - roles associated with this person (eg 'carpenter').
-# * Locations - locations associated with this person (via plaques).
-# * Verbs - verbs associated with this person (via plaques).
-# * Depiction - image showing the person (via photos)
 
 class Person < ActiveRecord::Base
 
   validates_presence_of :name
 
-  has_many :roles, :through => :personal_roles
   has_many :personal_roles
   has_many :personal_connections #, -> { order('started_at asc') }
-  has_many :locations, -> { uniq }, :through => :personal_connections
+  has_many :roles, :through => :personal_roles
   has_many :plaques, :through => :personal_connections #, :uniq => true
   has_one :birth_connection, -> { where('verb_id in (8,504)') }, :class_name => "PersonalConnection"
   has_one :death_connection, -> { where('verb_id in (3,49,161,1108)') }, :class_name => "PersonalConnection"
@@ -44,22 +45,18 @@ class Person < ActiveRecord::Base
 
   def relationships
     @relationships ||= begin
-      
       relationships = personal_roles.select do |personal_role|
         personal_role.related_person_id != nil
       end
-      
       relationships.sort { |a,b| a.started_at.to_s <=> b.started_at.to_s }
     end
   end
 
   def straight_roles
     @straight_roles ||= begin
-      
       straight_roles = personal_roles.select do |personal_role|
         personal_role.related_person_id == nil
       end
-      
       straight_roles.sort { |a,b| a.started_at.to_s <=> b.started_at.to_s }
     end
   end
@@ -70,11 +67,13 @@ class Person < ActiveRecord::Base
 
   def areas
     areas = []
-    locations.each do |location|
-      if location.area
-        areas << location.area unless areas.include?(location.area)
+    uniq_plaques.each do |plaque|
+      area = plaque.area
+      if area
+        areas << area unless areas.include?(area)
       end
     end
+    return areas
   end
 
   def person?
