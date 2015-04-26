@@ -16,7 +16,8 @@
 #
 # === Associations
 # * Licence - The content licence under which the photo is made available.
-# * Plaque - the featured in the photo.
+# * Plaque - the featured in the photo. (optional)
+# * Person - the person in the photo. (optional)
 #require 'curb'
 #require 'nokogiri'
 #require 'sanitize'
@@ -25,7 +26,6 @@ class Photo < ActiveRecord::Base
 
   belongs_to :plaque, :counter_cache => true
   belongs_to :licence, :counter_cache => true
-  belongs_to :user
   belongs_to :person
 
   validates_presence_of :file_url
