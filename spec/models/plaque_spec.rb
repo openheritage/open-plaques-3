@@ -17,7 +17,8 @@ describe Plaque do
       before do
         @plaque = Plaque.new()
         @person = Person.new(name: 'Gizmo')
-        @plaque.personal_connections << PersonalConnection.new(plaque: @plaque, person: @person)
+        @verb = Verb.new()
+        @plaque.personal_connections << PersonalConnection.new(plaque: @plaque, person: @person, verb: @verb)
       end
       it 'has the subject\'s name in it' do
         expect(@plaque.title).to eq('Gizmo plaque')
@@ -28,7 +29,8 @@ describe Plaque do
       before do
         @plaque = Plaque.new(colour: Colour.new(name: 'blue'))
         @person = Person.new(name: 'Gizmo')
-        @plaque.personal_connections << PersonalConnection.new(plaque: @plaque, person: @person)
+        @verb = Verb.new()
+        @plaque.personal_connections << PersonalConnection.new(plaque: @plaque, person: @person, verb: @verb)
       end
       it 'has the subject\'s name and the plaque colour in it' do
         expect(@plaque.title).to eq('Gizmo blue plaque')

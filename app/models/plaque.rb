@@ -32,8 +32,8 @@ class Plaque < ActiveRecord::Base
   belongs_to :colour, :counter_cache => true
   belongs_to :user, :counter_cache => true
   belongs_to :language, :counter_cache => true
-  belongs_to :series
-  belongs_to :area
+  belongs_to :series, :counter_cache => true
+  belongs_to :area, :counter_cache => true
 
   has_one :pick
 
@@ -246,7 +246,7 @@ class Plaque < ActiveRecord::Base
         colour_name.to_s.capitalize + " plaque № #{id}"
       else
         "plaque № #{id}"
-      end << (area_name != "" ? " in " : "") + area_name
+      end # << " in " + area.name if area
     rescue Exception => e
       "plaque № #{id}"
     end
