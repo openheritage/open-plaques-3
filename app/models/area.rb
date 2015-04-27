@@ -76,6 +76,10 @@ class Area < ActiveRecord::Base
     return !(self.latitude == nil || self.longitude == nil || self.latitude == 51.475 && self.longitude == 0)
   end
 
+  def full_name
+    name + ", " + country.name
+  end
+
   def to_param
     slug
   end

@@ -257,13 +257,14 @@ class PlaquesController < ApplicationController
           # for new plaque form
           :inscription,:inscription_is_stub,
           :language_id,
-          :address,:area,:country,
+          :address, :area, :country,
           :organisation_name,:organisation_id,
           'erected_at(1i)', 'erected_at(3i)', 'erected_at(2i)',
           :colour_id,
           # for plaque update
           :inscription_in_english,
-          :description, 
+          :description,
+          :area_id,
           :latitude, :longitude, :is_accurate_geolocation,
           :erected_at_string, 
           :series_id, :series_ref,
