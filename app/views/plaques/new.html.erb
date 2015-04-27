@@ -92,8 +92,8 @@
         <h2>Where is it?</h2>
 
         <div class="row">
-          <label for="address">Street and number </label>
-          <%= text_field_tag :address, "", {:placeholder => "221B Baker Street"} %>
+          <%= f.label :address, "Street and number" %>
+          <%= f.text_field :address, {:placeholder => "221B Baker Street"} %>
         </div>
 
         <div class="row ui-widget">

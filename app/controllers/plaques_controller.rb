@@ -173,6 +173,7 @@ class PlaquesController < ApplicationController
         area = country.areas.create!(:name => params[:area])
       end
     end
+    @plaque.area = area
 
     unless params[:organisation_name].empty?
       organisation = Organisation.where(:name => params[:organisation_name]).first_or_create
