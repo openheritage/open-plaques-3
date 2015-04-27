@@ -12,7 +12,7 @@
     </p>
     <p>
       <%= f.label :location_id, t('.at') %>
-      <%= f.collection_select :location_id, @locations, :id, :name %>
+      <%= @plaque.full_address %>
     </p>
     <p><%= f.label :started_at, t('.from') %> <%= f.text_field :started_at %></p>
     <p><%= f.label :ended_at, t('.to') %> <%= f.text_field :ended_at %></p>

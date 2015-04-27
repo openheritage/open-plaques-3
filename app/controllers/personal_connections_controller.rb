@@ -10,10 +10,6 @@ class PersonalConnectionsController < ApplicationController
     redirect_to :back
   end
 
-  def edit
-    @locations = Location.order(:name)
-  end
-
   def update
     @personal_connection = @plaque.personal_connections.find(params[:id])
     if params[:personal_connection][:started_at] > ""
@@ -47,7 +43,6 @@ class PersonalConnectionsController < ApplicationController
     @personal_connection = @plaque.personal_connections.new
     @personal_connection.person_id = params[:personal_connection][:person_id]
     @personal_connection.verb_id = params[:personal_connection][:verb_id]
-    @personal_connection.location_id = params[:personal_connection][:location_id]
 
     if params[:personal_connection][:started_at] > ""
       started_at = params[:personal_connection][:started_at]
@@ -96,7 +91,6 @@ class PersonalConnectionsController < ApplicationController
       params.require(:personal_connection).permit(
         :person_id,
         :verb_id,
-        :location_id,
         :started_at,
         :ended_at,
       )
