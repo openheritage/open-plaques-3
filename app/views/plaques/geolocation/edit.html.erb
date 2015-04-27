@@ -17,7 +17,8 @@
     <p>Our goal is to accurately locate all plaques through real-life evidence. We do not use geocoding software as the results are inaccurate and it taint the openness of our data. It is okay to plot an approximate position, but please be sure to flag it as uncertain.</p>
     <br/>
     <p><%= label_tag(:address) %> <%= f.text_field(:address, size: 100) %></p>
-    <p>Find the address '<%= @plaque.address %>' <a href="http://maps.google.com/maps?q=<%= @plaque.address %>&z=18" target="_new">on Google Maps</a></p>
+    <p><%= f.label :area_id, "It's in" %> <%= f.collection_select :area_id, @areas, :id, :full_name, {:include_blank => true} %></p>
+    <p>Find the address '<%= @plaque.full_address %>' <a href="http://maps.google.com/maps?q=<%= @plaque.full_address %>&z=18" target="_new">on Google Maps</a></p>
     <div class="edit_lat_long">
       <p><%= label_tag(:streetview_url, "Google Streetview url:") %> <%= text_field_tag(:streetview_url, ' ', size: 100) %></p>
       <p><%= f.label :latitude %> <%= f.text_field :latitude %> <%= f.label :longitude %> <%= f.text_field :longitude %> <a href="http://maps.google.com/maps?q=<%= @plaque.latitude %>,<%= @plaque.longitude %>&z=18" target="_new">on Google Maps</a></p>
