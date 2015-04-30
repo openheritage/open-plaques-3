@@ -48,17 +48,34 @@ class AreasController < ApplicationController
   end
 
   def edit
-    @countries = Country.all
+    @countries = Country.all.select(:id, :name)
   end
 
   def update
+    puts '**** area is ' + @area
+    if (params[:streetview_url])
+      point = help.geolocation_from params[:streetview_url]
+      if !point.latitude.blank? && !point.longitude.blank?
+        @area.latitude = point.latitude
+        @area.longitude = point.longitude
+      end
+    end
     if @area.update_attributes(area_params)
       flash[:notice] = 'Area was successfully updated.'
-      redirect_to(country_area_path(@area.country.alpha2, @area.slug))
+      redirect_to :back
     else
-      @countries = Country.all
+      @countries = Country.all.select(:id, :name)
       render "edit"
     end
+  end
+
+  def help
+    Helper.instance
+  end
+
+  class Helper
+    include Singleton
+    include PlaquesHelper
   end
 
   protected
@@ -78,7 +95,14 @@ class AreasController < ApplicationController
   private
 
     def area_params
-      params.require(:area).permit(:name,:slug,:country_id,:latitude,:longitude,:streetview_url,:country_id)
+      params.require(:area).permit(
+        :name,
+        :slug,
+        :country_id,
+        :latitude,:longitude,
+        :streetview_url,
+        :country_id
+      )
 	end
   
 end

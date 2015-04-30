@@ -233,9 +233,6 @@ class PlaquesController < ApplicationController
       format.xml  { head :ok }
     end
   end
-  
-  def edit
-  end
 
   def help
     Helper.instance

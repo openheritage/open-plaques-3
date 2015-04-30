@@ -8,7 +8,6 @@ class PlaqueGeolocationController < ApplicationController
   before_filter :find, :only => [:edit]
 
   def edit
-#    @plaque = Plaque.find(params[:plaque_id])
     @geocodes = Array.new
     unless @plaque.geolocated?
       @geocodes = geocode_from_flickr
