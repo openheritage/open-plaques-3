@@ -12,7 +12,9 @@
 <div id="organisation_info" typeof="foaf:Organization">
   <%= content_tag("p", link_to(h(@organisation.website),@organisation.website), {:rel => "foaf:homepage vcard:url"}) unless @organisation.website.blank? %>
   <%= simple_format(@organisation.description) if @organisation.description %>
-  <div id="plaque-map" data-latitude="<%= @organisation.latitude %>" data-longitude="<%= @organisation.longitude %>" data-view="all" context="<%= request.path %>"></div>
+  <% if @organisation.geolocated? %>
+    <div id="plaque-map" data-latitude="<%= @organisation.latitude %>" data-longitude="<%= @organisation.longitude %>" data-view="all" context="<%= request.path %>"></div>
+  <% end %>
   <%= will_paginate @sponsorships %>
   <%= render partial: 'plaques/plaque', collection: @sponsorships, as: :plaque %>
   <%= will_paginate @sponsorships %>
