@@ -32,6 +32,7 @@ class AreaPlaquesController < ApplicationController
         @plaques = @area.plaques.paginate(:page => params[:page], :per_page => 50)
       end
     end
+    @area.find_centre if !@area.geolocated?
     respond_with @plaques do |format|
       format.html
       format.xml
