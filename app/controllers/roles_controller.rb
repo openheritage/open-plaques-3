@@ -2,12 +2,12 @@ class RolesController < ApplicationController
 
   before_filter :authenticate_admin!, :only => :destroy
   before_filter :authenticate_user!, :except => [:index, :show]
-  before_filter :find, :only => [:show, :edit, :update]
+  before_filter :find, :only => [:edit, :update]
 
   def index
     respond_to do |format|
       format.html { redirect_to(roles_by_index_path('a')) }
-      @roles = Role.by_popularity
+      @roles = Role.all
       format.json { render :json => @roles }
     end
   end
@@ -15,17 +15,7 @@ class RolesController < ApplicationController
   # GET /roles/artist
   # GET /roles/artist.xml
   def show
-    @related_roles = @role.related_roles
-    for person in @role.people
-      if person # a role record may exist that no longer has a person joined to it
-        if (@plaques == nil)
-          @plaques = person.plaques
-        else
-          @plaques = @plaques + person.plaques
-        end
-      end
-    end
-    @zoom = 7
+    @role = Role.includes(:personal_roles => :person).find_by_slug!(params[:id])
     respond_to do |format|
       format.html
       format.json { render :json => @role }

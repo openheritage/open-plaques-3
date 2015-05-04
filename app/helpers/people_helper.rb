@@ -107,51 +107,11 @@ module PeopleHelper
   end
 
     def dated_person(person, options = {})
-  #    options.stringify_keys!
-      if (person.born_on? and person.died_on? and (person.born_on == person.died_on))
-        dates = " (" + linked_birth_date(person) + ")"
-      elsif (person.born_on? and person.died_on?)
-        dates = " (" + linked_birth_date(person) + "&#8202;–&#8202;" + linked_death_date(person) + ")"
-      elsif (person.born_on?)
-        dates = " (" + person.creation_word + " "
-        dates += linked_birth_date(person) + "<span property=\"foaf:age\" content=\"#{person.age}\" />)"
-      elsif (person.died_on?)
-        if (person.thing?)
-          dates = " (to " + linked_death_date(person) + ")"
-        elsif (person.group?)
-          dates = " (to " + linked_death_date(person) + ")"
-        elsif (person.place?)
-          dates = " (to " + linked_death_date(person) + ")"
-        else
-          dates = " (died " + linked_death_date(person) + ")"
-        end
-      else
-        dates =""
-      end
+      dates = " " + person.dates
       if options[:links] == :none
         return content_tag("span", person.full_name, {:class => "fn", :property => "rdfs:label foaf:name vcard:fn"}) + dates.html_safe
       else
         return link_to(person.full_name, person, {:class => "fn url", :property => "rdfs:label foaf:name vcard:fn", :rel => "foaf:homepage vcard:url"}) + dates.html_safe
-      end
-    end
-
-    def linked_death_date(person)
-      birth_date = ""
-      if person.died_on
-        if person.died_on_is_circa
-          birth_date = circa_tag
-        end
-        birth_date += link_to(person.died_in.to_s, people_alive_in_path(person.died_in.to_s), {:about => "/people/#{person.id}#person", :property => "dbpprop:dateOfDeath", :datatype => "xsd:date", :content => person.died_in.to_s})
-      end
-    end
-
-    def linked_birth_date(person)
-      birth_date = ""
-      if person.born_on
-        if person.born_on_is_circa
-          birth_date = circa_tag
-        end
-        birth_date += link_to(person.born_in.to_s, people_alive_in_path(person.born_in.to_s), {:class => "bday", :about => "/people/#{person.id}#person", :property => "dbpprop:dateOfBirth vcard:bday", :datatype => "xsd:date", :content => person.born_in.to_s})
       end
     end
 

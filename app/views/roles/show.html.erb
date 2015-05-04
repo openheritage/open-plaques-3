@@ -6,7 +6,7 @@
       <%= link_to t('buttons.edit'), edit_role_path(@role), {:class => :edit, :title => t('buttons.edit')} %>
     </section>
   <% end %>
-  <h1><%= t '.page_heading', :role => @role.name.pluralize %></h1>
+  <h1><%= @role.name.pluralize %></h1>
   <% if @role.used_as_a_suffix? %>
     <p>
       <% if @role.military_medal? %>
@@ -27,7 +27,6 @@
       <% personal_role.person.relationships.each do |relationship| %>
         <p><%= relationship.role.name %> of <%= dated_person(relationship.related_person) %></p>
       <% end %>
-      <p class="count"><%= link_to pluralize(personal_role.person.plaques.size, "plaque"), personal_role.person %> in <%= list_of_area_links(personal_role.person.areas) %></p>
     </li>	
   <% end %>
   
@@ -39,12 +38,12 @@
   <% end %>
 </ol>
 
-<% if @related_roles.size > 0 %>
+<% if @role.related_roles.size > 0 %>
   <div class="panel clearfix">
     <h2><%= t '.related_roles'%></h2>
   </div>
   <ol class="results" id="people_results">
-    <% for related_role in @related_roles %>
+    <% for related_role in @role.related_roles %>
       <li class="role">
         <p class="result"><%= link_to related_role.name, role_path(related_role) %></p>
         <p class="count">
