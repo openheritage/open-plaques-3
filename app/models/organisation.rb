@@ -7,6 +7,7 @@
 # * +description+ - A textual description
 # * +latitude+ - Mean location of plaques
 # * +longitude+ - Mean location of plaques
+# * +sponsorships_count+ - The equivalent of number of plaques
 # === Associations
 # * Sponsorships - plaques erected by this organisation.
 # === Indirect Associations
@@ -22,7 +23,6 @@ class Organisation < ActiveRecord::Base
 
   scope :name_starts_with, lambda {|term| where(["lower(name) LIKE ?", term.downcase + "%"]) }
   scope :name_contains, lambda {|term| where(["lower(name) LIKE ?", "%" + term.downcase + "%"]) }
-  scope :most_plaques_order, -> { order("sponsorships_count DESC") }
 
   include ApplicationHelper
   include PlaquesHelper
