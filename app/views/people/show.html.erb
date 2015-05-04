@@ -9,7 +9,7 @@
   <% end %>
 
   <div class="vcard person" typeof="<%= if (@person.person?) then "foaf:Person" else "foaf:Agent" end %> vcard:VCard" about="#person">
-    <%= content_tag(:p, thumbnail_img(@person)) if @person.main_photo %>
+    <%= content_tag(:p, link_to(thumbnail_img(@person), photo_url(@person.main_photo))) if @person.main_photo %>
     <h1>
       <%= dated_person(@person, {:links => :none}) %>
       <%= roles_list(@person) %>

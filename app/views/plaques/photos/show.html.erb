@@ -4,27 +4,23 @@
 
 <div class="panel clearfix">
   <section id="photos" class="inside_panel">
-    <h1><%= t '.page_heading' %></h1>
-    <h2>Photos of the <%= link_to(@plaque.title, @plaque) %></h2>
-    <%= render @plaque %>
+    <h1>Photos of <%= link_to(@plaque.title, @plaque) %></h1>
     <% if @plaque.photos.size < 1 %>
       <p>We don't have a photo of this plaque yet. You could be the first!</p>
-    <% else %>
-      <p>We display multiple photos of each plaque, so you don&apos;t have to be the first.<p>
     <% end %>
-    <p>We like close-ups as well as long-shots that set the scene. The closest shot will be used as the main image so that people can read the words.</p>
+    <p>We display multiple photos of each plaque. We like close-ups as well as long-shots that set the scene. The closest shot will be used as the main image so that people can read the words.</p>
     <%= content_tag("ul", :class => "photographer_photos clearfix") do %>
-      <% @plaque.photos.detail_order.each_with_index do |photo, i| %>
-        <li <% if i==0 %>class="primary"<% end %>>
+      <% @plaque.photos.detail_order.each do |photo| %>
+        <li>
           <% if current_user && current_user.is_admin? %>
             <section class="admin_panel">
               <%= link_to("Edit", edit_photo_path(photo), {:class => :edit, :title => "edit photo"}) %>
             </section>
           <% end %>
-          <%= link_to(thumbnail_img(photo), photo.url, :class => 'photographer_thumb') %>
-          <span>This <%= photo.shot_name %> was taken by <%= link_to photo.photographer, photographer_url(photo.photographer.gsub(".","_").gsub("/","_")) if photo.photographer rescue photo.photographer %></span><br/>
+          <%= link_to(thumbnail_img(photo), photo_url(photo), :class => 'photographer_thumb') %>
+          <span>By <%= link_to photo.photographer, photographer_url(photo.photographer.gsub(".","_").gsub("/","_")) if photo.photographer rescue photo.photographer %></span><br/>
           <%= form_for photo do |f| %>
-            <p>This is a <%= f.collection_select :shot, Photo.shots, :to_s, :to_s, :include_blank => true %> shot</p>
+            <p>This is a <%= f.collection_select :shot, Photo.shots, :to_s, :to_s, :include_blank => true %></p>
             <%= f.submit "Save", :class => "button" %>
           <% end %>
         </li>
@@ -33,23 +29,10 @@
   </section>
 
   <section id="where_do_they_come_from" class="inside_panel">
-	  <h2>Where do these photos come from?</h2>
-    <p>We don&apos;t store photos ourselves, we only link to them. Open plaques connects and adds context to existing resources on the web instead of trying to own it all ourselves.
+	  <h2>We don&apos;t store photos ourselves, we only link to them.</h2>
+    <p>Open plaques connects and adds context to existing resources on the web instead of trying to own it all ourselves.
 	We use stable, open sources namely <a href="http://www.flickr.com/">Flickr</a>, <a href="http://commons.wikimedia.org/">Wikimedia Commons</a> and <a href="http://www.geograph.org.uk/">Geograph</a>.
-    All the images are <a href="http://creativecommons.org/">Creative Commons</a> licenced and as such we attribute them to the copyright holder.</p>
-  </section>
-
-  <section id="using_geograph" class="inside_panel">
-    <p><img src="http://www.geograph.org.uk/templates/basic/img/logo.gif"/></p>
-    <h2>I found a photo of this plaque on Geograph...</h2>
-    <p>
-    <% @photo = Photo.new %>
-    <%= form_for @photo do |f| %>
-      <%= f.label(:url, "The photo page url is") %> <%= f.text_field :url %>
-      <%= f.hidden_field :plaque_id, :value => @plaque.id %> Please
-      <%= submit_tag("Add it", :class=>'button secondary_button') %> to Open Plaques
-    <% end %>
-    </p>
+    The images are <a href="http://creativecommons.org/">Creative Commons</a> licenced and we attribute them to the copyright holder.</p>
   </section>
 
   <section id="using_wikimedia" class="inside_panel">
@@ -93,6 +76,19 @@
     <li>also, ensure that you haven&apos;t ticked the &apos;hidden from search&apos; setting. (On Flickr, go to your profile by clicking your username in top right hand corner, do you have "Hide your stuff from public searches" set to "no"?)</li>
     <li>a brand new Flickr account might not be included in their search immediately. Sometimes it waits until you have posted 5+ images. Enter your photo&apos;s url into the box below and we'll see what we can do...</li>
     <li>you can try <%= button_to "giving the automatic search a kick", :controller => :plaques, :action => :flickr_search, :id => @plaque, :class => "button secondary_button" %></li></ol>
+  </section>
+
+  <section id="using_geograph" class="inside_panel">
+    <p><img src="http://www.geograph.org.uk/templates/basic/img/logo.gif"/></p>
+    <h2>I found a photo of this plaque on Geograph...</h2>
+    <p>
+    <% @photo = Photo.new %>
+    <%= form_for @photo do |f| %>
+      <%= f.label(:url, "The photo page url is") %> <%= f.text_field :url %>
+      <%= f.hidden_field :plaque_id, :value => @plaque.id %> Please
+      <%= submit_tag("Add it", :class=>'button secondary_button') %> to Open Plaques
+    <% end %>
+    </p>
   </section>
   
   <section id="help_photos" class="inside_panel">

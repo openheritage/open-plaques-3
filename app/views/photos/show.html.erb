@@ -6,25 +6,16 @@
       <%= link_to t('buttons.edit'), edit_photo_path(@photo), {:class => :edit, :title => t('buttons.edit')} %>
     </section>
   <% end %>
-  <h1 property="dc:title rdfs:label foaf:name" about="#this"><%= t '.page_heading', :photo => @photo.title %></h1>
-  <%= render @photo %>
-  <br style="clear: both;"/>
-  <p>This is a <%= @photo.shot_name %> photo of:</p>
   <% if @photo.plaque %>
-    <%= render @photo.plaque %>
+    <h1 property="dc:title rdfs:label foaf:name" about="#this"><%= t '.page_heading' %> <%= link_to(@photo.plaque.title, @photo.plaque) %></h1>
   <% elsif @photo.person %>
-    <%= render @photo.person %>
+    <h1 property="dc:title rdfs:label foaf:name" about="#this"><%= t '.page_heading' %> <%= link_to(@photo.person.full_name, @photo.person) %></h1>
   <% else %>
     <p>has not been linked to a plaque <% if @photo.of_a_plaque? %>yet<% else %> because it has been flagged as not being of a plaque<% end %>.</p>
   <% end %>
-  <p>It was taken <%= content_tag("span", " on " + @photo.taken_at.to_s(:long)) unless @photo.taken_at.blank? %> by <%= link_to @photo.photographer, photographer_url(@photo.photographer.gsub(".","_").gsub("/","_")) if @photo.photographer rescue @photo.photographer %> and licenced under a <%= link_to @photo.licence.name, @photo.licence if @photo.licence %>. It can be found on <%= @photo.source %> at <%= link_to(@photo.file_url, @photo.file_url) %>.<p>
-  <p><%= thumbnail_img(@photo) %> Thumbnail url <%= link_to(@photo.thumbnail_url, @photo.thumbnail_url) %><p>
-  <% if @photo.subject %>
-    <p>This may be about <%= @photo.subject %></p>
-  <% end %>
-  <% if @photo.description %>
-    <p>More details are: <%= @photo.description %></p>
-  <% end %>
+  <div class="panel clearfix">
+    <%= render @photo %>
+  </div>
 </div>
 
 <p class="alternate_formats"><%= t 'data_about_thing_as' %> <%= alternate_link_to "JSON", photo_path(@photo, :format => :json), :json %></p>
