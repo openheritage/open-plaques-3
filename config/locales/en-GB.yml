@@ -333,7 +333,6 @@ en-GB:
     edit:
       page_title: Edit photo
       page_heading: Edit photo
-
     index:
       page_title: Photos
       page_heading: Photos
@@ -345,7 +344,7 @@ en-GB:
       optional: Optional
     show:
       page_title: '%{photo}'
-      page_heading: '%{photo}'
+      page_heading: A photo of
 
   picks:
     edit:
