@@ -44,7 +44,7 @@
           <p>If you'd like to see the map a bit sooner then you could help us.</p>
           <p>Just find '<%= @area.full_name %>' <a href="http://maps.google.com/maps?q=<%= @area.full_name %>&z=18" target="_new">on Google Maps</a> and tell us the <%= label_tag(:streetview_url, "web url:") %> <%= text_field_tag(:streetview_url, ' ', size: 100) %>.</p>
           <p>We will extract the geolocation. Probably.</p>
-          <%= f.text_field :id %>
+          <%= f.hidden_field :name %>
           <p><%= f.submit "Update", :class => :button %></p>
         </div>
       <% end %>

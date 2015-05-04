@@ -1,7 +1,7 @@
 class AreasController < ApplicationController
 
   before_filter :authenticate_admin!, :only => :destroy
-  before_filter :authenticate_user!, :except => [:index, :show]
+  before_filter :authenticate_user!, :except => [:index, :show, :update]
   before_filter :find_country, :only => [:index, :new, :show, :create, :edit, :update, :destroy]
   before_filter :find, :only => [:show, :edit, :update, :destroy]
 
@@ -20,10 +20,7 @@ class AreasController < ApplicationController
 
   def show
     respond_to do |format|
-      format.html { 
-        @zoom = 11
-        @plaques = @area.plaques.paginate(:page => params[:page], :per_page => 20)
-      }
+      format.html
       format.xml
       format.json {
         # plaque.new page expects a cut-down json feed, so logical one is currently under its own method
@@ -52,7 +49,6 @@ class AreasController < ApplicationController
   end
 
   def update
-    puts '**** area is ' + @area
     if (params[:streetview_url])
       point = help.geolocation_from params[:streetview_url]
       if !point.latitude.blank? && !point.longitude.blank?
