@@ -17,9 +17,8 @@ class SeriesController < ApplicationController
     @plaques = @series.plaques
       .order('series_ref asc')
       .paginate(:page => params[:page], :per_page => 20) # Postgres -> NULLS LAST
-      .preload(:personal_connections, :language, :photos, :location, area: :country )
-
-    @mean = help.find_mean(@plaques)
+      .preload(:personal_connections, :language, :photos, area: :country )
+    @series.find_centre
     respond_to do |format|
       format.html # show.html.erb
       format.json {
