@@ -20,10 +20,9 @@ class Organisation < ActiveRecord::Base
   has_many :sponsorships
   has_many :plaques, :through => :sponsorships
 
-  default_scope { order('name ASC') }
   scope :name_starts_with, lambda {|term| where(["lower(name) LIKE ?", term.downcase + "%"]) }
   scope :name_contains, lambda {|term| where(["lower(name) LIKE ?", "%" + term.downcase + "%"]) }
-  scope :most_plaques_order, -> { order("plaques_count DESC") }
+  scope :most_plaques_order, -> { order("sponsorships_count DESC") }
 
   include ApplicationHelper
   include PlaquesHelper

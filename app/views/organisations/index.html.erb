@@ -10,6 +10,12 @@
   <p><%= pluralize(@organisations.length, "organisation") %></p>
 </div>
 
+<div class="panel clearfix">
+
+<h2>Top 10</h2>
+<canvas id="myCanvas" width="800" height="400"></canvas>
+
+<h2>In alphabetical order</h2>
 <ul id="organisations_results" class="results one_destination_results">
   <% @organisations.each do |organisation| %>
     <li>
@@ -22,3 +28,28 @@
 </ul>
 
 <p class="alternate_formats"><%= t 'data_about_things_as' %> <%= alternate_link_to "JSON", organisations_path(:json), :json %></p>
+</div>
+
+<script>
+  window.onload = function ()
+  {
+    var data = [<% @top_10.each do |organisation| %><%= organisation.sponsorships_count %>,<% end %>];
+    var hbar = new RGraph.HBar('myCanvas', data);
+    hbar.Set('chart.labels', [<% @top_10.each do |organisation| %>'<%= organisation %>',<% end %>]);
+    hbar.Set('chart.colors', ['blue','red','green','orange']);
+    hbar.Set('chart.strokestyle', 'rgba(0,0,0,0)');
+    hbar.Set('chart.labels.above', true);
+    hbar.Set('chart.labels.above', true);
+    hbar.Set('chart.vmargin', 15);
+    hbar.Set('chart.background.grid', false);
+    hbar.Set('chart.colors.sequential', true);
+    hbar.Set('chart.xlabels', false);
+    hbar.Set('chart.gutter.left', 350);
+    hbar.Set('chart.gutter.right', 50);
+    hbar.Set('chart.gutter.top', 25);
+    hbar.Set('chart.noxaxis', true);
+    hbar.Set('chart.noxtickmarks', true);
+    hbar.Set('chart.noytickmarks', true);
+    RGraph.isOld() ? hbar.Draw() : RGraph.Effects.HBar.Grow(hbar);
+  }
+</script>
