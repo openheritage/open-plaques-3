@@ -22,10 +22,10 @@
 
 <ol class="results" id="people_results">
   <% for personal_role in @role.personal_roles %>
-    <li class="vcard person" typeof="<%= if personal_role.person.person? then "foaf:Person" else "foaf:Agent" end %> vcard:VCard" about="#person">
-      <p class="result"><b><%= personal_role.ordinal.ordinalize + " " if personal_role.ordinal %></b><%= dated_person(personal_role.person) %> <%= personal_role.date_range %></b></p>
-      <% personal_role.person.relationships.each do |relationship| %>
-        <p><%= relationship.role.name %> of <%= dated_person(relationship.related_person) %></p>
+    <li>
+      <p class="result"><b><%= personal_role.ordinal.ordinalize + " " + @role.name if personal_role.ordinal %></b><%= render personal_role.person %> <%= personal_role.date_range %></b></p>
+      <p><% personal_role.person.relationships.each do |relationship| %>
+        <p><%= relationship.role.name %> of <%= render relationship.related_person %></p>
       <% end %>
     </li>	
   <% end %>
@@ -45,13 +45,9 @@
   <ol class="results" id="people_results">
     <% for related_role in @role.related_roles %>
       <li class="role">
-        <p class="result"><%= link_to related_role.name, role_path(related_role) %></p>
+        <p class="result"><%= render related_role %></p>
         <p class="count">
-          <% for person in related_role.people %>
-            <div class="vcard person" typeof="<%= if person.person? then "foaf:Person" else "foaf:Agent" end %> vcard:VCard" about="#person">
-              <%= dated_person(person) %>
-            </div>
-          <% end %>
+          <%= render related_role.people %>
         </p>
       </li>
     <% end %>
