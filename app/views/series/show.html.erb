@@ -8,7 +8,7 @@
   <% end %>
   <h1 property="dc:title rdfs:label foaf:name" about="#this"><%= t '.page_heading', :series => @series.name %></h1>
   <%= render @series %>
-  <div id="plaque-map" data-latitude="<%= @mean.latitude %>" data-longitude="<%= @mean.longitude %>" data-view="all" context="<%= request.path %>"></div>
+  <div id="plaque-map" data-latitude="<%= @series.latitude %>" data-longitude="<%= @series.longitude %>" data-view="all" context="<%= request.path %>"></div>
   <%= will_paginate @plaques %>
   <%= render @plaques %>
   <%= will_paginate @plaques %>
