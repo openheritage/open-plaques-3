@@ -309,13 +309,13 @@ class Plaque < ActiveRecord::Base
     tile+= options + "/" if options != 'all'
     tile+= "tiles" + "/" + zoom.to_s + "/" + xtile.to_s + "/" + ytile.to_s
     puts "Rails query " + tile
-    Rails.cache.fetch(tile, :expires_in => 5.minutes) do
+#    Rails.cache.fetch(tile, :expires_in => 5.minutes) do
       if options == "unphotographed"
         Plaque.unphotographed.where(:latitude => latitude, :longitude => longitude)
       else
         Plaque.where(:latitude => latitude, :longitude => longitude)
       end
-    end
+#    end
   end
 
   def uri
