@@ -311,9 +311,9 @@ class Plaque < ActiveRecord::Base
     puts "Rails query " + tile
 #    Rails.cache.fetch(tile, :expires_in => 5.minutes) do
       if options == "unphotographed"
-        Plaque.unphotographed.where(:latitude => latitude, :longitude => longitude)
+        Plaque.unphotographed.select(:id, :inscription, :latitude, :longitude, :is_accurate_geolocation).where(:latitude => latitude, :longitude => longitude)
       else
-        Plaque.where(:latitude => latitude, :longitude => longitude)
+        Plaque.select(:id, :inscription, :latitude, :longitude, :is_accurate_geolocation).where(:latitude => latitude, :longitude => longitude)
       end
 #    end
   end

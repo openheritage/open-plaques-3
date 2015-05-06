@@ -8,7 +8,7 @@ class PersonPlaquesController < ApplicationController
 
     respond_with @plaques do |format|
       format.json { render :json => @plaques.as_json(
-        :only => [:id, :latitude, :longitude, :inscription],
+        :only => [:id, :inscription, :latitude, :longitude, :is_accurate_geolocation],
         :methods => [:title, :uri, :colour_name]
         )
       }
