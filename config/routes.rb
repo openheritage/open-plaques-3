@@ -35,6 +35,9 @@ Rails.application.routes.draw do
   match 'plaques/unphotographed/tiles/:zoom/:x/:y' => 'plaques#index', :id => 'unphotographed', :constraints => { :zoom => /\d{2}/, :x => /\d+/, :y => /\d+/ }, via: [:get]
 
   resources :places, :controller => :countries, :as => :countries do
+    collection do
+      get 'autocomplete', :controller => :areas
+    end
     resources :plaques, :controller => :country_plaques, :only => :show
     resources :areas do
       resource :plaques, :controller => :area_plaques, :only => :show

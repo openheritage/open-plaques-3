@@ -1,7 +1,7 @@
 class AreasController < ApplicationController
 
   before_filter :authenticate_admin!, :only => :destroy
-  before_filter :authenticate_user!, :except => [:index, :show, :update]
+  before_filter :authenticate_user!, :except => [:autocomplete, :index, :show, :update]
   before_filter :find_country, :only => [:index, :new, :show, :create, :edit, :update, :destroy]
   before_filter :find, :only => [:show, :edit, :update, :destroy]
 
@@ -12,6 +12,28 @@ class AreasController < ApplicationController
       format.xml
       format.json { render :json => @areas }
     end
+  end
+
+  def autocomplete
+    limit = params[:limit] ? params[:limit] : 5
+    if params[:contains]
+      @areas = Area.select(:id,:name,:country_id).name_contains(params[:contains]).limit(limit)
+    elsif params[:starts_with]
+      @areas = Area.select(:id,:name,:country_id).name_starts_with(params[:starts_with]).limit(limit)
+    else
+      @areas = "{}"
+    end
+    render :json => @areas.as_json(
+      :only => [:id,:name,:country_id]
+#      ,
+#      :include => 
+#        {
+#          :country => 
+#          {
+#            :only => [:id, :name]
+#          }
+#       }
+      )
   end
 
   def new

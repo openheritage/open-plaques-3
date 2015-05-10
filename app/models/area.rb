@@ -26,6 +26,8 @@ class Area < ActiveRecord::Base
   has_many :plaques
 
   default_scope { order('name ASC') }
+  scope :name_starts_with, lambda {|term| where(["lower(name) LIKE ?", term.downcase + "%"]) }
+  scope :name_contains, lambda {|term| where(["lower(name) LIKE ?", "%" + term.downcase + "%"]) }
 
   include ApplicationHelper
   include PlaquesHelper

@@ -14,13 +14,30 @@
 
   $(function() {
     $( "#area" ).autocomplete({
-      source: '/places/gb/areas.json' ,
-      select: function(event, ui){
-            $('#country').val(ui.item.country_name);
-            $('#area_id').val(ui.item.id);
-            $('#plaque_country').val(ui.item.country_id);
+      autofocus: true,
+      source: function(request, response) {
+        $.ajax({
+          url: "/places/autocomplete",
+          dataType: "json",
+          data: {
+            starts_with: request.term,
+            limit: 10
           },
-      delay: 10
+          success: function(data) {
+            response($.map(data, function(item) {
+              return {
+                label: item.name,
+                id: item.id,
+                country_id: item.country_id
+              }
+            }));
+          }
+        });
+      },
+      select: function(event, ui) {
+        $('#area_id').val(ui.item.id);
+        $('#plaque_country').val(ui.item.country_id);
+      }
     });
   });
 
@@ -90,23 +107,19 @@
     <div class="secondary">
       <fieldset>
         <h2>Where is it?</h2>
-
-        <div class="row">
-          <%= f.label :address, "Street and number" %>
-          <%= f.text_field :address, {:placeholder => "221B Baker Street"} %>
-        </div>
-
         <div class="row ui-widget">
           <label for="area">City/Town (just the town name please, no area or post code)</label>
           <%= text_field_tag :area, "", :placeholder => "London" %>
+          <%= hidden_field_tag :area_id %>
         </div>
-
         <div class="row">
           <%= f.label :country %>
           <%= f.collection_select :country, @countries, :id, :name, :include_blank => true %>
         </div>
-
-        <%= hidden_field_tag :area_id %>
+        <div class="row">
+          <%= f.label :address, "Street and number" %>
+          <%= f.text_field :address, {:placeholder => "221B Baker Street"} %>
+        </div>
       </fieldset>
 
       <fieldset>

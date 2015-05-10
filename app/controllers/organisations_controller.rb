@@ -20,11 +20,10 @@ class OrganisationsController < ApplicationController
   end
 
   def autocomplete
+    limit = params[:limit] ? params[:limit] : 5
     if params[:contains]
-      limit = params[:limit] ? params[:limit] : 5
       @organisations = Organisation.select(:id,:name).name_contains(params[:contains]).limit(limit)
     elsif params[:starts_with]
-      limit = params[:limit] ? params[:limit] : 5
       @organisations = Organisation.select(:id,:name).name_starts_with(params[:starts_with]).limit(limit)
     else
       @organisations = "{}"
