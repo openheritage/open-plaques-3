@@ -1,17 +1,12 @@
 class OrganisationsController < ApplicationController
 
   before_filter :authenticate_admin!, :only => :destroy
-  before_filter :authenticate_user!, :except => [:index, :show]
+  before_filter :authenticate_user!, :except => [:autocomplete, :index, :show]
   before_filter :find, :only => [:edit, :update]
 
   def index
-    if params[:name_starts_with]
-      limit = params[:limit] ? params[:limit] : 5
-      @organisations = Organisation.name_contains(params[:name_starts_with]).limit(limit).most_plaques_order
-    else
-      @organisations = Organisation.all.select(:name,:slug,:sponsorships_count).order("name ASC")
-      @top_10 = Organisation.all.select(:name,:slug,:sponsorships_count).order("sponsorships_count DESC").limit(10)
-    end
+    @organisations = Organisation.all.select(:name,:slug,:sponsorships_count).order("name ASC")
+    @top_10 = Organisation.all.select(:name,:slug,:sponsorships_count).order("sponsorships_count DESC").limit(10)
     respond_to do |format|
       format.html
       format.kml {
@@ -22,6 +17,19 @@ class OrganisationsController < ApplicationController
       format.json { render :json => @organisations }
       format.geojson { render :geojson => @organisations }
     end
+  end
+
+  def autocomplete
+    if params[:contains]
+      limit = params[:limit] ? params[:limit] : 5
+      @organisations = Organisation.select(:id,:name).name_contains(params[:contains]).limit(limit)
+    elsif params[:starts_with]
+      limit = params[:limit] ? params[:limit] : 5
+      @organisations = Organisation.select(:id,:name).name_starts_with(params[:starts_with]).limit(limit)
+    else
+      @organisations = "{}"
+    end
+    render :json => @organisations.as_json(:only => [:id,:name])
   end
 
   def show

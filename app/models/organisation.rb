@@ -54,7 +54,11 @@ class Organisation < ActiveRecord::Base
   end
 
   def as_json(options={})
-    super(:only => [:id,:name],:methods => :uri)
+    if options.size != 0
+      super(options)
+    else
+      super(:only => [:id,:name],:methods => :uri)
+    end
   end
 
   def as_geojson(options={})

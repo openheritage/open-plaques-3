@@ -14,7 +14,7 @@
 
   $(function() {
     $( "#area" ).autocomplete({
-      source: '/areas.json' ,
+      source: '/places/gb/areas.json' ,
       select: function(event, ui){
             $('#country').val(ui.item.country_name);
             $('#area_id').val(ui.item.id);
@@ -29,17 +29,17 @@
       autofocus: true,
       source: function(request, response) {
         $.ajax({
-          url: "/organisations",
+          url: "/organisations/autocomplete",
           dataType: "json",
           data: {
-            name_starts_with: request.term,
+            starts_with: request.term,
             limit: 10
           },
           success: function(data) {
             response($.map(data, function(item) {
               return {
-                label: item.organisation.name,
-                id: item.organisation.id
+                label: item.name,
+                id: item.id
               }
             }));
           }

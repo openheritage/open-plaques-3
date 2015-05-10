@@ -49,6 +49,9 @@ Rails.application.routes.draw do
   resources :licences, :only => [:index, :show]
 
   resources :organisations do
+    collection do
+      get 'autocomplete'
+    end
     resource :plaques, :controller => :organisation_plaques, :only => :show
     match 'plaques/tiles/:zoom/:x/:y' => 'organisation_plaques#show', :constraints => { :zoom => /\d{2}/, :x => /\d+/, :y => /\d+/ }, via: [:get]
   end
