@@ -11,6 +11,7 @@ class AreasController < ApplicationController
       format.html
       format.xml
       format.json { render :json => @areas }
+      format.geojson { render :json => @areas.as_geojson() }
     end
   end
 
@@ -23,17 +24,7 @@ class AreasController < ApplicationController
     else
       @areas = "{}"
     end
-    render :json => @areas.as_json(
-      :only => [:id,:name,:country_id]
-#      ,
-#      :include => 
-#        {
-#          :country => 
-#          {
-#            :only => [:id, :name]
-#          }
-#       }
-      )
+    render :json => @areas.as_json(:only => [:id,:name,:country_id])
   end
 
   def new
@@ -45,8 +36,10 @@ class AreasController < ApplicationController
       format.html
       format.xml
       format.json {
-        # plaque.new page expects a cut-down json feed, so logical one is currently under its own method
-        render :json => @area.as_json_new({})
+        render :json => @area
+      }
+      format.geojson {
+        render :json => @area.as_geojson
       }
     end
   end

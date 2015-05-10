@@ -32,19 +32,11 @@ class Area < ActiveRecord::Base
   include ApplicationHelper
   include PlaquesHelper
   
-  def as_json(options={})
-    if options.size != 0
-      super(options)
+  def as_json(options=nil)
+    if options && options[:only]
     else
-      {:label => name, :value => name, :id => id, :country_id => country.id, :country_name => country.name}
-    end
-  end
-
-  # cannot use this yet as the plaque.new screen relies on a short format
-  def as_json_new(options={})
-    if options.size == 0
       options = {
-        :only => :name,
+        :only => [:name, :latitude, :longitude, :plaques_count],
         :include => { 
           :country => {
             :only => [:name],
@@ -54,7 +46,10 @@ class Area < ActiveRecord::Base
         :methods => [:uri, :plaques_uri]
       }
     end
+    super(options)
+  end
 
+  def as_geojson(options=nil)
     {
       type: 'Feature',
       geometry: {
