@@ -119,6 +119,10 @@ class Plaque < ActiveRecord::Base
     !(latitude.nil?)
   end
 
+  def roughly_geolocated?
+    !self.geolocated? || (self.geolocated? && !self.is_accurate_geolocation)
+  end
+
   def photographed?
     photos_count > 0
   end

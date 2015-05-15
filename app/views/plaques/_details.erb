@@ -32,7 +32,7 @@
   </tr>
   <tr>
     <th>Address</th>
-    <td><%= plaque.address %><br/><% if !plaque.geolocated? && current_user && current_user.is_admin? %>
+    <td><%= plaque.address %><br/><% if plaque.roughly_geolocated? %>
 	     [<%= link_to "geolocate this address", edit_plaque_geolocation_path(plaque), {:class => :edit, :title => "Geolocate"} %>]
 	   <% end %>
 	  </td>
