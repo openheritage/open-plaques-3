@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150426174340) do
+ActiveRecord::Schema.define(version: 20150503101425) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,8 @@ ActiveRecord::Schema.define(version: 20150426174340) do
   end
 
   add_index "areas", ["country_id"], name: "index_areas_on_country_id", using: :btree
+  add_index "areas", ["name"], name: "index_areas_on_name", using: :btree
+  add_index "areas", ["slug"], name: "index_areas_on_slug", using: :btree
 
   create_table "colours", force: true do |t|
     t.string   "name"
@@ -51,6 +53,7 @@ ActiveRecord::Schema.define(version: 20150426174340) do
     t.string   "dbpedia_uri"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "description"
   end
 
   create_table "languages", force: true do |t|
@@ -93,6 +96,9 @@ ActiveRecord::Schema.define(version: 20150426174340) do
     t.float    "latitude"
     t.float    "longitude"
   end
+
+  add_index "organisations", ["name"], name: "index_organisations_on_name", using: :btree
+  add_index "organisations", ["slug"], name: "index_organisations_on_slug", using: :btree
 
   create_table "pages", force: true do |t|
     t.string   "name"
@@ -198,7 +204,6 @@ ActiveRecord::Schema.define(version: 20150426174340) do
     t.integer  "organisation_id"
     t.text     "inscription"
     t.string   "reference"
-    t.integer  "plaque_erected_year_id"
     t.text     "notes"
     t.text     "parsed_inscription"
     t.integer  "colour_id"
@@ -207,7 +212,6 @@ ActiveRecord::Schema.define(version: 20150426174340) do
     t.integer  "language_id"
     t.text     "description"
     t.boolean  "inscription_is_stub",        default: false
-    t.integer  "location_id"
     t.integer  "personal_connections_count", default: 0
     t.integer  "series_id"
     t.boolean  "is_accurate_geolocation",    default: true
@@ -221,9 +225,8 @@ ActiveRecord::Schema.define(version: 20150426174340) do
   add_index "plaques", ["area_id"], name: "index_plaques_on_area_id", using: :btree
   add_index "plaques", ["colour_id"], name: "index_plaques_on_colour_id", using: :btree
   add_index "plaques", ["latitude", "longitude"], name: "geo", using: :btree
-  add_index "plaques", ["location_id"], name: "index_plaques_on_location_id", using: :btree
   add_index "plaques", ["organisation_id"], name: "index_plaques_on_organisation_id", using: :btree
-  add_index "plaques", ["personal_connections_count"], name: "index_plaques_on_personal_connections_count", using: :btree
+  add_index "plaques", ["series_id"], name: "index_plaques_on_series_id", using: :btree
 
   create_table "roles", force: true do |t|
     t.string   "name"
