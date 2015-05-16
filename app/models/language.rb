@@ -2,6 +2,7 @@
 # === Attributes
 # * +name+ - the language's common name
 # * +alpha2+ - 2-letter code as defined by the ISO standard. Used in URLs.
+# * +plaques_count+ - cached count of plaques
 #
 # === Associations
 # * Plaques - plaques which are mainly written in this language.

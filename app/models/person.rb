@@ -11,9 +11,11 @@ require 'open-uri'
 # * +died_on+ - The date on which the person died. Optional.
 # * +born_on_is_circa+ - True or False. Whether the +born_on+ date is 'circa' or not. Optional.
 # * +died_on_is_circa+ - True or False. Whether the +died_on+ date is 'circa' or not. Optional.
+# * +personal_connections_count+ - cached count of associations with plaques, i.e. places and times
+# * +personal_roles_count+ - cached count of roles
 #
 # === Associations
-# * PersonalRoles
+# * PersonalRoles - link to a role and potentially another person (e.g. by being their husband)
 # * PersonalConnections - link to a time and place via a mention on a plaque
 # * MainPhoto - image showing the person (via photos)
 #

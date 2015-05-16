@@ -2,6 +2,7 @@
 #
 # === Attributes
 # * +name+ - The name of the verb, in past tense, eg 'lived'.
+# * +personal_connections_count+ - cached count of people connected to this verb
 #
 # === Associations
 # * +personal_connections+ - The personal connections (joining model) which connect with this verb.

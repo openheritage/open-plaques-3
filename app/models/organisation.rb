@@ -3,13 +3,17 @@
 # civic societies or local councils.
 # === Attributes
 # * +name+ - The official name of the organisation
+# * +website+ - official web site
 # * +slug+ - An identifier for the organisation, usually equivalent to its name in lower case, with spaces replaced by underscores. Used in URLs.
 # * +description+ - A textual description
+# * +notes+ - A textual set of notes
 # * +latitude+ - Mean location of plaques
 # * +longitude+ - Mean location of plaques
 # * +sponsorships_count+ - The equivalent of number of plaques
+#
 # === Associations
 # * Sponsorships - plaques erected by this organisation.
+#
 # === Indirect Associations
 # * Plaques - plaques thtough a sponsorship
 class Organisation < ActiveRecord::Base
@@ -53,15 +57,18 @@ class Organisation < ActiveRecord::Base
     "http://openplaques.org" + Rails.application.routes.url_helpers.organisation_path(self.slug, :format=>:json) if id
   end
 
-  def as_json(options={})
-    if options.size != 0
-      super(options)
+  def as_json(options=nil)
+    if options && options[:only]
     else
-      super(:only => [:id,:name],:methods => :uri)
+      options = {
+        :only => [:id,:name],
+        :methods => :uri
+      }
     end
+    super(options)
   end
 
-  def as_geojson(options={})
+  def as_geojson(options=nil)
     {
       type: 'Feature',
       geometry: 

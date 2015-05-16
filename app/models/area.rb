@@ -9,6 +9,7 @@
 # * +slug+ - an identifier used in URLs. Normally a lower-cased version of name, with spaces replaced by underscores
 # * +latitude+ - Mean location of plaques
 # * +longitude+ - Mean location of plaques
+# * +plaques_count+ - cached count of plaques
 #
 # === Associations
 # * Country - country in which the area falls geographically or administratively.
@@ -52,7 +53,8 @@ class Area < ActiveRecord::Base
   def as_geojson(options=nil)
     {
       type: 'Feature',
-      geometry: {
+      geometry:
+      {
         type: 'Point',
         coordinates: [self.longitude, self.latitude]
       },

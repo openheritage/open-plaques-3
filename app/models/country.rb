@@ -3,6 +3,8 @@
 # * +name+ - the country's common name (not necessarily its official one).
 # * +alpha2+ - 2-letter code as defined by the ISO standard. Used in URLs.
 # * +dbpedia_uri+ - uri to link to DBPedia record
+# * +areas_count+ - cached count of areas
+# * +plaques_count+ - cached count of plaques (does not work)
 #
 # === Associations
 # * Areas - areas located in this country.
