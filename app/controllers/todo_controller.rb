@@ -2,10 +2,11 @@ include ActionView::Helpers::TextHelper
 
 class TodoController < ApplicationController
 
+  before_filter :authenticate_user!, :except => [:index]
+
   def index
     @photographed_not_coloured_plaques_count = Plaque.photographed_not_coloured.count
     @geo_no_location_plaques_count = Plaque.geo_no_location.count
-    @location_no_area_plaques_count = Location.no_area.count
     @plaques_to_add_count = TodoItem.to_add.count
     @lists_to_datacapture = TodoItem.to_datacapture.count
 #   @detailed_address_no_geo_count = Plaque.detailed_address_no_geo.count
@@ -16,7 +17,6 @@ class TodoController < ApplicationController
     @needs_geolocating_count = Plaque.ungeolocated.count
     @no_description_count = Plaque.no_description.count
     @unassigned_photo_count = Photo.unassigned.count
-    @unphotographed_plaque_count = Plaque.unphotographed.count
   end
 
   def destroy
@@ -38,10 +38,6 @@ class TodoController < ApplicationController
       when 'locations_from_geolocations'
         @plaques = Plaque.geo_no_location.paginate(:page => params[:page], :per_page => 100)
         render :locations_from_geolocations
-
-      when 'areas_from_locations'
-        @locations = Location.no_area
-        render :areas_from_locations
 
       when 'plaques_to_add'
         @plaques_to_add = TodoItem.to_add
@@ -86,10 +82,6 @@ class TodoController < ApplicationController
       when 'unassigned_photo'
         @photos = Photo.unassigned.paginate(:page => params[:page], :per_page => 100)
         render :unassigned_photo
-        
-      when 'unphotographed'
-          @plaques = Plaque.unphotographed.paginate(:page => params[:page], :per_page => 100)
-          render :unphotographed
       
       when 'microtask'
         case 5 # rand(7)

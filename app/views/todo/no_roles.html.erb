@@ -5,15 +5,8 @@
   <section class="admin_panel"><%= link_to("All to-do lists", "/todo") %></section>
   <% if @people.size > 0 %>
     <%= will_paginate @people %>
-    <ul>
-      <% @people.each do |person| %>
-        <li><%= dated_person(person) %> <%= link_to "Add role", edit_person_path(person) %>
-          <% person.plaques.each do |plaque| %>
-            <br />"<%= plaque.inscription %>"
-          <% end %>
-        </li>
-      <% end %>
-    </ul>
+    <%= render @people %>
+    <%= will_paginate @people %>
   <% else %>
     <p>Every person has a role. Bravo!</p>
   <% end %>

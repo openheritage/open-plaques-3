@@ -5,7 +5,7 @@
   <section class="admin_panel"><%= link_to("All to-do lists", "/todo") %></section>
   <% if @plaques.size > 0 %>
     <%= will_paginate @plaques %>
-    <%= list @plaques, :no_connection %>
+    <%= render @plaques %>
     <%= will_paginate @plaques %>
   <% else %>
     <p>All plaques have connections. Bravo!</p>

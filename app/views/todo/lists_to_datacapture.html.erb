@@ -12,9 +12,7 @@
         <% else %>
         <%= link_to(image_tag(item.image_url, {:alt => item.description}), item.url) %>
       <% end  %>
-
       <%= button_to("Delete", todo_path(item), {:method => :delete, :class => :delete}) if current_user %>
-
     </li>
     <% end %>
   </ul>

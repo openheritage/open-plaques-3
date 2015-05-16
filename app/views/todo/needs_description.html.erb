@@ -4,9 +4,6 @@
   <h1>Plaques with no description</h1>
   <section class="admin_panel"><%= link_to("All to-do lists", "/todo") %></section>
   <%= will_paginate @plaques %>
-  <ul>
-    <% @plaques.each do |plaque| %>
-      <li><%= link_to(plaque.title, edit_plaque_description_path(plaque))  %> <%= truncate(plaque.inscription, :length => 80) %></li>
-    <% end %>
-  </ul>
+    <%= render @plaques %>
+    <%= will_paginate @plaques %>
 </div>
