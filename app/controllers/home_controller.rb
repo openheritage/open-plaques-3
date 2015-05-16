@@ -15,4 +15,10 @@ class HomeController < ApplicationController
     end
   end
 
+  def gc
+    puts '*** run garbage collection'
+    GC.start
+    puts '*** ended garbage collection'
+    render :json => { 'reply' => 'thank you' }, :status => :ok
+  end
 end
