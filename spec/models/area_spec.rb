@@ -22,7 +22,7 @@ describe Area do
       end
       it 'returns json' do
         # can do better than this. Probably by using https://github.com/collectiveidea/json_spec
-        expect(@area.as_json_new.to_s.size).to be > 10
+        expect(@area.as_json.to_s.size).to be > 10
       end
     end
 
