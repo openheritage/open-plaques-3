@@ -11,7 +11,7 @@ class AreasController < ApplicationController
       format.html
       format.xml
       format.json { render :json => @areas }
-      format.geojson { render :json => @areas.as_geojson() }
+      format.geojson { render :json => @areas }
     end
   end
 

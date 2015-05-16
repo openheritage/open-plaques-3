@@ -37,6 +37,7 @@ class AreaPlaquesController < ApplicationController
       format.html
       format.xml
       format.json { render :json => @plaques.as_json() }
+      format.geojson { render :json => @plaques }
     end
   end
 
