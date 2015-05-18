@@ -19,12 +19,12 @@ class OrganisationPlaquesController < ApplicationController
     respond_with @plaques do |format|
       format.html { render @plaques }
       format.json {
-        # used by the map, so careful if trying to alter
-        render :json => @plaques.as_json(
-        :only => [:id, :latitude, :longitude, :inscription],
-        :methods => [:title, :uri, :colour_name]
-        ) 
+        render :json => { 
+          type: 'FeatureCollection',
+          features: @plaques.as_json({:only => [:id, :latitude, :longitude, :inscription]})
+        }
       }
+      format.geojson { render :json => @plaques }
     end
   end
 
