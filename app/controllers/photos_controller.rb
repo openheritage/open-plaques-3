@@ -72,6 +72,7 @@ class PhotosController < ApplicationController
         :photographer_url,
         :licence_id,
         :plaque_id,
+        :person_id,
         :shot
       )
 	end
