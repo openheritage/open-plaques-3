@@ -141,7 +141,7 @@ module ApplicationHelper
     end
   end
 
-  def list(things, context = nil, extras = nil)
+  def list_xxxx_use_render_instead(things, context = nil, extras = nil)
     # things.sort!{|t1,t2|t1.to_s <=> t2.to_s}
     @listy = "".html_safe
     things.each do |thing|

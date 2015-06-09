@@ -22,11 +22,15 @@ gem 'will_paginate'
 gem 'rollbar', '~> 1.4.4'
 # gem 'rack-timeout'
 gem 'puma'
+gem 'oink'
 
 gem 'rails_12factor'
 
 group :development do
   gem 'spring'
+#  gem 'lol_dba'
+  gem 'bullet'
+  gem 'meta_request'
 end
 
 group :test do

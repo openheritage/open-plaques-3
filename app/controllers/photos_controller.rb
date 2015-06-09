@@ -6,7 +6,7 @@ class PhotosController < ApplicationController
   before_filter :get_licences, :only => [:new, :create, :edit]
 
   def index
-    @photos = Photo.paginate(:page => params[:page], :per_page => 200)
+    @photos = Photo.order(id: :desc).paginate(:page => params[:page], :per_page => 200)
     respond_to do |format|
       format.html
       format.json { render :json => @photos }
@@ -72,6 +72,7 @@ class PhotosController < ApplicationController
         :photographer_url,
         :licence_id,
         :plaque_id,
+        :person_id,
         :shot
       )
 	end
