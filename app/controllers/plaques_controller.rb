@@ -156,9 +156,9 @@ class PlaquesController < ApplicationController
     end
 
     # early intervention to reject spam messages
-    raise "ERROR" if params[:plaque][:inscription].include? "http"
-    raise "ERROR" if params[:plaque][:inscription].include? "href"
-    redirect_to(plaques_url)  if params[:area] == "New York" && params[:plaque][:country] != "13"
+    redirect_to plaques_url and return if params[:plaque][:inscription].include? "http"
+    redirect_to plaques_url and return if params[:plaque][:inscription].include? "href"
+    redirect_to plaques_url and return if params[:area] == "New York" && params[:plaque][:country] != "13"
 
     country = Country.find(params[:plaque][:country].blank? ? 1 : params[:plaque][:country])
     if params[:area_id] && !params[:area_id].blank?
