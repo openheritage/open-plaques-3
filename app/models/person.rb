@@ -63,21 +63,6 @@ class Person < ActiveRecord::Base
     end
   end
 
-  def uniq_plaques
-    return plaques.inject([]){|s,e| s | [e] }
-  end
-
-  def areas
-    areas = []
-    uniq_plaques.each do |plaque|
-      area = plaque.area
-      if area
-        areas << area unless areas.include?(area)
-      end
-    end
-    return areas
-  end
-
   def person?
     !(animal? or thing? or group? or place?)
   end

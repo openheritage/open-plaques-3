@@ -3,7 +3,7 @@
 <div class="panel">
   <h1><%= t '.page_heading', :person => @person.full_name %></h1>
   <p><%= t '.features_on' %></p>
-  <%= render @person.plaques %>
+  <%= render @person.plaques.uniq %>
   <p><%= t '.from_which_we_can_establish' %></p>
   <%= form_for @person do |f| %>
     <p><%= f.label :name, @person.possessive + " name " + @person.existence_word %> <%= f.text_field :name %></p>

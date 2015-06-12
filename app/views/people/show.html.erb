@@ -50,12 +50,12 @@
 
     <%= content_tag("p", "Read more on ".html_safe + link_to("Wikipedia", @person.default_wikipedia_url, :target => '_blank')) unless @person.default_wikipedia_url.blank? %>
 
-    <% if @person.uniq_plaques.size > 0 %>
-      <h2>Commemorated on <%= @person.uniq_plaques.size %> <%= 'plaque'.pluralize @person.uniq_plaques.size %></h2>
+    <% if @person.plaques.size > 0 %>
+      <h2>Commemorated on <%= @person.plaques.uniq.size %> <%= 'plaque'.pluralize @person.plaques.uniq.size %></h2>
     <% else %>
       <h2><%= t '.not_commemorated'%></h2>
     <% end %>
-    <%= render @person.uniq_plaques %>
+    <%= render @person.plaques.uniq %>
   </div>
 
   <p class="alternate_formats"><%= t 'data_about_thing_as' %> <%= alternate_link_to "JSON", person_path(@person, :json), :json %></p>
