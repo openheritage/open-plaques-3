@@ -110,9 +110,9 @@ class Photo < ActiveRecord::Base
   end
   
   def wikimedia?
-    url.gsub!("http://en.wikipedia.org/","http://commons.wikimedia.org/")
-    url.gsub!("https","http")
-    url && url.starts_with?("http://commons.wikimedia.org")
+    url.gsub!("en.wikipedia.org/","commons.wikimedia.org/")
+#    url.gsub!("https","http")
+    url && url.starts_with?("https://commons.wikimedia.org")
   end
   
   def geograph?
@@ -132,7 +132,7 @@ class Photo < ActiveRecord::Base
   end
   
   def wikimedia_special
-    return "http://commons.wikimedia.org/wiki/Special:FilePath/"+wikimedia_filename+"?width=640"
+    return "https://commons.wikimedia.org/wiki/Special:FilePath/"+wikimedia_filename+"?width=640"
   end
   
   def flickr_photo_id
@@ -145,7 +145,7 @@ class Photo < ActiveRecord::Base
       return file_url.gsub("b.jpg", "s.jpg").gsub("z.jpg?zz=1", "s.jpg").gsub("z.jpg", "s.jpg").gsub("m.jpg", "s.jpg").gsub("o.jpg", "s.jpg")
     end
     if (wikimedia?)
-      return "http://commons.wikimedia.org/wiki/Special:FilePath/"+wikimedia_filename+"?width=75"
+      return "https://commons.wikimedia.org/wiki/Special:FilePath/"+wikimedia_filename+"?width=75"
     end
   end
   
@@ -154,7 +154,7 @@ class Photo < ActiveRecord::Base
     # http://commons.wikimedia.org/wiki/File:George_Dance_plaque.JPG
     # http://commons.wikimedia.org/wiki/File:Abney1.jpg
     if (wikimedia?)
-      doc = Nokogiri::HTML(open("http://commons.wikimedia.org/wiki/File:"+wikimedia_filename))
+      doc = Nokogiri::HTML(open("https://commons.wikimedia.org/wiki/File:"+wikimedia_filename, {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}))
       doc.xpath('//td[@class="description"]').each do |v|
         self.subject = Sanitize.clean(v.content)[0,255]
       end
@@ -164,7 +164,7 @@ class Photo < ActiveRecord::Base
       doc.xpath('//tr[td/@id="fileinfotpl_aut"]/td/a/@href').each do |v|
         value = v.content
         self.photographer_url = value
-        self.photographer_url = "http://commons.wikimedia.org" + value if value.start_with?('/')
+        self.photographer_url = "https://commons.wikimedia.org" + value if value.start_with?('/')
       end
       self.file_url = wikimedia_special
       self.licence = Licence.find_by_name("Attribution License")
