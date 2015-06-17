@@ -32,14 +32,11 @@
   </tr>
   <tr>
     <th>Address</th>
-    <td><%= plaque.address %><br/><% if plaque.roughly_geolocated? %>
+    <td><%= plaque.address %>, <%= render plaque.area if plaque.area %><br/><% if plaque.roughly_geolocated? %>
 	     [<%= link_to "geolocate this address", edit_plaque_geolocation_path(plaque), {:class => :edit, :title => "Geolocate"} %>]
 	   <% end %>
 	  </td>
   </tr>
-  <tr>
-    <th>Area</th>
-    <td><%= link_to plaque.area, plaque.area %></td>
   <tr>
     <th><%= pluralize_word(plaque.people.size, "Subject") %></th>
     <td>
