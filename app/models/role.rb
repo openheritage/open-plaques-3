@@ -80,7 +80,7 @@ class Role < ActiveRecord::Base
   end
   
   def wikipedia_url
-    "http://en.wikipedia.org/wiki/" + wikipedia_stub
+    "https://en.wikipedia.org/wiki/" + wikipedia_stub
   end
   
   def relationship?

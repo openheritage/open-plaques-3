@@ -139,13 +139,13 @@ class Person < ActiveRecord::Base
   # or the wikipedia_url field is set to blank to indicate that there
   # is no Wikipedia record
   def default_wikipedia_url
-    return wikipedia_url if wikipedia_url && wikipedia_url > ""
+    return wikipedia_url.gsub("http:","https:") if wikipedia_url && wikipedia_url > ""
     untitled_name = name.gsub("Canon ","").gsub("Captain ","").gsub("Cardinal ","").gsub("Dame ","").gsub("Dr ","").gsub("Lord ","").gsub("Sir ","").strip.gsub(/ /,"_")
-    "http://en.wikipedia.org/wiki/"+untitled_name
+    "https://en.wikipedia.org/wiki/"+untitled_name
   end
 
   def default_dbpedia_uri
-    return default_wikipedia_url.gsub("http://en.wikipedia.org/wiki","http://dbpedia.org/resource")
+    return default_wikipedia_url.gsub("en.wikipedia.org/wiki","dbpedia.org/resource").gsub("https","http")
   end
 
   def dbpedia_ntriples_uri
