@@ -63,7 +63,7 @@ en-GB:
         name: Name
         abbreviation: Abbreviation
         slug: Slug
-        wikipedia_stub: Wikipedia url
+        wikipedia_stub: Wikipedia stub
         role_type: This is a
       series:
         name: Name
