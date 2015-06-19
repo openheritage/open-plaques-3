@@ -303,10 +303,11 @@ en-GB:
       nothing_yet: nothing yet
       new_person: new person
       new_verb: new verb
-      at: at
+      at: physically near or at
       no_location: There is no location for this plaque. Probably shouldn't create a connection.
       from: From
       to: To
+      reminder: This commemorated subject was actually at or near this location and not just referred to on the plaque
 
   personal_roles:
     edit:

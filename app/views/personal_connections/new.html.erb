@@ -34,6 +34,7 @@
       <div class="row"><%= f.label :started_at, t('.from') %> <%= f.text_field :started_at %></div>
       <div class="row"><%= f.label :ended_at, t('.to') %> <%= f.text_field :ended_at %></div>
     </fieldset>
+    <p><%= t '.reminder' %></p>
     <%= f.submit t('buttons.add'), :class => :button %>
   <% end %>
 </div>
