@@ -153,11 +153,11 @@ class Person < ActiveRecord::Base
   end
 
   def name_and_dates
-    (name + " " + dates) # .strip!
+    (name + " " + dates)
   end
 
   def name_and_raw_dates
-    return (name + " " + raw_dates)
+    (name + " " + raw_dates)
   end
 
   def dates
@@ -175,10 +175,8 @@ class Person < ActiveRecord::Base
   def raw_dates
     r = ""
     r += "(" if born_on || died_on
-#    r += creation_word + " " if born_on && !died_on
     r += born_on.year.to_s if born_on
     r += "-" if born_on && died_on
-#    r += destruction_word + " " if !born_on && died_on
     r += died_on.year.to_s if died_on
     r += ")" if born_on || died_on
     return r
@@ -213,26 +211,32 @@ class Person < ActiveRecord::Base
     rescue
     end
   end
-  
-  def title
-    title = ""
+
+  def current_roles
     current_roles = []
     personal_roles.each do |pr|
       current_roles << pr.role if pr.ended_at == nil or pr.ended_at == ''
     end
-    current_roles.each{|role|
+    current_roles
+  end
+  
+  def title
+    title = ""
+    current_roles.each do |role|
       # a clergyman or Commonwealth citizen does not get called 'Sir'
-      if role.confers_honourific_title? && !clergy? && male? && !title.include?("Sir ")
+      if !role.prefix.blank?
+        title += role.prefix + " " if !title.include?(role.prefix)
+      elsif role.confers_honourific_title? && !clergy? && male? && !title.include?("Sir ")
         title += "Sir "
       elsif role.confers_honourific_title? && !clergy? && female? && !title.include?("Lady ")
         title += "Lady "
-      elsif ("DBE" == role.abbreviation or "GBE" == role.abbreviation or "DCVO" == role.abbreviation) && !title.include?("Dame ")
-        title += "Dame "
+#      elsif ("DBE" == role.abbreviation or "GBE" == role.abbreviation or "DCVO" == role.abbreviation) && !title.include?("Dame ")
+#        title += "Dame "
       elsif role.used_as_a_prefix? and !title.include?(role.display_name)
         title += role.display_name + " " 
       end
-    }
-    title.strip!
+    end
+    title.strip
   end
 
   def titled?
@@ -240,23 +244,23 @@ class Person < ActiveRecord::Base
   end
   
   def clergy?
-    return true if roles.any? { |role| role.role_type=="clergy"}
-    false
+    roles.any? { |role| role.role_type=="clergy"}
   end
   
   def letters
     letters = ""
-    roles.each do |role|
-      letters += " " + role.letters
+    current_roles.each do |role|
+      letters += " " + role.suffix if role.suffix
     end
-    letters
+    letters.strip
   end
   
   def full_name
-    fullname = name 
-    fullname = title + " " + name if title
-    fullname += letters if !letters.blank?
-    fullname
+    fullname = ""
+    fullname += title + " " # if titled?
+    fullname += name 
+    fullname += " " + letters if !letters.blank?
+    fullname.strip
   end
   
   def parents

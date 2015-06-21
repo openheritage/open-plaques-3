@@ -6,6 +6,8 @@
 # * +wikipedia_stub+ - url of a relevant Wikipedia page
 # * +index+ - letter indexed on
 # * +abbreviation+ - acronym etc. when a role is commonly abbreviated, especially awards, e.g. Victoria Cross == VC
+# * +prefix+ - word(s) to display as part of a title in a name
+# * +suffix+ - word(s) to display as part of letters after a name
 #
 # === Associations
 # * +personal_roles+ - how people are connected to this role
@@ -89,34 +91,36 @@ class Role < ActiveRecord::Base
     return true if "spouse" == role_type
     return true if "child" == role_type
     return true if "group" == role_type
-    return false
+    false
   end
   
   def used_as_a_prefix?
     return true if "title" == role_type
     return true if "clergy" == role_type
-    return false
+    false
   end
   
   def military_medal?
     return true if "military medal" == role_type
-    return false
+    false
   end
 
   def used_as_a_suffix?
+    return true if !suffix.blank?
     return true if "letters" == role_type
     return true if military_medal?
-    return false
+    false
   end
 
   def letters
+    return suffix if !suffix.blank?
     return abbreviation if used_as_a_suffix?
     ""
   end
   
   def abbreviated?
     return false if abbreviation.blank?
-    return true
+    true
   end
   
   def confers_honourific_title?

@@ -71,6 +71,8 @@ class RolesController < ApplicationController
       params.require(:role).permit(
         :name,
         :abbreviation,
+        :prefix,
+        :suffix,
         :slug,
         :wikipedia_stub,
         :role_type,

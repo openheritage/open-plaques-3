@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150503101425) do
+ActiveRecord::Schema.define(version: 20150620163320) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -238,6 +238,8 @@ ActiveRecord::Schema.define(version: 20150503101425) do
     t.string   "wikipedia_stub"
     t.string   "role_type"
     t.string   "abbreviation"
+    t.string   "prefix"
+    t.string   "suffix"
   end
 
   add_index "roles", ["index"], name: "starts_with", using: :btree
