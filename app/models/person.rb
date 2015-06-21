@@ -215,7 +215,7 @@ class Person < ActiveRecord::Base
   def current_roles
     current_roles = []
     personal_roles.each do |pr|
-      current_roles << pr.role if pr.ended_at == nil or pr.ended_at == ''
+      current_roles << pr.role if pr.ended_at == nil or pr.ended_at == '' or pr.ended_at == died_on
     end
     current_roles
   end
