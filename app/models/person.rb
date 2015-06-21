@@ -268,7 +268,6 @@ class Person < ActiveRecord::Base
     relationships.each do |relationship|
       parents << relationship.related_person if (relationship.role.name=="son" or relationship.role.name=="daughter") && relationship.related_person!=nil
     end
-    parents
     parents.sort! { |a,b| a.born_on ? a.born_on : 0 <=> b.born_on ? b.born_on : 0 }
   end
 
