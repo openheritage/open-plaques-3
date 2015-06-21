@@ -250,7 +250,11 @@ class Person < ActiveRecord::Base
   def letters
     letters = ""
     current_roles.each do |role|
-      letters += " " + role.suffix if role.suffix
+      if role.suffix
+        letters += " " + role.suffix
+      elsif role.role_type == "letters"
+        letters += " " + role.display_name
+      end
     end
     letters.strip
   end
