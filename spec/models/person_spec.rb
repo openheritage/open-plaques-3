@@ -15,7 +15,7 @@ describe Person do
     context 'a Baronet' do
       before do
         @person = Person.new(name: 'John Smith')
-        @person.roles << Role.new(name: 'Baronet')
+        @person.roles << Role.new(name: 'Baronet', prefix: 'Sir')
       end
       it 'is referred to as a Sir' do
         expect(@person.full_name).to eq('Sir John Smith')
@@ -25,7 +25,7 @@ describe Person do
     context 'a Baroness' do
       before do
         @person = Person.new(name: 'Ethel Smith')
-        @person.roles << Role.new(name: 'Baroness')
+        @person.roles << Role.new(name: 'Baroness', prefix: 'Lady')
       end
       it 'is referred to as a Lady' do
         expect(@person.full_name).to eq('Lady Ethel Smith')
@@ -35,7 +35,7 @@ describe Person do
     context 'a vicar' do
       before do
         @person = Person.new(name: 'Malcolm McBonny')
-        @person.roles << Role.new(name: 'Vicar', role_type: 'clergy', abbreviation: 'Revd')
+        @person.roles << Role.new(name: 'Vicar', role_type: 'clergy', prefix: 'Revd')
       end
       it 'is referred to as a Revd' do
         expect(@person.full_name).to eq('Revd Malcolm McBonny')
@@ -45,8 +45,8 @@ describe Person do
     context 'a member of the clergy who has been ennobled' do
       before do
         @person = Person.new(name: 'Malcolm McBonny')
-        @person.roles << Role.new(name: 'Vicar', role_type: 'clergy', abbreviation: 'Revd')
-        @person.roles << Role.new(name: 'Baronet')
+        @person.roles << Role.new(name: 'Vicar', role_type: 'clergy', prefix: 'Revd')
+        @person.roles << Role.new(name: 'Baronet', prefix: 'Sir')
       end
       it 'does not get called a Sir/Lady' do
         expect(@person.full_name).to eq('Revd Malcolm McBonny')
@@ -95,7 +95,7 @@ describe Person do
     context 'a person with higher education qualifications' do
       before do
         @person = Person.new(name: 'John Smith')
-        @role = Role.new(name: 'Toodle', abbreviation: 'Td', role_type: 'letters')
+        @role = Role.new(name: 'Toodle', suffix: 'Td', role_type: 'letters')
         @person.roles << @role
       end
       it 'has letters after their name' do
@@ -106,9 +106,9 @@ describe Person do
     context 'a person with multiple higher education qualifications' do
       before do
         @person = Person.new(name: 'John Smith')
-        @role = Role.new(name: 'Toodle', abbreviation: 'Td', role_type: 'letters')
+        @role = Role.new(name: 'Toodle', suffix: 'Td', role_type: 'letters')
         @person.roles << @role
-        @role = Role.new(name: 'Pip', abbreviation: 'P', role_type: 'letters')
+        @role = Role.new(name: 'Pip', suffix: 'P', role_type: 'letters')
         @person.roles << @role
       end
       it 'has multiple letters after their name (in the order they were added)' do
