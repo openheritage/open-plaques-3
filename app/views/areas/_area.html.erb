@@ -1,3 +1,3 @@
 <% if area %>
-  <%= link_to area %><% if area.country %>, <%= area.country %><% end %>
+  <%= link_to area_path(area) do %><%= area.name %><% end %><% if area.country %>, <%= area.country %><% end %>
 <% end %>
