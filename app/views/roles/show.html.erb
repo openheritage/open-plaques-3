@@ -6,7 +6,13 @@
       <%= link_to t('buttons.edit'), edit_role_path(@role), {:class => :edit, :title => t('buttons.edit')} %>
     </section>
   <% end %>
-  <h1><%= @role.name.pluralize %></h1>
+  <h1>
+    <% if @role.full_name.include? " of " %>
+      <%= @role.name.split(/#| of /).first.pluralize + @role.name.sub(/.*? of /, ' of ') %>
+    <% else %>
+      <%= @role.name.pluralize %>
+    <% end %>
+  </h1>
   <% if @role.used_as_a_suffix? %>
     <p>
       <% if @role.military_medal? %>
