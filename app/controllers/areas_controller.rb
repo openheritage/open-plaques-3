@@ -73,7 +73,7 @@ class AreasController < ApplicationController
     end
     if @area.update_attributes(area_params)
       flash[:notice] = 'Area was successfully updated.'
-      redirect_to :back
+      redirect_to country_path(@country)
     else
       @countries = Country.all.select(:id, :name)
       render "edit"
