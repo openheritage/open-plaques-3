@@ -80,9 +80,7 @@ class PersonalConnectionsController < ApplicationController
     end
     
     def list_people_and_verbs
-      @people = Person.order(:name, :born_on).select('id, name, born_on, died_on')
       @verbs = Verb.order(:name).select('id, name')
-      @common_verbs = nil # Verb.common
     end
 
   private

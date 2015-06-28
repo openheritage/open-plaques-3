@@ -1,3 +1,32 @@
+<script type="text/javascript">
+  $(function() {
+    $( "#person_name" ).autocomplete({
+      autofocus: true,
+      source: function(request, response) {
+        $.ajax({
+          url: "/people/autocomplete",
+          dataType: "json",
+          data: {
+            contains: request.term,
+            limit: 10
+          },
+          success: function(data) {
+            response($.map(data, function(item) {
+              return {
+                label: item.name_and_dates,
+                id: item.id
+              }
+            }));
+          }
+        });
+      },
+      select: function(event, ui) {
+        $('#personal_connection_person_id').val(ui.item.id);
+      }
+    });
+  });
+</script>
+
 <% content_for(:page_title) {t '.page_title', :plaque => @plaque.id.to_s } %>
 
 <%= render 'plaques/edit_bar', :plaque => @plaque %>
@@ -17,7 +46,11 @@
   <%= form_for @personal_connection, :url => plaque_connections_path(@plaque) do |f| %>
     <fieldset>
       <div class="row">
-        <%= f.collection_select :person_id, @people, :id, :name_and_raw_dates, {} , { "style" => "width:400px" } %> <%= link_to(t('.new_person'), "/people/new") %>
+        <%= text_field_tag :person_name, "", {:placeholder => "John Smith"} %>
+        <%= f.hidden_field :person_id %>
+
+
+        <%= link_to(t('.new_person'), "/people/new") %>
       </div>
       <% if @common_verbs %>
         <%= fieldset do %>
