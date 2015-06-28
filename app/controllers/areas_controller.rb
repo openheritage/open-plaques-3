@@ -17,14 +17,24 @@ class AreasController < ApplicationController
 
   def autocomplete
     limit = params[:limit] ? params[:limit] : 5
+    country_id = params[:country_id]
     if params[:contains]
-      @areas = Area.select(:id,:name,:country_id).name_contains(params[:contains]).limit(limit)
+      @areas = Area.select(:id,:name,:country_id).name_contains(params[:contains]).includes(:country).limit(limit)
     elsif params[:starts_with]
-      @areas = Area.select(:id,:name,:country_id).name_starts_with(params[:starts_with]).limit(limit)
+      if country_id == nil
+        @areas = Area.select(:id,:name,:country_id).name_starts_with(params[:starts_with]).includes(:country).limit(limit)
+      else
+        @areas = Area.select(:id,:name,:country_id).where(:country_id => country_id).name_starts_with(params[:starts_with]).includes(:country).limit(limit)
+      end
     else
       @areas = "{}"
     end
-    render :json => @areas.as_json(:only => [:id,:name,:country_id])
+    render :json => @areas.as_json(:only => [:id,:name,:country_id],
+        :include => { 
+          :country => {
+            :only => [:name]
+          }
+        })
   end
 
   def new
