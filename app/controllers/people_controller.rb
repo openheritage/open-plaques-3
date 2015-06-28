@@ -1,11 +1,24 @@
 class PeopleController < ApplicationController
 
   before_filter :authenticate_admin!, :only => :destroy
-  before_filter :authenticate_user!, :except => [:index, :show, :update]
+  before_filter :authenticate_user!, :except => [:autocomplete, :index, :show, :update]
   before_filter :find, :only => [:edit, :update, :destroy]
 
   def index
     redirect_to(:controller => :people_by_index, :action => "show", :id => "a")
+  end
+
+  def autocomplete
+    limit = params[:limit] ? params[:limit] : 5
+    @people = "{}"
+    @people = Person.select(:id,:name,:born_on,:died_on)
+      .includes(:roles)
+      .name_contains(params[:contains])
+      .limit(limit) if params[:contains]
+    render :json => @people.as_json(
+      :only => [:id, :name],
+      :methods => [:name_and_dates]
+    )
   end
 
   # GET /people/1

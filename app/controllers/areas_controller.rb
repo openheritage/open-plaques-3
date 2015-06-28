@@ -29,12 +29,14 @@ class AreasController < ApplicationController
     else
       @areas = "{}"
     end
-    render :json => @areas.as_json(:only => [:id,:name,:country_id],
-        :include => { 
-          :country => {
-            :only => [:name]
-          }
-        })
+    render :json => @areas.as_json(
+      :only => [:id,:name,:country_id],
+      :include => { 
+        :country => {
+          :only => [:name]
+        }
+      }
+    )
   end
 
   def new

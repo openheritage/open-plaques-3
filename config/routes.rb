@@ -82,6 +82,9 @@ Rails.application.routes.draw do
     resources :alive_in, :controller => :people_alive_in, :as => "people_alive_in", :only => [:index, :show]
   end
   resources :people do
+    collection do
+      get 'autocomplete'
+    end
     resource :plaques, :controller => :person_plaques, :only => :show
     resource :roles, :controller => :person_roles, :only => :show
   end
