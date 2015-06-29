@@ -48,8 +48,6 @@
       <div class="row">
         <%= text_field_tag :person_name, "", {:placeholder => "John Smith"} %>
         <%= f.hidden_field :person_id %>
-
-
         <%= link_to(t('.new_person'), "/people/new") %>
       </div>
       <% if @common_verbs %>
