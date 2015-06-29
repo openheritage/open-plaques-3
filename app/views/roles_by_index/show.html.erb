@@ -17,7 +17,7 @@
         <% if role.full_name.include? " of " %>
           <%= link_to pluralize(role.personal_roles_count, role.full_name.split(/#| of /).first) + role.full_name.sub(/.*? of /, ' of '), role_path(role) %>
         <% else %>
-          <%= link_to pluralize(role.personal_roles_count, role.full_name), role_path(role) %>
+          <%= link_to pluralize(role.personal_roles_count, role.full_name), role_path(role) %> <% if !role.person? %>[x]<% end %>
         <% end %>
       <% end %>
     <% end %>
