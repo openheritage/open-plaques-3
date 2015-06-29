@@ -70,7 +70,11 @@ Rails.application.routes.draw do
   scope "/roles" do
     resources "a-z", :controller => :roles_by_index, :as => "roles_by_index", :only => [:show, :index]
   end
-  resources :roles
+  resources :roles do
+    collection do
+      get 'autocomplete'
+    end
+  end
   resources :personal_roles
 
   scope "/people" do

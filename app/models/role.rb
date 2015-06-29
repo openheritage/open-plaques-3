@@ -26,6 +26,8 @@ class Role < ActiveRecord::Base
 
   scope :by_popularity, -> { order("personal_roles_count DESC nulls last") }
   scope :alphabetically, -> { order("name ASC nulls last") }
+  scope :name_starts_with, lambda {|term| where(["lower(name) LIKE ?", term.downcase + "%"]) }
+  scope :name_contains, lambda {|term| where(["lower(name) LIKE ?", "%" + term.downcase + "%"]) }
 
   include ApplicationHelper
 

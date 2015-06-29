@@ -12,6 +12,20 @@ class RolesController < ApplicationController
     end
   end
 
+  def autocomplete
+    limit = params[:limit] ? params[:limit] : 5
+    @roles = "{}"
+    @roles = Role.select(:id,:name)
+      .name_contains(params[:contains])
+      .limit(limit) if params[:contains]
+    @roles = Role.select(:id,:name)
+      .name_starts_with(params[:starts_with])
+      .limit(limit) if params[:starts_with]
+    render :json => @roles.as_json(
+      :only => [:id, :name]
+    )
+  end
+
   # GET /roles/artist
   # GET /roles/artist.xml
   def show
