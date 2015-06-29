@@ -1,7 +1,7 @@
 
 <% content_for :page_title, @plaque %>
 
-<%= content_tag(:section, link_to("Edit this plaque", edit_plaque_path(@plaque), {:class => :edit, :title => "Edit this plaque"}), :class => :admin_panel) if current_user && current_user.is_admin? %>
+<%= render 'plaques/edit_bar', :plaque => @plaque %>
 
 <div class="panel clearfix">  
   <% if @plaque.foreign? && !@plaque.inscription_in_english %><div class="goog-trans-section" lang=""><% end %>
