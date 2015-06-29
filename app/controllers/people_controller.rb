@@ -67,8 +67,16 @@ class PeopleController < ApplicationController
       @person.died_on = Date.parse(params[:died_on] + "-01-01")
     end
 
+
     respond_to do |format|
       if @person.save
+        if params[:role_id] && !params[:role_id].blank?
+          @personal_role = PersonalRole.new()
+          @personal_role.person_id = @person.id
+          @personal_role.role_id = params[:role_id]
+          puts @personal_role.person.name + ' ' + @personal_role.role.name
+          @personal_role.save!
+        end
         flash[:notice] = 'Person was successfully created.'
         format.html { redirect_to(@person) }
         format.xml  { render :xml => @person, :status => :created, :location => @person }

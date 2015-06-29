@@ -1,3 +1,32 @@
+<script type="text/javascript">
+  $(function() {
+    $( "#role" ).autocomplete({
+      autofocus: true,
+      source: function(request, response) {
+        $.ajax({
+          url: "/roles/autocomplete",
+          dataType: "json",
+          data: {
+            contains: request.term,
+            limit: 10
+          },
+          success: function(data) {
+            response($.map(data, function(item) {
+              return {
+                label: item.name,
+                id: item.id
+              }
+            }));
+          }
+        });
+      },
+      select: function(event, ui) {
+        $('#role_id').val(ui.item.id);
+      }
+    });
+  });
+</script>
+
 <% content_for(:page_title) {t '.page_title'} %>
 
 <div class="panel clearfix">
@@ -6,6 +35,8 @@
     <p><%= f.label :name %> <%= f.text_field :name %></p>
     <p><%= f.label :born_on %> <%= text_field_tag :born_on, "", {:maxlength => "4"} %></p>
     <p><%= f.label :died_on %> <%= text_field_tag :died_on, "", {:maxlength => "4"} %></p>
+    <p><%= f.label "role (optional)" %> <%= text_field_tag :role %></p>
+    <%= hidden_field_tag :role_id %>
     <%= f.submit t('buttons.save'), :class => 'button' %>
   <% end %>
 </div>
