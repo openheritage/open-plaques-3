@@ -1,13 +1,46 @@
-<%= render @personal_role.person %>
+<script type="text/javascript">
+  $(function() {
+    $( "#personal_role_related_person" ).autocomplete({
+      autofocus: true,
+      source: function(request, response) {
+        $.ajax({
+          url: "/people/autocomplete",
+          dataType: "json",
+          data: {
+            contains: request.term,
+            limit: 10
+          },
+          success: function(data) {
+            response($.map(data, function(item) {
+              return {
+                label: item.name_and_dates,
+                id: item.id
+              }
+            }));
+          }
+        });
+      },
+      select: function(event, ui) {
+        $('#personal_role_related_person_id').val(ui.item.id);
+      }
+    });
+  });
+</script>
 
-<%= form_for @personal_role do |f| %>
-  <p>was a <%= render @personal_role.role %>
-  <% if @personal_role.role.relationship? %>of <%= f.collection_select :related_person_id, @people, :id, :name_and_dates, {:include_blank => true} , { "style" => "width:400px" } %><% end %>
-  <br/>
-    <%= f.label :started_at, t('.from') %> <%= f.text_field :started_at %>
-    <%= f.label :ended_at, t('.to') %> <%= f.text_field :ended_at %>
-  </p>
-
-  <p><%= f.label :ordinal, t('.ordinal') %> <%= f.text_field :ordinal %></p>
-  <p><%= f.submit t('buttons.save'), :class => :button %></p>
-<% end %>
+<div class="panel clearfix">
+  <%= form_for @personal_role do |f| %>
+    <p>
+      <%= render @personal_role.person %> was a <%= render @personal_role.role %>
+      <% if @personal_role.role.relationship? %>of 
+        <%= f.text_field :related_person %>
+        <%= f.hidden_field :related_person_id %>
+        <%= link_to(t('.new_person'), "/people/new") %>
+      <% end %>
+      <br/>
+      <%= f.label :started_at %> <%= f.text_field :started_at %>
+      <%= f.label :ended_at %> <%= f.text_field :ended_at %>
+    </p>
+    <p><%= f.label :ordinal %> <%= f.text_field :ordinal %></p>
+    <p><%= f.submit t('buttons.save'), :class => :button %></p>
+  <% end %>
+</div>

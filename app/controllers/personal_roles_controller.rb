@@ -12,7 +12,6 @@ class PersonalRolesController < ApplicationController
     @personal_role.role = @role
     @person = Person.find(params[:personal_role][:person_id])
     @personal_role.person = @person
-
     # TODO: need better validation on the date format here.
     if params[:personal_role][:started_at] > ""
       started_at = params[:personal_role][:started_at]
@@ -22,8 +21,7 @@ class PersonalRolesController < ApplicationController
       started_at = Date.parse(started_at)
       @personal_role.started_at = started_at
     end
-
-   if params[:personal_role][:ended_at] > ""
+    if params[:personal_role][:ended_at] > ""
       ended_at = params[:personal_role][:ended_at]
       if ended_at =~/\d{4}/
         ended_at = ended_at + "-01-01"
@@ -31,16 +29,13 @@ class PersonalRolesController < ApplicationController
       ended_at = Date.parse(ended_at)
       @personal_role.ended_at = ended_at
     end
-
     if @personal_role.save
       flash[:notice] = 'PersonalRole was successfully created.'
       redirect_to(edit_person_path(@personal_role.person))
     else
       @roles = Role.all.order(:name)
-
       render "people/edit"
     end
-
   end
 
   # PUT /personal_roles/1
@@ -59,7 +54,6 @@ class PersonalRolesController < ApplicationController
         started_at = Date.parse(started_at)
       end
     end
-
     ended_at = nil
     if (params[:personal_role][:ended_at]>"")
       ended_at = params[:personal_role][:ended_at]
@@ -69,13 +63,11 @@ class PersonalRolesController < ApplicationController
         ended_at = Date.parse(ended_at)
       end
     end
-
     if @personal_role.update_attributes(:started_at => started_at, :ended_at => ended_at, :related_person => related_person, :ordinal => params[:personal_role][:ordinal])
       redirect_to(edit_person_path(@personal_role.person))
     else
       render :edit
     end
-
   end
 
   # DELETE /personal_roles/1
@@ -83,16 +75,9 @@ class PersonalRolesController < ApplicationController
   def destroy
     @person = @personal_role.person
     @personal_role.destroy
-
     respond_to do |format|
       format.html { redirect_to(edit_person_url(@person)) }
       format.xml  { head :ok }
-    end
-  end
-
-  def edit
-    if @personal_role.role.relationship?
-      @people = Person.all.order(:name, :born_on).select('id, name, born_on, died_on')
     end
   end
 

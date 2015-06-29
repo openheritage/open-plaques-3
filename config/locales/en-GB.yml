@@ -38,6 +38,10 @@ en-GB:
         name: Name
         born_in: Born in
         died_in: Died in
+      personal_role:
+        started_at: From
+        ended_at: To
+        ordinal: Ordinal
       photo:
         of_a_plaque: This is a photo of a plaque
         url: Url
