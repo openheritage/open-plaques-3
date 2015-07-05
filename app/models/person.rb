@@ -273,6 +273,7 @@ class Person < ActiveRecord::Base
       names << name.split(/,/).first
       return names
     end
+    names << title + " " + name.split(/ of /).first if name.include?(' of ') && titled?
     names << name.split(/ of /).first if name.include? ' of '
     names << nameparts.first + " " + middleinitials + " " + nameparts.last # Joseph A. R. Hansom
     names << nameparts.first + " " + nameparts.last if nameparts.length > 1 # Joseph Hansom 
