@@ -15,9 +15,7 @@
       <%= roles_list(@person) %>
     </h1>
 
-    <p>
-      Names: <%= @person.names.to_sentence %>
-    <p>
+    <p>Names: <%= @person.names.to_sentence %></p>
 
     <% if @person.parents.size > 0 %>
       <p><%= 'parent'.pluralize @person.parents.size %>:<%= render @person.parents %></p>

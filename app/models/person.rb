@@ -103,11 +103,11 @@ class Person < ActiveRecord::Base
   end
 
   def born_at
-    birth_connection.location if (birth_connection)
+    birth_connection.location if birth_connection
   end
 
   def died_at
-    death_connection.location if (death_connection)
+    death_connection.location if death_connection
   end
 
   def dead?
@@ -155,11 +155,11 @@ class Person < ActiveRecord::Base
   end
 
   def name_and_dates
-    (name + " " + dates)
+    name + " " + dates
   end
 
   def name_and_raw_dates
-    (name + " " + raw_dates)
+    name + " " + raw_dates
   end
 
   def dates
@@ -217,7 +217,7 @@ class Person < ActiveRecord::Base
   def current_roles
     current_roles = []
     personal_roles.each do |pr|
-      current_roles << pr.role if pr.ended_at == nil or pr.ended_at == '' or pr.ended_at == died_on
+      current_roles << pr.role if pr.role.prefix == "King" or pr.role.prefix == "Queen" || pr.ended_at == nil or pr.ended_at == '' or (pr.ended_at && pr.ended_at.year.to_s == died_on.to_s)
     end
     current_roles
   end
@@ -227,7 +227,7 @@ class Person < ActiveRecord::Base
     current_roles.each do |role|
       if !role.prefix.blank?
         # NB a clergyman or Commonwealth citizen does not get called 'Sir'
-        title += role.prefix + " " if !title.include?(role.prefix) && !(role.prefix=="Sir" && clergy?)
+        title += role.prefix + " " if !title.include?(role.prefix) && !(role.prefix == "Sir" && clergy?)
       elsif role.used_as_a_prefix? and !title.include?(role.display_name)
         title += role.display_name + " " 
       end
@@ -236,7 +236,7 @@ class Person < ActiveRecord::Base
   end
 
   def titled?
-    title != nil
+    title != ""
   end
   
   def clergy?
@@ -252,9 +252,7 @@ class Person < ActiveRecord::Base
   end
   
   def full_name
-    fullname = title + " "
-    fullname += name 
-    fullname += " " + letters if !letters.blank?
+    fullname = title + " " + name + " " + letters
     fullname.strip
   end
 
@@ -269,8 +267,12 @@ class Person < ActiveRecord::Base
     names << full_name # Sir Joseph Aloysius Hansom 
     names << title + " " + name if titled?
     names << "Earl Kitchener of Khartoum" if id == 568
-    names << name # Joseph Aloysius Hansom 
-    names << name.split(/,/).first if name.include? ','
+    names << name if name != full_name # Joseph Aloysius Hansom
+    if name.include? ','
+      names << name.split(/,/).first
+      return names
+    end
+    names << name.split(/ of /).first if name.include? ' of '
     names << nameparts.first + " " + middleinitials + " " + nameparts.last # Joseph A. R. Hansom
     names << nameparts.first + " " + nameparts.last if nameparts.length > 1 # Joseph Hansom 
     names << nameparts.first + " " + nameparts.second + " " + nameparts.last if nameparts.length > 3
@@ -297,7 +299,6 @@ class Person < ActiveRecord::Base
   end
   
   def siblings
-    # should probably work this out from the parents
     siblings = []
     relationships.each do |relationship|
       siblings << relationship.related_person if relationship.role.name=="brother" or relationship.role.name=="sister" or relationship.role.name=="half-brother" or relationship.role.name=="half-sister"
