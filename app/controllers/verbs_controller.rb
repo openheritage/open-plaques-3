@@ -12,6 +12,20 @@ class VerbsController < ApplicationController
     end
   end
 
+  def autocomplete
+    limit = params[:limit] ? params[:limit] : 5
+    @verbs = "{}"
+    @verbs = Verb.select(:id,:name)
+      .name_contains(params[:contains])
+      .limit(limit) if params[:contains]
+    @verbs = Verb.select(:id,:name)
+      .name_starts_with(params[:starts_with])
+      .limit(limit) if params[:starts_with]
+    render :json => @verbs.as_json(
+      :only => [:id, :name]
+    )
+  end
+
   def show
     @verb = Verb.find_by_name(params[:id].gsub('_',' '))
     respond_to do |format|

@@ -65,7 +65,11 @@ Rails.application.routes.draw do
     resource :upcoming, only: [:show], :controller => :upcoming_unveilings
   end
 
-  resources :verbs, :only => [:create, :index, :show, :new]
+  resources :verbs, :only => [:create, :index, :show, :new] do
+    collection do
+      get 'autocomplete'
+    end
+  end
 
   scope "/roles" do
     resources "a-z", :controller => :roles_by_index, :as => "roles_by_index", :only => [:show, :index]

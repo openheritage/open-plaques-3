@@ -16,6 +16,8 @@ class Verb < ActiveRecord::Base
 
   has_many :personal_connections
   has_many :people, :through => :personal_connections
+  scope :name_starts_with, lambda {|term| where(["lower(name) LIKE ?", term.downcase + "%"]) }
+  scope :name_contains, lambda {|term| where(["lower(name) LIKE ?", "%" + term.downcase + "%"]) }
 
   def self.common
     [Verb.find_by_name("was born"),Verb.find_by_name("lived"),Verb.find_by_name("died")].compact
@@ -33,12 +35,18 @@ class Verb < ActiveRecord::Base
     "http://openplaques.org" + Rails.application.routes.url_helpers.verb_path(self, :format => :json)
   end
 
-  def as_json(options={})
-    super(:only => [:name],
-      :include => {
-        :people => {:only => [:name], :methods => [:uri]}
-      },
-      :methods => [:uri]
-    )
+  def as_json(options=nil)
+    if options && options[:only]
+    else
+      options = {
+        :only => [:name],
+        :include => {
+          :people => {:only => [:name], :methods => [:uri]}
+        },
+        :methods => [:uri]
+      }
+    end
+    super(options)
   end
+  
 end
