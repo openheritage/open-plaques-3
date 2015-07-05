@@ -13,6 +13,7 @@ require 'open-uri'
 # * +died_on_is_circa+ - True or False. Whether the +died_on+ date is 'circa' or not. Optional.
 # * +personal_connections_count+ - cached count of associations with plaques, i.e. places and times
 # * +personal_roles_count+ - cached count of roles
+# * +other_names+ - Array of names that person is also known as
 #
 # === Associations
 # * PersonalRoles - link to a role and potentially another person (e.g. by being their husband)
@@ -266,7 +267,7 @@ class Person < ActiveRecord::Base
     names = []
     names << full_name # Sir Joseph Aloysius Hansom 
     names << title + " " + name if titled?
-    names << "Earl Kitchener of Khartoum" if id == 568
+    names << other_names if !other_names.blank?
     names << name if name != full_name # Joseph Aloysius Hansom
     if name.include? ','
       names << name.split(/,/).first
