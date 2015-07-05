@@ -257,6 +257,28 @@ class Person < ActiveRecord::Base
     fullname += " " + letters if !letters.blank?
     fullname.strip
   end
+
+  def names
+    nameparts = name.split(" ")
+    middlenames = nameparts.length > 2 ? nameparts.from(1).to(nameparts.from(1).length - 2) : []
+    middleinitials = ""
+    middlenames.each do |name|
+      middleinitials += name.to_s[0,1] + ". "
+    end
+    names = []
+    names << full_name # Sir Joseph Aloysius Hansom 
+    names << title + " " + name if titled?
+    names << "Earl Kitchener of Khartoum" if id == 568
+    names << name # Joseph Aloysius Hansom 
+    names << name.split(/,/).first if name.include? ','
+    names << nameparts.first + " " + middleinitials + " " + nameparts.last # Joseph A. R. Hansom
+    names << nameparts.first + " " + nameparts.last if nameparts.length > 1 # Joseph Hansom 
+    names << nameparts.first + " " + nameparts.second + " " + nameparts.last if nameparts.length > 3
+    names << nameparts.first[0,1] + ". " + nameparts.last  if nameparts.length > 1
+    names << title + " " + nameparts.last if titled?
+    names << nameparts.last
+    names
+  end
   
   def parents
     parents = []

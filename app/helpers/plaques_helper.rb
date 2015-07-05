@@ -362,36 +362,48 @@ module PlaquesHelper
   end
 
   def new_linked_inscription(plaque)
-    inscription = plaque.inscription
+    inscription = plaque.inscription.gsub(/\r/," ").gsub(/\n/," ").strip
     connections = plaque.personal_connections
     if connections.length > 0
       connections.each do |connection|
         if connection.person
+          person = connection.person
           matched = false
           nameparts = connection.person.name.split(" ")
+          search_for = ""
 
-          search_for = connection.person.full_name # Sir Joseph Aloysius Hansom 
-          matched = true if inscription.index(search_for) != nil
-
-          if (!matched && connection.person.titled? && nameparts.length > 2)
-            search_for = connection.person.title + nameparts.first + " " + nameparts.last # Sir Joseph Hansom 
+          person.names.each do |name|
+            if (!matched)
+              search_for = name
+              puts "look for '" + search_for + "' in '" + inscription+"' gives " + inscription.index(search_for).to_s
+              matched = true if inscription.index(search_for) != nil
+            end
           end
-          matched = true if inscription.index(search_for) != nil
 
-          if (!matched && connection.person.titled?)
-            search_for = connection.person.title + nameparts.last # Sir Hansom 
+          if (!matched)
+            search_for = person.full_name # Sir Joseph Aloysius Hansom 
+            matched = true if inscription.index(search_for) != nil
           end
-          matched = true if inscription.index(search_for) != nil
+
+          if (!matched && person.titled? && nameparts.length > 2)
+            search_for = person.title + nameparts.first + " " + nameparts.last # Sir Joseph Hansom 
+            matched = true if inscription.index(search_for) != nil
+          end
+
+          if (!matched && person.titled?)
+            search_for = person.title + nameparts.last # Sir Hansom 
+            matched = true if inscription.index(search_for) != nil
+          end
 
           if (!matched && nameparts.length > 2)
             search_for = nameparts.first + " " + nameparts.second[0,1] + ". " + nameparts.last # Joseph A. Hansom
+            matched = true if inscription.index(search_for) != nil
           end
-          matched = true if inscription.index(search_for) != nil
 
           if (!matched && nameparts.length > 1)
             search_for = nameparts.first + " " + nameparts.last # Joseph Hansom
+            matched = true if inscription.index(search_for) != nil
           end
-          matched = true if inscription.index(search_for) != nil
 
           if (!matched && nameparts.length > 1)
             search_for = ""
@@ -399,28 +411,30 @@ module PlaquesHelper
               search_for += namepart[0,1] + ". " if index != nameparts.length - 1
               search_for += namepart if index == nameparts.length - 1 # J. A. Hansom, J. R. R. Tolkien
             end
-          end
-          matched = true if inscription.index(search_for) != nil
-
+            matched = true if inscription.index(search_for) != nil
+         end
+ 
           if (!matched && nameparts.length > 1)
             search_for = nameparts.first[0,1] + ". " + nameparts.last # J. Hansom
+            matched = true if inscription.index(search_for) != nil
           end
-          matched = true if inscription.index(search_for) != nil
 
           if (!matched && nameparts.length == 3)
             search_for = nameparts.second + " " + nameparts.last # Aloysius Hansom
+            matched = true if inscription.index(search_for) != nil
           end
-          matched = true if inscription.index(search_for) != nil
 
           if (!matched && nameparts.length > 1)
             search_for = nameparts.first # Joseph
+            matched = true if inscription.index(search_for) != nil
           end
-          matched = true if inscription.index(search_for) != nil
 
           if (!matched && nameparts.length > 1)
             search_for = nameparts.last # Hansom
+            matched = true if inscription.index(search_for) != nil
           end
-          matched = true if inscription.index(search_for) != nil
+
+          puts "££££ " + search_for
 
           inscription = inscription.gsub(search_for, link_to(search_for, person_path(connection.person))).html_safe if matched
         end
