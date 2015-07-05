@@ -267,20 +267,24 @@ class Person < ActiveRecord::Base
     names = []
     names << full_name # Sir Joseph Aloysius Hansom 
     names << title + " " + name if titled?
-    names << other_names if !other_names.blank?
+    if !other_names.blank?
+      other_names.split(',').each do |name|
+        names << name
+      end
+    end
     names << name if name != full_name # Joseph Aloysius Hansom
-    if name.include? ','
+    if name.include? ',' # George Inn, Barcombe
       names << name.split(/,/).first
       return names
     end
-    names << title + " " + name.split(/ of /).first if name.include?(' of ') && titled?
-    names << name.split(/ of /).first if name.include? ' of '
-    names << nameparts.first + " " + middleinitials + " " + nameparts.last # Joseph A. R. Hansom
-    names << nameparts.first + " " + nameparts.last if nameparts.length > 1 # Joseph Hansom 
-    names << nameparts.first + " " + nameparts.second + " " + nameparts.last if nameparts.length > 3
-    names << nameparts.first[0,1] + ". " + nameparts.last  if nameparts.length > 1
-    names << title + " " + nameparts.last if titled?
-    names << nameparts.last
+    names << title + " " + name.split(/ of /).first if name.include?(' of ') && titled? # King Charles II of England
+    names << name.split(/ of /).first if name.include? ' of ' # Charles II of England
+    names << nameparts.first + " " + middleinitials + " " + nameparts.last if nameparts.length > 2 # Joseph A. R. Hansom
+    names << nameparts.first + " " + nameparts.last if nameparts.length > 2 # Joseph Hansom 
+    names << nameparts.first + " " + nameparts.second + " " + nameparts.last if nameparts.length > 3 # Joseph Aaron Hansom
+    names << nameparts.first[0,1] + ". " + nameparts.last  if nameparts.length > 1 # J. Hansom
+    names << title + " " + nameparts.last if titled? # Lord Carlisle
+    names << nameparts.last # Kitchener
     names
   end
   
