@@ -6,6 +6,7 @@
     <p><%= f.label :name, @person.possessive + " name " + @person.existence_word %> <%= f.text_field :name %></p>
     <p><%= t '.display_name' %> "<%= @person.full_name %>"</p>
     <p><%= f.label :other_names %> <%= f.text_field :other_names %></p>
+    <p><%= f.label :aka %> <%= f.text_field :aka %></p>
     <p><%= @person.possessive %> surname <%= @person.existence_word %> "<%= @person.surname %>" which <%= f.label :surname_starts_with, "starts with" %> <%= f.text_field :surname_starts_with, :maxlength => 1 %></p>
     <p><%= f.label :gender %> <%= f.text_field :gender, :maxlength => 1 %></p>
     <p><%= @person.personal_pronoun %> was <%= f.label :born_on, @person.creation_word %> <%= text_field_tag :born_on, @born_on, {:maxlength => "4"} %> and <%= f.label :died_on, @person.destruction_word %> <%= text_field_tag :died_on, @died_on, {:maxlength => "4"} %></p>

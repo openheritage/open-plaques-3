@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150711061315) do
+ActiveRecord::Schema.define(version: 20150711173912) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -126,6 +126,7 @@ ActiveRecord::Schema.define(version: 20150711061315) do
     t.text     "introduction"
     t.string   "other_names"
     t.string   "gender",                     default: "u"
+    t.text     "aka",                        default: [],  array: true
   end
 
   add_index "people", ["born_on", "died_on"], name: "born_and_died", using: :btree
