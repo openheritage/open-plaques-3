@@ -270,7 +270,8 @@ class Person < ActiveRecord::Base
     end
     names = []
     names << full_name # Sir Joseph Aloysius Hansom 
-    names << title + " " + name if titled?
+    names << title + " " + nameparts.first[0,1] + ". " + middleinitials + nameparts.last if titled? && nameparts.length > 1
+    names << title + " " + nameparts.first[0,1] + ". " + nameparts.last if titled? && nameparts.length > 2
     if !other_names.blank?
       other_names.split(',').each do |name|
         names << name
@@ -289,8 +290,8 @@ class Person < ActiveRecord::Base
     names << nameparts.first + " " + nameparts.second[0,1] + ". " + nameparts.last if nameparts.length > 3 # Joseph Aaron Hansom
     names << nameparts.first[0,1] + ". " + nameparts.last  if nameparts.length > 1 # J. Hansom
     names << title + " " + nameparts.last if titled? # Lord Carlisle
-    names << nameparts.last # Kitchener
-    names << nameparts.first # Charles
+    names << nameparts.last if nameparts.length > 1 # Kitchener
+    names << nameparts.first if nameparts.length > 1 # Charles
     names
   end
   
@@ -367,17 +368,17 @@ class Person < ActiveRecord::Base
       "Beatriz",
       "Caroline","Charlotte","Clara","Constance",
       "Deborah","Diana","Dolly","Doris","Dorothea",
-      "Elizabeth","Ellen","Emma",
-      "Florence",
-      "Georgia","Georgina","Gladys",
-      "Hattie",
-      "Jane","Janet","Jacqueline","Jeanne","Julia",
+      "Edith","Elizabeth","Ellen","Emma",
+      "Flora","Florence",
+      "Georgia","Georgina","Gertud","Gladys",
+      "Hattie","Henrietta","Henriette",
+      "Jane","Janet","Jacqueline","Jeanne","Julia","Julie",
       "Kate","Kathleen",
       "Letitia", "Lidia","Louisa",
-      "Mabel","Margaret","Margery","Marianne","Mary","May","Mercy",
+      "Mabel","Margaret","Margery","Marianne","Martha","Mary","May","Mercy",
       "Nancy, Nelly",
       "Paloma","Priscilla",
-      "Rachel","Roberta","Rosa","Rose",
+      "Rachel","Roberta","Rosa","Rose","Ruth",
       "Sally","Susanna",
       "Ursula",
       "Victoria","Violet","Virginia",

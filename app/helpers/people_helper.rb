@@ -5,13 +5,13 @@
 module PeopleHelper
 
   def roles_list(person)
+    list = [person.type]
     if person.roles.size > 0
-      list = [person.type]
       person.straight_roles.each do |personal_role|
         list <<  dated_role(personal_role)
       end
-      content_tag("p", list.to_sentence.html_safe, {:class => "roles"})
     end
+    content_tag("p", list.to_sentence.html_safe, {:class => "roles"})
   end
 
   def dated_role(personal_role)
