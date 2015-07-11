@@ -180,8 +180,8 @@ describe Person do
       before do
         @person = Person.new(name: 'Malcolm McBonny')
       end
-      it 'is assumed to be a person' do
-        expect(@person.type).to eq('person')
+      it 'is assumed to be a man' do
+        expect(@person.type).to eq('man')
       end
     end
 
@@ -191,7 +191,7 @@ describe Person do
         @person.roles << Role.new(name: 'actor')
       end
       it 'is a person' do
-        expect(@person.type).to eq('person')
+        expect(@person.type).to eq('man')
       end
     end
 
