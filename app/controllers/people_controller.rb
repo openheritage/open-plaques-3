@@ -2,7 +2,7 @@ class PeopleController < ApplicationController
 
   before_filter :authenticate_admin!, :only => :destroy
   before_filter :authenticate_user!, :except => [:autocomplete, :index, :show, :update]
-  before_filter :find, :only => [:edit, :update, :destroy]
+  before_filter :find, :only => [:show, :edit, :update, :destroy]
 
   def index
     redirect_to(:controller => :people_by_index, :action => "show", :id => "a")
@@ -24,7 +24,6 @@ class PeopleController < ApplicationController
   # GET /people/1
   # GET /people/1.json
   def show
-    @person = Person.find(params[:id])
     respond_to do |format|
       format.html
       format.json {
@@ -135,6 +134,7 @@ class PeopleController < ApplicationController
     def person_params
       params.require(:person).permit(
         :name,
+        :gender,
         :other_names,
         :surname_starts_with,
         :introduction,

@@ -14,6 +14,7 @@ require 'open-uri'
 # * +personal_connections_count+ - cached count of associations with plaques, i.e. places and times
 # * +personal_roles_count+ - cached count of roles
 # * +other_names+ - Array of names that person is also known as
+# * +gender+ - (u)nkown, (n)ot applicable, (m)ale, (f)emale
 #
 # === Associations
 # * PersonalRoles - link to a role and potentially another person (e.g. by being their husband)
@@ -87,6 +88,9 @@ class Person < ActiveRecord::Base
   end
 
   def type
+    return "man" if person? && male?
+    return "woman" if person? && female?
+    return "person" if person?
     return "person" if person?
     return "animal" if animal?
     return "thing" if thing?
@@ -282,9 +286,11 @@ class Person < ActiveRecord::Base
     names << nameparts.first + " " + middleinitials + " " + nameparts.last if nameparts.length > 2 # Joseph A. R. Hansom
     names << nameparts.first + " " + nameparts.last if nameparts.length > 2 # Joseph Hansom 
     names << nameparts.first + " " + nameparts.second + " " + nameparts.last if nameparts.length > 3 # Joseph Aaron Hansom
+    names << nameparts.first + " " + nameparts.second[0,1] + ". " + nameparts.last if nameparts.length > 3 # Joseph Aaron Hansom
     names << nameparts.first[0,1] + ". " + nameparts.last  if nameparts.length > 1 # J. Hansom
     names << title + " " + nameparts.last if titled? # Lord Carlisle
     names << nameparts.last # Kitchener
+    names << nameparts.first # Charles
     names
   end
   
@@ -354,8 +360,9 @@ class Person < ActiveRecord::Base
   end
 
   def female?
-    return true if roles.any?{|role| role.female?}
-    return true if self.name.start_with?(
+    if self.gender == 'u'
+      self.gender = 'f' if roles.any?{|role| role.female?}
+      self.gender = 'f' if  self.name.start_with?(
       "Abigail","Adelaide","Ada","Agnes","Alice","Alison","Amelia","Anastasia","Anna","Anne","Annie","Antoinette",
       "Beatriz",
       "Caroline","Charlotte","Clara","Constance",
@@ -375,6 +382,8 @@ class Person < ActiveRecord::Base
       "Ursula",
       "Victoria","Violet","Virginia",
       "Wilhelmina","Winifred")
+    end
+    return true if self.gender == 'f'
     false
   end
 

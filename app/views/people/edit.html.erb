@@ -2,14 +2,12 @@
 
 <div class="panel">
   <h1><%= t '.page_heading', :person => @person.full_name %></h1>
-  <p><%= t '.features_on' %></p>
-  <%= render @person.plaques.uniq %>
-  <p><%= t '.from_which_we_can_establish' %></p>
   <%= form_for @person do |f| %>
     <p><%= f.label :name, @person.possessive + " name " + @person.existence_word %> <%= f.text_field :name %></p>
     <p><%= t '.display_name' %> "<%= @person.full_name %>"</p>
     <p><%= f.label :other_names %> <%= f.text_field :other_names %></p>
     <p><%= @person.possessive %> surname <%= @person.existence_word %> "<%= @person.surname %>" which <%= f.label :surname_starts_with, "starts with" %> <%= f.text_field :surname_starts_with, :maxlength => 1 %></p>
+    <p><%= f.label :gender %> <%= f.text_field :gender, :maxlength => 1 %></p>
     <p><%= @person.personal_pronoun %> was <%= f.label :born_on, @person.creation_word %> <%= text_field_tag :born_on, @born_on, {:maxlength => "4"} %> and <%= f.label :died_on, @person.destruction_word %> <%= text_field_tag :died_on, @died_on, {:maxlength => "4"} %></p>
     <p><%= f.label :introduction %></p>
     <%= f.text_area :introduction, :cols => 80, :rows => 15 %>
@@ -43,7 +41,7 @@
       <%= @person.name %> <%= @person.existence_word %> a <%= dated_role(personal_role).html_safe %> 
       <%= t('.conferring_the_letters') + ' ' + personal_role.role.abbreviation if personal_role.role.used_as_a_suffix? %><%= t('.conferring_the_title') + ' ' + personal_role.role.abbreviation if personal_role.role.used_as_a_prefix? %>
       <%= link_to t('buttons.edit'), edit_personal_role_path(personal_role) %>
-      <%= button_to t('buttons.delete'), personal_role, :method => :delete, :class => :button%>
+      <%= button_to t('buttons.delete'), personal_role, :method => :delete, :class => :button %>
     </div>
   <% end %>
   <p>
@@ -54,4 +52,10 @@
     <% end %>
   </p>
   <%= content_tag("p", link_to(t('.add_a_role'), new_role_path)) if current_user %>
+</div>
+
+<div class="panel">
+  <p><%= t '.features_on' %></p>
+  <p><%= t '.from_which_we_can_establish' %></p>
+  <%= render @person.plaques.uniq %>
 </div>
