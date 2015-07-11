@@ -374,7 +374,6 @@ module PlaquesHelper
           person.names.each do |name|
             if (!matched)
               search_for = name
-              puts "look for '" + search_for + "' in '" + inscription+"' gives " + inscription.index(search_for).to_s
               matched = true if inscription.index(search_for) != nil
             end
           end
