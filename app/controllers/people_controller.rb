@@ -136,6 +136,7 @@ class PeopleController < ApplicationController
         :name,
         :gender,
         :other_names,
+        :aka,
         :surname_starts_with,
         :introduction,
         :wikipedia_url,
