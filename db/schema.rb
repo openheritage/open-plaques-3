@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150711173912) do
+ActiveRecord::Schema.define(version: 20150712113423) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -124,7 +124,6 @@ ActiveRecord::Schema.define(version: 20150711173912) do
     t.string   "wikipedia_paras"
     t.string   "surname_starts_with"
     t.text     "introduction"
-    t.string   "other_names"
     t.string   "gender",                     default: "u"
     t.text     "aka",                        default: [],  array: true
   end
@@ -204,7 +203,6 @@ ActiveRecord::Schema.define(version: 20150711173912) do
     t.float    "longitude"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "organisation_id"
     t.text     "inscription"
     t.string   "reference"
     t.text     "notes"
@@ -228,7 +226,6 @@ ActiveRecord::Schema.define(version: 20150711173912) do
   add_index "plaques", ["area_id"], name: "index_plaques_on_area_id", using: :btree
   add_index "plaques", ["colour_id"], name: "index_plaques_on_colour_id", using: :btree
   add_index "plaques", ["latitude", "longitude"], name: "geo", using: :btree
-  add_index "plaques", ["organisation_id"], name: "index_plaques_on_organisation_id", using: :btree
   add_index "plaques", ["series_id"], name: "index_plaques_on_series_id", using: :btree
 
   create_table "roles", force: true do |t|

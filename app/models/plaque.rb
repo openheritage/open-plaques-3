@@ -19,7 +19,7 @@
 # === Associations
 # * Area - The area in which the plaque is (or was) installed. Optional.
 # * Colour - The colour of the plaque. Optional.
-# * Organisation - The organisation responsible for the plaque. Optional.
+# * Organisations - The organisation responsible for the plaque. Optional.
 # * User - The user who first added the plaque to the website.
 # * Language - The primary language of the inscripton on the plaque. Optional.
 # * Photos - Photos of the plaque.
