@@ -19,21 +19,19 @@
 # === Associations
 # * Area - The area in which the plaque is (or was) installed. Optional.
 # * Colour - The colour of the plaque. Optional.
-# * Organisations - The organisation responsible for the plaque. Optional.
-# * User - The user who first added the plaque to the website.
 # * Language - The primary language of the inscripton on the plaque. Optional.
-# * Photos - Photos of the plaque.
-# * Verbs - The verbs used on the plaque's inscription.
 # * Series - A series that this plaque is part of. Optional.
+# * Pick - When this plaque is a system favourite. Optional.
+# * Personal Connections - Links to subjects with how and when. Optional.
+# * Photos - Images of the plaque.. Optional.
+# * Sponsorships - Links to the organisations that put the plaque up. Optional.
+# * Organisations - The organisation responsible for the plaque. Optional.
 class Plaque < ActiveRecord::Base
 
-  validates_presence_of :user
-
+  belongs_to :area, :counter_cache => true
   belongs_to :colour, :counter_cache => true
-  belongs_to :user, :counter_cache => true
   belongs_to :language, :counter_cache => true
   belongs_to :series, :counter_cache => true
-  belongs_to :area, :counter_cache => true
 
   has_one :pick
 
@@ -65,22 +63,8 @@ class Plaque < ActiveRecord::Base
   delegate :name, :alpha2, :to => :language, :prefix => true, :allow_nil => true
 
   accepts_nested_attributes_for :photos, :reject_if => proc { |attributes| attributes['photo_url'].blank? }
-  accepts_nested_attributes_for :user, :reject_if => :all_blank
 
   include ApplicationHelper, ActionView::Helpers::TextHelper
-
-  def user_attributes=(user_attributes)
-    if user_attributes.has_key?("email")
-      user = User.find_by_email(user_attributes["email"])
-      if user
-        raise "Attempting To Post Plaque As Existing Verified User" and return if user.is_verified?
-        self.user = user
-      end
-    end
-    if !user
-      build_user(user_attributes)
-    end
-  end
 
   def coordinates
     if geolocated?
@@ -127,7 +111,7 @@ class Plaque < ActiveRecord::Base
     photos_count > 0
   end
 
-  def first_person
+  def first_person_xxx
     if personal_connections.size > 0
       personal_connections[0].person.name
     else

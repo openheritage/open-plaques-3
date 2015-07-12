@@ -95,8 +95,8 @@
     </div>
 
     <div class="row form-group">
-        <%= f.label :language_id, t('.language_heading') %>
-        <%= f.collection_select :language_id, @languages, :id, :name %>
+      <%= f.label :language_id, t('.language_heading') %>
+      <%= f.collection_select :language_id, @languages, :id, :name %>
     </div>
 
     <div class="row form-group">
@@ -119,9 +119,8 @@
       <div class="row">
         <%= label_tag :organisation_name, "Who put the plaque up?" %>
         <%= text_field_tag :organisation_name, "", {:placeholder => "English Heritage"} %>
-        <%= f.hidden_field :organisation_id %>
+        <%= hidden_field_tag(:organisation_id) %>
       </div>
-
       <div class="row">
         <p>and when?</p>
         <div class="date_labels">
@@ -151,24 +150,6 @@
         <%= f.label :colour_id_nil, "unknown" %>
       </div>
     </div>
-
-    <% unless current_user %>
-      <h2>About you</h2>
-      <%= f.fields_for :user do |g| %>
-        <div class="row">
-          <%= g.label :name %>
-          <%= g.text_field :name %>
-        </div>
-        <div class="row">
-          <%= g.label :email %>
-          <%= g.text_field :email %>
-        </div>
-        <div class="row checkbox">
-          <%= g.check_box :opted_in %>
-          <%= g.label :opted_in, "Please keep me informed about the project" %>
-        </div>
-      <% end %>
-    <% end %>
     <%= f.submit "Add your plaque", :class => "button" %>
   <% end %>
 <% else %>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150712113423) do
+ActiveRecord::Schema.define(version: 20150712172023) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -209,7 +209,6 @@ ActiveRecord::Schema.define(version: 20150712113423) do
     t.text     "parsed_inscription"
     t.integer  "colour_id"
     t.integer  "photos_count",               default: 0,     null: false
-    t.integer  "user_id"
     t.integer  "language_id"
     t.text     "description"
     t.boolean  "inscription_is_stub",        default: false

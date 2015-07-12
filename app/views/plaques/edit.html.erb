@@ -5,7 +5,7 @@
 <div class="panel clearfix">
   <h1>Edit <%= link_to @plaque.title, plaque_path(@plaque) %></h1>
   <div class="info">
-    <p>First added by <%= @plaque.user.username %> on <%= @plaque.created_at.to_s(:long) %>. <%= "Last updated: " + @plaque.updated_at.to_s(:long) + "." if @plaque.created_at != @plaque.updated_at %></p>
+    <p>Created: <%= @plaque.created_at.to_s(:long) %>. <%= "Last updated: " + @plaque.updated_at.to_s(:long) + "." if @plaque.created_at != @plaque.updated_at %></p>
   </div>
   <%= form_for(@plaque) do |f| %>
     <p><b><%= f.label :notes %></b>: (these are for internal use, and aren't displayed publicly)<br>

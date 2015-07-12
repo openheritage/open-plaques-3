@@ -125,15 +125,11 @@ class PlaquesController < ApplicationController
   # GET /plaques/new.xml
   def new
     @plaque = Plaque.new(:language_id => 1)
-    @plaque.build_user
     @plaque.photos.build
     @countries = Country.order(:name)
     @languages = Language.order(:name)
     @common_colours = Colour.common.order("plaques_count DESC")
     @other_colours = Colour.uncommon.order(:name)
-    if !current_user
-      @user = User.new
-    end
   end
 
   def flickr_search
@@ -150,10 +146,6 @@ class PlaquesController < ApplicationController
   # POST /plaques.xml
   def create
     @plaque = Plaque.new(plaque_params)
-
-    if current_user
-      @plaque.user = current_user
-    end
 
     # early intervention to reject spam messages
     redirect_to plaques_url and return if params[:plaque][:inscription].include? "http"
@@ -181,7 +173,6 @@ class PlaquesController < ApplicationController
     end
 
     if @plaque.save
-#      PlaqueMailer.new_plaque_email(@plaque).deliver rescue puts "ERROR: mailer didn't work"
       flash[:notice] = "Thanks for adding this plaque."
       redirect_to plaque_path(@plaque)
     else
@@ -264,9 +255,7 @@ class PlaquesController < ApplicationController
           :area_id,
           :latitude, :longitude, :is_accurate_geolocation,
           :erected_at_string, 
-          :series_id, :series_ref,
-          # for new plaque form
-          user_attributes: [ :name, :email ]
+          :series_id, :series_ref
         )
   	end
 end
