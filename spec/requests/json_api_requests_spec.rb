@@ -5,8 +5,8 @@ describe 'JSON API' do
   describe 'plaque API' do
 
     before do
-      user = User.create!(name: 'test test', username: 'testingtesting', password: 'testing12345', password_confirmation: 'testing12345', email: 'test@test.invalid')
-      @plaque = Plaque.create!(user: user)
+#      user = User.create!(name: 'test test', username: 'testingtesting', password: 'testing12345', password_confirmation: 'testing12345', email: 'test@test.invalid')
+      @plaque = Plaque.create!()
       get "/plaques/#{@plaque.id}.json"
     end
 
