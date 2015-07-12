@@ -46,34 +46,20 @@ class PeopleController < ApplicationController
   def edit
     @roles = Role.order(:name)
     @personal_role = PersonalRole.new
-    @died_on = @person.died_on.year if @person.died_on
-    @born_on = @person.born_on.year if @person.born_on
   end
 
   # POST /people
   # POST /people.xml
   def create
+    params[:person][:born_on] += "-01-01" if params[:person][:born_on] =~/\d{4}/
+    params[:person][:died_on] += "-01-01" if params[:person][:died_on] =~/\d{4}/
     @person = Person.new(person_params)
-    if params[:born_on].blank?
-      @person.born_on = nil
-    else
-      @person.born_on = Date.parse(params[:born_on] + "-01-01")
-    end
-
-    if params[:died_on].blank?
-      @person.died_on = nil
-    else
-      @person.died_on = Date.parse(params[:died_on] + "-01-01")
-    end
-
-
     respond_to do |format|
       if @person.save
         if params[:role_id] && !params[:role_id].blank?
           @personal_role = PersonalRole.new()
           @personal_role.person_id = @person.id
           @personal_role.role_id = params[:role_id]
-          puts @personal_role.person.name + ' ' + @personal_role.role.name
           @personal_role.save!
         end
         flash[:notice] = 'Person was successfully created.'
@@ -89,18 +75,8 @@ class PeopleController < ApplicationController
   # PUT /people/1
   # PUT /people/1.xml
   def update
-    if params[:born_on].blank?
-      @person.born_on = nil
-    else
-      @person.born_on = Date.parse(params[:born_on] + "-01-01")
-    end
-
-    if params[:died_on].blank?
-      @person.died_on = nil
-    else
-      @person.died_on = Date.parse(params[:died_on] + "-01-01")
-    end
-
+    params[:person][:born_on] += "-01-01" if params[:person][:born_on] =~/\d{4}/
+    params[:person][:died_on] += "-01-01" if params[:person][:died_on] =~/\d{4}/
     respond_to do |format|
       if @person.update_attributes(person_params)
         flash[:notice] = 'Person was successfully updated.'

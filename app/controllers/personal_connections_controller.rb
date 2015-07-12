@@ -1,7 +1,7 @@
 class PersonalConnectionsController < ApplicationController
 
   before_filter :authenticate_admin!, :only => :destroy
-  before_filter :find, :only => [:edit, :destroy]
+  before_filter :find, :only => [:edit, :destroy, :update]
   before_filter :find_plaque, :only => [:edit, :update, :new, :create]
   before_filter :list_people_and_verbs, :only => [:new, :edit]
 
@@ -11,23 +11,8 @@ class PersonalConnectionsController < ApplicationController
   end
 
   def update
-    @personal_connection = @plaque.personal_connections.find(params[:id])
-    if params[:personal_connection][:started_at] > ""
-      started_at = params[:personal_connection][:started_at]
-      if started_at =~/\d{4}/
-        started_at = started_at + "-01-01"
-        started_at = Date.parse(started_at)
-        @personal_connection.started_at = started_at
-      end
-    end
-    if params[:personal_connection][:ended_at] > ""
-      ended_at = params[:personal_connection][:ended_at]
-      if ended_at =~/\d{4}/
-        ended_at = ended_at + "-01-01"
-        ended_at = Date.parse(ended_at)
-        @personal_connection.ended_at = ended_at
-      end
-    end
+    params[:personal_connection][:started_at] += "-01-01 00:00:01" if params[:personal_connection][:started_at] =~/\d{4}/
+    params[:personal_connection][:ended_at] += "-01-01 00:00:01" if params[:personal_connection][:ended_at] =~/\d{4}/
     if @personal_connection.update_attributes(personal_connection_params)
       redirect_to edit_plaque_path(@plaque.id)
     else
@@ -40,26 +25,13 @@ class PersonalConnectionsController < ApplicationController
   end
 
   def create
+    params[:personal_connection][:started_at] += "-01-01 00:00:01" if params[:personal_connection][:started_at] =~/\d{4}/
+    params[:personal_connection][:ended_at] += "-01-01 00:00:01" if params[:personal_connection][:ended_at] =~/\d{4}/
     @personal_connection = @plaque.personal_connections.new
+    @personal_connection.started_at = params[:personal_connection][:started_at]
+    @personal_connection.ended_at = params[:personal_connection][:ended_at]
     @personal_connection.person_id = params[:personal_connection][:person_id]
     @personal_connection.verb_id = params[:personal_connection][:verb_id]
-
-    if params[:personal_connection][:started_at] > ""
-      started_at = params[:personal_connection][:started_at]
-      if started_at =~/\d{4}/
-        started_at = started_at + "-01-01"
-        started_at = Date.parse(started_at)
-        @personal_connection.started_at = started_at
-      end
-    end
-    if params[:personal_connection][:ended_at] > ""
-      ended_at = params[:personal_connection][:ended_at]
-      if ended_at =~/\d{4}/
-        ended_at = ended_at + "-01-01"
-        ended_at = Date.parse(ended_at)
-        @personal_connection.ended_at = ended_at
-      end
-    end
     if @personal_connection.save
       redirect_to :back
     else

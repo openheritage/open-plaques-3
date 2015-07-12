@@ -38,6 +38,9 @@ en-GB:
         name: Name
         born_in: Born in
         died_in: Died in
+      personal_connection:
+        started_at: From
+        ended_at: To
       personal_role:
         started_at: From
         ended_at: To

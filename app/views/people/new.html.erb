@@ -33,11 +33,10 @@
   <h1><%= t '.page_heading' %></h1>
   <%= form_for(@person) do |f| %>
     <p><%= f.label :name %> <%= f.text_field :name %></p>
-    <p><%= f.label :born_on %> <%= text_field_tag :born_on, "", {:maxlength => "4"} %></p>
-    <p><%= f.label :died_on %> <%= text_field_tag :died_on, "", {:maxlength => "4"} %></p>
+    <p><%= f.label :born_on %> <%= f.text_field :born_on, {:maxlength => "10"} %></p>
+    <p><%= f.label :died_on %> <%= f.text_field :died_on, {:maxlength => "10"} %></p>
     <p><%= f.label "role (optional)" %> <%= text_field_tag :role %></p>
     <%= hidden_field_tag :role_id %>
     <%= f.submit t('buttons.save'), :class => 'button' %>
   <% end %>
 </div>
-

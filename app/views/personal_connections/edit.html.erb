@@ -41,11 +41,11 @@
       <%= link_to("Add verb", new_verb_path) %>
     </p>
     <p>
-      <%= f.label :location_id, t('.at') %>
+      <%= t('.at') %>
       <%= @plaque.full_address %>
     </p>
-    <p><%= f.label :started_at, t('.from') %> <%= f.text_field :started_at %></p>
-    <p><%= f.label :ended_at, t('.to') %> <%= f.text_field :ended_at %></p>
+    <p><%= f.label :started_at %> <%= f.text_field :started_at, {:maxlength => "10"} %></p>
+    <p><%= f.label :ended_at %> <%= f.text_field :ended_at, {:maxlength => "10"} %></p>
     <%= f.submit "Update", :class => :button %>
   <% end %>
 </div>
