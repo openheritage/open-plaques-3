@@ -281,6 +281,7 @@ class Person < ActiveRecord::Base
     names << title + " " + name.split(/ of /).first if name.include?(' of ') && titled? # King Charles II of England
     names << name.split(/ of /).first if name.include? ' of ' # Charles II of England
     names << nameparts.first + " " + middleinitials + " " + nameparts.last if nameparts.length > 2 # Joseph A. R. Hansom
+    names << nameparts.first[0,1] + ". " + middleinitials + " " + nameparts.last if nameparts.length > 2 # Joseph A. R. Hansom
     names << nameparts.first + " " + nameparts.last if nameparts.length > 2 # Joseph Hansom 
     names << nameparts.first + " " + nameparts.second + " " + nameparts.last if nameparts.length > 3 # Joseph Aaron Hansom
     names << nameparts.first + " " + nameparts.second[0,1] + ". " + nameparts.last if nameparts.length > 3 # Joseph Aaron Hansom
