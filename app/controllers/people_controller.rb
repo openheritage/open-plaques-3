@@ -135,7 +135,6 @@ class PeopleController < ApplicationController
       params.require(:person).permit(
         :name,
         :gender,
-        :other_names,
         :aka,
         :surname_starts_with,
         :introduction,
