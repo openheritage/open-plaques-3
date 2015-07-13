@@ -13,7 +13,7 @@
   <div class="panel">Plaque not listed? <%= link_to "Add it", new_plaque_path(:checked => true) %>.</div>
 <% else %>
   <div class="panel" id="search_results_footer">
-    <h2>Can't find what you're looking for? Try another search or <%= link_to "add it", new_plaque_path(:checked => true) %></h2>
+    <h2>Can't find what you're looking for? Try another search or <%= link_to "add it", new_plaque_path(:checked => true,  :phrase => @phrase) %></h2>
     <%= render :partial => "search_form", :locals => { :phrase => @phrase } %>
   </div>
 <% end %>

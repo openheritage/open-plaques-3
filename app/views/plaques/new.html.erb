@@ -86,7 +86,7 @@
   <%= form_for @plaque do |f| %>
     <div class="row form-group">
       <%= f.label :inscription, t('.inscription_heading') %>
-      <%= f.text_area :inscription, {:placeholder => "Joe Bloggs lived here", :autofocus => 'true',  :rows => "6", :cols => "50"} %>
+      <%= f.text_area :inscription, {:value => params[:phrase], :placeholder => "Joe Bloggs lived here", :autofocus => 'true',  :rows => "6", :cols => "50"} %>
       <p class="help-block"><%= t('.inscription_advice') %></p>
     </div>
 
