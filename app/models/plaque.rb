@@ -100,7 +100,7 @@ class Plaque < ActiveRecord::Base
   end
 
   def geolocated?
-    !(latitude.nil?)
+    !(latitude.nil?) && !(longitude.nil?)
   end
 
   def roughly_geolocated?
@@ -109,14 +109,6 @@ class Plaque < ActiveRecord::Base
 
   def photographed?
     photos_count > 0
-  end
-
-  def first_person_xxx
-    if personal_connections.size > 0
-      personal_connections[0].person.name
-    else
-      return nil
-    end
   end
 
   def people
@@ -215,6 +207,14 @@ class Plaque < ActiveRecord::Base
 
   def machine_tag
     "openplaques:id=" + id.to_s
+  end
+
+  def latitude
+    super ? super.round(5) : nil
+  end
+
+  def longitude
+    super ? super.round(5) : nil
   end
 
   def title

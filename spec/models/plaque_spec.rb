@@ -58,12 +58,30 @@ describe Plaque do
       end
     end
 
+    context 'a plaque given very detailed latitude' do
+      before do
+        @plaque = Plaque.new(latitude: -79.40822346, longitude: 43.677634565)
+      end
+      it 'only keeps 5 decimal places' do
+        expect(@plaque.latitude).to eq(-79.40822)
+      end
+    end
+
+    context 'a plaque given very detailed longitude' do
+      before do
+        @plaque = Plaque.new(latitude: -79.40822346, longitude: 43.677634565)
+      end
+      it 'only keeps 5 decimal places' do
+        expect(@plaque.longitude).to eq(43.67763)
+      end
+    end
+
     context 'a plaque with only latitude' do
       before do
         @plaque = Plaque.new(latitude: 1335)
       end
-      it 'is geolocated' do
-        expect(@plaque).to be_geolocated
+      it 'is not geolocated' do
+        expect(@plaque).to_not be_geolocated
       end
     end
 
@@ -71,7 +89,7 @@ describe Plaque do
       before do
         @plaque = Plaque.new(longitude: 1335)
       end
-      it 'is geolocated' do
+      it 'is not geolocated' do
         expect(@plaque).to_not be_geolocated
       end
     end
