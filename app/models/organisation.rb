@@ -15,7 +15,7 @@
 # * Sponsorships - plaques erected by this organisation.
 #
 # === Indirect Associations
-# * Plaques - plaques thtough a sponsorship
+# * Plaques - plaques through a sponsorship
 class Organisation < ActiveRecord::Base
 
   before_validation :make_slug_not_war, :find_centre
