@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/jnicho02/commoner.git
-  revision: 8a682d5be9fa39f7380108abca685cfe5daf4bbd
+  revision: 6ba81bee886bd430d7147e24c96d92d43a8dcd44
   branch: licence-details
   specs:
     commoner (0.0.3)
