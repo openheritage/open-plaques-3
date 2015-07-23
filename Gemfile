@@ -19,6 +19,8 @@ gem 'devise'
 gem 'meta-tags'
 gem 'will_paginate'
 
+gem 'commoner', :git => 'https://github.com/jnicho02/commoner.git', :branch => 'licence-details'
+
 gem 'rollbar', '~> 1.4.4'
 # gem 'rack-timeout'
 gem 'puma'

@@ -10,7 +10,6 @@ module PhotosHelper
   end
 
   def thumbnail_img(thing, decorations = nil)
-    #puts "thing is " + thing.to_s
     desc = ""
     begin
       begin
@@ -20,12 +19,9 @@ module PhotosHelper
           desc += image_tag(thing.file_url, :size => "75x75")
         end
       rescue
-        #puts thing.to_s + " doesn't have a thumbnail"
         begin
-          #puts thing.to_s + " isn't a photo, is it something with a main photo?"
           desc += thumbnail_img(thing.main_photo)
         rescue
-          #puts "does " + thing.to_s + " link to a plaque then?"
           desc += thumbnail_img(thing.plaque)
         end
       end

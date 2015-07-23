@@ -21,6 +21,7 @@
 #require 'curb'
 #require 'nokogiri'
 #require 'sanitize'
+require 'commoner'
 
 class Photo < ActiveRecord::Base
 
@@ -42,6 +43,9 @@ class Photo < ActiveRecord::Base
   scope :detail_order, -> { order('shot ASC') }
   scope :unassigned, -> { where(plaque_id: nil, of_a_plaque: true) }
   scope :undecided, -> { where(plaque_id: nil, of_a_plaque: nil) }
+  scope :wikimedia, -> { where("file_url like 'https://commons%'") }
+  scope :flickr, -> { where("url like 'http://www.flickr.com%'") }
+  scope :geograph, -> { where("url like 'http://www.geograph.org.uk/%'") }
 
   def assign_from_photo_url
     if @photo_url
@@ -110,9 +114,8 @@ class Photo < ActiveRecord::Base
   end
   
   def wikimedia?
-    url.gsub!("en.wikipedia.org/","commons.wikimedia.org/")
-#    url.gsub!("https","http")
-    url && url.starts_with?("https://commons.wikimedia.org")
+    url.gsub!("en.wikipedia.org","commons.wikimedia.org")
+    url && url.include?("commons.wikimedia.org")
   end
   
   def geograph?
@@ -154,20 +157,26 @@ class Photo < ActiveRecord::Base
     # http://commons.wikimedia.org/wiki/File:George_Dance_plaque.JPG
     # http://commons.wikimedia.org/wiki/File:Abney1.jpg
     if (wikimedia?)
-      doc = Nokogiri::HTML(open("https://commons.wikimedia.org/wiki/File:"+wikimedia_filename, {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}))
-      doc.xpath('//td[@class="description"]').each do |v|
-        self.subject = Sanitize.clean(v.content)[0,255]
+      self.url.gsub!("http:","https:")
+      self.file_url.gsub!("http:","https:")
+      begin
+        wikimedia = Commoner.details("https://commons.wikimedia.org/wiki/File:"+wikimedia_filename)
+        self.subject = wikimedia[:description]
+        self.photographer = wikimedia[:author] 
+        self.photographer_url = wikimedia[:author_url]
+        self.file_url = wikimedia_special
+        licence = Licence.find_by(url: wikimedia[:licence_url])
+        if (licence == nil)
+          wikimedia[:licence_url] += "/" if !wikimedia[:licence_url].ends_with? '/'
+          licence = Licence.find_by_url wikimedia[:licence_url]
+          if (licence==nil)
+            licence = Licence.new(:name => wikimedia[:licence], :url => wikimedia[:licence_url])
+            licence.save
+          end
+        end
+      rescue
       end
-      doc.xpath('//tr[td/@id="fileinfotpl_aut"]/td').each do |v|
-        self.photographer = Sanitize.clean(v.content)
-      end
-      doc.xpath('//tr[td/@id="fileinfotpl_aut"]/td/a/@href').each do |v|
-        value = v.content
-        self.photographer_url = value
-        self.photographer_url = "https://commons.wikimedia.org" + value if value.start_with?('/')
-      end
-      self.file_url = wikimedia_special
-      self.licence = Licence.find_by_name("Attribution License")
+      self.licence = licence if licence != nil    
     end
     if (geograph?)
       query_url = "http://api.geograph.org.uk/api/oembed?&&url=" + self.url + "&output=json"
