@@ -1,11 +1,10 @@
 GIT
   remote: https://github.com/jnicho02/commoner.git
-  revision: 6ba81bee886bd430d7147e24c96d92d43a8dcd44
+  revision: 3fbfe8f68627147e3c85fa64d167924aba9f2331
   branch: licence-details
   specs:
-    commoner (0.0.3)
+    commoner (1.0.0)
       httparty (>= 0.10)
-      nokogiri
       sanitize
 
 GEM
