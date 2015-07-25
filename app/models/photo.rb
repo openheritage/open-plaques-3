@@ -158,7 +158,7 @@ class Photo < ActiveRecord::Base
     # http://commons.wikimedia.org/wiki/File:Abney1.jpg
     if (wikimedia?)
       self.url.gsub!("http:","https:")
-      self.file_url.gsub!("http:","https:")
+      self.file_url.gsub!("http:","https:") if self.file_url
       begin
         wikimedia = Commoner.details("https://commons.wikimedia.org/wiki/File:"+wikimedia_filename)
         self.subject = wikimedia[:description]
