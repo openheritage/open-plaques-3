@@ -1,7 +1,8 @@
 # This class represents content licences, such as those produced by the Creative Commons
 # organisation.
 # === Attributes
-# * +name+ - the licence's full name
+# * +name+ - the full name
+# * +abbreviation+ - short name, e.g. CC BY-NC-SA 2.0
 # * +url+ - a permanent URL at which the licence.
 # * +allows_commercial_reuse+ - commercial usage rights
 # * +photos_count+ - cached count of photos

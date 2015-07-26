@@ -1,7 +1,7 @@
 <% content_for(:page_title) {t '.page_title', :licence => @licence.name} %>
 
 <div class="panel">
-  <h1><%= t '.page_heading', :licence => @licence.name %></h1>
+  <h1><%= t '.page_heading', :licence => @licence.name %> - <%= @licence.abbreviation %></h1>
   <p><%= @licence.photos.count %> <%= link_to "photos",photos_path %> <%= t '.quantity', :licence => @licence.name %><p>
   <p><%= t '.more_information' %> <%= link_to @licence.url, {:rel => "owl:sameAs"} %></p>
 </div>
