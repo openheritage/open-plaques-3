@@ -107,16 +107,16 @@ class Photo < ActiveRecord::Base
   end
   
   def flickr?
-    url && url.include?("flickr.com")
+    url && url.include?("//www.flickr.com")
   end
   
   def wikimedia?
     url.gsub!("en.wikipedia.org","commons.wikimedia.org")
-    url && url.include?("commons.wikimedia.org")
+    url && url.include?("//commons.wikimedia.org")
   end
   
   def geograph?
-    url && url.include?("geograph.org.uk")
+    url && url.include?("//geograph.org.uk")
   end
   
   def source
