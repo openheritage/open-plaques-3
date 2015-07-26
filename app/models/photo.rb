@@ -18,9 +18,6 @@
 # * Licence - The content licence under which the photo is made available.
 # * Plaque - the featured in the photo. (optional)
 # * Person - the person in the photo. (optional)
-#require 'curb'
-#require 'nokogiri'
-#require 'sanitize'
 require 'commoner'
 
 class Photo < ActiveRecord::Base
@@ -59,7 +56,7 @@ class Photo < ActiveRecord::Base
 
   def assign_licence_if_cc_by_accepted
     if @accept_cc_by_licence && @licence_id.blank?
-      self.licence = Licence.find_or_create_by_name_and_url("Attribution License", "http://creativecommons.org/licenses/by/3.0/")
+      self.licence = Licence.find_or_create_by_name_and_url("Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)", "http://creativecommons.org/licenses/by-sa/4.0/")
       self.photographer = self.plaque.user.name
     end
   end
@@ -110,7 +107,7 @@ class Photo < ActiveRecord::Base
   end
   
   def flickr?
-    url && url.starts_with?("http://www.flickr.com")
+    url && url.include?("flickr.com")
   end
   
   def wikimedia?
@@ -119,7 +116,7 @@ class Photo < ActiveRecord::Base
   end
   
   def geograph?
-    url && url.starts_with?("http://www.geograph.org.uk")
+    url && url.include?("geograph.org.uk")
   end
   
   def source
@@ -161,6 +158,7 @@ class Photo < ActiveRecord::Base
       self.file_url.gsub!("http:","https:") if self.file_url
       begin
         wikimedia = Commoner.details("https://commons.wikimedia.org/wiki/File:"+wikimedia_filename)
+        self.url = "https://commons.wikimedia.org/wiki/File:"+wikimedia_filename
         self.subject = wikimedia[:description]
         self.photographer = wikimedia[:author] 
         self.photographer_url = wikimedia[:author_url]
