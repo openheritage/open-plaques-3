@@ -20,7 +20,6 @@ class PlaquesController < ApplicationController
   # GET /plaques.poi
   def index
     conditions = {}
-    
     if params[:box]
       coords = params[:box][1,params[:box].length-2].split("],[")
       top_left = coords[0].split(",")
@@ -28,7 +27,6 @@ class PlaquesController < ApplicationController
       conditions[:latitude] = bottom_right[0].to_s..top_left[0].to_s
       conditions[:longitude] = top_left[1].to_s..bottom_right[1].to_s
     end
-
     if params[:since]
       since = DateTime.parse(params[:since])
       now = DateTime.now
@@ -37,7 +35,6 @@ class PlaquesController < ApplicationController
         conditions[:updated_at] = since..now
       end
     end
-
     if params[:limit] && params[:limit].to_i <= 2000
       limit = params[:limit]
     elsif params[:limit]
@@ -45,12 +42,8 @@ class PlaquesController < ApplicationController
     else
       limit = 20
     end
-
     select = "all"
     select = "unphotographed" if params[:id] == "unphotographed"
-
-    puts "select " + select + " plaques"
-
     zoom = params[:zoom].to_i
     if zoom > 0
       puts "asking for a tile of data"
@@ -127,7 +120,7 @@ class PlaquesController < ApplicationController
     @plaque = Plaque.new(:language_id => 1)
     @plaque.photos.build
     @countries = Country.order(:name)
-    @languages = Language.order(:name)
+    @languages = Language.order("plaques_count DESC nulls last")
     @common_colours = Colour.common.order("plaques_count DESC")
     @other_colours = Colour.uncommon.order(:name)
   end
@@ -179,7 +172,7 @@ class PlaquesController < ApplicationController
       params[:checked] = "true"
       @plaque.photos.build if @plaque.photos.size == 0
       @countries = Country.order(:name)
-      @languages = Language.order(:name)
+      @languages = Language.order("plaques_count DESC nulls last")
       @common_colours = Colour.common.order("plaques_count DESC")
       @other_colours = Colour.uncommon.order(:name)
       render :new
@@ -249,6 +242,7 @@ class PlaquesController < ApplicationController
           :organisation_name,:organisation_id,
           'erected_at(1i)', 'erected_at(3i)', 'erected_at(2i)',
           :colour_id,
+          :other_colour_id,
           # for plaque update
           :inscription_in_english,
           :description,
