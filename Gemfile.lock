@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/jnicho02/commoner.git
-  revision: f2d0fb3dd409352959038129d49d234e9082632b
+  revision: ba68750ca11e22221449245ece592af0a0cd0876
   branch: licence-details
   specs:
-    commoner (1.0.1)
+    commoner (1.0.2)
       httparty (>= 0.10)
       sanitize
 
