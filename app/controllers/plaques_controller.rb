@@ -254,7 +254,8 @@ class PlaquesController < ApplicationController
           :description,
           :area_id,
           :latitude, :longitude, :is_accurate_geolocation,
-          :erected_at_string, 
+          :erected_at_string,
+          :is_current,
           :series_id, :series_ref
         )
   	end
