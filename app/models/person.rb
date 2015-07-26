@@ -400,6 +400,13 @@ class Person < ActiveRecord::Base
     return "his" if self.male?
     "his/her"
   end
+
+  def related_to(person)
+    relationships.each do |r|
+      return true if r.related_person == person
+    end
+    false
+  end
     
   def uri
     "http://openplaques.org" + Rails.application.routes.url_helpers.person_path(self, :format => :json)

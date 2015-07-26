@@ -8,24 +8,18 @@ class PersonalRolesController < ApplicationController
   # POST /personal_roles.xml
   def create
     @personal_role = PersonalRole.new
-    @role = Role.find(params[:personal_role][:role])
-    @personal_role.role = @role
-    @person = Person.find(params[:personal_role][:person_id])
-    @personal_role.person = @person
+    @personal_role.role = Role.find(params[:personal_role][:role])
+    @personal_role.person = Person.find(params[:personal_role][:person_id])
     # TODO: need better validation on the date format here.
     if params[:personal_role][:started_at] > ""
       started_at = params[:personal_role][:started_at]
-      if started_at =~/\d{4}/
-        started_at = started_at + "-01-01"
-      end
+      started_at = started_at + "-01-01" if started_at =~/\d{4}/
       started_at = Date.parse(started_at)
       @personal_role.started_at = started_at
     end
     if params[:personal_role][:ended_at] > ""
       ended_at = params[:personal_role][:ended_at]
-      if ended_at =~/\d{4}/
-        ended_at = ended_at + "-01-01"
-      end
+      ended_at = ended_at + "-01-01" if ended_at =~/\d{4}/
       ended_at = Date.parse(ended_at)
       @personal_role.ended_at = ended_at
     end
@@ -64,6 +58,52 @@ class PersonalRolesController < ApplicationController
       end
     end
     if @personal_role.update_attributes(:started_at => started_at, :ended_at => ended_at, :related_person => related_person, :ordinal => params[:personal_role][:ordinal])
+      if @personal_role.role.name == 'husband' && @personal_role.related_person && !@personal_role.related_person.related_to(@personal_role.person)
+        @vice_versa = PersonalRole.new
+        @vice_versa.person = @personal_role.related_person
+        @vice_versa.role = Role.find_by_name 'wife'
+        @vice_versa.related_person = @personal_role.person
+        @vice_versa.save
+      end
+      if @personal_role.role.name == 'wife' && @personal_role.related_person && !@personal_role.related_person.related_to(@personal_role.person)
+        @vice_versa = PersonalRole.new
+        @vice_versa.person = @personal_role.related_person
+        @vice_versa.role = Role.find_by_name 'husband'
+        @vice_versa.related_person = @personal_role.person
+        @vice_versa.save
+      end
+      if @personal_role.role.name == 'son' && @personal_role.related_person && !@personal_role.related_person.related_to(@personal_role.person)
+        @vice_versa = PersonalRole.new
+        @vice_versa.person = @personal_role.related_person
+        @vice_versa.role = Role.find_by_name 'father' if @vice_versa.person.male?
+        @vice_versa.role = Role.find_by_name 'mother' if @vice_versa.person.female?
+        @vice_versa.related_person = @personal_role.person
+        @vice_versa.save
+      end
+      if @personal_role.role.name == 'daughter' && @personal_role.related_person && !@personal_role.related_person.related_to(@personal_role.person)
+        @vice_versa = PersonalRole.new
+        @vice_versa.person = @personal_role.related_person
+        @vice_versa.role = Role.find_by_name 'father' if @vice_versa.person.male?
+        @vice_versa.role = Role.find_by_name 'mother' if @vice_versa.person.female?
+        @vice_versa.related_person = @personal_role.person
+        @vice_versa.save
+      end
+      if @personal_role.role.name == 'father' && @personal_role.related_person && !@personal_role.related_person.related_to(@personal_role.person)
+        @vice_versa = PersonalRole.new
+        @vice_versa.person = @personal_role.related_person
+        @vice_versa.role = Role.find_by_name 'son' if @vice_versa.person.male?
+        @vice_versa.role = Role.find_by_name 'daughter' if @vice_versa.person.female?
+        @vice_versa.related_person = @personal_role.person
+        @vice_versa.save
+      end
+      if @personal_role.role.name == 'mother' && @personal_role.related_person && !@personal_role.related_person.related_to(@personal_role.person)
+        @vice_versa = PersonalRole.new
+        @vice_versa.person = @personal_role.related_person
+        @vice_versa.role = Role.find_by_name 'son' if @vice_versa.person.male?
+        @vice_versa.role = Role.find_by_name 'daughter' if @vice_versa.person.female?
+        @vice_versa.related_person = @personal_role.person
+        @vice_versa.save
+      end
       redirect_to(edit_person_path(@personal_role.person))
     else
       render :edit
