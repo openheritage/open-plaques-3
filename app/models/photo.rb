@@ -112,6 +112,7 @@ class Photo < ActiveRecord::Base
   
   def wikimedia?
     url.gsub!("en.wikipedia.org","commons.wikimedia.org")
+    url.gsub!("en.m.wikipedia.org","commons.wikimedia.org")
     url && url.include?("//commons.wikimedia.org")
   end
   
