@@ -111,9 +111,7 @@ class Photo < ActiveRecord::Base
   end
   
   def wikimedia?
-    url.gsub!("en.wikipedia.org","commons.wikimedia.org")
-    url.gsub!("en.m.wikipedia.org","commons.wikimedia.org")
-    url && url.include?("//commons.wikimedia.org")
+    url && url.include?("edia.org/")
   end
   
   def geograph?
@@ -145,21 +143,14 @@ class Photo < ActiveRecord::Base
     if (file_url.ends_with?("_b.jpg") or file_url.ends_with?("_z.jpg") or file_url.ends_with?("_z.jpg?zz=1") or file_url.ends_with?("_m.jpg") or file_url.ends_with?("_o.jpg"))
       return file_url.gsub("b.jpg", "s.jpg").gsub("z.jpg?zz=1", "s.jpg").gsub("z.jpg", "s.jpg").gsub("m.jpg", "s.jpg").gsub("o.jpg", "s.jpg")
     end
-    if (wikimedia?)
-      return "https://commons.wikimedia.org/wiki/Special:FilePath/"+wikimedia_filename+"?width=75"
-    end
+    return "https://commons.wikimedia.org/wiki/Special:FilePath/"+wikimedia_filename+"?width=75" if wikimedia?
   end
   
-  # http://commons.wikimedia.org/w/api.php?action=query&iiprop=url|user&prop=imageinfo&format=json&titles=File:George_Dance_plaque.JPG
   def wikimedia_data
-    # http://commons.wikimedia.org/wiki/File:George_Dance_plaque.JPG
-    # http://commons.wikimedia.org/wiki/File:Abney1.jpg
-    if (wikimedia?)
-      self.url.gsub!("http:","https:")
-      self.file_url.gsub!("http:","https:") if self.file_url
+    if wikimedia?
       begin
-        wikimedia = Commoner.details("https://commons.wikimedia.org/wiki/File:"+wikimedia_filename)
-        self.url = "https://commons.wikimedia.org/wiki/File:"+wikimedia_filename
+        wikimedia = Commoner.details("File:"+wikimedia_filename)
+        self.url = wikimedia[:page_url]
         self.subject = wikimedia[:description]
         self.photographer = wikimedia[:author] 
         self.photographer_url = wikimedia[:author_url]
@@ -173,11 +164,11 @@ class Photo < ActiveRecord::Base
             licence.save
           end
         end
+        self.licence = licence if licence != nil    
       rescue
       end
-      self.licence = licence if licence != nil    
     end
-    if (geograph?)
+    if geograph?
       query_url = "http://api.geograph.org.uk/api/oembed?&&url=" + self.url + "&output=json"
       begin
         ch = Curl::Easy.perform(query_url) do |curl| 

@@ -2,7 +2,8 @@
 
 <div class="panel">
   <h1><%= t '.page_heading', :person => @person.full_name %></h1>
-  <%= form_for @person do |f| %>
+   <%= content_tag(:p, link_to(thumbnail_img(@person), photo_url(@person.main_photo))) if @person.main_photo %>
+   <%= form_for @person do |f| %>
     <p><%= f.label :name, @person.possessive + " name " + @person.existence_word %> <%= f.text_field :name %></p>
     <p><%= t '.display_name' %> "<%= @person.full_name %>"</p>
     <p><%= f.label :aka %> <%= f.text_field :aka %></p>
