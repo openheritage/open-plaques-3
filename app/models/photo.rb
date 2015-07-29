@@ -115,7 +115,7 @@ class Photo < ActiveRecord::Base
   end
   
   def geograph?
-    url && url.include?("//geograph.org.uk")
+    url && url.include?("//www.geograph.org.uk")
   end
   
   def source
