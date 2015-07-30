@@ -209,6 +209,10 @@ class Plaque < ActiveRecord::Base
     "openplaques:id=" + id.to_s
   end
 
+  def wikimedia_tag
+    "{{Open Plaques|plaqueid=" + id.to_s + "}}"
+  end
+
   def latitude
     super ? super.round(5) : nil
   end
