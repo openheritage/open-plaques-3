@@ -49,7 +49,7 @@
           url: "/organisations/autocomplete",
           dataType: "json",
           data: {
-            starts_with: request.term,
+            contains: request.term,
             limit: 10
           },
           success: function(data) {
