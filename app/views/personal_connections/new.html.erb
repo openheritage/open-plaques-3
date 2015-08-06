@@ -34,6 +34,33 @@
   <h1><%= t '.page_heading' %></h1>
   <%= render @plaque %>
   <p><%= t '.from_which_we_can_establish' %></p>
+  <div class="panel">
+    <%= form_for @personal_connection, :url => plaque_connections_path(@plaque) do |f| %>
+      <fieldset>
+        <div class="row">
+          <%= text_field_tag :person_name, "", {:placeholder => "John Smith"} %>
+          <%= f.hidden_field :person_id %>
+          <%= link_to(t('.new_person'), "/people/new") %>
+        </div>
+        <% if @common_verbs %>
+          <%= fieldset do %>
+            <% @common_verbs.each do |verb| %>
+              <div class="row radio">
+                <%= f.radio_button :verb_id, verb.id %>
+                <%= f.label "verb_id_" + verb.id.to_s, verb.name, :class => verb.name.downcase %>
+              </div>
+            <% end %>
+          <% end %>
+        <% end %>
+        <div class="row"><%= f.collection_select :verb_id, @verbs, :id, :name, { :selected => "222"}, { "style" => "width:400px" } %>  <%= link_to(t('.new_verb'), "/verbs/new") %></div>
+        <div class="row"><%= t '.at' %></div>
+        <div class="row"><%= f.label :started_at %> <%= f.text_field :started_at %><%= f.label :ended_at %> <%= f.text_field :ended_at %></div>
+      </fieldset>
+      <p><%= t '.reminder' %></p>
+      <%= f.submit t('buttons.add'), :class => :button %>
+    <% end %>
+  </div>
+</div>
   <% @plaque.personal_connections.all.each do |personal_connection| %>
     <div class="inside_panel">
       <%= render personal_connection %>
@@ -43,29 +70,3 @@
   <% if @plaque.personal_connections.size == 0 %>
     <div class="inside_panel"><%= t '.nothing_yet' %></div>
   <% end %>
-  <%= form_for @personal_connection, :url => plaque_connections_path(@plaque) do |f| %>
-    <fieldset>
-      <div class="row">
-        <%= text_field_tag :person_name, "", {:placeholder => "John Smith"} %>
-        <%= f.hidden_field :person_id %>
-        <%= link_to(t('.new_person'), "/people/new") %>
-      </div>
-      <% if @common_verbs %>
-        <%= fieldset do %>
-          <% @common_verbs.each do |verb| %>
-            <div class="row radio">
-              <%= f.radio_button :verb_id, verb.id %>
-              <%= f.label "verb_id_" + verb.id.to_s, verb.name, :class => verb.name.downcase %>
-            </div>
-          <% end %>
-        <% end %>
-      <% end %>
-      <div class="row"><%= f.collection_select :verb_id, @verbs, :id, :name, { :selected => "222"}, { "style" => "width:400px" } %>  <%= link_to(t('.new_verb'), "/verbs/new") %></div>
-      <div class="row"><%= t '.at' %> <%= @plaque.full_address %></div>
-      <div class="row"><%= f.label :started_at, t('.from') %> <%= f.text_field :started_at %></div>
-      <div class="row"><%= f.label :ended_at, t('.to') %> <%= f.text_field :ended_at %></div>
-    </fieldset>
-    <p><%= t '.reminder' %></p>
-    <%= f.submit t('buttons.add'), :class => :button %>
-  <% end %>
-</div>
