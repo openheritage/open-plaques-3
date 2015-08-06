@@ -1,5 +1,3 @@
-
-
 <table class="section_details" cellspacing="0" summary="Plaque details for #<%= plaque.id %>">
   <% if !plaque.is_accurate_geolocation %>
     <tr>
@@ -48,7 +46,7 @@
   </tr>
   <tr>
     <th>Machine tag</th>
-    <td><%= plaque.machine_tag %></td>
+    <td><%= plaque.machine_tag %> <%= button_tag "copy", id: 'copy-flickr-tag', type: 'button', :class => :button %></td>
   </tr>
   <tr>
     <th>Wikimedia tag</th>
@@ -88,8 +86,12 @@
       document.body.removeChild(textArea);
     }
 
-    var copyWikimediaTagBtn = document.querySelector('#copy-wikimedia-tag');
+    var copyFlickrTagBtn = document.querySelector('#copy-flickr-tag');
+    copyFlickrTagBtn.addEventListener('click', function(event) {
+      copyTextToClipboard('<%= plaque.machine_tag %>');
+    });
 
+    var copyWikimediaTagBtn = document.querySelector('#copy-wikimedia-tag');
     copyWikimediaTagBtn.addEventListener('click', function(event) {
       copyTextToClipboard('<%= plaque.wikimedia_tag %>');
     });
