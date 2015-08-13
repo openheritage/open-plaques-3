@@ -37,7 +37,7 @@ class Area < ActiveRecord::Base
     if options && options[:only]
     else
       options = {
-        :only => [:name, :latitude, :longitude, :plaques_count],
+        :only => [:name, :plaques_count],
         :include => { 
           :country => {
             :only => [:name],

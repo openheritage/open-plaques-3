@@ -9,9 +9,8 @@ class AreasController < ApplicationController
     @areas = @country.areas.all
     respond_to do |format|
       format.html
-      format.xml
       format.json { render :json => @areas }
-      format.geojson { render :json => @areas }
+      format.geojson { render :geojson => @areas }
     end
   end
 
@@ -46,7 +45,6 @@ class AreasController < ApplicationController
   def show
     respond_to do |format|
       format.html
-      format.xml
       format.json {
         render :json => @area
       }

@@ -9,11 +9,6 @@ class OrganisationsController < ApplicationController
     @top_10 = Organisation.all.select(:name,:slug,:sponsorships_count).order("sponsorships_count DESC").limit(10)
     respond_to do |format|
       format.html
-      format.kml {
-        @parent = @organisations
-        render "plaques/index"
-      }
-      format.xml
       format.json { render :json => @organisations }
       format.geojson { render :geojson => @organisations }
     end
@@ -47,11 +42,6 @@ class OrganisationsController < ApplicationController
     @zoom = @organisation.zoom
     respond_to do |format|
       format.html
-      format.kml {
-        @plaques = @organisation.plaques
-        render "plaques/index"
-      }
-      format.xml
       format.json { render :json => @organisation }
       format.geojson { render :geojson => @organisation }
       end

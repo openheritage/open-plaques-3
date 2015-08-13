@@ -7,12 +7,12 @@ class PersonPlaquesController < ApplicationController
     @plaques = person.plaques
 
     respond_with @plaques do |format|
+      format.html { render @plaques }
       format.json { render :json => @plaques.as_json(
         :only => [:id, :inscription, :latitude, :longitude, :is_accurate_geolocation],
         :methods => [:title, :uri, :colour_name]
         )
       }
-      format.html { render @plaques }
     end
   end
 

@@ -36,8 +36,18 @@ class AreaPlaquesController < ApplicationController
     respond_with @plaques do |format|
       format.html
       format.xml
-      format.json { render :json => @plaques.as_json() }
-      format.geojson { render :json => @plaques }
+      format.json {
+        render :json => { 
+          type: 'FeatureCollection',
+          features: @plaques.as_json()
+        }
+      }
+      format.geojson { 
+        render :json => { 
+          type: 'FeatureCollection',
+          features: @plaques.geolocated.as_json({:only => [:id, :latitude, :longitude, :inscription]})
+        }
+      }
     end
   end
 

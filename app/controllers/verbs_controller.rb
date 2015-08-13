@@ -7,7 +7,6 @@ class VerbsController < ApplicationController
     @verbs = Verb.order(:name)
     respond_to do |format|
       format.html
-      format.xml
       format.json { render :json => @verbs }
     end
   end
@@ -30,7 +29,6 @@ class VerbsController < ApplicationController
     @verb = Verb.find_by_name(params[:id].gsub('_',' '))
     respond_to do |format|
       format.html
-      format.xml
       format.json { render :json => @verb }
     end
   end

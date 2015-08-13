@@ -40,6 +40,7 @@ class CountriesController < ApplicationController
       format.html
       format.xml
       format.json { render :json => @country.as_json }
+      format.geojson { render :json => @country.as_json }
     end
   end
 

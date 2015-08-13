@@ -4,7 +4,6 @@ class PhotographersController < ApplicationController
     @photographers = Photo.where.not(plaque_id: nil).group('photographer').order('count_plaque_id desc').distinct.count(:plaque_id)
     respond_to do |format|
       format.html
-      format.xml
       format.json { render :json => @photographers }
     end
   end
@@ -12,14 +11,8 @@ class PhotographersController < ApplicationController
   def show
     @photographer = Photographer.new
     @photographer.id = params[:id].gsub(/\_/,'.')
-
     respond_to do |format|
       format.html
-      format.kml { 
-        @plaques = @photographer.plaques
-        render "plaques/index"
-      }
-      format.xml
       format.json { render :json => @photographer }
     end
   end

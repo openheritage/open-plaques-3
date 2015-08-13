@@ -61,7 +61,7 @@ class Organisation < ActiveRecord::Base
     if options && options[:only]
     else
       options = {
-        :only => [:id,:name],
+        :only => [:name, :sponsorships_count],
         :methods => :uri
       }
     end

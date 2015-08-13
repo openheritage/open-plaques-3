@@ -18,13 +18,13 @@ class OrganisationPlaquesController < ApplicationController
     end
     respond_with @plaques do |format|
       format.html { render @plaques }
-      format.json {
+      format.any(:json, :geojson) { 
         render :json => { 
           type: 'FeatureCollection',
-          features: @plaques.as_json({:only => [:id, :latitude, :longitude, :inscription]})
+          properties: @organisation.as_json(),
+          features: @plaques.geolocated.as_json({:only => [:id, :latitude, :longitude, :inscription]})
         }
       }
-      format.geojson { render :json => @plaques }
     end
   end
 
