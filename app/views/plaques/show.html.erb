@@ -100,7 +100,7 @@
 <% unless @plaque.description.blank? %>
   <div class="panel clearfix info">
     <div class="description" id="description">
-      <%= simple_format(h(@plaque.description)) %>
+      <%= markdown(@plaque.description) %>
     </div>
   </div>
 <% end %>
