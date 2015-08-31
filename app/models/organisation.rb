@@ -48,6 +48,10 @@ class Organisation < ActiveRecord::Base
       self.longitude = @mean.longitude
     end
   end
+
+  def plaques_count
+    sponsorships_count
+  end
   
   def geolocated?
     return !(self.latitude == nil && self.longitude == nil || self.latitude == 51.475 && self.longitude == 0)
@@ -57,18 +61,20 @@ class Organisation < ActiveRecord::Base
     "http://openplaques.org" + Rails.application.routes.url_helpers.organisation_path(self.slug, :format=>:json) if id
   end
 
+  def plaques_uri
+    "http://openplaques.org" + Rails.application.routes.url_helpers.organisation_plaques_path(self.slug, :format => :geojson) if id
+  end
+
   def as_json(options=nil)
-    if options && options[:only]
-    else
-      options = {
-        :only => [:name, :sponsorships_count],
-        :methods => :uri
-      }
-    end
-    super(options)
+    options = {
+      :only => [:name],
+      :methods => [:uri, :plaques_count, :plaques_uri]
+    } if !options || !options[:only]
+    super options
   end
 
   def as_geojson(options=nil)
+    find_centre
     {
       type: 'Feature',
       geometry: 
@@ -76,8 +82,7 @@ class Organisation < ActiveRecord::Base
         type: 'Point',
         coordinates: [self.longitude, self.latitude]
       },
-      properties:
-        as_json(options)
+      properties: as_json(options)
     }
   end
 

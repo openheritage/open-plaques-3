@@ -36,7 +36,7 @@ class Colour < ActiveRecord::Base
       :include => { },
       :methods => []
     } if !options[:prefixes].blank?
-    super(options)
+    super options 
   end
 
 end

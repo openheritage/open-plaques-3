@@ -8,6 +8,7 @@ class PicksController < ApplicationController
     respond_to do |format|
       format.html
       format.json { render :json => @picks }
+      format.geojson { render :geojson => @picks }
     end
   end
 

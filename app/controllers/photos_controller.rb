@@ -10,6 +10,7 @@ class PhotosController < ApplicationController
     respond_to do |format|
       format.html
       format.json { render :json => @photos }
+      format.geojson { render :geojson => @photos.geolocated }
     end
   end
 

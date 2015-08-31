@@ -7,9 +7,8 @@ class SeriesController < ApplicationController
     @series = Series.all
     respond_to do |format|
       format.html
-      format.json {
-        render :json => @series.as_json()
-      }
+      format.json { render :json => @series }
+      format.geojson { render :geojson => @series }
     end
   end
 
@@ -18,12 +17,10 @@ class SeriesController < ApplicationController
       .order('series_ref asc')
       .paginate(:page => params[:page], :per_page => 20) # Postgres -> NULLS LAST
       .preload(:personal_connections, :language, :photos, area: :country )
-    @series.find_centre
     respond_to do |format|
-      format.html # show.html.erb
-      format.json {
-        render :json => @series.as_json()
-      }
+      format.html
+      format.json { render :json => @series }
+      format.geojson { render :geojson => @series }
     end
   end
 

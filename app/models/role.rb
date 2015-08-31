@@ -186,16 +186,9 @@ class Role < ActiveRecord::Base
   def as_json(options={})
     options = {
       :only => [:name, :personal_roles_count, :role_type, :abbreviation],
-      :include => 
-        { :people=> 
-          {
-            :only => [], 
-            :methods => [:full_name, :uri]
-          }
-        },
       :methods => [:type, :full_name, :male?, :relationship?, :confers_honourific_title?]
-    } if !options[:prefixes].blank?
-    super(options)
+    } if !options || !options[:only]
+    super options
   end
 
   private

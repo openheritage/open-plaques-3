@@ -4,7 +4,7 @@
 # * +alpha2+ - 2-letter code as defined by the ISO standard. Used in URLs.
 # * +dbpedia_uri+ - uri to link to DBPedia record
 # * +areas_count+ - cached count of areas
-# * +plaques_count+ - cached count of plaques (does not work)
+# * +plaques_count+ - cached count of plaques
 #
 # === Associations
 # * Areas - areas located in this country.
@@ -45,6 +45,10 @@ class Country < ActiveRecord::Base
     @@longitude
   end
 
+  def plaques_count
+    areas.sum(:plaques_count)
+  end
+
   def zoom
     6
   end
@@ -63,22 +67,22 @@ class Country < ActiveRecord::Base
   end
 
   def as_json(options={})
-    find_centre
-    if options[:size] == 0
-      options = {
-        :only => [:name, :uri, :dbpedia_uri],
-        :include => { :areas => {:only => [:name], :methods => :uri}},
-        :methods => [:uri]
-      }
-    end
+    options = {
+      :only => [:name],
+      :methods => [:uri, :plaques_count, :areas_count]
+    } if !options || !options[:only]
+    super options
+  end
+
+  def as_geojson(options={})
+    self.find_centre
     {
       type: 'Feature',
       geometry: {
         type: 'Point',
         coordinates: [@@longitude, @@latitude]
       },
-      properties:
-        super(options)
+      properties: as_json(options)
     }
   end
 

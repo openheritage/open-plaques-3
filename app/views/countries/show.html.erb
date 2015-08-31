@@ -8,16 +8,8 @@
     </section>
   <% end %>
   <h1><%= @country.name %></h1>
-  <h2>We have <%= pluralize @country.plaques.size, "plaque record" %> in <%= pluralize @country.areas.size, "area" %></h2>
-  <%= content_tag("ol", :class => "results one_destination_results", :id => "people_results") do %>
-    <% @areas.each do |area| %>
-      <%= content_tag("li") do %>
-        <%= link_to area_path(area) do %>
-          <p class="result"><%= area.name %></p>
-        <% end %>
-      <% end %>
-    <% end %>
-  <% end unless @areas.size <=0 %> 
+  <h2>We have <%= pluralize @country.plaques_count, "plaque" %> in <%= pluralize @country.areas.size, "area" %></h2>
+  <%= render @country.areas %>
 </div>
 
-<div class="alternate_formats"><%= t 'data_about_thing_as' %> <%= alternate_link_to "JSON", country_path(@country, :json), :json %></div>
+<div class="alternate_formats"><%= t 'data_about_thing_as' %> .json and .geojson</div>

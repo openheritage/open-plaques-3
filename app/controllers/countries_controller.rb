@@ -10,8 +10,8 @@ class CountriesController < ApplicationController
     @countries.sort! { |a,b| @plaque_counts[b.id].to_i <=> @plaque_counts[a.id].to_i }
     respond_to do |format|
       format.html
-      format.xml
-      format.json { render :json => @countries.as_json }
+      format.json { render :json => @countries }
+      format.geojson { render :geojson => @countries }
     end
   end
 
@@ -35,12 +35,10 @@ class CountriesController < ApplicationController
       @country = Country.find(params[:id])
       redirect_to(country_url(@country), :status => :moved_permanently) and return
     end
-    @areas = @country.areas.all
     respond_to do |format|
       format.html
-      format.xml
-      format.json { render :json => @country.as_json }
-      format.geojson { render :json => @country.as_json }
+      format.json { render :json => @country }
+      format.geojson { render :geojson => @country }
     end
   end
 

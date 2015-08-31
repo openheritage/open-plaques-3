@@ -34,16 +34,16 @@ class Series < ActiveRecord::Base
   end
 
   def as_json(options={})
-  	self.find_centre
-  	if options.size == 0
-      options = 
-      {
-        :only => [:name, :description],
-        :methods => :uri
-      }
-    end
+    options = 
+    {
+      :only => [:name, :description, :plaques_count],
+      :methods => :uri
+    } if !options[:only]
+    super(options)
+  end
 
-    # use a geojson format wrapper
+  def as_geojson(options={})
+    self.find_centre
     {
       type: 'Feature',
       geometry: 
@@ -51,8 +51,7 @@ class Series < ActiveRecord::Base
         type: 'Point',
         coordinates: [self.longitude, self.latitude]
       },
-      properties: 
-        super(options)
+      properties: as_json(options)
     }
   end
 

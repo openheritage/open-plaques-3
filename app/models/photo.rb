@@ -43,6 +43,7 @@ class Photo < ActiveRecord::Base
   scope :wikimedia, -> { where("file_url like 'https://commons%'") }
   scope :flickr, -> { where("url like 'http://www.flickr.com%'") }
   scope :geograph, -> { where("url like 'http://www.geograph.org.uk/%'") }
+  scope :geolocated, ->  { where(["latitude IS NOT NULL"]) }
 
   def assign_from_photo_url
     if @photo_url
@@ -62,12 +63,8 @@ class Photo < ActiveRecord::Base
   end
 
   def title
-    if self.plaque
-      return "a photo of a " + self.plaque.to_s
-    end
-    if self.person
-      return "a photo of " + self.person.to_s
-    end
+    return "a photo of a " + self.plaque.to_s if self.plaque
+    return "a photo of " + self.person.to_s if self.person
     title = "photo № #{id}"
     if plaque
       title = ""
@@ -94,18 +91,7 @@ class Photo < ActiveRecord::Base
   def self.shots
     ["1 - extreme close up", "2 - close up", "3 - medium close up", "4 - medium shot", "5 - long shot", "6 - establishing shot"]
   end
-  
-  def ping?
-    begin # check header response
-      case Net::HTTP.get_response(URI.parse(file_url))
-        when Net::HTTPSuccess then return true
-        else return false
-      end
-    rescue # Recover optimistically on DNS failures..
-	  return true
-    end 
-  end
-  
+    
   def flickr?
     url && url.include?("//www.flickr.com")
   end
@@ -200,17 +186,24 @@ class Photo < ActiveRecord::Base
   end
 
   def as_json(options={})
-    # this example ignores the user's options
-    super(:only => [:file_url, :photographer, :photographer_url, :shot, :url, :longitude, :latitude],
+    options =
+    {
+      :only => [:file_url, :photographer, :photographer_url, :shot, :url, :longitude, :latitude],
       :include => {
-        :licence => {:only => [:name], :methods => [:uri]},
+        :licence => {:only => [:name], :methods => [:url]},
         :plaque => {:only => [], :methods => [:uri]}
       },
-      :methods => [:title, :uri, :thumbnail, :shot_name, :source]
-    )
+      :methods => [:title, :uri, :thumbnail_url, :shot_name, :source]
+    } if !options || !options[:only]
+    super options
   end
 
   def as_geojson(options={})
+    options =
+    {
+      :only => [:photographer, :photographer_url, :url],
+      :methods => [:thumbnail_url, :shot_name, :source]
+    } if !options || !options[:only]
     {
       type: 'Feature',
       geometry: 
@@ -218,8 +211,7 @@ class Photo < ActiveRecord::Base
         type: 'Point',
         coordinates: [self.longitude, self.latitude]
       },
-      properties:
-        as_json(options)
+      properties: as_json(options)
     }
   end
 

@@ -3,7 +3,6 @@ class SeriesPlaquesController < ApplicationController
   before_filter :find, :only => [:show]
 
   def show
-    @plaques = @series
     zoom = params[:zoom].to_i
     if zoom > 0
       x = params[:x].to_i
@@ -11,9 +10,8 @@ class SeriesPlaquesController < ApplicationController
       @plaques = @series.plaques.tile(zoom, x, y, '')
     end
     respond_to do |format|
-      format.json {
-        render :json => @plaques.as_json()
-      }
+      format.json { render :json => @series.plaques }
+      format.geojson { render :geojson => @series.plaques.geolocated, :parent => @series }
     end
   end
 

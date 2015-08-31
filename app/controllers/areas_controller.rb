@@ -45,12 +45,8 @@ class AreasController < ApplicationController
   def show
     respond_to do |format|
       format.html
-      format.json {
-        render :json => @area
-      }
-      format.geojson {
-        render :json => @area.as_geojson
-      }
+      format.json { render :json => @area }
+      format.geojson { render :geojson => @area }
     end
   end
 

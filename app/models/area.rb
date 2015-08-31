@@ -34,20 +34,17 @@ class Area < ActiveRecord::Base
   include PlaquesHelper
   
   def as_json(options=nil)
-    if options && options[:only]
-    else
-      options = {
-        :only => [:name, :plaques_count],
-        :include => { 
-          :country => {
-            :only => [:name],
-            :methods => :uri
-          }
-        },
-        :methods => [:uri, :plaques_uri]
-      }
-    end
-    super(options)
+    options = {
+      :only => [:name, :plaques_count],
+      :include => { 
+        :country => {
+          :only => [:name],
+          :methods => :uri
+        }
+      },
+      :methods => [:uri, :plaques_uri]
+    } if !options || !options[:only]
+    super options
   end
 
   def as_geojson(options=nil)
@@ -58,8 +55,7 @@ class Area < ActiveRecord::Base
         type: 'Point',
         coordinates: [self.longitude, self.latitude]
       },
-      properties: 
-        as_json(options)
+      properties: as_json(options)
     }
   end
 
