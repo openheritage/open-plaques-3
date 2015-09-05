@@ -418,10 +418,31 @@ module PlaquesHelper
 
   def geolocation_from(url)
     # https://www.google.com/maps/place/ulitsa+Goncharova,+48,+Ulyanovsk,+Ulyanovskaya+oblast',+Russia,+432011/@54.319775,48.39987,17z/data=!3m1!4b1!4m2!3m1!1s0x415d37692250ea21:0xeab69349916c0171
+    # https://www.google.com/maps/@37.0625,-95.677068,4z
     p = Point.new
-    p.latitude = url[/@+([^,]*)/,1]
-    p.longitude = url[/@[\d|.|-]*,+([\d|.|-]*)/,1]
-    return p
+    r = /@([-\d.\d]*),([-\d.\d]*)/
+    if (url[r])
+      p.latitude = url[r,1]
+      p.longitude = url[r,2]
+      return p
+    end
+    # or OSM
+    # https://www.openstreetmap.org/#map=17/57.14772/-2.10572
+    r = /map=[\d]*\/([-\d.\d]*)\/([-\d.\d]*)/
+    if (url[r])
+      p.latitude = url[r,1]
+      p.longitude = url[r,2]
+      return p
+    end
+    # or Geohack
+    # https://tools.wmflabs.org/wiwosm/osm-on-ol/commons-on-osm.php?zoom=16&lat=43.725688888889&lon=7.2722138888889
+    r = /&lat=([-\d.\d]*)&lon=([-\d.\d]*)/
+    if (url[r])
+      p.latitude = url[r,1]
+      p.longitude = url[r,2]
+      return p
+    end
+    p
   end
 
   class Point
