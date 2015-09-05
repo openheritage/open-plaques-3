@@ -26,9 +26,8 @@ class PeopleController < ApplicationController
   def show
     respond_to do |format|
       format.html
-      format.json {
-        render :json => @person
-      }
+      format.json { render :json => @person }
+      format.geojson { render :geojson => @person }
     end
   end
 

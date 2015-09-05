@@ -11,24 +11,22 @@
 </div>
 
 <div class="panel clearfix">
-
-<h2>Top 10</h2>
-<canvas id="myCanvas" width="800" height="400"></canvas>
-
-<h2>In alphabetical order</h2>
-<ul id="organisations_results" class="results one_destination_results">
-  <% @organisations.each do |organisation| %>
-    <li>
-      <a href="<%= url_for(organisation) %>">
-        <p class="result"><%= organisation.name %></p>
-        <p class="count"><%= pluralize(organisation.sponsorships.size, "plaque") if organisation.sponsorships.size > 0 %><%= t('.no_plaques') if organisation.sponsorships.size == 0 %></p>
-      </a>
-    </li>
-  <% end %>
-</ul>
-
-<p class="alternate_formats"><%= t 'data_about_things_as' %> <%= alternate_link_to "JSON", organisations_path(:json), :json %></p>
+  <h2>Top 10</h2>
+  <canvas id="myCanvas" width="800" height="400"></canvas>
+  <h2>In alphabetical order</h2>
+  <ul id="organisations_results" class="results one_destination_results">
+    <% @organisations.each do |organisation| %>
+      <li>
+        <a href="<%= url_for(organisation) %>">
+          <p class="result"><%= organisation.name %></p>
+          <p class="count"><%= pluralize(organisation.sponsorships.size, "plaque") if organisation.sponsorships.size > 0 %><%= t('.no_plaques') if organisation.sponsorships.size == 0 %></p>
+        </a>
+      </li>
+    <% end %>
+  </ul>
 </div>
+
+<div class="alternate_formats"><%= t 'data_about_thing_as' %> .json and .geojson</div>
 
 <script>
   window.onload = function ()

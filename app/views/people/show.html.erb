@@ -59,7 +59,6 @@
     <% end %>
     <%= render @person.plaques.uniq %>
   </div>
-
-  <p class="alternate_formats"><%= t 'data_about_thing_as' %> <%= alternate_link_to "JSON", person_path(@person, :json), :json %></p>
-
 </div>
+
+<div class="alternate_formats"><%= t 'data_about_thing_as' %> .json and .geojson</div>

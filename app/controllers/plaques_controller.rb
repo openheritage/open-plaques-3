@@ -70,12 +70,10 @@ class PlaquesController < ApplicationController
         elsif params[:data] && params[:data] == "basic"
           render :json => @plaques.as_json(:only => [:id, :latitude, :longitude, :inscription]) 
         else
-          render :json => { 
-            type: 'FeatureCollection',
-            features: @plaques.as_json({:only => [:id, :latitude, :longitude, :inscription]})
-          }
+          render :json => @plaques.as_json(:only => [:id, :latitude, :longitude, :inscription])
         end
       }
+      format.geojson { render :geojson => @plaques }
       format.rss
     end
   end
@@ -108,10 +106,9 @@ class PlaquesController < ApplicationController
       format.kml {
           render :json => {:error => "format unsupported"}.to_json, :status => 406        
       }
-      format.json {
-        render :json => @plaque.as_json
-      }
-    end
+      format.json { render :json => @plaque }
+      format.geojson { render :geojson => @plaque }
+     end
   end
 
   # GET /plaques/new

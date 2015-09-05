@@ -132,9 +132,9 @@ function initmap()
     else
     {
   		var data_path = plaque_map.attr("data-path");
-      var geojsonURL = "/plaques/tiles/{z}/{x}/{y}.json";
+      var geojsonURL = "/plaques/tiles/{z}/{x}/{y}.geojson";
       if (data_view == "unphotographed") {
-        geojsonURL = "/plaques/unphotographed/tiles/{z}/{x}/{y}.json";
+        geojsonURL = "/plaques/unphotographed/tiles/{z}/{x}/{y}.geojson";
         data_view = "all"
       };
       if (plaque_map.attr("context"))
