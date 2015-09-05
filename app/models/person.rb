@@ -265,8 +265,9 @@ class Person < ActiveRecord::Base
     nameparts = name.split(" ")
     middlenames = nameparts.length > 2 ? nameparts.from(1).to(nameparts.from(1).length - 2) : []
     middleinitials = ""
-    middlenames.each do |name|
-      middleinitials += name.to_s[0,1] + ". "
+    middlenames.each_with_index do |name, index|
+      middleinitials += " " if index > 0
+      middleinitials += name.to_s[0,1] + "."
     end
     names = []
     names << full_name # Sir Joseph Aloysius Hansom 
@@ -284,7 +285,7 @@ class Person < ActiveRecord::Base
     names << nameparts.first[0,1] + ". " + middleinitials + " " + nameparts.last if nameparts.length > 2 # Joseph A. R. Hansom
     names << nameparts.first + " " + nameparts.last if nameparts.length > 2 # Joseph Hansom 
     names << nameparts.first + " " + nameparts.second + " " + nameparts.last if nameparts.length > 3 # Joseph Aaron Hansom
-    names << nameparts.first + " " + nameparts.second[0,1] + ". " + nameparts.last if nameparts.length > 3 # Joseph Aaron Hansom
+    names << nameparts.first + " " + nameparts.second[0,1] + ". " + nameparts.last if nameparts.length > 3 # Joseph A. Hansom
     names << nameparts.first[0,1] + ". " + nameparts.last  if nameparts.length > 1 # J. Hansom
     names << title + " " + nameparts.last if titled? # Lord Carlisle
     names << nameparts.last if nameparts.length > 1 # Kitchener
