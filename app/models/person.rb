@@ -371,7 +371,7 @@ class Person < ActiveRecord::Base
       "Georgia","Georgina","Gerda","Gertrud","Gladys","Greta","Grete",
       "Hanna","Hattie","Helen","Helene","Henrietta","Henriette","Herta","Hertha","Hilde","Hildegard",
       "Ida","Ilse","Irene","Irma",
-      "Jane","Janet","Jacqueline","Jeanne","Jenny","Johanna","Julia","Julie",
+      "Jane","Janet","Jacqueline","Jeanne","Jenny","Johanna","Josephine","Julia","Julie",
       "Kate","Käte","Käthe","Kathleen","Klara",
       "Letitia","Lidia","Lina","Lotte","Louisa","Lucie","Lucy","Luise",
       "Mabel","Margaret","Margery","Margot","Marianne","Marie","Martha","Mary","Mathilde","May","Mercy","Meta","Minna",
