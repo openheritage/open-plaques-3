@@ -264,17 +264,16 @@ class Person < ActiveRecord::Base
   def names
     nameparts = name.split(" ")
     firstname = nameparts.first
-    lastname = nameparts.last
+    firstinitial = nameparts.second ? firstname[0,1] + "." : ""
+    secondname = nameparts.third ? nameparts.second : ""
+    secondinitial = nameparts.third ? secondname[0,1] + "." : ""
     middlenames = nameparts.length > 2 ? nameparts.from(1).to(nameparts.from(1).length - 2) : []
     middleinitials = ""
     middlenames.each_with_index do |name, index|
       middleinitials += " " if index > 0
       middleinitials += name.to_s[0,1] + "."
     end
-    firstinitial = ""
-    firstinitial = nameparts.first[0,1] + "." if nameparts.length > 1
-    secondinitial = ""
-    secondinitial = nameparts.second[0,1] + "." if nameparts.length > 2
+    lastname = nameparts.last
     names = []
     names += self.aka # Boz, Charlie Cheese, and Crackers
     names << full_name # Sir Joseph Aloysius Hansom 
@@ -289,15 +288,16 @@ class Person < ActiveRecord::Base
     names << name.split(/ of /).first if name.include? ' of ' # Charles II
     names << firstname + " " + middleinitials + " " + lastname if nameparts.length > 2 # Joseph A. R. Hansom
     names << firstinitial + " " + middleinitials + " " + lastname if nameparts.length > 2 # J. A. R. Hansom
-    names << firstname + " " + nameparts.second + " " + lastname if nameparts.length > 3 # Joseph Aaron Hansom
-    names << firstname + " " + secondinitial + " " + lastname if nameparts.length > 3 # Joseph A. Hansom
+    names << firstname + " " + nameparts.second + " " + lastname if nameparts.length > 2 # Joseph Aaron Hansom
+    names << firstname + " " + secondinitial + " " + lastname if nameparts.length > 2 # Joseph A. Hansom
+    names << firstinitial + " " + secondname + " " + lastname if nameparts.length > 2 # J. Aaron Hansom
     names << firstname + " " + lastname if nameparts.length > 2 # Joseph Hansom 
     names << firstinitial + " " + lastname  if nameparts.length > 1 # J. Hansom
     names << title + " " + lastname if titled? # Lord Carlisle
     names << title + " " + firstname if titled? # Sir William
     names << lastname if nameparts.length > 1 # Kitchener
     names << firstname if nameparts.length > 1 # Charles
-    names
+    names.uniq
   end
   
   def parents
