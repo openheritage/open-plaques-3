@@ -362,22 +362,25 @@ module PlaquesHelper
   end
 
   def new_linked_inscription(plaque)
-    inscription = plaque.inscription.gsub(/\r/," ").gsub(/\n/," ").strip
+    inscription = plaque.inscription.gsub(/\r/," ").gsub(/\n/," ").strip.gsub("  "," ")
     connections = plaque.personal_connections
     if connections.length > 0
-      connections.each do |connection|
+        reduced_inscription = inscription
+      connections.each_with_index do |connection, person_index|
         if connection.person
           person = connection.person
           matched = false
-          nameparts = connection.person.name.split(" ")
           search_for = ""
-          person.names.each do |name|
+          person.names.each_with_index do |name, index|
             if (!matched)
               search_for = name
-              matched = true if inscription.index(search_for) != nil
+#              puts '*** search ' + reduced_inscription + " for " + search_for
+              matched = true if reduced_inscription.index(search_for) != nil
+#              puts '*** found ' + search_for + " [" + index.to_s + "]" if matched
             end
           end
-          inscription = inscription.gsub(search_for, link_to(search_for, person_path(connection.person))).html_safe if matched
+          reduced_inscription = reduced_inscription.gsub(search_for, "") if matched
+          inscription = inscription.gsub(search_for, link_to(search_for, person_path(person))).html_safe if matched
         end
       end
     end
