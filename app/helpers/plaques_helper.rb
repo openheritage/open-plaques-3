@@ -363,25 +363,22 @@ module PlaquesHelper
 
   def new_linked_inscription(plaque)
     inscription = plaque.inscription.gsub(/\r/," ").gsub(/\n/," ").strip.gsub("  "," ")
-    connections = plaque.personal_connections
-    if connections.length > 0
-        reduced_inscription = inscription
-      connections.each_with_index do |connection, person_index|
-        if connection.person
-          person = connection.person
-          matched = false
-          search_for = ""
-          person.names.each_with_index do |name, index|
-            if (!matched)
-              search_for = name
-#              puts '*** search ' + reduced_inscription + " for " + search_for
-              matched = true if reduced_inscription.index(search_for) != nil
-#              puts '*** found ' + search_for + " [" + index.to_s + "]" if matched
-            end
+    people = plaque.people
+    if people
+      reduced_inscription = inscription
+      people.each_with_index do |person, person_index|
+        matched = false
+        search_for = ""
+        person.names.each_with_index do |name, index|
+          if (!matched)
+            search_for = name
+            puts '*** search ' + reduced_inscription + " for " + search_for
+            matched = true if reduced_inscription.index(search_for) != nil
+            puts '*** found ' + search_for + " [" + index.to_s + "]" if matched
           end
-          reduced_inscription = reduced_inscription.gsub(search_for, "") if matched
-          inscription = inscription.gsub(search_for, link_to(search_for, person_path(person))).html_safe if matched
         end
+        reduced_inscription = reduced_inscription.gsub(search_for, "") if matched
+        inscription = inscription.gsub(search_for, link_to(search_for, person_path(person))).html_safe if matched
       end
     end
     inscription += " [full inscription unknown]" if plaque.inscription_is_stub
