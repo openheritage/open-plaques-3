@@ -276,6 +276,7 @@ class Person < ActiveRecord::Base
     lastname = nameparts.last
     names = []
     names << full_name # Sir Joseph Aloysius Hansom 
+    names << title + " " + name if titled? # Dame Laura Knight [DBE]
     names += self.aka # Boz, Charlie Cheese, and Crackers
     names << title + " " + firstinitial + " " + middleinitials + " " + lastname if titled? && nameparts.length > 2
     names << title + " " + firstinitial + " " + lastname if titled? && nameparts.length > 1
@@ -284,9 +285,9 @@ class Person < ActiveRecord::Base
       names << name.split(/,/).first
       return names
     end
-    names << title + " " + name.split(/ of /).first if name.include?(' of ') && titled? # King Charles II
-    names << name.split(/ of /).first if name.include? ' of ' # Charles II
-    names << firstname + " " + middleinitials + " " + lastname if nameparts.length > 2 # Joseph A. R. Hansom
+    names << title + " " + name.split(/ of /).first if name.include?(' of ') && titled? # King Charles II [of England]
+    names << name.split(/ of /).first if name.include? ' of ' # [King] Charles II [of England]
+    names << firstname + " " + middleinitials + " " + lastname if nameparts.length > 2 # Joseph A[loysius]. R[obert]. Hansom
     names << firstinitial + " " + middleinitials + " " + lastname if nameparts.length > 2 # J. A. R. Hansom
     names << firstname + " " + nameparts.second + " " + lastname if nameparts.length > 2 # Joseph Aaron Hansom
     names << firstname + " " + secondinitial + " " + lastname if nameparts.length > 2 # Joseph A. Hansom
