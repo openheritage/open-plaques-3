@@ -275,8 +275,8 @@ class Person < ActiveRecord::Base
     end
     lastname = nameparts.last
     names = []
-    names += self.aka # Boz, Charlie Cheese, and Crackers
     names << full_name # Sir Joseph Aloysius Hansom 
+    names += self.aka # Boz, Charlie Cheese, and Crackers
     names << title + " " + firstinitial + " " + middleinitials + " " + lastname if titled? && nameparts.length > 2
     names << title + " " + firstinitial + " " + lastname if titled? && nameparts.length > 1
     names << name if name != full_name # Joseph Aloysius Hansom
