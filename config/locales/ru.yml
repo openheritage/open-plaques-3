@@ -1,0 +1,500 @@
+# Localisation file for Russian
+# See http://guides.rubyonrails.org/i18n.html
+
+ru:
+  activerecord:
+    models:
+      area: Area
+    attributes:
+      area:
+        name: Name
+        slug: Slug
+        latitude: Latitude
+        longitude: Longitude
+        country_id: Country
+      colour:
+        name: Name
+        dbpedia_uri: DbPedia uri
+      country:
+        alpha2_code: Alpha2 code
+        name: Name
+        dbpedia_uri: DbPedia uri
+        area: Area
+      language:
+        alpha2: Alpha2 code
+        name: Name
+      organisation:
+        name: Name
+        slug: Slug
+        latitude: Latitude
+        longitude: Longitude
+        website: Website
+        description: Description
+        notes: Notes
+      page:
+        name: Name
+        slug: Slug
+      person:
+        name: Name
+        born_in: Born in
+        died_in: Died in
+      personal_connection:
+        started_at: From
+        ended_at: To
+      personal_role:
+        started_at: From
+        ended_at: To
+        ordinal: Ordinal
+      photo:
+        of_a_plaque: This is a photo of a plaque
+        url: Url
+        file_url: File url
+        taken_on: Taken on
+        photographer: Photographer
+        photographer_url: Photographer url
+        thumbnail_url: Thumbnail url
+        licence_id: The image was licenced by its copyright owner as
+        plaque_id: It depicts plaque number
+        person_id: It depicts person number
+        subject: This may be about
+        description: More details are
+        shot: This is a
+      pick:
+        plaque_id: Plaque
+        description: Description
+        proposer: Proposer
+        feature_on: Feature on
+        last_featured: Last featured
+        featured_count: Times featured
+      role:
+        name: Name
+        abbreviation: Abbreviation
+        slug: Slug
+        wikipedia_stub: Wikipedia stub
+        role_type: This is a
+      series:
+        name: Name
+        description: Description
+
+  buttons:
+    add: add
+    update: update
+    edit: edit
+    delete: delete
+    all: all
+    save: save
+    unphotographed: unphotographed
+    ungeolocated: ungeolocated
+    or: or
+
+  data_about_thing_as: Data available about this as
+  data_about_this_thing_as: Data available about this %{thing} as
+  data_about_things_as: Data available about these as
+  unphotographed_plaques: unphotographed plaques
+
+  home:
+    index:
+      page_title: Open Plaques - linking historical people and places (Russian)
+      pages: pages
+      page_heading: yy
+      strapline_html: Documenting the historical links between <strong>people</strong> and <strong>places</strong>, as recorded by commemorative <strong>plaques</strong>.
+      explore: Explore
+      contribute: Contribute
+      contribute1: Spotted one? Anyone can help us and 
+      add_a_plaque: add a plaque
+      take_a_photo: Take a photo. Add it to Wikimedia Commons or Flickr and link it to our record
+      spot_an_innaccuracy: Spot an innaccuracy. Tell us.
+      find_something: Or find something 
+      to_do: to do
+      mission: You are all part of our mission to find all of the plaques in the world!
+      news: News
+      news_detail_html: Subscribe to <a href="http://blog.openplaques.org">our blog</a>, follow us on <a href="http://www.twitter.com/openplaques">Twitter</a> for updates.
+      like_us_on_Facebook: us on Facebook for features and trivia.
+      plaque_of_the_day: Plaque of the day
+
+  area_plaques:
+    show:
+      page_title: Plaques in %{area}
+      page_title_unphotographed: Unphotographed plaques in %{area}
+      page_heading: xx
+      plaques: plaques
+
+  area_ungeolocated_plaques:
+    show:
+      page_title: xx
+      page_heading: yy
+
+  areas:
+    edit:
+      page_title: Edit %{area}
+      page_heading_html: Edit %{area}
+      find_on_google_maps_html: Find on <a href="http://maps.google.co.uk/maps?q=%{area}&z=18" target="_new">Google Maps</a>
+      geolocation: Geolocation
+      google_streetview_url: Google Streetview url
+      must_be_underscored: must be lowercase with underscores
+    new:
+      page_title: New area in %{country}
+      page_heading_html: New area in %{country}
+      must_be_underscored: must be lowercase with underscores
+    show:
+      page_title: Plaques in %{area}
+      page_title_unphotographed: Unphotographed plaques in %{area}
+      page_heading_html: Show %{area}
+
+  colours:
+    index:
+      page_title: Historical plaques - by colour
+      page_heading: Colours
+    new:
+      page_title: Add a colour
+      page_heading: Add a colour
+
+  countries:
+    edit:
+      page_title: Edit %{country}
+      page_heading_html: Edit %{country}
+      add_an_area: Add an area
+    index:
+      page_title: Countries that have plaques
+      page_heading: Countries that have plaques
+      different_strokes: There are commemorative plaques all over the world. Some countries honour people by naming roads after them and hence are less inclined to have markers at place of birth/death/etc.
+    new:
+      page_title: Add country
+      page_heading: Add country
+    show:
+      page_title: Historical plaques in %{country}
+      page_heading: Historical plaques in %{country}
+
+  country_plaques:
+    show:
+
+  errors:
+    not_found:
+      page_title: Page not found
+      page_heading: Page not found
+      explanation: The page you are looking for cannot be found. You may have followed a bad link, or mis-typed a URL.
+
+  explore:
+    show:
+      page_title: Explore historical blue plaques by location, person or type
+      page_heading: Explore
+      people: People
+      people_blurb: Many plaques commemorate important people from history.
+      location: Location
+      location_blurb: Discover where plaques are located.
+
+  languages:
+    edit:
+      page_title: Edit %{language}
+      page_heading: Edit %{language}
+    index:
+      page_title: Historical plaques - by language
+      page_heading: Languages
+    new:
+      page_title: New language
+      page_heading: New language
+
+  licences:
+    index:
+      page_title: Photo licences
+      page_heading: Photo licences
+      data_about_licences_as: data about licences as
+    show:
+      page_title: Licence - %{licence}
+      page_heading: Licence - %{licence}
+      quantity: in Open Plaques have been made available under the %{licence}.
+      more_information: More information about this licence can be found at
+
+  locations:
+    edit:
+      page_title: Edit %{location}
+      page_heading: Edit %{location}
+      plaque_at_location: The plaque at this location is...
+    show:
+      page_title: Location %{location}
+      page_heading: Location %{location}
+      add_an_area: Add a new area in
+
+  organisations:
+    edit:
+      page_title: Edit %{organisation}
+      page_heading: Edit %{organisation}
+
+    index:
+      page_title: Organisations erecting historical plaques
+      page_heading: Organisations erecting plaques
+      no_plaques: no plaques
+    new:
+      page_title: New organisation
+      page_heading: New organisation
+      required: Required
+      optional: Optional
+      note_about_name: please don't include the word 'The' unless it is absolutely an indivisible part of the name
+      note_about_description: is displayed on the page
+      note_about_notes: is for internal use only
+    show:
+      page_title: Organisation %{organisation}
+      page_heading: Organisation - %{organisation}
+
+  pages:
+    edit:
+      page_title: Edit %{page}
+      page_heading: Edit %{page}
+    index:
+      page_title: Pages
+      page_heading: Pages
+    new:
+      page_title: New page
+      page_heading: New page
+      name: Name
+      slug: Slug
+    show:
+      page_title: Open Plaques - %{page}
+      page_heading: '%{page}'
+
+  people:
+    edit:
+      page_title: Edit %{person}
+      page_heading: Edit %{person}
+      features_on: From the plaques...
+      from_which_we_can_establish: ...we can establish that
+      name: Name
+      display_name: with titles and letters is displayed as
+      introduction: Introduction
+      wikipedia_url: Wikipedia url
+      wikipedia_comment: overrides the default generated one if it's incorrect. Set it to blank if there is no Wikipedia page.
+      conferring_the_letters: conferring the letters
+      conferring_the_title: conferring the title
+      add_a_role: add a role
+    new:
+      page_title: New person
+      page_heading: New person
+    show:
+      page_title: Historical plaques about %{person}
+      not_commemorated: Is not commemorated on any plaques in our database (yet)
+
+  people_alive_in:
+    show:
+      page_title: Commemorated people who were alive in %{year}
+      page_heading: Commemorated people who were alive in %{year}
+
+  people_born_on:
+    index:
+      page_title: Commemorated people who were born in
+      page_heading: Commemorated people who were born in
+    show:
+      page_title: Commemorated people who were born in %{year}
+      page_heading: Commemorated people who were born in %{year}
+
+  people_by_index:
+    show:
+      page_title: Historical plaques about people by index - %{letter}
+      page_heading: Historical plaques about people by index - %{letter}
+
+  people_died_on:
+    index:
+      page_title: Commemorated people who died in
+      page_heading: Commemorated people who died in
+    show:
+      page_title: Commemorated people who died in %{year}
+      page_heading: Commemorated people who died in %{year}
+
+  personal_connections:
+    edit:
+      page_title: Edit connections for plaque #%{plaque}
+      page_heading: Edit connections for plaque #%{plaque}
+    new:
+      page_title: New connection for plaque #%{plaque}
+      page_heading: Connections
+      from_which_we_can_establish: From this plaque we establish that...
+      nothing_yet: nothing yet
+      new_person: new person
+      new_verb: new verb
+      at: physically near or at
+      no_location: There is no location for this plaque. Probably shouldn't create a connection.
+      from: From
+      to: To
+      reminder: This commemorated subject was actually at or near this location and not just referred to on the plaque
+
+  personal_roles:
+    edit:
+      page_title: xx
+      page_heading: yy
+
+  photographers:
+    index:
+      page_title: Photographers
+      page_heading: Photographers
+      the_top_50: The top 50 are
+      how_many: Open Plaques links to photographs on the internet taken by %{count} photographers.
+      where: These images are held on Flickr, Wikimedia Commons, and Geograph.
+      how_they_are_licenced_html: They are all licenced with permissive <a href="http://creativecommons.org/">Creative Commons</a> licences meaning that the owner has declared via a copyright notice that other people may reuse their photograph. 
+    new:
+      page_title: Find Flickr photos for a photographer
+      page_heading: Find Flickr photos for a photographer
+      flickr_url: Flickr photo url
+    show:
+      page_title: Photographer %{photographer}
+      page_heading: Photographer %{photographer}
+
+  photos:
+    edit:
+      page_title: Edit photo
+      page_heading: Edit photo
+    index:
+      page_title: Photos
+      page_heading: Photos
+      explanation_html: To identify the location, inscription, colour and organisation of a plaque Open Plaques collates data from <a href="http://commons.wikimedia.org/">Wikimedia Commons</a>, <a href="http://www.geograph.org.uk/">Geograph UK</a>, or <a href="http://flickr.com/">Flickr</a> images. Read the page on how to contribute for details.
+    new:
+      page_title: New photo
+      page_heading: New photo
+      required: Required
+      optional: Optional
+    show:
+      page_title: '%{photo}'
+      page_heading: A photo of
+
+  picks:
+    edit:
+      page_title: Edit %{pick}
+      page_heading: Edit %{pick}
+    index:
+      page_title: Picks
+      page_heading: Picks
+      explanation: These are our all-time favourite plaques. The weird and the wonderful, the odd and the personal. The Open Plaques server rotates these 'picks' on the home page as 'Plaque of the day'. If you have a favourite then please suggest it to us with a reason why.
+    new:
+      page_title: New pick
+      page_heading: New pick
+      plaque_id: One of my favourite plaques is
+      description: I like it because
+      proposer: Please say that it was proposed by
+    show:
+      page_title: '%{pick}'
+      page_heading: '%{pick}'
+
+  plaques:
+    colour:
+      edit:
+        page_title: xx
+        page_heading: yy
+    description:
+      edit:
+        page_title: xx
+        page_heading: yy
+    erected:
+      edit:
+        page_title: xx
+        page_heading: yy
+    geolocation:
+      edit:
+        page_title: xx
+        page_heading: yy
+    inscription:
+      edit:
+        page_title: xx
+        page_heading: yy
+    language:
+      edit:
+        page_title: xx
+        page_heading: yy
+    photos:
+      show:
+        page_title: Photos of the %{plaque}
+        page_heading: Photo
+    sponsorships:
+      new:      
+        page_title: xx
+        page_heading: yy
+    create:
+      page_title: xx
+      page_heading: yy
+    edit:
+      page_title: xx
+      page_heading: yy
+    index:
+      page_title: xx
+      page_heading: yy
+    new:
+      page_title: Open Plaques - new plaque
+      page_heading: Tell us about the plaque
+      inscription_heading: What does the plaque say? 
+      inscription_advice: Type in the words on the plaque, in sentence case, excluding the organisation. e.g. 'John Smith 1900-1980 lived here'.
+      inscription_partial: I don't know the full, exact wording yet
+      language_heading: What language is it in?
+      thanks: Thanks for identifying a plaque that is not already on this website. Fill in as much as you can and anything you don't know can be left blank.
+      you_agree_to_open_licence: All of the data on Open Plaques is released into the public domain completely licence-free. By providing us with information you are agreeing that it will be public domain also.
+      error: There was an error adding your plaque. Please correct it below.
+
+  plaques_latest:
+    show:
+      page_title: xx
+      page_heading: yy
+
+  roles:
+    edit:
+      page_title: Edit role %{role}
+      page_heading: Edit role %{role}
+    new:
+      page_title: New role
+      page_heading: New role
+    show:
+      page_title: Commemorated %{role}
+      page_heading: Commemorated %{role}
+      read_more_html: Read more about what %{link} is on Wikipedia
+      related_roles: Related roles
+
+  roles_by_index:
+    show:
+      page_title: Roles - %{letter}
+      page_heading: Roles - %{letter}
+
+  search:
+    index:
+      page_title: xx
+      page_heading: yy
+
+  series:
+    edit:
+      page_title: Edit series %{series}
+      page_heading: Edit series %{series}
+    index:
+      page_title: Series
+      page_heading: Series
+      explanation: Plaques are issued by numerous organisations, and sometimes they are also part of a special set or series. We endeavour to identify the series and also the series identifier
+    new:
+      page_title: New series
+      page_heading: New series
+    show:
+      page_title: Series '%{series}'
+      page_heading: Series '%{series}'
+
+  users:
+    index:
+      page_title: Users
+      page_heading: Users
+    new:
+      page_title: New verb
+      page_heading: New verb
+    show:
+      page_title: '%{verb}'
+      page_heading: '%{verb}'
+
+  verbs:
+    index:
+      page_title: Verbs
+      page_heading: Verbs
+    new:
+      page_title: New verb
+      page_heading: New verb
+      explanation: Verbs should be in the past tense and should be as close as possible to the wording used on a plaque, e.g. 'lived' or 'died', so that they indicate what happened at a particular location.
+    show:
+      page_title: '%{verb}'
+      page_heading: '%{verb}'
+
+
+  # Used in array.to_sentence.
+  support:
+    array:
+      words_connector: ", "
+      two_words_connector: " and "
+      last_word_connector: ", and "
