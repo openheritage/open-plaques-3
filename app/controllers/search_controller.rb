@@ -9,6 +9,9 @@ class SearchController < ApplicationController
     end
     if @phrase != nil && @phrase != ""
       @search_results = Person.where(["lower(name) LIKE ?", "%" + @phrase.downcase.gsub(" ","%").gsub(".","%") + "%"])
+      @search_results = Person.where(["lower(name) LIKE ?", "%" + @phrase.downcase.tr(
+"ÀÁÂÃÄÅàáâãäåĀāĂăĄąÇçĆćĈĉĊċČčÐðĎďĐđÈÉÊËèéêëĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħÌÍÎÏìíîïĨĩĪīĬĭĮįİıĴĵĶķĸĹĺĻļĽľĿŀŁłÑñŃńŅņŇňŉŊŋÒÓÔÕÖØòóôõöøŌōŎŏŐőŔŕŖŗŘřŚśŜŝŞşŠšſŢţŤťŦŧÙÚÛÜùúûüŨũŪūŬŭŮůŰűŲųŴŵÝýÿŶŷŸŹźŻżŽž",
+"AAAAAAaaaaaaAaAaAaCcCcCcCcCcDdDdDdEEEEeeeeEeEeEeEeEeGgGgGgGgHhHhIIIIiiiiIiIiIiIiIiJjKkkLlLlLlLlLlNnNnNnNnnNnOOOOOOooooooOoOoOoRrRrRrSsSsSsSssTtTtTtUUUUuuuuUuUuUuUuUuUuWwYyyYyYZzZzZz").gsub(" ","%").gsub(".","%") + "%"])
       @search_results += Plaque.where(["lower(inscription) LIKE ?", "%" + @phrase.downcase + "%"]).includes([[:personal_connections => [:person]], [:area => :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
       @search_results += Plaque.where(["lower(inscription_in_english) LIKE ?", "%" + @phrase.downcase + "%"]).includes([[:personal_connections => [:person]], [:area => :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
     elsif  @street != nil && @street !=""
@@ -17,7 +20,7 @@ class SearchController < ApplicationController
     end
     respond_to do |format|
       format.html
-      format.json { render :json => @search_results }
+      format.json { render :json => @search_results.uniq }
     end
   end
 
