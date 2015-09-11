@@ -11,11 +11,18 @@ class SearchController < ApplicationController
       @phrase = @phrase.downcase
       @unaccented_phrase = @phrase.tr("ÀÁÂÃÄÅàáâãäåĀāĂăĄąÇçĆćĈĉĊċČčÐðĎďĐđÈÉÊËèéêëĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħÌÍÎÏìíîïĨĩĪīĬĭĮįİıĴĵĶķĸĹĺĻļĽľĿŀŁłÑñŃńŅņŇňŉŊŋÒÓÔÕÖØòóôõöøŌōŎŏŐőŔŕŖŗŘřŚśŜŝŞşŠšſŢţŤťŦŧÙÚÛÜùúûüŨũŪūŬŭŮůŰűŲųŴŵÝýÿŶŷŸŹźŻżŽž",
 "AAAAAAaaaaaaAaAaAaCcCcCcCcCcDdDdDdEEEEeeeeEeEeEeEeEeGgGgGgGgHhHhIIIIiiiiIiIiIiIiIiJjKkkLlLlLlLlLlNnNnNnNnnNnOOOOOOooooooOoOoOoRrRrRrSsSsSsSssTtTtTtUUUUuuuuUuUuUuUuUuUuWwYyyYyYZzZzZz")
-      @search_results = Person.where(["lower(name) LIKE ?", "%" + @phrase.gsub(" ","%").gsub(".","%") + "%"])
-      # loop through those people and check for accented names and aka. Do another search for them
+
+      @people = Person.where(["lower(name) LIKE ?", "%" + @phrase.gsub(" ","%").gsub(".","%") + "%"])
+      @search_results = @people
+      # include all that person's plaques
+      @people.each do |person|
+        @search_results += @person.plaques
+      end
+      @search_results += Person.where(["lower(aka) LIKE ?", "%" + @phrase.gsub(" ","%").gsub(".","%") + "%"])
+      # loop through those people and check for accented names and akas. Do another search for them
 
       # if the phrase has an accent, check for a non-accented person name
-      @search_results = Person.where(["lower(name) LIKE ?", "%" + @unaccented_phrase.gsub(" ","%").gsub(".","%") + "%"])
+      @search_results += Person.where(["lower(name) LIKE ?", "%" + @unaccented_phrase.gsub(" ","%").gsub(".","%") + "%"])
       @search_results += Plaque.where(["lower(inscription) LIKE ?", "%" + @unaccented_phrase + "%"]).includes([[:personal_connections => [:person]], [:area => :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
       @search_results += Plaque.where(["lower(inscription_in_english) LIKE ?", "%" + @unaccented_phrase + "%"]).includes([[:personal_connections => [:person]], [:area => :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
 
