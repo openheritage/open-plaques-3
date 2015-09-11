@@ -18,7 +18,7 @@ class SearchController < ApplicationController
       @people.each do |person|
         @search_results += person.plaques
       end
-      @search_results += Person.where(["lower(array_to_string(aka, " ")) LIKE ?", "%" + @phrase.gsub(" ","%").gsub(".","%") + "%"])
+      @search_results += Person.where(["lower(array_to_string(aka, "" "")) LIKE ?", "%" + @phrase.gsub(" ","%").gsub(".","%") + "%"])
       # loop through those people and check for accented names and akas. Do another search for them
 
       # if the phrase has an accent, check for a non-accented person name
