@@ -1,0 +1,500 @@
+# Localisation file for Russian
+# See http://guides.rubyonrails.org/i18n.html
+
+ru:
+  activerecord:
+    models:
+      area: Area
+    attributes:
+      area:
+        name: Название
+        slug: Slug
+        latitude: Широта
+        longitude: Долгота
+        country_id: Страна
+      colour:
+        name: Название
+        dbpedia_uri: ссылка DbPedia
+      country:
+        alpha2_code: код Alpha2
+        name: Название
+        dbpedia_uri: ссылка DbPedia
+        area: Area
+      language:
+        alpha2: код Alpha2
+        name: Название
+      organisation:
+        name: Название
+        slug: Slug
+        latitude: Широта
+        longitude: Долгота
+        website: Сайт
+        description: Описание
+        notes: Заметки
+      page:
+        name: Название
+        slug: Slug
+      person:
+        name: Имя
+        born_in: Дата рождения
+        died_in: Дата смерти
+      personal_connection:
+        started_at: С
+        ended_at: По
+      personal_role:
+        started_at: С
+        ended_at: По
+        ordinal: Ordinal
+      photo:
+        of_a_plaque: Фотография таблички
+        url: Ссылка
+        file_url: Ссылка на файл
+        taken_on: Сфотографировано
+        photographer: Фотограф
+        photographer_url: Ссылка фотографа
+        thumbnail_url: Ссылка на уменьшенное изображение
+        licence_id: Изображение было лицензировано автором как
+        plaque_id: На изображении табличка с номером
+        person_id: На изображении человек с номером
+        subject: На фото возможно
+        description: Подробности
+        shot: Тип снимка
+      pick:
+        plaque_id: Табличка
+        description: Описание
+        proposer: Предложил
+        feature_on: Feature on
+        last_featured: Отображалась в последний раз
+        featured_count: Отображалась раз
+      role:
+        name: Название
+        abbreviation: Сокращение
+        slug: Slug
+        wikipedia_stub: Wikipedia stub
+        role_type: Это
+      series:
+        name: Название
+        description: Описание
+
+  buttons:
+    add: добавить
+    update: обновить
+    edit: изменить
+    delete: удалить
+    all: все
+    save: сохранить
+    unphotographed: без фотографии
+    ungeolocated: без местоположения
+    or: или
+
+  data_about_thing_as: Data available about this as
+  data_about_this_thing_as: Data available about this %{thing} as
+  data_about_things_as: Data available about these as
+  unphotographed_plaques: таблички без фотографии
+
+  home:
+    index:
+      page_title: Open Plaques - исторические персоны и места (Русский)
+      pages: страницы
+      page_heading: yy
+      strapline_html: Документируем исторические связи <strong>людей</strong> и <strong>мест</strong>, сохраненные памятными <strong>табличками</strong>.
+      explore: Просмотр
+      contribute: Поучаствовать
+      contribute1: Нашли табличку? Любой человек может помочь нам и 
+      add_a_plaque: добавить её
+      take_a_photo: Сделайте фотографию. Загрузите её в Wikimedia Commons или Flickr и свяжите фото с нашей базой
+      spot_an_innaccuracy: Заметили неточность? Сообщите нам.
+      find_something: Или найдите задачу в  
+      to_do: списках
+      mission: Вы участвуете в нашей миссии - найти все памятные таблички мира!
+      news: Новости
+      news_detail_html: Узнать о новостях вы можете в <a href="http://blog.openplaques.org">нашем блоге</a> и <a href="http://www.twitter.com/openplaques">Твиттере</a>.
+      like_us_on_Facebook: наша страница Facebook с интересными фактами.
+      plaque_of_the_day: Табличка дня
+
+  area_plaques:
+    show:
+      page_title: Таблички в %{area}
+      page_title_unphotographed: Таблички без фотографий в %{area}
+      page_heading: xx
+      plaques: plaques
+
+  area_ungeolocated_plaques:
+    show:
+      page_title: xx
+      page_heading: yy
+
+  areas:
+    edit:
+      page_title: Изменить %{area}
+      page_heading_html: Изменить %{area}
+      find_on_google_maps_html: Найти на <a href="http://maps.google.co.uk/maps?q=%{area}&z=18" target="_new">Картах Google</a>
+      geolocation: Местоположение
+      google_streetview_url: Ссылка на Просмотр улиц Google
+      must_be_underscored: в нижнем регистре с подчеркиваниями
+    new:
+      page_title: Новое место в %{country}
+      page_heading_html: Новое место в %{country}
+      must_be_underscored: в нижнем регистре с подчеркиваниями
+    show:
+      page_title: Таблички в %{area}
+      page_title_unphotographed: Таблички без фотографии в %{area}
+      page_heading_html: Показать %{area}
+
+  colours:
+    index:
+      page_title: Памятные таблички - по цвету
+      page_heading: Цвета
+    new:
+      page_title: Добавить цвет
+      page_heading: Добавить цвет
+
+  countries:
+    edit:
+      page_title: Изменить %{country}
+      page_heading_html: Изменить %{country}
+      add_an_area: Добавить место
+    index:
+      page_title: Страны где есть таблички
+      page_heading: Страны где есть таблички
+      different_strokes: Памятные таблички встречаются по всему миру. В некоторых странах принято называть улицы именами исторических личностей, поэтому там реже встречаются таблички.
+    new:
+      page_title: Добавить страну
+      page_heading: Добавить страну
+    show:
+      page_title: Памятные таблички в %{country}
+      page_heading: Памятные таблички в %{country}
+
+  country_plaques:
+    show:
+
+  errors:
+    not_found:
+      page_title: Страница не найдена
+      page_heading: Страница не найдена
+      explanation: Страница с данным адресом не найдена. Возможно, вы прошли по битой ссылке или ошиблись в наборе адреса.
+
+  explore:
+    show:
+      page_title: Просмотр памятных табличек по месту, типу или персоне
+      page_heading: Просмотр
+      people: Персона
+      people_blurb: Множество табличек посвящено историческим личностям.
+      location: Местоположение
+      location_blurb: Найдите где расположены таблички.
+
+  languages:
+    edit:
+      page_title: Изменить %{language}
+      page_heading: Изменить %{language}
+    index:
+      page_title: Памятные таблички - по языку
+      page_heading: Языки
+    new:
+      page_title: Новый язык
+      page_heading: Новый язык
+
+  licences:
+    index:
+      page_title: Лицензии на фотографии
+      page_heading: Лицензии на фотографии
+      data_about_licences_as: данные о лицензиях 
+    show:
+      page_title: Лицензия - %{licence}
+      page_heading: Лицензия - %{licence}
+      quantity: в Open Plaques доступна на условиях %{licence}.
+      more_information: Больше информации о лицензии тут
+
+  locations:
+    edit:
+      page_title: Изменить %{location}
+      page_heading: Изменить %{location}
+      plaque_at_location: Табличка в этом месте...
+    show:
+      page_title: Место %{location}
+      page_heading: Место %{location}
+      add_an_area: Добавить новое место в
+
+  organisations:
+    edit:
+      page_title: Изменить %{organisation}
+      page_heading: Изменить %{organisation}
+
+    index:
+      page_title: Организации, устанавливающие памятные таблички
+      page_heading: Организации, устанавливающие таблички
+      no_plaques: нет табличек
+    new:
+      page_title: Новая организация
+      page_heading: Новая организация
+      required: Требуется
+      optional: Не обязательно
+      note_about_name: Не включайте в название 'The' если только это не неотьемлемая его часть
+      note_about_description: отображается на странице
+      note_about_notes: для внутреннего использования
+    show:
+      page_title: Организация %{organisation}
+      page_heading: Организация - %{organisation}
+
+  pages:
+    edit:
+      page_title: Изменить %{page}
+      page_heading: Изменить %{page}
+    index:
+      page_title: Страницы
+      page_heading: Страницы
+    new:
+      page_title: Новая страница
+      page_heading: Новая страница
+      name: Название
+      slug: Slug
+    show:
+      page_title: Open Plaques - %{page}
+      page_heading: '%{page}'
+
+  people:
+    edit:
+      page_title: Изменить %{person}
+      page_heading: Изменить %{person}
+      features_on: По табличкам...
+      from_which_we_can_establish: ...можно понять что...
+      name: Имя
+      display_name: с инициалами и титулом отображается как 
+      introduction: Введение
+      wikipedia_url: ссылка на Википидию
+      wikipedia_comment: заменяет сгенерированную автоматически, если она неверна. Пустое поле если страница Википедии отсутствует.
+      conferring_the_letters: conferring the letters
+      conferring_the_title: conferring the title
+      add_a_role: добавить роль
+    new:
+      page_title: Новый человек
+      page_heading: Новый человек
+    show:
+      page_title: Памятные таблички о %{person}
+      not_commemorated: (Пока) не упоминается на табличках из нашей базы
+
+  people_alive_in:
+    show:
+      page_title: Люди, упоминающиеся на табличках, жившие в %{year}
+      page_heading: Люди, упоминающиеся на табличках, жившие в %{year}
+
+  people_born_on:
+    index:
+      page_title: Люди, упоминающиеся на табличках, родившиеся в
+      page_heading: Люди, упоминающиеся на табличках, родившиеся в
+    show:
+      page_title: Люди, упоминающиеся на табличках, родившиеся в %{year}
+      page_heading: Люди, упоминающиеся на табличках, родившиеся в %{year}
+
+  people_by_index:
+    show:
+      page_title: Памятные таблички о людях по алфавиту - %{letter}
+      page_heading: Памятные таблички о людях по алфавиту - %{letter}
+
+  people_died_on:
+    index:
+      page_title: В память о людях умерших в
+      page_heading: В память о людях умерших в
+    show:
+      page_title: В память о людях умерших в %{year}
+      page_heading: В память о людях умерших в %{year}
+
+  personal_connections:
+    edit:
+      page_title: Изменить связи таблички #%{plaque}
+      page_heading: Изменить связи таблички #%{plaque}
+    new:
+      page_title: Новая связь таблички #%{plaque}
+      page_heading: Связи
+      from_which_we_can_establish: Из надписи этой таблички мы узнаем что...
+      nothing_yet: ничего
+      new_person: новая персона
+      new_verb: новый глагол
+      at: был рядом или здесь
+      no_location: Для этой таблички не задано место. Возможно, не стоит создавать связь.
+      from: С
+      to: По
+      reminder: Личность, которой посвящена табличка действительно была рядом с этим местом, а не просто упоминается в тексте.
+
+  personal_roles:
+    edit:
+      page_title: xx
+      page_heading: yy
+
+  photographers:
+    index:
+      page_title: Фотографы
+      page_heading: Фотографы
+      the_top_50: Список 50 наиболее активных
+      how_many: Open Plaques ссылается на фотографии в интернете авторства %{count} фотографов.
+      where: Сами изображения хранятся на Flickr, Wikimedia Commons, и Geograph.
+      how_they_are_licenced_html: Все они лицензированы по разрешительным <a href="http://creativecommons.org/">Creative Commons</a> лицензиям, означающим что авторы явно разрешили использование их изображений другим людям. 
+    new:
+      page_title: Найти на Flickr фото фотографа
+      page_heading: Найти на Flickr фото фотографа
+      flickr_url: Ссылка на фото на Flickr
+    show:
+      page_title: Фотограф %{photographer}
+      page_heading: Фотограф %{photographer}
+
+  photos:
+    edit:
+      page_title: Изменить фото
+      page_heading: Изменить фото
+    index:
+      page_title: Фотографии
+      page_heading: Фотографии
+      explanation_html: Чтобы установить местоположение, цвет и надпись таблички Open Plaques объединяет данные сайтов <a href="http://commons.wikimedia.org/">Wikimedia Commons</a>, <a href="http://www.geograph.org.uk/">Geograph UK</a>, и избражения с <a href="http://flickr.com/">Flickr</a>. Подробности на странице Поучаствовать.
+    new:
+      page_title: Новая фотография
+      page_heading: Новая фотография
+      required: Требуется
+      optional: Опционально
+    show:
+      page_title: '%{photo}'
+      page_heading: Фотография
+
+  picks:
+    edit:
+      page_title: Изменить %{pick}
+      page_heading: Изменить %{pick}
+    index:
+      page_title: Выбор редакции
+      page_heading: Выбор редакции
+      explanation: Это наши любимые таблички. Странные и чудесные, необычные и личные. Сервер Open Plaques отображает отмеченные выбором таблички на главной странице как 'Табличку дня'. Если у вас есть любимая табличка, вы можете предложить ее с описанием причины.
+    new:
+      page_title: Новый выбор
+      page_heading: Новый выбор
+      plaque_id: Одна из моих любимых табличек
+      description: Потому что
+      proposer: Предложил
+    show:
+      page_title: '%{pick}'
+      page_heading: '%{pick}'
+
+  plaques:
+    colour:
+      edit:
+        page_title: xx
+        page_heading: yy
+    description:
+      edit:
+        page_title: xx
+        page_heading: yy
+    erected:
+      edit:
+        page_title: xx
+        page_heading: yy
+    geolocation:
+      edit:
+        page_title: xx
+        page_heading: yy
+    inscription:
+      edit:
+        page_title: xx
+        page_heading: yy
+    language:
+      edit:
+        page_title: xx
+        page_heading: yy
+    photos:
+      show:
+        page_title: Фотографии %{plaque}
+        page_heading: Фотографии
+    sponsorships:
+      new:      
+        page_title: xx
+        page_heading: yy
+    create:
+      page_title: xx
+      page_heading: yy
+    edit:
+      page_title: xx
+      page_heading: yy
+    index:
+      page_title: xx
+      page_heading: yy
+    new:
+      page_title: Open Plaques - новая табличка
+      page_heading: Расскажите нам о табличке
+      inscription_heading: Что написано на табличке? 
+      inscription_advice: Введите надпись на табличке (за исключением данных установившей её организации), к примеру 'Иван Кузнецов жил здесь в 1900-1980'.
+      inscription_partial: Точный текст пока неизвестен
+      language_heading: На каком языке надпись?
+      thanks: Спасибо за добавление новой таблички на сайт. Введите как можно больше информации о ней, неизвестные поля можно не заполнять.
+      you_agree_to_open_licence: Все данные на сайте Open Plaques распространяются на условиях public domain без каких-либо ограничений. Добавляя на сайт информацию о табличке вы соглашаетесь с этим.
+      error: В введённых данных присутствует ошибка. Пожалуйста, исправьте ее.
+
+  plaques_latest:
+    show:
+      page_title: xx
+      page_heading: yy
+
+  roles:
+    edit:
+      page_title: Изменить роль %{role}
+      page_heading: Изменить роль %{role}
+    new:
+      page_title: Новая роль
+      page_heading: Новая роль
+    show:
+      page_title: Посвящена %{role}
+      page_heading: Посвящена %{role}
+      read_more_html: Узнать больше о %{link} в Википедии
+      related_roles: Связанные роли
+
+  roles_by_index:
+    show:
+      page_title: Роли - %{letter}
+      page_heading: Роли - %{letter}
+
+  search:
+    index:
+      page_title: xx
+      page_heading: yy
+
+  series:
+    edit:
+      page_title: Изменить серию %{series}
+      page_heading: Изменить серию %{series}
+    index:
+      page_title: Серии
+      page_heading: Серии
+      explanation: Таблички устанавливаются различными организациями, и иногда объединяются в серии. Мы стремимся установить принадлежность к серии и номер таблички внутри нее.
+    new:
+      page_title: Новая серия
+      page_heading: Новая серия
+    show:
+      page_title: Серия '%{series}'
+      page_heading: Серия '%{series}'
+
+  users:
+    index:
+      page_title: Пользователи
+      page_heading: Пользователи
+    new:
+      page_title: Новый глагол
+      page_heading: Новый глагол
+    show:
+      page_title: '%{verb}'
+      page_heading: '%{verb}'
+
+  verbs:
+    index:
+      page_title: Глаголы
+      page_heading: Глаголы
+    new:
+      page_title: Новый глагол
+      page_heading: Новый глагол
+      explanation: Глаголы должны быть в прошедшем времени и сформулированы максимально близко к тексту таблички, к примеру 'жил', 'умер', т.е описывать что случилось в данном месте.
+    show:
+      page_title: '%{verb}'
+      page_heading: '%{verb}'
+
+
+  # Used in array.to_sentence.
+  support:
+    array:
+      words_connector: ", "
+      two_words_connector: " и "
+      last_word_connector: ", и "
