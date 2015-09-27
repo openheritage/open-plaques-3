@@ -38,13 +38,6 @@ class AreaPlaquesController < ApplicationController
       format.xml
       format.json { render :json => @plaques }
       format.geojson { render :geojson => @plaques.geolocated, :parent => @area }
-#     format.geojson { 
-#        render :json => { 
-#          type: 'FeatureCollection',
-#          properties: @area.as_json(),
-#          features: @plaques.geolocated.as_json({:only => [:id, :latitude, :longitude, :inscription]})
-#        }
-#      }
     end
   end
 

@@ -11,7 +11,7 @@ class SeriesPlaquesController < ApplicationController
     end
     respond_to do |format|
       format.json { render :json => @series.plaques }
-      format.geojson { render :geojson => @series.plaques.geolocated, :parent => @series }
+      format.geojson { render :geojson => @plaques.geolocated, :parent => @series }
     end
   end
 

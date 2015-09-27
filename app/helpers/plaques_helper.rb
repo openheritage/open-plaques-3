@@ -372,9 +372,9 @@ module PlaquesHelper
         person.names.each_with_index do |name, index|
           if (!matched)
             search_for = name
-            puts '*** search ' + reduced_inscription + " for " + search_for
+#            puts '*** search ' + reduced_inscription + " for " + search_for
             matched = true if reduced_inscription.index(search_for) != nil
-            puts '*** found ' + search_for + " [" + index.to_s + "]" if matched
+#            puts '*** found ' + search_for + " [" + index.to_s + "]" if matched
           end
         end
         reduced_inscription = reduced_inscription.gsub(search_for, "") if matched
