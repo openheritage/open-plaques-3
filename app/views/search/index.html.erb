@@ -9,10 +9,10 @@
 </div>
 
 <% if params[:from] && params[:from] == "submission" %>
-  <div class="panel"><%= t '.not_found' %> <%= link_to t(.add_it), new_plaque_path(:checked => true) %>.</div>
+  <div class="panel"><%= t '.not_found' %> <%= link_to t('.add_it'), new_plaque_path(:checked => true) %>.</div>
 <% else %>
   <div class="panel" id="search_results_footer">
-    <h2><%= t .try_again %> <%= link_to t(.add_it), new_plaque_path(:checked => true,  :phrase => @phrase) %></h2>
+    <h2><%= t '.try_again' %> <%= link_to t('.add_it'), new_plaque_path(:checked => true,  :phrase => @phrase) %></h2>
     <%= render :partial => "search_form", :locals => { :phrase => @phrase } %>
   </div>
 <% end %>
