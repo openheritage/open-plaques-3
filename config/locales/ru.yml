@@ -123,8 +123,8 @@ ru:
       add_a_plaque: добавить её
       take_a_photo: Сделайте фотографию. Загрузите её в Wikimedia Commons или Flickr и свяжите фото с нашей базой
       spot_an_innaccuracy: Заметили неточность? Сообщите нам.
-      find_something: Или найдите задачу в  
-      to_do: списках
+      find_something: Или найдите что исправить в  
+      to_do: задачах
       mission: Вы участвуете в нашей миссии - найти все памятные таблички мира!
       news: Новости
       news_detail_html: Узнать о новостях вы можете в <a href="http://blog.openplaques.org">нашем блоге</a> и <a href="http://www.twitter.com/openplaques">Твиттере</a>.
@@ -346,7 +346,7 @@ ru:
       page_heading: Фотографы
       the_top_50: Список 50 наиболее активных
       how_many: Open Plaques ссылается на фотографии в интернете авторства %{count} фотографов.
-      where: Сами изображения хранятся на Flickr, Wikimedia Commons, и Geograph.
+      where: Сами изображения хранятся на Flickr, Wikimedia Commons и Geograph.
       how_they_are_licenced_html: Все они лицензированы по разрешительным <a href="http://creativecommons.org/">Creative Commons</a> лицензиям, означающим что авторы явно разрешили использование их изображений другим людям. 
     new:
       page_title: Найти на Flickr фото фотографа
