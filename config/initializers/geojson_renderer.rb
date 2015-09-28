@@ -1,11 +1,9 @@
 Mime::Type.register 'application/json', :geojson
 ActionController::Renderers.add :geojson do |object, options|
-  puts '*** geojson renderer'
   geojson = ''
   begin
     begin
       geojson = object.as_geojson(options).to_json
-      puts '*** basic as_geojson.to_json'
     rescue
       if object.longitude
         {
