@@ -446,8 +446,8 @@ en-GB:
 
   plaques_latest:
     show:
-      page_title: xx
-      page_heading: yy
+      page_title: Latest plaques
+      page_heading: Latest plaques
 
   roles:
     edit:
@@ -469,8 +469,11 @@ en-GB:
 
   search:
     index:
-      page_title: xx
-      page_heading: yy
+      page_title: People or plaques matching %{phrase}
+      page_heading: People or plaques matching %{phrase}
+      not_found: Plaque not listed?
+      add_it: Add it
+      try_again: Can't find what you're looking for? Try another search or
 
   series:
     edit:

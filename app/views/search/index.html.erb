@@ -1,8 +1,7 @@
-<% content_for :page_title, "Plaques mentioning '" + @phrase + "'" %>
-<% @page_title = "Search results for '" + @phrase + "'"  %>
+<% content_for(:page_title) {t '.page_title', :phrase => @phrase} %>
 
 <div class="panel clearfix">
-  <h1>People or plaques matching &quot;<%= @phrase %>&quot;</h1>
+  <h1><%= t '.page_heading', :phrase => @phrase %></h1>
 </div>
 
 <div class="panel">
@@ -10,11 +9,10 @@
 </div>
 
 <% if params[:from] && params[:from] == "submission" %>
-  <div class="panel">Plaque not listed? <%= link_to "Add it", new_plaque_path(:checked => true) %>.</div>
+  <div class="panel"><%= t '.not_found' %> <%= link_to t(.add_it), new_plaque_path(:checked => true) %>.</div>
 <% else %>
   <div class="panel" id="search_results_footer">
-    <h2>Can't find what you're looking for? Try another search or <%= link_to "add it", new_plaque_path(:checked => true,  :phrase => @phrase) %></h2>
+    <h2><%= t .try_again %> <%= link_to t(.add_it), new_plaque_path(:checked => true,  :phrase => @phrase) %></h2>
     <%= render :partial => "search_form", :locals => { :phrase => @phrase } %>
   </div>
 <% end %>
-
