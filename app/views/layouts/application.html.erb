@@ -26,7 +26,7 @@
 
     <%= tag("link", :rel => "shortcut icon", :href => image_path("openplaques-icon.png"))%>
     <%= csrf_meta_tag %>
-    <%= display_meta_tags :site => 'My website' %>
+    <%= display_meta_tags :site => 'Open Plaques' %>
   </head>
 
   <body id="<%= params[:controller].parameterize %>_controller">
@@ -52,18 +52,17 @@
     <td id="primary_links">
       <nav>
         <%= content_tag("ul", :class => "clearfix") do %>
-          <%= navigation_list_link_to "People", people_path %>
-          <%= navigation_list_link_to "Places", countries_path %>
+          <%= navigation_list_link_to t('menu.people'), people_path %>
+          <%= navigation_list_link_to t('menu.places'), countries_path %>
           <% if current_user && current_user.is_admin? %>
-            <%= navigation_list_link_to "Organisations", organisations_path %>
-            <%= navigation_list_link_to "Roles", roles_path %>
-            <%= navigation_list_link_to "Verbs", verbs_path %>
-            <%= navigation_list_link_to "Photographers", photographers_path %>
-            <%= navigation_list_link_to "Todo lists", "/todo" %>
+            <%= navigation_list_link_to t('menu.organisations'), organisations_path %>
+            <%= navigation_list_link_to t('menu.roles'), roles_path %>
+            <%= navigation_list_link_to t('menu.verbs'), verbs_path %>
+            <%= navigation_list_link_to t('menu.photographers'), photographers_path %>
+            <%= navigation_list_link_to t('menu.todo_lists'), "/todo" %>
           <% end %>
-          <%#= navigation_list_link_to "Explore", "#" %>
-          <%= navigation_list_link_to "Contribute", contribute_path %>
-          <%= navigation_list_link_to "About", about_path %>
+          <%= navigation_list_link_to t('menu.contribute'), contribute_path %>
+          <%= navigation_list_link_to t('menu.about'), about_path %>
         <% end %>
       </nav>
     </td>
@@ -71,9 +70,9 @@
       <div class="search_box">
         <%= form_tag(search_path, :method => "get") do %>
           <span id="magnifying_glass"></span>
-          <%= label_tag(:phrase, "Search: ") %>
-          <%= text_field_tag(:phrase, params[:phrase], :type => 'search', :placeholder => "Search for a person, place or organisation...") %>
-          <%= submit_tag("Go", :name => nil) %>
+          <%= label_tag(:phrase, t('menu.search') + ": ") %>
+          <%= text_field_tag(:phrase, params[:phrase], :type => 'search', :placeholder => t('menu.search_placeholder')) %>
+          <%= submit_tag(t('menu.go'), :name => nil) %>
         <% end %>
       </div>
     </td>
@@ -111,12 +110,12 @@
     </div>
     <footer>
       <nav>
-        <%= link_to "About", about_path %>
-        <%= link_to "Contact", contact_path %>
-        <%= link_to "The data", about_the_data_path %>
-        <%= link_to "Blog", "http://blog.openplaques.org/" %>
-        <%= link_to "Twitter", "http://twitter.com/openplaques" %>
-        <%= link_to "Facebook", "http://www.facebook.com/openplaques" %>
+        <%= link_to t('menu.about'), about_path %>
+        <%= link_to t('menu.contact'), contact_path %>
+        <%= link_to t('menu.the_data'), about_the_data_path %>
+        <%= link_to t('menu.blog'), "http://blog.openplaques.org/" %>
+        <%= link_to t('menu.twitter'), "http://twitter.com/openplaques" %>
+        <%= link_to t('menu.facebook'), "http://www.facebook.com/openplaques" %>
       </nav>
     </footer>
 
@@ -136,4 +135,3 @@
 
 </body>
 </html>
-

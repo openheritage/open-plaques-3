@@ -76,6 +76,25 @@ en-GB:
         name: Name
         description: Description
 
+  menu:
+    people: People
+    places: Places
+    organisations: Organisations
+    roles: Roles
+    verbs: Verbs
+    photographers: Photographers
+    todo_lists: Todo lists
+    contribute: Contribute
+    about: About
+    contact: Contact
+    the_data: The data
+    blog: Blog
+    twitter: Twitter
+    facebook: Facebook
+    search: Search
+    go: Go
+    search_placeholder: Search for a person, place or organisation...
+
   buttons:
     add: add
     update: update

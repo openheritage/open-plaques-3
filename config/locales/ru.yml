@@ -76,6 +76,25 @@ ru:
         name: Название
         description: Описание
 
+  menu:
+    people: Люди 
+    places: Места 
+    organisations: Организации 
+    roles: Роли 
+    verbs: Глаголы 
+    photographers: Фотографы 
+    todo_lists: Задачи 
+    contribute: Участвовать 
+    about: О проекте 
+    contact: Контакты 
+    the_data: Данные 
+    blog: Блог 
+    twitter: Твиттер 
+    facebook: Фейсбук 
+    search: Поиск 
+    go: Искать 
+    search_placeholder: Искать по имени, месту или организации...
+
   buttons:
     add: добавить
     update: обновить
