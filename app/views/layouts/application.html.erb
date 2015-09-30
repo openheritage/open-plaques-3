@@ -54,11 +54,11 @@
         <%= content_tag("ul", :class => "clearfix") do %>
           <%= navigation_list_link_to t('menu.people'), people_path %>
           <%= navigation_list_link_to t('menu.places'), countries_path %>
+          <%= navigation_list_link_to t('menu.organisations'), organisations_path %>
+          <%= navigation_list_link_to t('menu.photographers'), photographers_path %>
           <% if current_user && current_user.is_admin? %>
-            <%= navigation_list_link_to t('menu.organisations'), organisations_path %>
             <%= navigation_list_link_to t('menu.roles'), roles_path %>
             <%= navigation_list_link_to t('menu.verbs'), verbs_path %>
-            <%= navigation_list_link_to t('menu.photographers'), photographers_path %>
             <%= navigation_list_link_to t('menu.todo_lists'), "/todo" %>
           <% end %>
           <%= navigation_list_link_to t('menu.contribute'), contribute_path %>
