@@ -43,7 +43,7 @@ class Plaque < ActiveRecord::Base
   before_save :use_other_colour_id
 
   scope :current, -> { where(is_current: true).order('id desc') }
-  scope :geolocated, ->  { where(["latitude IS NOT NULL"]) }
+  scope :geolocated, ->  { where(["plaques.latitude IS NOT NULL"]) }
   scope :ungeolocated, -> { where(latitude: nil).order("id DESC") }
   scope :photographed, -> { where("photos_count > 0") }
   scope :unphotographed, -> { where(:photos_count => 0, :is_current => true).order("id DESC") }
@@ -314,7 +314,7 @@ class Plaque < ActiveRecord::Base
   end
 
   def uri
-    "http://openplaques.org" + Rails.application.routes.url_helpers.plaque_path(self, :format => :json) if id
+    "http://openplaques.org" + Rails.application.routes.url_helpers.plaque_path(self) if id
   end
 
   def to_s

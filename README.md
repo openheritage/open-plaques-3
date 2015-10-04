@@ -30,7 +30,7 @@ This project requires:
 This should just be a case of running `foreman start` on the command line. The output will tell you which URL
 you can view it at. Typically this will be `http://localhost:5000`.
 
-### Keeping the database schema up-to-date
+## Keeping the database schema up-to-date
 
 When changes to the database schema are required (which you will be warned about), you can make these
 changes by running `bundle exec rake db:migrate`.
@@ -40,3 +40,11 @@ changes by running `bundle exec rake db:migrate`.
 You can run the tests (which check that the code does what we expect it to do) by running `bundle exec rspec`.
 
 If you see `0 failures` then everything is ok.
+
+## Local development database
+
+* Run a backup with 'heroku pg:backups public-url --app open-plaques-beta'
+* Get the url 'heroku pg:backups public-url --app open-plaques-beta'
+* and download it
+* create a new empty database
+* restore it into postgres (I use the pgAdmin3 graphical tool)
