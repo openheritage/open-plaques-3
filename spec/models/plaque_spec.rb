@@ -127,7 +127,7 @@ describe Plaque do
       end
       it 'has a uri' do
         # this is not ideal response. It should depend on the output format
-        expect(@plaque.uri).to eq('http://openplaques.org/plaques/13.json')
+        expect(@plaque.uri).to eq('http://openplaques.org/plaques/13')
       end
     end
 
