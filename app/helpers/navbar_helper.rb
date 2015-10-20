@@ -16,8 +16,8 @@ module NavbarHelper
       params[key].to_s == value.to_s
     end
 
-    content_tag(:li, :class => ("active" if active)) do
-      link_to(label, path)
+    content_tag(:li, :class => ("nav-item active" if active)) do
+      link_to(label, path, :class => "nav-link")
     end
   end
 end

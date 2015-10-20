@@ -1,0 +1,12 @@
+<div class="col-xs-12 vcard well">
+  <%= content_tag("div", link_to(thumbnail_img(person), person_path(person)), :class=>'tile') if person.main_photo %>
+  <%= link_to(person.full_name, person, {:class => "fn url", :property => "rdfs:label foaf:name vcard:fn", :rel => "foaf:homepage vcard:url"}) + " " + person.dates %>
+  <% if @year %>
+    <% if person.age_in(@year.year) == 0 %>
+      <p class="count">born in <%= @year.year.to_s %></p>
+    <% else %>
+      <p class="count">aged c.<%= person.age_in(@year.year) %> in <%= @year.year.to_s %></p>
+    <% end %>
+  <% end %>
+  <%= roles_list(person) %>
+</div>

@@ -1,15 +1,10 @@
-<div class="panel clearfix">
-  <% if current_user && current_user.is_admin? %>
-    <section class="admin_panel">
-      <%= link_to t('buttons.edit'), edit_area_path(@area), {:class => :edit, :title => t('buttons.edit')} %>
-    </section>
-  <% end %>
-  <h1><%= @area.name %>, <%= link_to(@area.country.name, @area.country) if @area.country %></h1>
-</div>
+<% content_for(:page_title) {t '.page_title_unphotographed', :area => @area.name + ", " + @area.country.name } %>
+<% content_for(:title) { render @area } %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_area_path(@area), {:class => :edit, :title => t('buttons.edit')}} %>
 
-<div class="panel">
+<div class="container">
   <p>This area is centred on the geographical point <%= @area.longitude %>, <%= @area.latitude %></p>
-  <p>There are <%= @area.plaques_count %> plaques in <%= render @area %></p>
+  <p>There are <%= @area.plaques_count %> plaques in this area.</p>
 </div>
 
 <div class="panel clearfix">

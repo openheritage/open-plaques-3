@@ -14,9 +14,9 @@ module PhotosHelper
     begin
       begin
         if thing.thumbnail_url
-          desc += image_tag(thing.thumbnail_url, :size => "75x75")
+          desc += image_tag(thing.thumbnail_url, :size => "75x75", :class => "img-rounded")
         else
-          desc += image_tag(thing.file_url, :size => "75x75")
+          desc += image_tag(thing.file_url, :size => "75x75", :class => "img-rounded")
         end
       rescue
         begin
@@ -27,7 +27,7 @@ module PhotosHelper
       end
     rescue
       ## oh, I give up!....
-      desc += image_tag("NoPhotoSqr.png", :size => "75x75")
+      desc += image_tag("NoPhotoSqr.png", :size => "75x75", :class => "img-rounded")
     end
     return desc.html_safe
   end

@@ -1,10 +1,10 @@
 <% content_for(:page_title) {t '.page_title', :series => @series.name} %>
+<% content_for(:title) {t '.page_heading', :series => @series.name} %>
 
-<div class="panel clearfix">
-  <h1><%= t '.page_heading', :series => @series.name %></h1>
+<div class="container">
   <%= form_for(@series) do |f| %>
-    <p><%= f.label :name %> <%= f.text_field :name %></p>
-    <p><%= f.label :description %> <%= f.text_field :description %></p>
-    <p><%= f.submit t('buttons.save') , :class => :button %></p>
+    <div class="form_group"><%= f.label :name %> <%= f.text_field :name %></div>
+    <div class="form_group"><%= f.label :description %> <%= f.text_field :description %></div>
+    <div class="form_group"><%= f.submit t('buttons.save'), :class => [:btn, :'btn-primary'] %></div>
   <% end %>
 </div>

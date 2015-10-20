@@ -1,24 +1,13 @@
 <% content_for(:page_title) {t '.page_title'} %>
+<% content_for(:title) {t '.page_heading'} %>
+<% content_for(:admin_menu) {navbar_link_to(t('buttons.add'), new_country_path, {:class => :edit, :title => t('buttons.add')})} %>
 
-<div class="panel clearfix">
-  <% if current_user && current_user.is_admin? %>
-    <section class="admin_panel">
-      <%= link_to(t('buttons.add'), new_country_path, {:class => :edit, :title => t('buttons.add')})%>
-    </section>
-  <% end %>
-  <h1><%= t '.page_heading' %></h1>
+<div class="container">
   <p><%= t '.different_strokes' %></p>
 </div>
 
-<%= content_tag("ol", :id => "places_results", :class => "results one_destination_results") do %>
-  <% @countries.each do |country| %>
-    <%= content_tag("li") do %>
-      <%= link_to country do %>
-          <p class="result"><%= country.name %></p>
-          <p class="count"><%= pluralize(@plaque_counts[country.id], "plaque") %></p>
-      <% end %>
-    <% end %>
-  <% end %>
-<% end %>
+<div class="container">
+  <%= render @countries %>
+<div>
 
 <p class="alternate_formats"><%= t 'data_about_things_as' %> .json and .geojson</p>

@@ -422,8 +422,8 @@ en-GB:
         page_heading: Photo
     sponsorships:
       new:      
-        page_title: xx
-        page_heading: yy
+        page_title: Edit sponsor information for plaque
+        page_heading: Which organisations were involved in erecting this plaque?
     create:
       page_title: xx
       page_heading: yy

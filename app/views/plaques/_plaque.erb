@@ -4,15 +4,33 @@
   <% plaque = plaque.plaque %>
 <% end %>
 <% if plaque %>
-  <div class="inside_panel" summary="Plaque details for #<%= plaque.id %>" id="plaque_<%= plaque.id %>">
-    <%= render 'plaques/tile', :plaque => plaque %>
-    <%= content_tag('h1', new_linked_inscription(plaque), :class => 'inscription') %>
-    <% if plaque.foreign? && plaque.inscription_in_english  %>
-      <%= content_tag('span', plaque.inscription_in_english, :class => 'inscription') %>
+  <div class="col-xs-4 card" summary="Plaque details for #<%= plaque.id %>" id="plaque-<%= plaque.id %>">
+    <% if plaque.main_photo %>
+      <% if plaque.main_photo.thumbnail_url %>
+        <img class="card-img-top" src="<%= plaque.main_photo.thumbnail_url %>"/>
+      <% elsif plaque.main_photo.file_url %>
+        <img class="card-img-top" src="<%= plaque.main_photo.file_url %>"/>
+      <% else %>
+        <img class="card-img-top" src="NoPhotoSqr.png"/>
+      <% end %>
+    <% else %>
+      <img class="card-img-top" src="NoPhotoSqr.png"/>
     <% end %>
-    <div><%= plaque.address %>, <%= link_to(plaque.area.name, area_path(plaque.area)) if plaque.area %>, <%= plaque.area.country.name if plaque.area %><% if @person %> where <%= @person.personal_pronoun %> <%= verbs(@person,plaque).to_sentence.html_safe %><% end %><% '. As far as we know, it is not currently on display.' if !plaque.is_current %></div>
-    <% if plaque.series %>
-      <div><% if plaque.series_ref? %>#<%= content_tag(:span, plaque.series_ref )%><% else %>part<% end %> of the <%= link_to plaque.series.name, plaque.series %> series</div>
-    <% end %>
+      
+    <div class="card-block">
+      <h4 class="card-title"><%= plaque.title %></h4>
+      <p class="card-text"><%= new_linked_inscription(plaque) %></p>
+      <% if plaque.foreign? && plaque.inscription_in_english  %>
+        <span id="inscription-in-english" class="card-text"><%= plaque.inscription_in_english %></span>
+      <% end %>
+      <p id="address" class="card-text">
+        <%= plaque.address %>, <%= link_to(plaque.area.name, area_path(plaque.area)) if plaque.area %>, <%= plaque.area.country.name if plaque.area %><% if @person %> where <%= @person.personal_pronoun %> <%= verbs(@person,plaque).to_sentence.html_safe %><% end %><% '. As far as we know, it is not currently on display.' if !plaque.is_current %>
+      </p>
+      <% if plaque.series %>
+        <p id="series" class="card-text">
+          <% if plaque.series_ref? %>#<%= content_tag(:span, plaque.series_ref )%><% else %>part<% end %> of the <%= link_to plaque.series.name, plaque.series %> series
+        </p>
+      <% end %>
+    </div>
   </div>
 <% end %>

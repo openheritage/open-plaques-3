@@ -1,7 +1,7 @@
-<div class="inside_panel">
+<div class="card">
   <div class="header">
-    <%= content_tag("span", link_to(series.name, series_path(series)), :class=>'name') %>
-    <%= content_tag("span", series.description, :class=>'description') %>
+    <span id="name"><%= link_to(series.name, series_path(series))%></span>
+    <span id="description"><%= series.description %></span>
   </div>
   <%= render partial: 'plaques/tile', collection: series.plaques.photographed.limit(10), as: :plaque %>
   <br style="clear: both;"/>

@@ -1,67 +1,54 @@
 <% content_for(:page_title) {t '.page_title'} %>
+<% content_for(:title) {"OpenPlaques"} %>
 
-<% if Rails.env == 'development' %>
-  <%= render 'development_message' %>
-<% end %>
-
-<div class="panel clearfix">
   <% if current_user && current_user.is_admin? %>
-    <section class="admin_panel">
+    <div class="container">
       <%= link_to(t('.pages'), pages_path, {:class => :edit, :title => t('.pages')})%>
-    </section>
+    </div>
   <% end %>
-  <div id="homepage_content">
-    <p class="intro"><%= t '.strapline_html' %></p>
-    <ul id="homepage_modules">
-      <li>
-        <h2><%=t '.explore' %></h2>
-        <p>Browse the <%= @plaques_count %> plaques by <%= link_to "person", people_path %>, <%= link_to "place", countries_path %>, or <%= link_to "search", search_path %>.</p>
-      </li>
-      <li>
-        <h2><%=t '.contribute' %></h2>
-        <p><%=t '.contribute1' %> <%= link_to t('.add_a_plaque'), new_plaque_path %></p>
-        <p><%=t '.take_a_photo' %></p>
-        <p><%=t '.spot_an_innaccuracy' %></p>
-        <% if current_user && current_user.is_admin? %>
-          <p><%= t '.find_something' %> <%= link_to(t('.to_do'), "/todo", {:class => :edit, :title => t('.to_do')})%></p>
-        <% end %>
-        <p><%=t '.mission' %></p>
-      </li>
-      <li>
-        <h2><%=t '.news' %></h2>
-        <p><%=t '.news_detail_html' %></p>
-        <div class="like_button">
-          <iframe src="http://www.facebook.com/plugins/like.php?href=https://www.facebook.com/OpenPlaques&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action=like&amp;font&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:75px; height:20px; text-align:right;" allowTransparency="true"></iframe>
-          <%= t '.like_us_on_Facebook' %>
+  
+    <div class="jumbotron">
+      <div class="container">
+        <%= t '.strapline_html' %>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <h2><%=t '.explore' %></h2>
+          <p>Browse the <%= @plaques_count %> plaques by <%= link_to "person", people_path %>, <%= link_to "place", countries_path %>, or <%= link_to "search", search_path %>.</p>
         </div>
-      </li>
-      <% if @todays %>
-        <li id="plaque_of_the_day">
-          <h2><%= t '.plaque_of_the_day' %></h2>
-          <div>
-            <div class="thumb">
-              <%= link_to thumbnail_img(@todays.plaque), @todays.plaque %>
-            </div>
-            <div><%= link_to @todays.plaque.title, @todays.plaque %><br/>"<%= @todays.description %>" - <%= @todays.proposer %></div>
-          </div>
-        </li>
-      <% end %>
-    </ul>
-  </div>
-
-  <ol id="recent_photographed_plaques">
-    <% @recent_plaques.each do |plaque| %>
-      <% if plaque.photos.first %>
-        <li class="first option_one">
-          <%= link_to plaque_path(plaque) do %>
-            <img src="<%= plaque.photos.first.file_url %>" width="200" alt="Plaque inscription" />
-            <div class="info">
-              <p><%= truncate(plaque.inscription, :length => 150) %></p>
-            </div>
+        <div class="col-md-4">
+          <h2><%=t '.contribute' %></h2>
+          <p><%=t '.contribute1' %> <%= link_to t('.add_a_plaque'), new_plaque_path %></p>
+          <p><%=t '.take_a_photo' %></p>
+          <p><%=t '.spot_an_innaccuracy' %></p>
+          <% if current_user && current_user.is_admin? %>
+            <p><%=t '.find_something' %> <%= link_to(t('.to_do'), "/todo", {:class => :edit, :title => t('.to_do')})%></p>
           <% end %>
-        </li>
-      <% end %>
-    <% end %>
-  </ol>
+          <p><%=t '.mission' %></p>
+        </div>
+        <div class="col-md-4">
+          <h2><%=t '.news' %></h2>
+          <p><%=t '.news_detail_html' %></p>
+        </div>
+        <div class="col-md-4">
+          <div class="like_button">
+            <iframe src="http://www.facebook.com/plugins/like.php?href=https://www.facebook.com/OpenPlaques&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action=like&amp;font&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:75px; height:20px; text-align:right;" allowTransparency="true"></iframe> <%= t '.like_us_on_Facebook' %>
+          </div>
+        </div>
+      </div>
+    </div>
 
-</div>
+    <% if @todays %>
+      <div class="container" id="plaque-of-the-day">
+        <h2><%= t '.plaque_of_the_day' %></h2>
+        <%= render @todays %>
+      </div>
+    <% end %>
+
+    <div class="container" id="recent-plaques">
+      <h2><%= t '.recently_photographed' %></h2>
+      <%= render @recent_plaques %>
+    </div>

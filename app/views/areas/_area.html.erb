@@ -1,5 +1,9 @@
-<div class="panel">
+<div class="col-sm-4 card">
   <% if area %>
-    <%= link_to area.name, area_plaques_path(area) %><% if area.country %>, <%= area.country %><% end %> [<%= area.plaques_count %>]
+    <span class="card-title">
+      <%= link_to area.name, area_plaques_path(area) %>
+      <% if area.country %> <span class="flag-icon flag-icon-<%= area.country.alpha2 %>"></span><% end %>
+    </span>
+    <span class="label label-default label-pill pull-right"><%= area.plaques_count %></span>
   <% end %>
 </div>

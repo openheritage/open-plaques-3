@@ -1,17 +1,13 @@
 <% content_for(:page_title) {t '.page_title'} %>
+<% content_for(:title) {t '.page_heading'} %>
+<% content_for(:admin_menu) {navbar_link_to(t('buttons.add'), new_photographer_path, {:class => :edit, :title => t('buttons.add')})} %>
 
-<div class="panel clearfix">
-  <% if current_user && current_user.is_admin? %>
-    <section class="admin_panel">
-      <%= link_to(t('buttons.add'), new_photographer_path, {:class => :edit, :title => t('buttons.add')})%>
-    </section>
-  <% end %>
-  <h1><%= t '.page_heading' %></h1>
-  <p>
+<div class="container">
+  <div class="row">
     <%= t '.how_many', :count =>  @photographers.size%>
     <%= t '.where' %>
     <%= t '.how_they_are_licenced_html' %>
-  </p>
+  </div>
   <h2><%= t '.the_top_50' %></h2>
   <canvas id="myCanvas" width="1000" height="1000">
     <ol>

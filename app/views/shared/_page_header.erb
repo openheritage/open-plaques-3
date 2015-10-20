@@ -1,6 +1,6 @@
 <div class="page-header">
   <% if content_for?(:title) %>
-    <h1><%= content_for(:title) %></h1>
+    <h1 property="dc:title rdfs:label foaf:name" about="#this"><%= content_for(:title) %></h1>
     <%= content_for(:page_subhead) %>
   <% else %>
     <h1>Untitled</h1>

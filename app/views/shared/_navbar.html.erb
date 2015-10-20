@@ -1,44 +1,39 @@
-<div class="navbar navbar-default navbar-static-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <%= link_to("RailsStarter", root_path, :class => "navbar-brand") %>
-    </div>
-    <div class="navbar-collapse collapse">
+<nav class="navbar navbar-dark bg-primary">
+      <%= link_to("OpenPlaques", root_path, :class => "navbar-brand") %>
       <ul class="nav navbar-nav">
         <%= navbar_link_to("Home",
                            root_path,
                            :active_when => { :controller => :home }) %>
-        <%= navbar_link_to("About",
+        <%= navbar_link_to(t('menu.about'),
                            about_path,
                            :active_when => {
                              :controller => :static_pages,
                              :action => :about
                            }) %>
         <li><a href="#contact">Contact</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li class="divider"></li>
-            <li class="dropdown-header">Nav header</li>
-            <li><a href="#">Separated link</a></li>
-            <li><a href="#">One more separated link</a></li>
-          </ul>
-        </li>
+        <%= navbar_link_to(t('menu.people'), people_path) %>
+        <%= navbar_link_to(t('menu.places'), countries_path) %>
+        <%= navbar_link_to(t('menu.organisations'), organisations_path) %>
+        <%= navbar_link_to(t('menu.photographers'), photographers_path) %>
+        <% if current_user && current_user.is_admin? %>
+        <!-- admin only -->
+        <%= navbar_link_to(t('menu.roles'), roles_path) %>
+        <%= navbar_link_to(t('menu.verbs'), verbs_path) %>
+        <%= navbar_link_to(t('menu.todo_lists'), "/todo") %>
+        <!-- admin only -->
+        <% end %>
+        <%= navbar_link_to(t('menu.contribute'), contribute_path) %>
       </ul>
+      <%= user_menu %>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="#">Log in</a></li>
         <li><a href="#">Register</a></li>
         <li><a href="#">Help</a></li>
       </ul>
-    </div><!--/.nav-collapse -->
-  </div>
-</div>
+      <% if current_user && current_user.is_admin? %>
+        <ul class="nav navbar-nav">
+          <%= yield :admin_menu %>
+        </ul>
+      <% end %>
+</nav>
+

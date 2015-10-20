@@ -10,10 +10,11 @@ gem 'curb'
 gem 'nokogiri'
 gem 'sanitize'
 
-gem 'sass-rails',        '~> 4.0.3'
+gem 'sass-rails' #,        '~> 4.0.5'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
-gem 'bootstrap-sass',    '~> 3.2.0'
+gem 'bootstrap-sass', :git => 'https://github.com/jnicho02/bootstrap-sass.git'
+# gem 'nprogress-rails'
 
 gem 'devise'
 gem 'meta-tags'

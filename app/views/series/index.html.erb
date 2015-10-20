@@ -1,14 +1,14 @@
 <% content_for(:page_title) {t '.page_title'} %>
+<% content_for(:title) {t '.page_heading'} %>
+<% content_for(:admin_menu) {navbar_link_to(t('buttons.add'), new_series_path, {:class => :new, :title => t('buttons.add')})} %>
 
-<div class="panel clearfix">
-  <% if current_user && current_user.is_admin? %>
-    <section class="admin_panel">
-      <%= link_to(t('buttons.add'), new_series_path, {:class => :new, :title => t('buttons.add')})%>
-    </section>
-  <% end %>
-  <h1><%= t '.page_heading' %></h1>
-  <p><%= t '.explanation' %></p>
-  <%= render @series %>
+<div class="container">
+  <div class="row">
+    <p><%= t '.explanation' %></p>
+  </div>
+  <div class="row">
+    <%= render @series %>
+  </div>
 </div>
 
 <p class="alternate_formats">%= t 'data_about_things_as' %> <%= alternate_link_to "JSON", series_path(:json), :json %></p>

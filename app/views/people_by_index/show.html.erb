@@ -1,4 +1,5 @@
 <% content_for(:page_title) {t '.page_title', :letter => @index.upcase} %>
+<% content_for(:title) {t '.page_heading', :letter => @index.upcase} %>
 
 <div class="panel clearfix">
   <% if current_user && current_user.is_admin? %>
@@ -6,7 +7,6 @@
       <%= link_to t('buttons.add'), new_person_path, {:class => :edit, :title => t('buttons.add')} %>
     </section>
   <% end %>
-  <h1><%= t '.page_heading', :letter => @index.upcase %></h1>
   <nav class="alphabet">
     <%= content_tag("ol") do %>
       <% for letter in "A".."Z" %>
@@ -16,13 +16,8 @@
   </nav>
 </div>
 
-<%= content_tag("ol", :class => "results", :id => "people_results") do %>
-  <% @people.each do |person| %>
-    <li>
-      <p class="result"><%= render person %></p>
-      <p class="count"><%= pluralize(person.personal_connections.size, "plaque") %></p>
-    </li>
-  <% end %>
-<% end %>
+<div class="container" id="people-with-surname-starting-">
+  <%= render @people %>
+</div>
 
 <p class="alternate_formats"><%= t 'data_about_thing_as' %> <%= alternate_link_to "JSON", people_by_index_path(@index.downcase, :json), :json %></p>

@@ -1,7 +1,7 @@
 <% content_for(:page_title) {t '.page_title', :language => @language.name } %>
+<% content_for(:title) {t '.page_heading', :language => @language.name } %>
 
 <div class="panel">
-  <h1><%= t '.page_heading', :language => @language.name %></h1>
   <%= form_for @language do |f| %>
     <p><%= f.label :alpha2 %> <%= f.text_field :alpha2 %></p>
     <p><%= f.label :name %> <%= f.text_field :name %></p>
