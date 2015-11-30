@@ -1,27 +1,95 @@
 <% content_for(:page_title) {t '.page_title', :photo => @photo.title } %>
+<% content_for(:title) {t '.page_heading', :photo => @photo.title} %>
 
-<div class="panel clearfix">
-  <h1><%= t '.page_heading', :photo => @photo.title %></h1>
-  <%= form_for @photo do |f| %>
-    <p><%= link_to(image_tag(@photo.file_url), @photo.url) %></p>
-	  <br/>
-    <p><%= f.label :of_a_plaque %> <%= f.check_box :of_a_plaque %></p>
-    <p><%= f.label :url %> <%= f.text_field :url, :maxlength => "100" %><%= link_to(@photo.url, @photo.url) %></p>
-    <p><%= f.label :file_url %> <%= f.text_field :file_url, :maxlength => "100" %></p>
-    <p><%= thumbnail_img(@photo) %></p>
-	  <p><%= f.label :thumbnail_url %> <%= @photo.thumbnail_url %></p>
-    <%= content_tag("p", t('.taken_on') + @photo.taken_at.to_s(:long)) unless @photo.taken_at.blank? %>
-    <p><%= f.label :photographer %> <%= f.text_field :photographer %> <%= content_tag("span", link_to(@photo.photographer, photographer_url(@photo.photographer.gsub(".","_").gsub("/","_")))) if @photo.photographer %></p>
-    <p><%= f.label :photographer_url %> <%= f.text_field :photographer_url, :size => 80 %><%= link_to(@photo.photographer_url, @photo.photographer_url) %></p>
-    <p><%= f.label :licence_id %> <%= f.collection_select :licence_id, @licences, :id, :name, {:include_blank => true} %></p>
-    <p><%= f.label :plaque_id %> <%= f.text_field :plaque_id, :maxlength => "5" %> <%= link_to(@photo.plaque, @photo.plaque) if @photo.plaque %></p>
-    <p><%= f.label :person_id %> <%= f.text_field :person_id, :maxlength => "5" %> <%= link_to(@photo.person, @photo.person) if @photo.person %></p>
-    <p><%= f.label :subject %> <%= f.text_field :subject %></p>
-    <p><%= f.label :description %> <%= f.text_area :description %></p>
-    <p><%= f.label :shot %> <%= f.collection_select :shot, Photo.shots, :to_s, :to_s, :include_blank => true %> shot</p>
-    <p><%= f.submit t('buttons.save') , :class => :button %></p>
-  <% end %>
+<div class="row">
+  <%= link_to(image_tag(@photo.file_url), @photo.url) %>
 </div>
-<div class="panel">
-  <%= button_to(t('buttons.delete'), photo_path(@photo), {:method => :delete, :class => :button}) if current_user.try(:is_admin?) %>
+
+<%= form_for @photo do |f| %>
+  <fieldset class="form-group row">
+    <%= f.label :of_a_plaque, :class => 'form-control-label col-sm-4' %>
+    <div class="col-sm-8">
+      <%= f.check_box :of_a_plaque, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :url, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+       <%= link_to(icon('external-link'), @photo.url) %>
+       <%= f.text_field :url, :maxlength => "100", :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :file_url, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= link_to(icon('external-link'), @photo.file_url) %>
+      <%= f.text_field :file_url, :maxlength => "100", :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :thumbnail_url, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= link_to(icon('external-link'), @photo.thumbnail_url) %>
+      <span class="form-control"><%= @photo.thumbnail_url %></span>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :photographer, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <% if @photo.photographer %>
+        <%= link_to(icon('external-link'), photographer_url(@photo.photographer.gsub(".","_").gsub("/","_"))) %>
+      <% end %>
+      <%= f.text_field :photographer, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :photographer_url, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= link_to(icon('external-link'), @photo.photographer_url) %>
+      <%= f.text_field :photographer_url, :size => 80, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :licence_id, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.collection_select :licence_id, @licences, :id, :name, {:include_blank => true, :class => 'form-control'} %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :plaque_id, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.text_field :plaque_id, :maxlength => "5", :class => 'form-control' %>
+      <%= link_to(@photo.plaque, @photo.plaque) if @photo.plaque %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :person_id, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.text_field :person_id, :maxlength => "5", :class => 'form-control' %>
+      <%= link_to(@photo.person, @photo.person) if @photo.person %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :subject, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.text_field :subject, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :description, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.text_area :description, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :shot, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.collection_select :shot, Photo.shots, :to_s, :to_s, {:include_blank => true, :class => 'form-control'} %> shot
+    </div>
+  </fieldset>
+  <%= f.submit t('buttons.save') , :class => :button %>
+<% end %>
+
+<div class="row">
+  <%= button_to(t('buttons.delete'), photo_path(@photo), {:method => :delete, :class => 'btn btn-danger'}) if current_user.try(:is_admin?) %>
 </div>

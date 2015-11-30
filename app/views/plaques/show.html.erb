@@ -1,17 +1,19 @@
 <% content_for :page_title, @plaque %>
 <% content_for :title, new_linked_inscription(@plaque) %>
-
 <%= render 'plaques/edit_bar', :plaque => @plaque %>
 
-<div class="container">
-  <div class="row">
-    <% if @plaque.foreign? %>
-      <% if @plaque.inscription_in_english %>
-        <h2><%= @plaque.inscription_in_english %></h2>
-      <% else %>
-        <div class="goog-trans-control">xxx</div>
-        <h2 class="goog-trans-section" lang=""><%= @plaque.inscription %></h2>
-        <script>
+<div class="row">
+  <% if @plaque.foreign? %>
+    <% if @plaque.inscription_in_english %>
+      <h7>
+        <%= @plaque.inscription_in_english %>
+      </h7>
+    <% else %>
+      <div class="goog-trans-control">xxx</div>
+      <h6 class="goog-trans-section" lang="">
+        <%= @plaque.inscription %>
+      </h6>
+      <script>
         function googleSectionalElementInit() {
           new google.translate.SectionalElement({
             sectionalNodeClassName: 'goog-trans-section',
@@ -19,17 +21,33 @@
             background: '#f4fa58'
           }, 'google_sectional_element');
         }
-        </script>
-        <script src="http://translate.google.com/translate_a/element.js?cb=googleSectionalElementInit&ug=section&hl=en"></script>
-      <% end %>
+      </script>
+      <script src="http://translate.google.com/translate_a/element.js?cb=googleSectionalElementInit&ug=section&hl=en"></script>
     <% end %>
-  </div>
+  <% end %>
 </div>
 
-<div class="container">
+<div id="photos" class="row">
   <div class="col-xs-8">
-  <% if !@plaque.main_photo %>
-    <section id="plaque_no_photos">
+    <% if !@plaque.main_photo %>
+      <div class="plaque_image plaque_multiple_images">
+        <% first_photo = @plaque.main_photo %>
+        <%= link_to(image_tag(first_photo.file_url, {:id => "primary_image", :alt => "Photo of plaque", :rel => "foaf:depiction"}), first_photo.url) %>
+        <div id="photo_information" >
+          <p class="photo_credit">Photographed by <% if first_photo.photographer_url %><%= link_to(first_photo.photographer, first_photo.photographer_url) %><% else %><%= first_photo.photographer %>.<% end %></p>
+          <p class="photo_licence"><%= link_to(first_photo.licence.name, first_photo.licence.url) if first_photo.licence %></p>
+        </div>
+        <div id="secondary_images">
+          <% @plaque.photos.detail_order.each do |image| %>
+            <%= link_to(image_tag(image.file_url, {:alt => "Photo of plaque", :rel => "foaf:depiction"}), image.url) unless image == first_photo %>
+          <% end %>
+          <div class="no_photo">
+            <h2>Your photo</h2>
+            <p><%= link_to 'How to add it', plaque_photos_path(@plaque), {:class => :show, :title => 'Show photos'} %></p>
+          </div>
+        </div>
+      </div>
+    <% else %>
       <div class="no_photo">
         <h2>Your photo</h2>
         <% if @plaque.is_current %>
@@ -39,48 +57,47 @@
         <% end %>
         <p><%= link_to 'How to add it', plaque_photos_path(@plaque), {:class => :show, :title => 'Show photos'} %></p>
       </div>
-      <% if @plaque.geolocated? %>
-        <div class="no_photo_geo">
-          <div id="plaque-map" data-latitude="<%= @plaque.latitude %>" data-longitude="<%= @plaque.longitude %>" class="mini" data-zoom="18" data-view="one"></div>
-        </div>
-      <% else %>	  
-        <div class="no_location">
-          <h2>Map location unknown</h2>
-          <p>We haven&apos;t located this plaque on a map yet. <!--a href="#">Locate this plaque</a--></p>
-        </div>
-      <% end %>
-    </section>
-</div>
-    <div id="plaque_identifier" class="col-xs-4">
-<div class="header clearfix">
-   <h1>Plaque <abbr title="number">№</abbr> <%= @plaque.id %></h1>
-   <div class="like_button">
-     <iframe src="http://www.facebook.com/plugins/like.php?href=<%= plaque_path(@plaque, :only_path => false) %>&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action=like&amp;font&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:75px; height:20px; text-align:right;" allowTransparency="true"></iframe>
-   </div>
-</div>
-<table class="section_details" cellspacing="0" summary="Plaque details for #<%= plaque.id %>">
-  <% if !plaque.is_accurate_geolocation %>
-    <tr>
-      <th>Map accuracy</th>
-      <td>This is an approximate position</td>
-    </tr>
+    <% end %>
+  </div>
+
+<div class="col-xs-4">
+  <div class="row">
+     <h1>Plaque <abbr title="number">№</abbr> <%= @plaque.id %></h1>
+     <div class="like_button">
+       <iframe src="http://www.facebook.com/plugins/like.php?href=<%= plaque_path(@plaque, :only_path => false) %>&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action=like&amp;font&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:75px; height:20px; text-align:right;" allowTransparency="true"></iframe>
+     </div>
+  </div>
+
+  <% if @plaque.geolocated? %>
+    <div id="plaque-map" data-latitude="<%= @plaque.latitude %>" data-longitude="<%= @plaque.longitude %>" class="mini" data-zoom="18" data-view="one"></div>
   <% end %>
-  <tr>
-    <th><% if plaque.erected? %>Erected<% else %>To be erected<% end %></th>
+
+  <% if !@plaque.is_accurate_geolocation %>
+    <div class="row">
+      <p>Map accuracy</p>
+      <p>This is an approximate position</p>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <th><% if @plaque.erected? %>Erected<% else %>To be erected<% end %></th>
     <td>
-      <%= erected_information plaque %>
-      <% if plaque.series %>as <% if plaque.series_ref? %>#<%= content_tag(:span, plaque.series_ref )%><% else %>part<% end %> of the <%= link_to plaque.series.name, plaque.series %> series<% end %>
+      <%= erected_information @plaque %>
+      <% if @plaque.series %>as <% if @plaque.series_ref? %>#<%= content_tag(:span, @plaque.series_ref )%><% else %>part<% end %> of the <%= link_to @plaque.series.name, @plaque.series %> series<% end %>
     </td>
-  </tr>
-  <tr>
+  </row>
+
+  <div class="row">
     <th>Language</th>
-    <td><%= plaque.language.try(:name) %></td>
-  </tr>
-  <tr>
+    <td><%= @plaque.language.try(:name) %></td>
+  </div>
+
+  <div class="row">
     <th>Colour</th>
     <td>
-      <%= render plaque.colour if plaque.colour %>
-      <% if !plaque.colour %>
+      <% if @plaque.colour %>
+        <%= render @plaque.colour  %>
+      <% else %>
         <% @colours = Colour.all %>
         <%= form_for plaque do |f| %>
           <%= f.label :colour_id, "This plaque is" %>
@@ -89,29 +106,33 @@
         <% end %>
       <% end %>
     </td>
-  </tr>
-  <tr>
+  </div>
+
+  <div class="row">
     <th>Address</th>
-    <td><%= plaque.address %>, <%= render plaque.area if plaque.area %><br/><% if plaque.roughly_geolocated? %>
-       [<%= link_to "geolocate this address", edit_plaque_geolocation_path(plaque), {:class => :edit, :title => "Geolocate"} %>]
+    <td><%= @plaque.address %>, <%= render @plaque.area if @plaque.area %><br/><% if @plaque.roughly_geolocated? %>
+       [<%= link_to "geolocate this address", edit_plaque_geolocation_path(@plaque), {:class => :edit, :title => "Geolocate"} %>]
      <% end %>
     </td>
-  </tr>
-  <tr>
-    <th><%= pluralize_word(plaque.people.size, "Subject") %></th>
+  </div>
+
+  <div class="row">
+    <th><%= pluralize_word(@plaque.people.size, "Subject") %></th>
     <td>
-      <%= render partial: "people/tile", collection: plaque.people, as: :person %>
-      <%= 'None identified yet' if plaque.people.size == 0 %>
+      <%= render partial: "people/tile", collection: @plaque.people, as: :person %>
+      <%= 'None identified yet' if @plaque.people.size == 0 %>
     </td>
-  </tr>
-  <tr>
+  </div>
+
+  <div class="row">
     <th>Machine tag</th>
-    <td><%= plaque.machine_tag %> <%= button_tag "copy", id: 'copy-flickr-tag', type: 'button', :class => :button %></td>
-  </tr>
-  <tr>
+    <td><%= @plaque.machine_tag %> <%= button_tag "copy", id: 'copy-flickr-tag', type: 'button', :class => :button %></td>
+  </div>
+
+  <div class="row">
     <th>Wikimedia tag</th>
-    <td><%= plaque.wikimedia_tag %> <%= button_tag "copy", id: 'copy-wikimedia-tag', type: 'button', :class => :button %></td>
-  </tr>
+    <td><%= @plaque.wikimedia_tag %> <%= button_tag "copy", id: 'copy-wikimedia-tag', type: 'button', :class => :button %></td>
+  </div>
 
   <script>
     function copyTextToClipboard(text) {
@@ -148,70 +169,42 @@
 
     var copyFlickrTagBtn = document.querySelector('#copy-flickr-tag');
     copyFlickrTagBtn.addEventListener('click', function(event) {
-      copyTextToClipboard('<%= plaque.machine_tag %>');
+      copyTextToClipboard('<%= @plaque.machine_tag %>');
     });
 
     var copyWikimediaTagBtn = document.querySelector('#copy-wikimedia-tag');
     copyWikimediaTagBtn.addEventListener('click', function(event) {
-      copyTextToClipboard('<%= plaque.wikimedia_tag %>');
+      copyTextToClipboard('<%= @plaque.wikimedia_tag %>');
     });
 
   </script>
 
-  <% if !plaque.is_current %>
+  <% if !@plaque.is_current %>
     <tr>
       <th>Not found</th>
       <td>As far as we know, it is not currently on display</td>
     </tr>
   <% end %>
-  <% if !plaque.see_also.empty? %>
+
+  <% if !@plaque.see_also.empty? %>
     <tr>
       <th>See also...</th>
-      <td><%= render partial: 'plaques/tile', collection: plaque.see_also, as: :plaque %></td>
+      <td><%= render partial: 'plaques/tile', collection: @plaque.see_also, as: :plaque %></td>
     </tr>
-  <% end %>   
-</table>
-    </section>
-
-  <% else %>
-
-    <div class="plaque_image plaque_multiple_images">
-      <% first_photo = @plaque.main_photo %>
-      <%= link_to(image_tag(first_photo.file_url, {:id => "primary_image", :alt => "Photo of plaque", :rel => "foaf:depiction"}), first_photo.url) %>
-      <div id="photo_information" >
-        <p class="photo_credit">Photographed by <% if first_photo.photographer_url %><%= link_to(first_photo.photographer, first_photo.photographer_url) %><% else %><%= first_photo.photographer %>.<% end %></p>
-        <p class="photo_licence"><%= link_to(first_photo.licence.name, first_photo.licence.url) if first_photo.licence %></p>
-      </div>
-      <div id="secondary_images">
-        <% @plaque.photos.detail_order.each do |image| %>
-          <%= link_to(image_tag(image.file_url, {:alt => "Photo of plaque", :rel => "foaf:depiction"}), image.url) unless image == first_photo %>
-        <% end %>
-        <div class="no_photo">
-          <h2>Your photo</h2>
-          <p><%= link_to 'How to add it', plaque_photos_path(@plaque), {:class => :show, :title => 'Show photos'} %></p>
-        </div>
-      </div>
-    </div>
-
-      <div class="header clearfix">
-        <h1>Plaque <abbr title="number">№</abbr> <%= @plaque.id %></h1>
-        <div class="like_button">
-          <iframe src="http://www.facebook.com/plugins/like.php?href=<%= plaque_path(@plaque, :only_path => false) %>&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action=like&amp;font&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:75px; height:20px; text-align:right;" allowTransparency="true"></iframe>
-         </div>
-      </div>
-      <% if @plaque.geolocated? %>
-        <div id="plaque-map" data-latitude="<%= @plaque.latitude %>" data-longitude="<%= @plaque.longitude %>" class="mini" data-zoom="18" data-view="one"></div>
-      <% end %>
   <% end %>
 
 </div>
 
+</div>
+
 <% unless @plaque.description.blank? %>
-  <div id="description" class="row">
+  <div class="row">
     <%= markdown(@plaque.description) %>
   </div>
 <% end %>
 
 <div<%= " class=\"" + @plaque.colour.name + "plaque\"" if @plaque.colour %> about="#this" typeof="op:Plaque"></div>
 
-<p class="alternate_formats">Data is available about this plaque as .json and .geojson</p>
+<div class="row">
+  <p><%= t 'data_about_thing_as' %> .json and .geojson</p>
+</div>

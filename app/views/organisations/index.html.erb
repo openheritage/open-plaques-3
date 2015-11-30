@@ -2,19 +2,25 @@
 <% content_for(:title) {t '.page_heading'} %>
 <% content_for(:admin_menu) {navbar_link_to(t('buttons.add'), new_organisation_path, {:class => :edit, :title => t('buttons.add')})} %>
 
-<p><%= pluralize(@organisations.length, "organisation") %></p>
+<div class="row">
+  <p><%= pluralize(@organisations.length, "organisation") %></p>
+</div>
 
-<div class="container-fluid">
+<div class="row">
   <h2>Top 10</h2>
   <canvas id="myCanvas" width="800" height="400"></canvas>
 </div>
 
-<h2>In alphabetical order</h2>
 <div class="container-fluid">
-  <%= render @organisations %>
+  <h2>In alphabetical order</h2>
+  <div class="card-columns">
+    <%= render @organisations %>
+  </div>
 </div>
 
-<div class="alternate_formats"><%= t 'data_about_thing_as' %> .json and .geojson</div>
+<div class="row">
+  <p><%= t 'data_about_thing_as' %> .json and .geojson</p>
+</div>
 
 <script>
   window.onload = function ()

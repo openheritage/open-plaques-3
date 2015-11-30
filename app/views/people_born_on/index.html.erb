@@ -1,12 +1,7 @@
 <% content_for(:page_title) {t '.page_title'} %>
+<% content_for(:title) {t '.page_heading' } %>
 
-<div class="panel clearfix">
-  <% if current_user && current_user.is_admin? %>
-    <section class="admin_panel">
-      <%= link_to t('buttons.add'), new_person_path, {:class => :edit, :title => t('buttons.add')} %>
-    </section>
-  <% end %>
-  <h1><%= t '.page_heading' %></h1>
+<div class="row">
   <p>We have records of when <%=pluralize(Person.count(:born_on), "person") %> were born.
   <% if Person.count(:born_on) == Person.count(:died_on) %>
     All

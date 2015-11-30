@@ -1,11 +1,33 @@
 <% content_for(:page_title) {t '.page_title'} %>
+<% content_for(:title) {t '.page_heading'} %>
 
-<div class="panel">
-  <h1><%= t '.page_heading' %></h1>
-  <%= form_for @picks, :url => picks_path do |f| %>
-    <p><%= t '.plaque_id' %> #<%= f.text_field :plaque_id, :maxlength => "5" %></p>
-    <p><%= t '.description' %><br/><%= f.text_area :description, :rows=>5, :cols=>80 %></p>
-    <p><%= t '.proposer' %> <%= f.text_field :proposer, :maxlength => "40" %></p>
-    <%= f.submit t('buttons.add'), :class => :button %>
-  <% end %>
-</div>
+<%= form_for @picks, :url => picks_path do |f| %>
+  <fieldset class="form-group row">
+    <span class="form-control-label col-sm-2">
+      <%= t '.plaque_id' %>
+    </span>
+    <div class="col-sm-2">
+      <%= f.text_field :plaque_id, :maxlength => "5", :class => 'form-control' %>
+    </div>
+    <div class="col-sm-4">
+      <!-- display plaque tile -->
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <span class="form-control-label col-sm-2">
+      <%= t '.description' %>
+    </span>
+    <div class="col-sm-10">
+      <%= f.text_area :description, :rows=>5, :cols=>80, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <span class="form-control-label col-sm-2">
+    <%= t '.proposer' %>
+    </span>
+    <div class="col-sm-10">
+      <%= f.text_field :proposer, :maxlength => "40", :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <%= f.submit t('buttons.save'), :class => 'btn btn-primary' %>
+<% end %>

@@ -1,9 +1,16 @@
 <% content_for(:page_title) {t '.page_title', :photographer => @photographer.id } %>
+<% content_for(:title) { t '.page_heading', :photographer =>  @photographer.id } %>
 
-<div class="panel clearfix">
-  <h1><%= pluralize(@photographer.photos.size,"photo") %> taken by <%= link_to("photographer", "/photographers/") %> <%= @photographer.id %></h1>
-  <%= render partial: 'photos/tile', :collection => @photographer.photos, as: :photo %>
-  <br style="clear: left;"/>
+<div class="row">
+  <%= pluralize(@photographer.photos.size,"photo") %>
 </div>
 
-<p class="alternate_formats"><%= t 'data_about_thing_as' %> <%= alternate_link_to "JSON", photographer_path(@photographer.id, :format => :json), :json %></p>
+<div class="container-fluid">
+  <div class="card-columns">
+    <%= render partial: 'photos/tile', :collection => @photographer.photos, as: :photo %>
+  </div>
+</div>
+
+<div class="row">
+  <p><%= t 'data_about_thing_as' %> .json</p>
+</div>

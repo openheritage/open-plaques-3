@@ -1,8 +1,12 @@
 <div class="col-sm-4 card flag-icon-background flag-icon-<%= country.alpha2 %>">
   <div class="card-block">
-    <h4 class="card-title"><span class="flag-icon flag-icon-<%= country.alpha2 %>"></span><%= link_to(country.name, country) %></h4>
+    <h4 class="card-title">
+      <span class="flag-icon flag-icon-<%= country.alpha2 %>"></span><%= link_to(country.name, country) %>
+    </h4>
     <% if @plaque_counts %>
-      <span class="label label-default label-pill pull-right"><%= @plaque_counts[country.id] %></span>
+      <span class="label label-default label-pill pull-right">
+        <%= @plaque_counts[country.id] %>
+      </span>
     <% end %>
   </div>
 </div>

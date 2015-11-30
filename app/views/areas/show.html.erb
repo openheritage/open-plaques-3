@@ -2,11 +2,24 @@
 <% content_for(:title) { render @area } %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_area_path(@area), {:class => :edit, :title => t('buttons.edit')}} %>
 
-<div class="container">
+<div class="row">
+  <h2>location</h2>
   <p>This area is centred on the geographical point <%= @area.longitude %>, <%= @area.latitude %></p>
-  <p>There are <%= @area.plaques_count %> plaques in this area.</p>
 </div>
 
-<div class="panel clearfix">
-  <p class="alternate_formats"><%= t 'data_about_thing_as' %> .json and .geojson</p>
+<div class="row">
+  <h2><%= @area.plaques_count %> plaques</h2>
+  <p><%= link_to 'plaques', area_plaques_path(@area) %></p>
 </div>
+
+<div class="container-fluid">
+  <div class="card-columns">
+    <h2><%= @area.people.count %> people</h2>
+    <%= render :partial => 'people/tile', :collection => @area.people, as: :person %>
+  </div>
+</div>
+
+<div class="row">
+  <p><%= t 'data_about_thing_as' %> .json and .geojson</p>
+</div>
+

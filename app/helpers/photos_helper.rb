@@ -10,26 +10,27 @@ module PhotosHelper
   end
 
   def thumbnail_img(thing, decorations = nil)
+    clazz = "img-rounded card-img-top img-responsive"
     desc = ""
     begin
       begin
         if thing.thumbnail_url
-          desc += image_tag(thing.thumbnail_url, :size => "75x75", :class => "img-rounded")
+          desc = image_tag(thing.thumbnail_url, :class => clazz)
         else
-          desc += image_tag(thing.file_url, :size => "75x75", :class => "img-rounded")
+          desc = image_tag(thing.file_url, :class => clazz)
         end
       rescue
         begin
-          desc += thumbnail_img(thing.main_photo)
+          desc = thumbnail_img(thing.main_photo, decorations)
         rescue
-          desc += thumbnail_img(thing.plaque)
+          desc = thumbnail_img(thing.plaque, decorations)
         end
       end
+      return desc.html_safe
     rescue
-      ## oh, I give up!....
-      desc += image_tag("NoPhotoSqr.png", :size => "75x75", :class => "img-rounded")
+#      desc = image_tag("NoPhotoSqr.png", :size => "75x75", :class => clazz)
+#      desc = image_tag("NoPhotoSqr.png", :class => clazz)
     end
-    return desc.html_safe
   end
 
 end

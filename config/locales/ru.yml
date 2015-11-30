@@ -164,7 +164,6 @@ ru:
   countries:
     edit:
       page_title: Изменить %{country}
-      page_heading_html: Изменить %{country}
       add_an_area: Добавить место
     index:
       page_title: Страны где есть таблички
@@ -445,7 +444,7 @@ ru:
   roles:
     edit:
       page_title: Изменить роль %{role}
-      page_heading: Изменить роль %{role}
+      page_heading: Изменить роль
     new:
       page_title: Новая роль
       page_heading: Новая роль

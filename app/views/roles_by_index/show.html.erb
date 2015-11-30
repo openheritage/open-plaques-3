@@ -1,27 +1,19 @@
 <% content_for(:page_title) {t '.page_title', :letter => @index.upcase } %>
+<% content_for(:title) {t '.page_heading', :letter => @index.upcase } %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_role_path, {:class => :edit, :title => t('buttons.add')}} %>
 
-<div class="panel clearfix">
-  <% if current_user && current_user.is_admin? %>
-    <section class="admin_panel">
-      <%= link_to t('buttons.add'), new_role_path, {:class => :edit, :title => t('buttons.add')} %>
-    </section>
+<ul class="nav">
+  <% for letter in "A".."Z" %>
+    <%= content_tag("li", navigation_link_to(letter, roles_by_index_path(letter.downcase)), :class => "nav-link") %>
   <% end %>
-  <h1><%= t '.page_heading', :letter => @index.upcase %></h1>
-  <%= render :partial => "index_navigation" %>
+</ul>
+
+<div class="container-fluid">
+  <div class="card-columns">
+    <%= render @roles %>
+  </div>
 </div>
 
-<div class="panel clearfix">
-  <%= content_tag("ul", :id => 'roles_results', :class => 'results') do %>
-    <% @roles.each do |role| %>
-      <%= content_tag("li") do %>
-        <% if role.full_name.include? " of " %>
-          <%= link_to pluralize(role.personal_roles_count, role.full_name.split(/#| of /).first) + role.full_name.sub(/.*? of /, ' of '), role_path(role) %>
-        <% else %>
-          <%= link_to pluralize(role.personal_roles_count, role.full_name), role_path(role) %> <% if !role.person? %>[x]<% end %>
-        <% end %>
-      <% end %>
-    <% end %>
-  <% end %>
+<div class="row">
+  <p><%= t 'data_about_things_as' %> .json</p>
 </div>
-
-<p class="alternate_formats"><%= t 'data_about_thing_as' %> <%= alternate_link_to "JSON", roles_by_index_path(@index.downcase, :json), :json %></p>

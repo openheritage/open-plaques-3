@@ -1,9 +1,8 @@
-<div class="page-header">
+<div class="page-header row">
   <% if content_for?(:title) %>
     <h1 property="dc:title rdfs:label foaf:name" about="#this"><%= content_for(:title) %></h1>
     <%= content_for(:page_subhead) %>
   <% else %>
-    <h1>Untitled</h1>
-    <p>Don’t forget to set <code>content_for(:title)</code> for this view!</p>
+    <!-- Untitled. Don’t forget to set <code>content_for(:title)</code> for this view! -->
   <% end %>
 </div>

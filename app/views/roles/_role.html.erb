@@ -1,3 +1,42 @@
-<div class="card">
-  <%= link_to role.name, role %>
+<% if controller.controller_name.eql?('roles') && !controller.action_name.eql?('index') %>
+<div typeof="foaf:Organization" class="card vcard col-xl-6">
+<% else %>
+<div typeof="foaf:Organization" class="card vcard" style="width: 15rem;">
+<% end %>
+  <div class="card-block">
+    <h4 class="card-title">
+      <% if controller.controller_name.eql?('roles') && controller.action_name.eql?('show') %>
+        <%= role.name.pluralize %>
+      <% else %>
+        <%= link_to role.name, role %>
+      <% end %>
+    </h4>
+  </div>
+  <span class="label label-default label-pill pull-right">
+    <%= role.personal_roles_count %>
+  </span>
+  <%= icon('user') if role.person?%>
+  <%= icon('paw') if role.animal? %>
+  <%= icon('users') if role.group? %>
+  <%= icon('building') if role.place? %>
+  <%= icon('map-marker') if role.thing? %>
+  <% if controller.controller_name.eql?('roles') && !controller.action_name.eql?('index') %>
+    <div class="card-block">
+      <% if role.used_as_a_suffix? %>
+        <p class="card-text">
+          <% if role.military_medal? %>
+            A military medal that confers
+          <% else %>
+            Confers
+          <% end %>
+          the letters <strong><%= role.letters %></strong> after the name.
+        </p>
+      <% end %>
+      <% if !role.wikipedia_stub.blank? %>
+        <p class="card-text">
+          <%= icon('external-link') %><%= link_to('Wikipedia', role.wikipedia_url, :target => "_blank") %>
+        </p>
+      <% end %>
+    </div>
+  <% end %>
 </div>

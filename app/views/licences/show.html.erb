@@ -1,9 +1,14 @@
 <% content_for(:page_title) {t '.page_title', :licence => @licence.name} %>
+<% content_for(:title) {t '.page_heading', :licence => @licence.name + '-' + @licence.abbreviation } %>
 
-<div class="panel">
-  <h1><%= t '.page_heading', :licence => @licence.name %> - <%= @licence.abbreviation %></h1>
-  <p><%= @licence.photos.count %> <%= link_to "photos",photos_path %> <%= t '.quantity', :licence => @licence.name %><p>
+<div class="row">
+  <p><%= @licence.photos.count %> <%= link_to "photos",photos_path %> <%= t '.quantity', :licence => @licence.name %></p>
+</div>
+
+<div class="row">
   <p><%= t '.more_information' %> <%= link_to @licence.url, {:rel => "owl:sameAs"} %></p>
 </div>
 
-<p class="alternate_formats"><%= t 'data_about_thing_as' %> <%= alternate_link_to "JSON", licence_path(@licence, :format => :json), :json %></p>
+<div class="row">
+  <p><%= t 'data_about_thing_as' %> .json</p>
+</div>

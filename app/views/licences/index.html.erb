@@ -1,11 +1,15 @@
 <% content_for(:page_title) {t '.page_title'} %>
+<% content_for(:title) {t '.page_heading'} %>
+<% content_for(:admin_menu) {navbar_link_to(t('buttons.add'), new_language_path, {:class => :edit, :title => t('buttons.add')})} %>
 
-<div class="panel">
-  <h1><%= t '.page_heading' %></h1>
-  <canvas id="myCanvas" width="1000" height="1000">
-    <%= render @licences %>    
-  </canvas>
-  <p class="alternate_formats"><%= t 'data_about_things_as' %> <%= alternate_link_to "JSON", licences_path(:json), :json %></p>
+<canvas id="myCanvas" width="1000" height="1000">
+  <div class="row">
+    <%= render @licences %>
+  </div>  
+</canvas>
+
+<div class="row">
+  <p><%= t 'data_about_thing_as' %> .json</p>
 </div>
 
 <script>

@@ -3,12 +3,17 @@
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_country_path(@country), {:class => :edit, :title => t('buttons.edit')}} %>
 <% content_for(:admin_menu) {navbar_link_to(t('buttons.add'), new_country_area_path(@country.alpha2), {:class => :edit, :title => t('buttons.add')})} %>
 
-<div class="container">
+<div class="row">
   <h2>We have <%= pluralize @country.plaques_count, "plaque" %> in <%= pluralize @country.areas.size, "area" %></h2>
 </div>
 
-<div class="container">
-  <%= render @country.areas %>
+<div class="container-fluid">
+  <div class="card-columns">
+    <h3>areas</h3>
+    <%= render @country.areas %>
+  </div>
 </div>
 
-<div class="alternate_formats"><%= t 'data_about_thing_as' %> .json and .geojson</div>
+<div class="row">
+  <p><%= t 'data_about_thing_as' %> .json and .geojson</p>
+</div>

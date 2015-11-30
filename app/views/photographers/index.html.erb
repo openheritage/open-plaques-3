@@ -2,12 +2,13 @@
 <% content_for(:title) {t '.page_heading'} %>
 <% content_for(:admin_menu) {navbar_link_to(t('buttons.add'), new_photographer_path, {:class => :edit, :title => t('buttons.add')})} %>
 
-<div class="container">
-  <div class="row">
-    <%= t '.how_many', :count =>  @photographers.size%>
-    <%= t '.where' %>
-    <%= t '.how_they_are_licenced_html' %>
-  </div>
+<div class="row">
+  <%= t '.how_many', :count =>  @photographers.size%>
+  <%= t '.where' %>
+  <%= t '.how_they_are_licenced_html' %>
+</div>
+
+<div class="row">
   <h2><%= t '.the_top_50' %></h2>
   <canvas id="myCanvas" width="1000" height="1000">
     <ol>
@@ -17,10 +18,12 @@
         <% end %>
       <% end %>
    </ol>
- </canvas>
+  </canvas>
 </div>
 
-<p class="alternate_formats"><%= t 'data_about_things_as' %> <%= alternate_link_to "JSON", photographers_path(:json), :json %></p>
+<div class="row">
+  <p><%= t 'data_about_things_as' %> .json</p>
+</div>
 
 <script>
   window.onload = function ()

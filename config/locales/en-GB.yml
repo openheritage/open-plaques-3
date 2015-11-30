@@ -171,7 +171,6 @@ en-GB:
   countries:
     edit:
       page_title: Edit %{country}
-      page_heading_html: Edit %{country}
       add_an_area: Add an area
     index:
       page_title: Countries that have plaques
@@ -452,7 +451,7 @@ en-GB:
   roles:
     edit:
       page_title: Edit role %{role}
-      page_heading: Edit role %{role}
+      page_heading: Edit role
     new:
       page_title: New role
       page_heading: New role

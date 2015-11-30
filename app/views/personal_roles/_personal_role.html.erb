@@ -1,1 +1,11 @@
-<%= link_to personal_role.role.name, personal_role.role %>
+<div class="card" style="width: 20rem;">
+  <%= render :partial => 'people/tile', locals: { person: personal_role.person } %> 
+  <div class="card-text">
+    <%= personal_role.ordinal.ordinalize + " " + @role.name if personal_role.ordinal %>
+    <% if personal_role.date_range != "" %>
+      <small class="text-muted">
+        <%= personal_role.date_range %>
+      </small>
+    <% end %>
+  </div>
+</div>

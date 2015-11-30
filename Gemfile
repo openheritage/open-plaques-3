@@ -15,6 +15,8 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'bootstrap-sass', :git => 'https://github.com/jnicho02/bootstrap-sass.git'
 # gem 'nprogress-rails'
+gem 'font-awesome-sass', '~> 4.4.0'
+# gem 'bootstrap_form'
 
 gem 'devise'
 gem 'meta-tags'

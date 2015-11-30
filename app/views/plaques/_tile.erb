@@ -1,10 +1,22 @@
 <% begin %>
-  <% plaque.inscription %>
+  <% if plaque.inscription %><% end %>
 <% rescue %>
   <% plaque = plaque.plaque %>
 <% end %>
 <% if plaque %>
-  <div class='col-xs-1' style='float: left;'>
-    <%= link_to(thumbnail_img(plaque), plaque_path(plaque)) %>
-  </div>
+
+<div class="card" id="plaque-<%= plaque.id %>" style="width: 13rem;">
+  <% if plaque.main_photo %>
+    <% if plaque.main_photo.thumbnail_url %>
+      <%= link_to image_tag(plaque.main_photo.thumbnail_url, {:class => 'card-img-top img-responsive', :width => 500} ), plaque_path(plaque) %>
+    <% elsif plaque.main_photo.file_url %>
+      <%= link_to image_tag(plaque.main_photo.file_url, {:class => 'card-img-top img-responsive', :width => 500}) , plaque_path(plaque) %>
+    <% else %>
+      <%= link_to image_tag('NoPhotoSqr.png', {:class => 'card-img-top img-responsive', :width => 500}), plaque_path(plaque) %>
+    <% end %>
+  <% else %>
+    <%= link_to image_tag('NoPhotoSqr.png', {:class => 'card-img-top img-responsive', :width => 500}), plaque_path(plaque) %>
+  <% end %>
+</div>
+
 <% end %>

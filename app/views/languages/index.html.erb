@@ -3,9 +3,14 @@
 <% content_for(:admin_menu) {navbar_link_to(t('buttons.add'), new_language_path, {:class => :edit, :title => t('buttons.add')})} %>
 
 <canvas id="myCanvas" width="600" height="650">
-  <%= render @languages %>
+  <div class="row">
+    <%= render @languages %>
+  </div>
 </canvas>
-<p class="alternate_formats"><%= t 'data_about_things_as' %> <%= alternate_link_to "JSON", languages_path(:json), :json %></p>
+
+<div class="row">
+  <p><%= t 'data_about_thing_as' %> .json</p>
+</div>
 
 <script>
   window.onload = function ()

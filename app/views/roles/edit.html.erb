@@ -1,25 +1,52 @@
 <% content_for(:page_title) {t '.page_title', :role => @role.name } %>
+<% content_for(:title) {t '.page_heading', :role => @role.name } %>
 
-<div class="panel clearfix">
-  <h1><%= t '.page_heading', :role => @role.name %></h1>
-  <% if @role.used_as_a_suffix? %>
-    <p>
-      <% if @role.military_medal? %>
-        A military medal that confers
-      <% else %>
-        Confers
-      <% end %>
-      the letters <strong><%= @role.letters %></strong> after the name.
-    </p>
-  <% end %>
-  <%= form_for(@role) do |f| %>
-    <p><%= f.label :name %> <%= f.text_field :name %></p>
-    <p><%= f.label :abbreviation %> <%= f.text_field :abbreviation %></p>
-    <p><%= f.label :prefix %> <%= f.text_field :prefix %></p>
-    <p><%= f.label :suffix %> <%= f.text_field :suffix %></p>
-    <p><%= f.label :slug %> <%= f.text_field :slug %></p>
-    <p><%= f.label :wikipedia_stub %> <%= f.text_field :wikipedia_stub %></p>
-    <p><%= f.label :role_type %> <%= f.collection_select :role_type, Role.types, :to_s, :to_s, :include_blank => true %></p>
-    <p><%= f.submit t('buttons.update'), :class => :button %></p>
-  <% end %>
+<div class="row">
+  <%= render @role %>
 </div>
+
+<%= form_for(@role) do |f| %>
+  <fieldset class="form-group row">
+    <%= f.label :name, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.text_field :name, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :abbreviation, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.text_field :abbreviation, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :prefix, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.text_field :prefix, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :suffix, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.text_field :suffix, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :slug, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.text_field :slug, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :wikipedia_stub, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.text_field :wikipedia_stub, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :role_type, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.collection_select :role_type, Role.types, :to_s, :to_s, :include_blank => true, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <%= f.submit t('buttons.save'), :class => 'btn btn-primary' %>
+<% end %>

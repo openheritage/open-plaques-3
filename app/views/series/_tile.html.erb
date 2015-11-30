@@ -1,0 +1,13 @@
+<div class="card">
+  <div class="card-block">
+    <div class="card-title">
+      <%= link_to series.name, series %>
+    </div>
+    <div class="card-text">
+      <small class="text-muted">
+        <% if plaque && plaque.series_ref? %>
+          #<%= content_tag(:span, plaque.series_ref )%><% else %>part<% end %> of the 
+      </small>
+    </div>
+  </div>
+</div>

@@ -1,54 +1,62 @@
 <% content_for(:page_title) {t '.page_title'} %>
 <% content_for(:title) {"OpenPlaques"} %>
-
-  <% if current_user && current_user.is_admin? %>
-    <div class="container">
-      <%= link_to(t('.pages'), pages_path, {:class => :edit, :title => t('.pages')})%>
-    </div>
-  <% end %>
+<% content_for(:admin_menu) {navbar_link_to(t('.pages'), pages_path, {:class => :edit, :title => t('.pages')})} %>
   
-    <div class="jumbotron">
-      <div class="container">
-        <%= t '.strapline_html' %>
+<div class="jumbotron">
+  <div class="container">
+    <%= t '.strapline_html' %>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <h2><%=t '.explore' %></h2>
+      <p>Browse the <%= @plaques_count %> plaques by <%= link_to "person", people_path %>, <%= link_to "place", countries_path %>, or <%= link_to "search", search_path %>.</p>
+    </div>
+    <div class="col-md-4">
+      <h2><%=t '.contribute' %></h2>
+      <p><%=t '.contribute1' %> <%= link_to t('.add_a_plaque'), new_plaque_path %></p>
+      <p><%=t '.take_a_photo' %></p>
+      <p><%=t '.spot_an_innaccuracy' %></p>
+      <% if current_user && current_user.is_admin? %>
+        <p><%=t '.find_something' %> <%= link_to(t('.to_do'), "/todo", {:class => :edit, :title => t('.to_do')})%></p>
+      <% end %>
+      <p><%=t '.mission' %></p>
+    </div>
+    <div class="col-md-4">
+      <h2><%=t '.news' %></h2>
+      <p><%=t '.news_detail_html' %></p>
+    </div>
+    <div class="col-md-4">
+      <div class="like_button">
+        <iframe src="http://www.facebook.com/plugins/like.php?href=https://www.facebook.com/OpenPlaques&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action=like&amp;font&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:75px; height:20px; text-align:right;" allowTransparency="true"></iframe> <%= t '.like_us_on_Facebook' %>
       </div>
     </div>
+  </div>
+</div>
 
-    <div class="container">
-      <div class="row">
-        <div class="col-md-4">
-          <h2><%=t '.explore' %></h2>
-          <p>Browse the <%= @plaques_count %> plaques by <%= link_to "person", people_path %>, <%= link_to "place", countries_path %>, or <%= link_to "search", search_path %>.</p>
+<% if @todays %>
+  <div class="container" id="plaque-of-the-day">
+    <div class="row">
+      <h2><%= t '.plaque_of_the_day' %></h2>
+    </div>
+    <div class="row">
+      <div class="card col-xl-12">
+        <div class="card-block">
+          <h4 class="card-title"><%= @todays.title %></h4>
         </div>
-        <div class="col-md-4">
-          <h2><%=t '.contribute' %></h2>
-          <p><%=t '.contribute1' %> <%= link_to t('.add_a_plaque'), new_plaque_path %></p>
-          <p><%=t '.take_a_photo' %></p>
-          <p><%=t '.spot_an_innaccuracy' %></p>
-          <% if current_user && current_user.is_admin? %>
-            <p><%=t '.find_something' %> <%= link_to(t('.to_do'), "/todo", {:class => :edit, :title => t('.to_do')})%></p>
-          <% end %>
-          <p><%=t '.mission' %></p>
-        </div>
-        <div class="col-md-4">
-          <h2><%=t '.news' %></h2>
-          <p><%=t '.news_detail_html' %></p>
-        </div>
-        <div class="col-md-4">
-          <div class="like_button">
-            <iframe src="http://www.facebook.com/plugins/like.php?href=https://www.facebook.com/OpenPlaques&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action=like&amp;font&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:75px; height:20px; text-align:right;" allowTransparency="true"></iframe> <%= t '.like_us_on_Facebook' %>
-          </div>
+        <div class="card-block">
+          <%= render @todays.plaque %> 
         </div>
       </div>
     </div>
+  </div>
+<% end %>
 
-    <% if @todays %>
-      <div class="container" id="plaque-of-the-day">
-        <h2><%= t '.plaque_of_the_day' %></h2>
-        <%= render @todays %>
-      </div>
-    <% end %>
-
-    <div class="container" id="recent-plaques">
-      <h2><%= t '.recently_photographed' %></h2>
-      <%= render @recent_plaques %>
-    </div>
+<h2><%= t '.recently_photographed' %></h2>
+<div class="card-deck-wrapper">
+  <div class="card-deck" id="recent-plaques">
+    <%= render @recent_plaques %>
+  </div>
+</div>

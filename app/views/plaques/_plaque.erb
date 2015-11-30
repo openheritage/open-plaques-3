@@ -1,36 +1,61 @@
 <% begin %>
-  <% plaque.inscription %>
+  <% if plaque.inscription %><% end %>
 <% rescue %>
   <% plaque = plaque.plaque %>
 <% end %>
 <% if plaque %>
-  <div class="col-xs-4 card" summary="Plaque details for #<%= plaque.id %>" id="plaque-<%= plaque.id %>">
-    <% if plaque.main_photo %>
-      <% if plaque.main_photo.thumbnail_url %>
-        <img class="card-img-top" src="<%= plaque.main_photo.thumbnail_url %>"/>
-      <% elsif plaque.main_photo.file_url %>
-        <img class="card-img-top" src="<%= plaque.main_photo.file_url %>"/>
-      <% else %>
-        <img class="card-img-top" src="NoPhotoSqr.png"/>
-      <% end %>
+
+<% if controller.controller_name.eql?('plaques') && controller.action_name.eql?('show')%>
+<div class="card" id="plaque-<%= plaque.id %>" >
+<% else %>
+<div class="card" id="plaque-<%= plaque.id %>" style="width: 13rem;">
+<% end %>
+
+  <% if plaque.main_photo %>
+    <% if plaque.main_photo.thumbnail_url %>
+      <%= link_to image_tag(plaque.main_photo.thumbnail_url, {:class => 'card-img-top img-responsive', :width => 500} ), plaque_path(plaque) %>
+    <% elsif plaque.main_photo.file_url %>
+      <%= link_to image_tag(plaque.main_photo.file_url, {:class => 'card-img-top img-responsive', :width => 500}) , plaque_path(plaque) %>
     <% else %>
-      <img class="card-img-top" src="NoPhotoSqr.png"/>
+      <%= link_to image_tag('NoPhotoSqr.png', {:class => 'card-img-top img-responsive', :width => 500}), plaque_path(plaque) %>
     <% end %>
-      
-    <div class="card-block">
-      <h4 class="card-title"><%= plaque.title %></h4>
-      <p class="card-text"><%= new_linked_inscription(plaque) %></p>
-      <% if plaque.foreign? && plaque.inscription_in_english  %>
-        <span id="inscription-in-english" class="card-text"><%= plaque.inscription_in_english %></span>
+  <% else %>
+    <%= link_to image_tag('NoPhotoSqr.png', {:class => 'card-img-top img-responsive', :width => 500}), plaque_path(plaque) %>
+  <% end %>
+
+  <div class="card-block">
+    <h7 class="card-title">
+      <% if plaque.inscription.length > 150 %>
+        <%= new_linked_inscription(plaque) %>
+      <% else %>
+        <%= new_linked_inscription(plaque) %>
       <% end %>
-      <p id="address" class="card-text">
+    </h7>   
+    <% if plaque.foreign? && plaque.inscription_in_english %>
+      <p id="inscription-in-english" class="card-text"><small><%= plaque.inscription_in_english %></small></p>
+    <% end %>
+    <p class="card-text">
+      <small>
         <%= plaque.address %>, <%= link_to(plaque.area.name, area_path(plaque.area)) if plaque.area %>, <%= plaque.area.country.name if plaque.area %><% if @person %> where <%= @person.personal_pronoun %> <%= verbs(@person,plaque).to_sentence.html_safe %><% end %><% '. As far as we know, it is not currently on display.' if !plaque.is_current %>
-      </p>
-      <% if plaque.series %>
-        <p id="series" class="card-text">
-          <% if plaque.series_ref? %>#<%= content_tag(:span, plaque.series_ref )%><% else %>part<% end %> of the <%= link_to plaque.series.name, plaque.series %> series
-        </p>
-      <% end %>
-    </div>
+      </small>
+    </p>
   </div>
+
+  <% if plaque.series %>
+    <div class="card-footer">
+      <div class="card-text">
+        <small class="text-muted">
+          <% if plaque.series_ref? %>#<%= plaque.series_ref %> <% end %><%= link_to plaque.series.name, plaque.series %>
+        </small>
+      </div>
+    </div>
+  <% end %>
+  
+  <% if !controller.controller_name.eql?('people') %>
+    <div class="card-block">
+      <%= render :partial => "people/tile", :collection => plaque.people, as: :person %>
+    </div>
+  <% end %>
+</div>
+
 <% end %>

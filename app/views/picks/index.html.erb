@@ -1,12 +1,17 @@
 <% content_for(:page_title) {t '.page_title'} %>
+<% content_for(:title) {t '.page_heading'} %>
+<% content_for(:admin_panel) {navbar_link_to(t('buttons.add'), new_pick_path, {:class => :edit, :title => t('buttons.add')})} %>
 
-<div class="panel">
-  <% if current_user && current_user.is_admin? %>
-    <section class="admin_panel">
-      <%= link_to(t('buttons.add'), new_pick_path, {:class => :edit, :title => t('buttons.add')})%>
-    </section>
-  <% end %>
-  <h1><%= t '.page_heading' %></h1>
-  <p><%= t '.explanation' %></p>
-  <%= render @picks %>
+<div class="row">
+  <%= t '.explanation' %>
+</div>
+
+<div class="container-fluid">
+  <div class="card-columns">
+    <%= render @picks %>
+  </div>
+</div>
+
+<div class="row">
+  <p><%= t 'data_about_things_as' %> .json and .geojson</p>
 </div>

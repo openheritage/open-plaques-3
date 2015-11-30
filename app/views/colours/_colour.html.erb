@@ -1,1 +1,9 @@
-<%= colour.to_s %>
+<% if controller.controller_name.eql?('area_plaques') && controller.action_name.eql?('show') %>
+<div class="card col-sm-12">
+<% else %>
+<div class="card col-sm-4">
+<% end %>
+  <div class="card-title">
+    <%= colour.to_s %>
+  </div>
+</div>

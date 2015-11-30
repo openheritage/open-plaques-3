@@ -30,6 +30,9 @@ class RolesController < ApplicationController
   # GET /roles/artist.xml
   def show
     @role = Role.includes(:personal_roles => :person).find_by_slug!(params[:id])
+    @pluralized_role = @role.full_name.include?(" of ") ? 
+      @role.name.split(/#| of /).first.pluralize + @role.name.sub(/.*? of /, ' of ') 
+      : @role.name.pluralize
     respond_to do |format|
       format.html
       format.json { render :json => @role }

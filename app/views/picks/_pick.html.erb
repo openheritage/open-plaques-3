@@ -1,7 +1,17 @@
-<div class="inside-panel">
-  <div>
-    <%= link_to(pick.title, pick_path(pick)) %> has been featured <%= pluralize(pick.featured_count, "time") %>.
-    <% if pick.feature_on %>It would be great to specifically feature it on <%= pick.feature_on.strftime('%d/%m/%Y') %><% end %>
+<% if controller.controller_name.eql?('picks') && controller.action_name.eql?('show')%>
+<div class="card">
+<% else %>
+<div class="card" style="width: 20rem;">
+<% end %>
+  <div class="card-block">
+    <h4 class="card-title">
+      <%= link_to pick.title, pick %>
+    </h4>
+    <h6 class="card-subtitle text-muted">
+      has been featured <%= pluralize(pick.featured_count, "time") %>
+    </h6>
   </div>
-  <%= render pick.plaque %>
+  <div class="card-block">
+    <%= render :partial => 'plaques/tile', locals: { plaque: pick.plaque } %>
+  </div>
 </div>

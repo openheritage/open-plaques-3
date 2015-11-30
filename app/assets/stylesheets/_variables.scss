@@ -19,6 +19,5 @@ $grid-float-breakpoint: 480px;
 // Useful for situations where only this file is imported.
 @import "bootstrap/variables";
 
-
 $avatar-background-color: $gray-light;
 $avatar-default-color: darken($avatar-background-color, 20%);

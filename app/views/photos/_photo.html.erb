@@ -1,12 +1,23 @@
-<div id="photo-<%= photo.id %>" class="col-md-<% if photo.plaque && photo == photo.plaque.main_photo %>12<%else%>3<%end%> col-xs-<% if photo.plaque && photo == photo.plaque.main_photo %>12<%else%>6<%end%>">
-  
-  <% if photo.plaque %>
-      <%= content_tag(:span, link_to(image_tag(photo.file_url, {:class => "img-thumbnail", :alt => "Photo of " + photo.plaque.to_s, :rel => "foaf:depiction"}), photo.url)) if photo.file_url %>
-  <% elsif photo.person %>
-    <%= content_tag(:span, link_to(image_tag(photo.file_url, {:class => "img-thumbnail", :alt => "Photo of " + photo.person.to_s, :rel => "foaf:depiction"}), photo.url)) if photo.file_url %>
-  <% else %>
-    <%= content_tag(:span, link_to(image_tag(photo.file_url, {:class => "img-thumbnail", :alt => "Photo"}), photo.url)) if photo.file_url %>
+<% if controller.controller_name.eql?('photos') && controller.action_name.eql?('show')%>
+<div class="card">
+<% else %>
+<div class="card" style="width: 20rem;">
+<% end %>
+  <% if photo.file_url %>
+    <% if photo.plaque %>
+      <%= content_tag(:span, link_to(image_tag(photo.file_url, {:class => "card-img-top img-responsive", :alt => "Photo of " + photo.plaque.to_s, :rel => "foaf:depiction"}), photo.url)) %>
+    <% elsif photo.person %>
+      <%= content_tag(:span, link_to(image_tag(photo.file_url, {:class => "card-img-top img-responsive", :alt => "Photo of " + photo.person.to_s, :rel => "foaf:depiction"}), photo.url)) %>
+    <% else %>
+      <%= content_tag(:span, link_to(image_tag(photo.file_url, {:class => "card-img-top img-responsive", :alt => "Photo"}), photo.url)) %>
+    <% end %>
   <% end %>
-  <span class="photo_credit"><%= link_to(photo.source, photo.file_url) %> photographed by <%= link_to photo.photographer, photographer_url(photo.photographer.gsub(".","_").gsub("/","_")) if photo.photographer rescue photo.photographer %></span>
-  <span class="photo_licence"><%= link_to photo.licence.name, photo.licence if photo.licence %></span>
+  <p class="card-text">
+    <%= link_to(photo.source, photo.file_url) %> photographed by <%= link_to photo.photographer, photographer_url(photo.photographer.gsub(".","_").gsub("/","_")) if photo.photographer rescue photo.photographer %>
+  </p>
+  <% if photo.licence  %>
+    <p class="card-text">
+      <%= link_to photo.licence.name, photo.licence %>
+    </p>
+  <% end %>
 </div>

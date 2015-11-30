@@ -1,5 +1,7 @@
 <% if photo %>
-  <div class='col-xs-1' style='float: left;'>
-    <%= link_to(thumbnail_img(photo), photo) %>
-  </div>
+
+<div class="card" style="width: 5rem;">
+  <%= link_to(thumbnail_img(photo, :class => 'card-img-top img-responsive'), photo) %>
+</div>
+
 <% end %>

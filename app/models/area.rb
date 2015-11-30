@@ -75,6 +75,18 @@ class Area < ActiveRecord::Base
     name + ", " + country.name
   end
 
+  def people
+    people = Array.new
+    plaques.each do |plaque|
+      if plaque.people != nil
+        plaque.people.each do |person|
+          people << person
+        end 
+      end
+    end
+    return people.uniq
+  end
+
   def to_param
     slug
   end

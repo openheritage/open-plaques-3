@@ -1,6 +1,10 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
+  def button_delete(path)
+    button_to(t('buttons.delete'), path, {:method => :delete, :class => 'btn btn-danger'})
+  end
+
   def alternate_link_to(text, path, format)
     link_to text, path, :type => Mime::Type.lookup_by_extension(format.to_s).to_s, :rel => [:alternate,:nofollow]
   end

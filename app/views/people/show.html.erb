@@ -3,15 +3,12 @@
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_person_path(@person), {:class => :edit, :title => t('buttons.edit')}} %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_person_path, {:class => :edit, :title => t('buttons.add')}} %>
 
-<div class="container">
-  <div class="row">
+<div class="row">
   <div class="vcard person" typeof="<%= if (@person.person?) then "foaf:Person" else "foaf:Agent" end %> vcard:VCard" about="#person">
     <p>Names: <%= @person.names.to_sentence %></p>
-
     <% if @person.parents.size > 0 %>
       <p><%= 'parent'.pluralize @person.parents.size %>:<%= render @person.parents %></p>
     <% end %>
-
     <% if @person.spousal_relationships.size > 0 %>
       <p>
         <% @person.spousal_relationships.each_with_index do |relationship, index| %>
@@ -20,15 +17,12 @@
         <% end %>
       </p>
     <% end %>
-
     <% if @person.children.size > 0 %>
       <p><%= 'child'.pluralize @person.children.size %>:<%= render @person.children %></p>
     <% end %>
-
     <% if @person.siblings.size > 0 %>
       <p><%= 'sibling'.pluralize @person.siblings.size %>:<%= render @person.siblings %></p>
     <% end %>
-
     <% if @person.non_family_relationships.size > 0 %>
       <p>
         <% @person.non_family_relationships.each_with_index do |relationship, index| %>
@@ -36,21 +30,26 @@
         <% end %>
       </p>
     <% end %>
-
     <p><%= "Died aged" if (@person.person? || @person.thing? || @person.animal?) && @person.dead? %><%= "Closed aged" if @person.place? && @person.dead? %><%= "Aged" if @person.alive? && @person.age%> <%= "c." + @person.age.to_s if @person.age%></p>
-
     <%= simple_format(@person.introduction) if @person.introduction %>
-
     <%= content_tag("p", "Read more on ".html_safe + link_to("Wikipedia", @person.default_wikipedia_url, :target => '_blank')) unless @person.default_wikipedia_url.blank? %>
   </div>
-  <div class="row">
-    <% if @person.plaques.size > 0 %>
-      <h2>Commemorated on <%= @person.plaques.uniq.size %> <%= 'plaque'.pluralize @person.plaques.uniq.size %></h2>
-    <% else %>
-      <h2><%= t '.not_commemorated'%></h2>
-    <% end %>
-    <%= render @person.plaques.uniq %>
-</div>  </div>
 </div>
 
-<div class="alternate_formats"><%= t 'data_about_thing_as' %> .json and .geojson</div>
+<div class="row">
+  <% if @person.plaques.size > 0 %>
+    <h2>Commemorated on <%= @person.plaques.uniq.size %> <%= 'plaque'.pluralize @person.plaques.uniq.size %></h2>
+  <% else %>
+    <h2><%= t '.not_commemorated'%></h2>
+  <% end %>
+</div>  
+
+<div class="container-fluid">
+  <div class="card-columns">
+    <%= render @person.plaques.uniq %>
+  </div>
+</div>
+
+<div class="row">
+  <p><%= t 'data_about_thing_as' %> .json</p>
+</div>

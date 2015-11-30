@@ -1,11 +1,9 @@
 <% content_for(:page_title) {t '.page_title'} %>
+<% content_for(:title) {t '.page_heading'} %>
+<% content_for(:admin_menu) {navbar_link_to(t('buttons.add'), new_page_path, {:class => :edit, :title => t('buttons.add')})} %>
 
-<div class="panel clearfix">
-  <% if current_user && current_user.is_admin? %>
-    <section class="admin_panel">
-      <%= link_to(t('buttons.add'), new_page_path, {:class => :edit, :title => t('buttons.add')})%>
-    </section>
-  <% end %>
-  <h1><%= t '.page_heading' %></h1>
-  <%= render @pages %>
+<div class="container-fluid">
+  <div class="card-columns">
+    <%= render @pages %>
+  </div>
 </div>
