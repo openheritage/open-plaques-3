@@ -1,8 +1,6 @@
  <div class="card" style="width: 20rem;">
   <div class="card-block">
-    <% if personal_connection.person.main_photo %>
-      <%= link_to(thumbnail_img(personal_connection.person, :class => 'card-img-top img-responsive'), personal_connection.person) %>
-    <% end %>
+    <%= render personal_connection.person %>
     <p class="card-text">
       <%= link_to personal_connection.person.full_name, personal_connection.person %>
       <%= personal_connection.verb.name %>
