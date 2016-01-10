@@ -8,13 +8,11 @@
 <% if controller.controller_name.eql?('plaques') && controller.action_name.eql?('show')%>
 <div class="card" id="plaque-<%= plaque.id %>" >
 <% else %>
-<div class="card" id="plaque-<%= plaque.id %>" style="width: 13rem;">
+<div class="card" id="plaque-<%= plaque.id %>" style="width: 26rem;">
 <% end %>
 
   <% if plaque.main_photo %>
-    <% if plaque.main_photo.thumbnail_url %>
-      <%= link_to image_tag(plaque.main_photo.thumbnail_url, {:class => 'card-img-top img-responsive', :width => 500} ), plaque_path(plaque) %>
-    <% elsif plaque.main_photo.file_url %>
+    <% if plaque.main_photo.file_url %>
       <%= link_to image_tag(plaque.main_photo.file_url, {:class => 'card-img-top img-responsive', :width => 500}) , plaque_path(plaque) %>
     <% else %>
       <%= link_to image_tag('NoPhotoSqr.png', {:class => 'card-img-top img-responsive', :width => 500}), plaque_path(plaque) %>
@@ -52,10 +50,11 @@
   <% end %>
   
   <% if !controller.controller_name.eql?('people') %>
-    <div class="card-block">
-      <%= render :partial => "people/tile", :collection => plaque.people, as: :person %>
+    <div class="container">
+      <%= render plaque.people %>
     </div>
   <% end %>
+ 
 </div>
 
 <% end %>

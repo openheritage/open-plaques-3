@@ -1,62 +1,82 @@
 <% content_for(:page_title) {t '.page_title'} %>
-<% content_for(:title) {"OpenPlaques"} %>
+<% content_for(:title) { } %>
 <% content_for(:admin_menu) {navbar_link_to(t('.pages'), pages_path, {:class => :edit, :title => t('.pages')})} %>
   
 <div class="jumbotron">
   <div class="container">
-    <%= t '.strapline_html' %>
+    <h2><%= t '.strapline_html' %></h2>
   </div>
 </div>
 
-<div class="container">
-  <div class="row">
-    <div class="col-md-4">
-      <h2><%=t '.explore' %></h2>
-      <p>Browse the <%= @plaques_count %> plaques by <%= link_to "person", people_path %>, <%= link_to "place", countries_path %>, or <%= link_to "search", search_path %>.</p>
-    </div>
-    <div class="col-md-4">
-      <h2><%=t '.contribute' %></h2>
-      <p><%=t '.contribute1' %> <%= link_to t('.add_a_plaque'), new_plaque_path %></p>
-      <p><%=t '.take_a_photo' %></p>
-      <p><%=t '.spot_an_innaccuracy' %></p>
-      <% if current_user && current_user.is_admin? %>
-        <p><%=t '.find_something' %> <%= link_to(t('.to_do'), "/todo", {:class => :edit, :title => t('.to_do')})%></p>
-      <% end %>
-      <p><%=t '.mission' %></p>
-    </div>
-    <div class="col-md-4">
-      <h2><%=t '.news' %></h2>
-      <p><%=t '.news_detail_html' %></p>
-    </div>
-    <div class="col-md-4">
-      <div class="like_button">
-        <iframe src="http://www.facebook.com/plugins/like.php?href=https://www.facebook.com/OpenPlaques&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action=like&amp;font&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:75px; height:20px; text-align:right;" allowTransparency="true"></iframe> <%= t '.like_us_on_Facebook' %>
-      </div>
+<div class="row">
+  <div class="col-md-4">
+    <h2><%=t '.explore' %></h2>
+    <p>Browse the <%= @plaques_count %> plaques by <%= link_to "person", people_path %>, <%= link_to "place", countries_path %>, or <%= link_to "search", search_path %>.</p>
+  </div>
+  <div class="col-md-4">
+    <h2><%=t '.contribute' %></h2>
+    <p><%=t '.contribute1' %> <%= link_to t('.add_a_plaque'), new_plaque_path %></p>
+    <p><%=t '.take_a_photo' %></p>
+    <p><%=t '.spot_an_innaccuracy' %></p>
+    <% if current_user && current_user.is_admin? %>
+      <p><%=t '.find_something' %> <%= link_to(t('.to_do'), "/todo", {:class => :edit, :title => t('.to_do')})%></p>
+    <% end %>
+    <p><%=t '.mission' %></p>
+  </div>
+  <div class="col-md-4">
+    <h2><%=t '.news' %></h2>
+    <p><%=t '.news_detail_html' %></p>
+  </div>
+  <div class="col-md-4">
+    <div class="like_button">
+      <iframe src="http://www.facebook.com/plugins/like.php?href=https://www.facebook.com/OpenPlaques&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action=like&amp;font&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:75px; height:20px; text-align:right;" allowTransparency="true"></iframe> <%= t '.like_us_on_Facebook' %>
     </div>
   </div>
 </div>
 
 <% if @todays %>
-  <div class="container" id="plaque-of-the-day">
+  <% plaque = @todays.plaque %>
+  <h2><%= t '.plaque_of_the_day' %></h2>
+  <div class="card">
     <div class="row">
-      <h2><%= t '.plaque_of_the_day' %></h2>
-    </div>
-    <div class="row">
-      <div class="card col-xl-12">
-        <div class="card-block">
-          <h4 class="card-title"><%= @todays.title %></h4>
-        </div>
-        <div class="card-block">
-          <%= render @todays.plaque %> 
-        </div>
+      <div class="card-block">
+        <h4 class="card-title"><%= @todays.title %></h4>
+        <p>"<%= @todays.description %>" - <%= @todays.proposer %></p>
       </div>
+    </div>
+    <div class="card-block row" id="plaque-<%= plaque.id %>">
+      <div class="col-xs-2">
+        <% if plaque.main_photo %>
+          <% if plaque.main_photo.thumbnail_url %>
+            <%= link_to image_tag(plaque.main_photo.thumbnail_url, {:class => 'img-responsive', :width => 150} ), plaque_path(plaque) %>
+          <% elsif plaque.main_photo.file_url %>
+            <%= link_to image_tag(plaque.main_photo.file_url, {:class => 'img-responsive', :width => 150}) , plaque_path(plaque) %>
+          <% else %>
+            <%= link_to image_tag('NoPhotoSqr.png', {:class => 'img-responsive', :width => 150}), plaque_path(plaque) %>
+          <% end %>
+        <% else %>
+          <%= link_to image_tag('NoPhotoSqr.png', {:class => 'img-responsive', :width => 150}), plaque_path(plaque) %>
+        <% end %>
+      </div>
+      <h7 class="col-xs-10">
+        <% if plaque.inscription.length > 150 %>
+          <%= new_linked_inscription(plaque) %>
+        <% else %>
+          <%= new_linked_inscription(plaque) %>
+        <% end %>
+      </h7>   
+      <p class="card-text">
+        <small>
+          <%= plaque.address %>, <%= link_to(plaque.area.name, area_path(plaque.area)) if plaque.area %>, <%= plaque.area.country.name if plaque.area %><% if @person %> where <%= @person.personal_pronoun %> <%= verbs(@person,plaque).to_sentence.html_safe %><% end %><% '. As far as we know, it is not currently on display.' if !plaque.is_current %>
+        </small>
+      </p>
     </div>
   </div>
 <% end %>
 
 <h2><%= t '.recently_photographed' %></h2>
-<div class="card-deck-wrapper">
-  <div class="card-deck" id="recent-plaques">
-    <%= render @recent_plaques %>
+<div class="container-fluid">
+  <div class="card-columns">
+    <%= render partial: 'plaques/tile', :collection => @recent_plaques, as: :plaque %>
   </div>
 </div>

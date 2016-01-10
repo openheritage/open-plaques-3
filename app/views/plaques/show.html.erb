@@ -27,179 +27,187 @@
   <% end %>
 </div>
 
-<div id="photos" class="row">
+<div class="row">
   <div class="col-xs-8">
-    <% if !@plaque.main_photo %>
-      <div class="plaque_image plaque_multiple_images">
-        <% first_photo = @plaque.main_photo %>
-        <%= link_to(image_tag(first_photo.file_url, {:id => "primary_image", :alt => "Photo of plaque", :rel => "foaf:depiction"}), first_photo.url) %>
-        <div id="photo_information" >
-          <p class="photo_credit">Photographed by <% if first_photo.photographer_url %><%= link_to(first_photo.photographer, first_photo.photographer_url) %><% else %><%= first_photo.photographer %>.<% end %></p>
-          <p class="photo_licence"><%= link_to(first_photo.licence.name, first_photo.licence.url) if first_photo.licence %></p>
-        </div>
-        <div id="secondary_images">
-          <% @plaque.photos.detail_order.each do |image| %>
-            <%= link_to(image_tag(image.file_url, {:alt => "Photo of plaque", :rel => "foaf:depiction"}), image.url) unless image == first_photo %>
+    <div class="card-columns">
+      <div id="main_photo" class="card" style="width: 30rem;">
+        <% photo = @plaque.main_photo %>
+        <% if photo.file_url %>
+          <%= content_tag(:span, link_to(image_tag(photo.file_url, {:class => "card-img-top img-rounded img-responsive", :alt => "Photo of " + @plaque.to_s, :rel => "foaf:depiction", :size => "500x500"}), photo.url)) %>
+        <% end %>
+        <p class="card-text">
+          <small><%= icon('copyright') %> <%= link_to photo.photographer, photographer_url(photo.photographer.gsub(".","_").gsub("/","_")) if photo.photographer rescue photo.photographer %> on <%= link_to(photo.source, photo.file_url) %></small>
+          <% if photo.licence %>
+            <small> <%= icon('creative-commons') %> 
+              <%= photo.licence.abbreviation != nil ? photo.licence.abbreviation : photo.licence.name %>
+            </small>
           <% end %>
-          <div class="no_photo">
-            <h2>Your photo</h2>
-            <p><%= link_to 'How to add it', plaque_photos_path(@plaque), {:class => :show, :title => 'Show photos'} %></p>
-          </div>
+        </p>
+      </div>
+      <% @plaque.other_photos.each do |photo| %>
+        <div class="card" style="width: 15rem;">
+          <% if photo.file_url %>
+            <%= content_tag(:span, link_to(image_tag(photo.file_url, {:class => "card-img-top img-rounded img-responsive", :alt => "Photo of " + @plaque.to_s, :rel => "foaf:depiction", :size => "300x300"}), photo.url)) %>
+          <% end %>
+          <p class="card-text">
+            <small><%= icon('copyright') %> <%= link_to photo.photographer, photographer_url(photo.photographer.gsub(".","_").gsub("/","_")) if photo.photographer rescue photo.photographer %> on <%= link_to(photo.source, photo.file_url) %></small>
+            <% if photo.licence %>
+              <small> <%= icon('creative-commons') %> 
+                <%= photo.licence.abbreviation != nil ? photo.licence.abbreviation : photo.licence.name %>
+              </small>
+           <% end %>
+          </p>
         </div>
-      </div>
-    <% else %>
-      <div class="no_photo">
-        <h2>Your photo</h2>
-        <% if @plaque.is_current %>
-          <p>There is no photo linked to this plaque record. It needs someone to hunt it down. Maybe that someone could be you?</p>
-        <% else %>
-          <p>There is no photo linked to this plaque record. We don't think that it currently exists so we need someone to hunt down an old photo. Maybe that someone could be you?</p>
-        <% end %>
-        <p><%= link_to 'How to add it', plaque_photos_path(@plaque), {:class => :show, :title => 'Show photos'} %></p>
-      </div>
-    <% end %>
-  </div>
-
-<div class="col-xs-4">
-  <div class="row">
-     <h1>Plaque <abbr title="number">№</abbr> <%= @plaque.id %></h1>
-     <div class="like_button">
-       <iframe src="http://www.facebook.com/plugins/like.php?href=<%= plaque_path(@plaque, :only_path => false) %>&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action=like&amp;font&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:75px; height:20px; text-align:right;" allowTransparency="true"></iframe>
-     </div>
-  </div>
-
-  <% if @plaque.geolocated? %>
-    <div id="plaque-map" data-latitude="<%= @plaque.latitude %>" data-longitude="<%= @plaque.longitude %>" class="mini" data-zoom="18" data-view="one"></div>
-  <% end %>
-
-  <% if !@plaque.is_accurate_geolocation %>
-    <div class="row">
-      <p>Map accuracy</p>
-      <p>This is an approximate position</p>
-    </div>
-  <% end %>
-
-  <div class="row">
-    <th><% if @plaque.erected? %>Erected<% else %>To be erected<% end %></th>
-    <td>
-      <%= erected_information @plaque %>
-      <% if @plaque.series %>as <% if @plaque.series_ref? %>#<%= content_tag(:span, @plaque.series_ref )%><% else %>part<% end %> of the <%= link_to @plaque.series.name, @plaque.series %> series<% end %>
-    </td>
-  </row>
-
-  <div class="row">
-    <th>Language</th>
-    <td><%= @plaque.language.try(:name) %></td>
-  </div>
-
-  <div class="row">
-    <th>Colour</th>
-    <td>
-      <% if @plaque.colour %>
-        <%= render @plaque.colour  %>
-      <% else %>
-        <% @colours = Colour.all %>
-        <%= form_for plaque do |f| %>
-          <%= f.label :colour_id, "This plaque is" %>
-          <%= f.collection_select :colour_id, @colours, :id, :name, {:include_blank => true} %>
-          <%= f.submit "Save", :class => :button %>
-        <% end %>
       <% end %>
-    </td>
+      <div class="card" style="width: 15rem;">
+        <%= link_to( image_tag("NoPhotoSqr.png", :size => "300x300", :class => 'img-rounded card-img-top img-responsive'), plaque_photos_path(@plaque) ) %>
+        <div class="card-title">Your photo</div>
+        <p class="card-text">
+          <small><%= link_to 'How to add it', plaque_photos_path(@plaque) %></small>
+        </p>
+      </div>
+    </div>
   </div>
 
-  <div class="row">
-    <th>Address</th>
-    <td><%= @plaque.address %>, <%= render @plaque.area if @plaque.area %><br/><% if @plaque.roughly_geolocated? %>
-       [<%= link_to "geolocate this address", edit_plaque_geolocation_path(@plaque), {:class => :edit, :title => "Geolocate"} %>]
-     <% end %>
-    </td>
-  </div>
+  <div class="col-xs-4">
+    <div class="row">
+       <h5>Plaque <abbr title="number">№</abbr> <%= @plaque.id %></h5>
+       <div id="facebook_like_button">
+         <iframe src="http://www.facebook.com/plugins/like.php?href=<%= plaque_path(@plaque, :only_path => false) %>&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action=like&amp;font&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:75px; height:20px; text-align:right;" allowTransparency="true"></iframe>
+       </div>
+    </div>
 
-  <div class="row">
-    <th><%= pluralize_word(@plaque.people.size, "Subject") %></th>
-    <td>
-      <%= render partial: "people/tile", collection: @plaque.people, as: :person %>
-      <%= 'None identified yet' if @plaque.people.size == 0 %>
-    </td>
-  </div>
+    <% if @plaque.geolocated? %>
+      <div id="plaque-map" data-latitude="<%= @plaque.latitude %>" data-longitude="<%= @plaque.longitude %>" class="mini" data-zoom="18" data-view="one"></div>
+      <% if !@plaque.is_accurate_geolocation %>
+        <div class="row bg-danger">This is an approximate position</div>
+      <% end %>
+    <% end %>
 
-  <div class="row">
-    <th>Machine tag</th>
-    <td><%= @plaque.machine_tag %> <%= button_tag "copy", id: 'copy-flickr-tag', type: 'button', :class => :button %></td>
-  </div>
+    <div class="row">
+      <h8><% if @plaque.erected? %>Erected<% else %>To be erected<% end %></h8>
+      <td>
+        <%= erected_information @plaque %>
+        <% if @plaque.series %>as <% if @plaque.series_ref? %>#<%= content_tag(:span, @plaque.series_ref )%><% else %>part<% end %> of the <%= link_to @plaque.series.name, @plaque.series %> series<% end %>
+      </td>
+    </row>
 
-  <div class="row">
-    <th>Wikimedia tag</th>
-    <td><%= @plaque.wikimedia_tag %> <%= button_tag "copy", id: 'copy-wikimedia-tag', type: 'button', :class => :button %></td>
-  </div>
+    <div class="details">
+      <div class="form-group row">
+        <div class="control-label">Language</div>
+        <p class="list-group-item-text"><%= @plaque.language.try(:name) %></p>
+      </div>
+      <div class="form-group row">
+        <div class="control-label">Colour</div>
+        <p class="list-group-item-text">
+          <% if @plaque.colour %>
+            <%= @plaque.colour.name  %>
+          <% else %>
+            <% @colours = Colour.all %>
+            <%= form_for plaque do |f| %>
+              <%= f.label :colour_id, "This plaque is" %>
+              <%= f.collection_select :colour_id, @colours, :id, :name, {:include_blank => true} %>
+              <%= f.submit "Save", :class => :button %>
+            <% end %>
+          <% end %>
+        </p>
+      </a>
+    </div>
 
-  <script>
-    function copyTextToClipboard(text) {
-      var textArea = document.createElement("textarea");
-      // Place in top-left corner of screen regardless of scroll position.
-      textArea.style.position = 'fixed';
-      textArea.style.top = 0;
-      textArea.style.left = 0;
-      // Ensure it has a small width and height. Setting to 1px / 1em
-      // doesn't work as this gives a negative w/h on some browsers.
-      textArea.style.width = '2em';
-      textArea.style.height = '2em';
-      // We don't need padding, reducing the size if it does flash render.
-      textArea.style.padding = 0;
-      // Clean up any borders.
-      textArea.style.border = 'none';
-      textArea.style.outline = 'none';
-      textArea.style.boxShadow = 'none';
-      // Avoid flash of white box if rendered for any reason.
-      textArea.style.background = 'transparent';
-      textArea.value = text;
-      document.body.appendChild(textArea);
-      textArea.select();
-      try {
-        var successful = document.execCommand('copy');
-        var msg = successful ? 'successful' : 'unsuccessful';
-        console.log('Copying text command was ' + msg);
-      } catch (err) {
-        console.log('Oops, unable to copy');
+    <div class="row">
+      <th>Address</th>
+      <td><%= @plaque.address %>, <%= render @plaque.area if @plaque.area %><br/><% if @plaque.roughly_geolocated? %>
+         [<%= link_to "geolocate this address", edit_plaque_geolocation_path(@plaque), {:class => :edit, :title => "Geolocate"} %>]
+       <% end %>
+      </td>
+    </div>
+
+    <div class="row">
+      <th><%= pluralize_word(@plaque.people.size, "Subject") %></th>
+      <td>
+        <%= render partial: "people/tile", collection: @plaque.people, as: :person %>
+        <%= 'None identified yet' if @plaque.people.size == 0 %>
+      </td>
+    </div>
+
+    <div class="row">
+      <th>Machine tag</th>
+      <td><%= @plaque.machine_tag %> <%= button_tag "copy", id: 'copy-flickr-tag', type: 'button', :class => :button %></td>
+    </div>
+
+    <div class="row">
+      <th>Wikimedia tag</th>
+      <td><%= @plaque.wikimedia_tag %> <%= button_tag "copy", id: 'copy-wikimedia-tag', type: 'button', :class => :button %></td>
+    </div>
+
+    <script>
+      function copyTextToClipboard(text) {
+        var textArea = document.createElement("textarea");
+        // Place in top-left corner of screen regardless of scroll position.
+        textArea.style.position = 'fixed';
+        textArea.style.top = 0;
+        textArea.style.left = 0;
+        // Ensure it has a small width and height. Setting to 1px / 1em
+        // doesn't work as this gives a negative w/h on some browsers.
+        textArea.style.width = '2em';
+        textArea.style.height = '2em';
+        // We don't need padding, reducing the size if it does flash render.
+        textArea.style.padding = 0;
+        // Clean up any borders.
+        textArea.style.border = 'none';
+        textArea.style.outline = 'none';
+        textArea.style.boxShadow = 'none';
+        // Avoid flash of white box if rendered for any reason.
+        textArea.style.background = 'transparent';
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+          var successful = document.execCommand('copy');
+          var msg = successful ? 'successful' : 'unsuccessful';
+          console.log('Copying text command was ' + msg);
+        } catch (err) {
+          console.log('Oops, unable to copy');
+        }
+
+        document.body.removeChild(textArea);
       }
 
-      document.body.removeChild(textArea);
-    }
+      var copyFlickrTagBtn = document.querySelector('#copy-flickr-tag');
+      copyFlickrTagBtn.addEventListener('click', function(event) {
+        copyTextToClipboard('<%= @plaque.machine_tag %>');
+      });
 
-    var copyFlickrTagBtn = document.querySelector('#copy-flickr-tag');
-    copyFlickrTagBtn.addEventListener('click', function(event) {
-      copyTextToClipboard('<%= @plaque.machine_tag %>');
-    });
+      var copyWikimediaTagBtn = document.querySelector('#copy-wikimedia-tag');
+      copyWikimediaTagBtn.addEventListener('click', function(event) {
+        copyTextToClipboard('<%= @plaque.wikimedia_tag %>');
+      });
 
-    var copyWikimediaTagBtn = document.querySelector('#copy-wikimedia-tag');
-    copyWikimediaTagBtn.addEventListener('click', function(event) {
-      copyTextToClipboard('<%= @plaque.wikimedia_tag %>');
-    });
+    </script>
 
-  </script>
+    <% if !@plaque.is_current %>
+      <tr>
+        <th>Not found</th>
+        <td>As far as we know, it is not currently on display</td>
+      </tr>
+    <% end %>
 
-  <% if !@plaque.is_current %>
-    <tr>
-      <th>Not found</th>
-      <td>As far as we know, it is not currently on display</td>
-    </tr>
-  <% end %>
-
-  <% if !@plaque.see_also.empty? %>
-    <tr>
-      <th>See also...</th>
-      <td><%= render partial: 'plaques/tile', collection: @plaque.see_also, as: :plaque %></td>
-    </tr>
-  <% end %>
-
-</div>
+  </div>
 
 </div>
 
 <% unless @plaque.description.blank? %>
   <div class="row">
     <%= markdown(@plaque.description) %>
+  </div>
+<% end %>
+
+<% if !@plaque.see_also.empty? %>
+  <h7>See also...</h7>
+  <div class="container-fluid">
+    <div class="card-columns">
+      <%= render partial: 'plaques/tile', collection: @plaque.see_also, as: :plaque %>
+    </div>
   </div>
 <% end %>
 

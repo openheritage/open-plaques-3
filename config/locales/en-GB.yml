@@ -306,8 +306,8 @@ en-GB:
 
   people_by_index:
     show:
-      page_title: Historical plaques about people by index - %{letter}
-      page_heading: Historical plaques about people by index - %{letter}
+      page_title: Subjects of historical plaques - %{letter}
+      page_heading: Subjects of historical plaques - %{letter}
 
   people_died_on:
     index:

@@ -1,3 +1,5 @@
+require 'julia'
+
 class PlaquesController < ApplicationController
 
   before_filter :authenticate_user!, :only => [:edit]
@@ -75,7 +77,31 @@ class PlaquesController < ApplicationController
       }
       format.geojson { render :geojson => @plaques }
       format.rss
+      format.csv { return index_csv }
     end
+  end
+
+  def index_csv
+    send_data(
+      PlaqueCsv.new(@plaques).build,
+      :type => 'text/csv',
+      :filename => 'plaques.csv',
+      :disposition => 'attachment'
+    )
+  end
+
+  class PlaqueCsv < Julia::Builder
+    column :inscription
+    column :latitude
+    column :longitude
+    column 'Person' do |plaque|
+      plaque.people[0]
+    end
+#    column 'Birthday', :dob
+#    column 'Full name', -> { "#{ name.capitalize } #{ last_name.capitalize }" }
+#    column 'Type' do |user|
+#      user.class.name
+#    end
   end
 
   # GET /plaques/1
@@ -92,7 +118,9 @@ class PlaquesController < ApplicationController
       :description => @plaque.inscription,
     }
     set_meta_tags :twitter => {
-      :card  => "photo",
+      :card  => "summary_large_image",
+      :site  => "@openplaques",
+      :title => @plaque.title,
       :image => {
         :_      => @plaque.main_photo ? @plaque.main_photo.file_url : view_context.root_url[0...-1] + view_context.image_path("openplaques-icon.png"),
         :width  => 100,

@@ -208,6 +208,10 @@ class Plaque < ActiveRecord::Base
     }
   end
 
+  def to_csv
+    inscription + "," + latitude.to_s
+  end
+
   def machine_tag
     "openplaques:id=" + id.to_s
   end
@@ -249,6 +253,14 @@ class Plaque < ActiveRecord::Base
 
   def main_photo
     @main_photo ||= photos.first
+  end
+
+  def other_photos
+    others = []
+    photos.each do |p|
+      others << p unless p == main_photo
+    end
+    others
   end
   
   def main_photo_reverse

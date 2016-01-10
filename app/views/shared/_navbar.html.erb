@@ -1,39 +1,31 @@
 <nav class="navbar navbar-dark bg-primary">
-      <%= link_to("OpenPlaques", root_path, :class => "navbar-brand") %>
-      <ul class="nav navbar-nav">
-        <%= navbar_link_to("Home",
-                           root_path,
-                           :active_when => { :controller => :home }) %>
-        <%= navbar_link_to(t('menu.about'),
-                           about_path,
-                           :active_when => {
-                             :controller => :static_pages,
-                             :action => :about
-                           }) %>
-        <li><a href="#contact">Contact</a></li>
-        <%= navbar_link_to(t('menu.people'), people_path) %>
-        <%= navbar_link_to(t('menu.places'), countries_path) %>
-        <%= navbar_link_to(t('menu.organisations'), organisations_path) %>
-        <%= navbar_link_to(t('menu.photographers'), photographers_path) %>
-        <% if current_user && current_user.is_admin? %>
-        <!-- admin only -->
-        <%= navbar_link_to(t('menu.roles'), roles_path) %>
-        <%= navbar_link_to(t('menu.verbs'), verbs_path) %>
-        <%= navbar_link_to(t('menu.todo_lists'), "/todo") %>
-        <!-- admin only -->
-        <% end %>
-        <%= navbar_link_to(t('menu.contribute'), contribute_path) %>
-      </ul>
-      <%= user_menu %>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Log in</a></li>
-        <li><a href="#">Register</a></li>
-        <li><a href="#">Help</a></li>
-      </ul>
+  <div class="container">
+    <div class="navbar-header">
+      <%= link_to(image_tag("openplaques.png"), root_path, :class => "navbar-brand") %>
+      Open Plaques
+      <div class="pull-right"><%= user_menu %></div>
+    </div>
+    <ul class="nav navbar-nav pull-left">
+      <%= navbar_link_to("Home", root_path, :active_when => { :controller => :home }) %>
+      <%= navbar_link_to(t('menu.about'), about_path, :active_when => { :controller => :pages }) %>
+      <%= navbar_link_to(t('menu.people'), people_path, :active_when => { :controller => :people_by_index }) %>
+      <%= navbar_link_to(t('menu.places'), countries_path, :active_when => { :controller => :people }) %>
+      <%= navbar_link_to(t('menu.organisations'), organisations_path, :active_when => { :controller => :organisations }) %>
+      <%= navbar_link_to(t('menu.photographers'), photographers_path, :active_when => { :controller => :photographers }) %>
       <% if current_user && current_user.is_admin? %>
-        <ul class="nav navbar-nav">
-          <%= yield :admin_menu %>
-        </ul>
+      <%= navbar_link_to(t('menu.roles'), roles_path, :active_when => { :controller => :roles }) %>
+      <%= navbar_link_to(t('menu.verbs'), verbs_path, :active_when => { :controller => :verbs }) %>
+      <%= navbar_link_to(t('menu.todo_lists'), "/todo", :active_when => { :controller => :todo }) %>
       <% end %>
+      <%= navbar_link_to(t('menu.contribute'), contribute_path, :active_when => { :controller => :pages }) %>
+    </ul>
+    <%= render 'shared/search' %>
+  </div>
 </nav>
-
+<% if current_user && current_user.is_admin? %>
+  <nav class="navbar navbar-light bg-primary">
+    <ul class="nav navbar-nav">
+      <%= yield :admin_menu %>
+    </ul>
+  </nav>
+<% end %>

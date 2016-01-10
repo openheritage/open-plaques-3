@@ -1,5 +1,5 @@
 <% content_for(:page_title) {t '.page_title', :licence => @licence.name} %>
-<% content_for(:title) {t '.page_heading', :licence => @licence.name + '-' + @licence.abbreviation } %>
+<% content_for(:title) {t '.page_heading', :licence => @licence.name } %>
 
 <div class="row">
   <p><%= @licence.photos.count %> <%= link_to "photos",photos_path %> <%= t '.quantity', :licence => @licence.name %></p>

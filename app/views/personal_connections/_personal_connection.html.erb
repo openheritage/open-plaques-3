@@ -4,7 +4,7 @@
       <%= link_to(thumbnail_img(personal_connection.person, :class => 'card-img-top img-responsive'), personal_connection.person) %>
     <% end %>
     <p class="card-text">
-      <%= personal_connection.person.full_name %>
+      <%= link_to personal_connection.person.full_name, personal_connection.person %>
       <%= personal_connection.verb.name %>
       <%= "at " + personal_connection.full_address if personal_connection.full_address %> 
       <%= "from " + personal_connection.from if personal_connection.from != '' %><%= " to " + personal_connection.to  if personal_connection.to != ''%>

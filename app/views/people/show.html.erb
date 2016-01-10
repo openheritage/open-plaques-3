@@ -1,11 +1,41 @@
+<%= stylesheet_link_tag params[:controller] %>
 <% content_for(:page_title) {t '.page_title', :person => @person.name } %>
-<% content_for(:title) { render @person } %>
+<% content_for(:title) { } %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_person_path(@person), {:class => :edit, :title => t('buttons.edit')}} %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_person_path, {:class => :edit, :title => t('buttons.add')}} %>
 
-<div class="row">
-  <div class="vcard person" typeof="<%= if (@person.person?) then "foaf:Person" else "foaf:Agent" end %> vcard:VCard" about="#person">
-    <p>Names: <%= @person.names.to_sentence %></p>
+<div class="vcard person" typeof="<%= if (@person.person?) then "foaf:Person" else "foaf:Agent" end %> vcard:VCard" about="#person">
+
+  <div class="card hovercard">
+    <% if @person.main_photo %>
+      <div class="card-background">
+        <% if @person.main_photo.thumbnail_url %>
+          <%= image_tag(@person.main_photo.thumbnail_url, :class => 'card-bkimg') %>
+        <% else %>
+          <%= image_tag(@person.main_photo.file_url, :class => 'card-bkimg') %>
+        <% end %>
+      </div>
+      <div class="useravatar">
+        <%= image_tag(@person.main_photo.file_url, :class => 'card-bkimg') %>
+      </div>
+    <% else %>
+      <div class="card-background">
+      </div>
+    <% end %>
+    <div class="card-info">
+      <span class="card-title fn">
+        <%= @person.name %><br/>
+        <small><%= @person.dates %></small>
+      </span>
+    </div>
+  </div>
+
+  <div class="row">
+    Roles: <%= roles_list(@person) %>
+  </div>
+
+  <div class="row">
+    <p>Known as: <%= @person.names.to_sentence %></p>
     <% if @person.parents.size > 0 %>
       <p><%= 'parent'.pluralize @person.parents.size %>:<%= render @person.parents %></p>
     <% end %>
@@ -34,6 +64,7 @@
     <%= simple_format(@person.introduction) if @person.introduction %>
     <%= content_tag("p", "Read more on ".html_safe + link_to("Wikipedia", @person.default_wikipedia_url, :target => '_blank')) unless @person.default_wikipedia_url.blank? %>
   </div>
+
 </div>
 
 <div class="row">

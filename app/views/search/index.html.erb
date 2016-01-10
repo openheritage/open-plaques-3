@@ -1,11 +1,10 @@
 <% content_for(:page_title) {t '.page_title', :phrase => @phrase} %>
+<% content_for(:title) {t '.page_heading', :phrase => @phrase} %>
 
-<div class="row">
-  <h1><%= t '.page_heading', :phrase => @phrase %></h1>
-</div>
-
-<div class="row">
-  <%= render @search_results %>
+<div class="container">
+  <div class="card-columns">
+    <%= render @search_results %>
+  </div>
 </div>
 
 <% if params[:from] && params[:from] == "submission" %>
