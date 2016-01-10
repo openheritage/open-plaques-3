@@ -10,10 +10,10 @@ gem 'curb'
 gem 'nokogiri'
 gem 'sanitize'
 
-gem 'sass-rails' #,        '~> 4.0.5'
+gem 'sass-rails'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
-gem 'bootstrap-sass', :git => 'https://github.com/jnicho02/bootstrap-sass.git'
+gem 'bootstrap-sass', :git => 'https://github.com/jnicho02/bootstrap-sass.git', :branch => 'bootstrap-4'
 # gem 'nprogress-rails'
 gem 'font-awesome-sass', '~> 4.4.0'
 # gem 'bootstrap_form'
@@ -37,6 +37,7 @@ group :development do
 #  gem 'lol_dba'
   gem 'bullet'
   gem 'meta_request'
+#  gem 'julia_builder'
 end
 
 group :test do
