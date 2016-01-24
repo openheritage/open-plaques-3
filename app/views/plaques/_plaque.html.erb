@@ -13,12 +13,12 @@
 
   <% if plaque.main_photo %>
     <% if plaque.main_photo.file_url %>
-      <%= link_to image_tag(plaque.main_photo.file_url, {:class => 'card-img-top img-responsive', :width => 500}) , plaque_path(plaque) %>
+      <%= link_to image_tag(plaque.main_photo.file_url, {:class => 'card-img-top img-responsive', :width => '400rem' }) , plaque_path(plaque) %>
     <% else %>
-      <%= link_to image_tag('NoPhotoSqr.png', {:class => 'card-img-top img-responsive', :width => 500}), plaque_path(plaque) %>
+      <%= link_to image_tag('NoPhotoSqr.png', {:class => 'card-img-top img-responsive', :width => '300rem'}), plaque_path(plaque) %>
     <% end %>
   <% else %>
-    <%= link_to image_tag('NoPhotoSqr.png', {:class => 'card-img-top img-responsive', :width => 500}), plaque_path(plaque) %>
+    <%= link_to image_tag('NoPhotoSqr.png', {:class => 'card-img-top img-responsive', :width => '300rem'}), plaque_path(plaque) %>
   <% end %>
 
   <div class="card-block">
@@ -32,7 +32,7 @@
     <% if plaque.foreign? && plaque.inscription_in_english %>
       <p id="inscription-in-english" class="card-text"><small><%= plaque.inscription_in_english %></small></p>
     <% end %>
-    <p class="card-text">
+    <p class="card-text" id="plaque-<%= plaque.id %>-address">
       <small>
         <%= plaque.address %>, <%= link_to(plaque.area.name, area_path(plaque.area)) if plaque.area %>, <%= plaque.area.country.name if plaque.area %><% if @person %> where <%= @person.personal_pronoun %> <%= verbs(@person,plaque).to_sentence.html_safe %><% end %><% '. As far as we know, it is not currently on display.' if !plaque.is_current %>
       </small>
@@ -49,8 +49,8 @@
     </div>
   <% end %>
   
-  <% if !controller.controller_name.eql?('people') %>
-    <div class="container">
+  <% if !controller.controller_name.eql?('people') && plaque.people.count > 0 %>
+    <div class="container" id="plaque-<%= plaque.id %>-people">
       <%= render plaque.people %>
     </div>
   <% end %>
