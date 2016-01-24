@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/jnicho02/bootstrap-sass.git
-  revision: e15eef6a47ab94b15f80d44507859e4bc08ae965
-  branch: bootstrap-4
+  revision: 384b3ea62c6ce2a2b83d331ea56401beef799543
+  branch: master
   specs:
     bootstrap-sass (3.3.5.1)
       autoprefixer-rails (>= 5.0.0.1)
@@ -46,7 +46,7 @@ GEM
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
     arel (5.0.1.20140414130214)
-    autoprefixer-rails (6.2.3)
+    autoprefixer-rails (6.3.1)
       execjs
       json
     bcrypt (3.1.10)
