@@ -1,9 +1,9 @@
 GIT
   remote: git://github.com/jnicho02/commoner.git
-  revision: 184147877c9217349e5e0816eac8727bf7ac15ca
+  revision: 3a2c5a7ede1252691fbd5beb90f2ffa78618f47a
   branch: licence-details
   specs:
-    commoner (1.0.3)
+    commoner (1.0.4)
       httparty (>= 0.10)
       sanitize
 
@@ -193,7 +193,7 @@ DEPENDENCIES
   bcrypt (~> 3.1.7)
   bootstrap (~> 4.0.0.alpha3)
   bullet
-  commoner (>= 1.0.3)!
+  commoner!
   curb
   database_cleaner
   devise
