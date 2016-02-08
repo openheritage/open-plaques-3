@@ -1,7 +1,7 @@
 <% if controller.controller_name.eql?('roles') && !controller.action_name.eql?('index') %>
-<div typeof="foaf:Organization" class="card vcard col-xl-6">
+<div class="card vcard col-xl-6">
 <% else %>
-<div typeof="foaf:Organization" class="card vcard" style="width: 15rem;">
+<div class="card vcard" style="max-width: 15rem;">
 <% end %>
   <div class="card-block">
     <h4 class="card-title">
@@ -12,14 +12,6 @@
       <% end %>
     </h4>
   </div>
-  <span class="label label-default label-pill pull-right">
-    <%= role.personal_roles_count %>
-  </span>
-  <%= icon('user') if role.person?%>
-  <%= icon('paw') if role.animal? %>
-  <%= icon('users') if role.group? %>
-  <%= icon('building') if role.place? %>
-  <%= icon('map-marker') if role.thing? %>
   <% if controller.controller_name.eql?('roles') && !controller.action_name.eql?('index') %>
     <div class="card-block">
       <% if role.used_as_a_suffix? %>
@@ -39,4 +31,14 @@
       <% end %>
     </div>
   <% end %>
+  <div class="card-footer">
+    <span class="label label-default label-pill pull-right">
+      <%= role.personal_roles_count %>
+    </span>
+    <%= icon('user') if role.person?%>
+    <%= icon('paw') if role.animal? %>
+    <%= icon('users') if role.group? %>
+    <%= icon('building') if role.place? %>
+    <%= icon('map-marker') if role.thing? %>
+  </div>
 </div>

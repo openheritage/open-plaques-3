@@ -23,4 +23,14 @@ class PersonalRole < ActiveRecord::Base
     return dates
   end
 
+  def year_range
+    dates = ""
+    start_year = started_at.to_s[0..3]
+    dates += start_year if started_at
+    end_year = ended_at.to_s[0..3]
+    end_year = "" if end_year == start_year
+    end_year = end_year[2..3] if end_year[0..1] == start_year[0..1]
+    dates += "-" + end_year if end_year != ""
+    return dates
+  end
 end
