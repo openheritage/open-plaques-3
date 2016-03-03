@@ -3,9 +3,7 @@
 <% content_for(:admin_menu) {navbar_link_to(t('.pages'), pages_path, {:class => :edit, :title => t('.pages')})} %>
   
 <div class="jumbotron">
-  <div class="container">
-    <h2><%= t '.strapline_html' %></h2>
-  </div>
+  <h2><%= t '.strapline_html' %></h2>
 </div>
 
 <div class="row">
@@ -75,8 +73,6 @@
 <% end %>
 
 <h2><%= t '.recently_photographed' %></h2>
-<div class="container-fluid">
-  <div class="card-columns">
-    <%= render partial: 'plaques/tile', :collection => @recent_plaques, as: :plaque %>
-  </div>
+<div class="card-columns">
+  <%= render partial: 'plaques/tile', :collection => @recent_plaques, as: :plaque %>
 </div>

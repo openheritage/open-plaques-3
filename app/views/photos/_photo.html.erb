@@ -1,27 +1,17 @@
-<% if controller.controller_name.eql?('photos') && controller.action_name.eql?('show')%>
-<div class="card">
-<% else %>
-  <div class="card" style="width: 30rem;">
-<% end %>
+<div class="card" style="max-width: 50rem; max-height: 50rem;">
   <% if photo.file_url %>
     <% if photo.plaque %>
-      <%= content_tag(:span, link_to(image_tag(photo.file_url, {:class => "card-img-top img-rounded img-responsive", :alt => "Photo of " + photo.plaque.to_s, :rel => "foaf:depiction"}), photo.url)) %>
+      <%= content_tag(:span, link_to(image_tag(photo.file_url, {:class => "card-img-top img-rounded", :alt => "Photo of " + photo.plaque.to_s, :rel => "foaf:depiction", :width => '100%'}), photo.url)) %>
     <% elsif photo.person %>
-      <%= content_tag(:span, link_to(image_tag(photo.file_url, {:class => "card-img-top img-rounded img-responsive", :alt => "Photo of " + photo.person.to_s, :rel => "foaf:depiction"}), photo.url)) %>
+      <%= content_tag(:span, link_to(image_tag(photo.file_url, {:class => "card-img-top img-rounded", :alt => "Photo of " + photo.person.to_s, :rel => "foaf:depiction", :width => '100%'}), photo.url)) %>
     <% else %>
-      <%= content_tag(:span, link_to(image_tag(photo.file_url, {:class => "card-img-top img-rounded img-responsive", :alt => "Photo"}), photo.url)) %>
+      <%= content_tag(:span, link_to(image_tag(photo.file_url, {:class => "card-img-top img-rounded", :alt => "Photo", :width => '100%'}), photo.url)) %>
     <% end %>
   <% end %>
   <p class="card-text">
     <small><%= icon('copyright') %> <%= link_to photo.photographer, photographer_url(photo.photographer.gsub(".","_").gsub("/","_")) if photo.photographer rescue photo.photographer %> on <%= link_to(photo.source, photo.file_url) %></small>
-    <% if photo.licence  %>
-      <small> <%= icon('creative-commons') %> 
-        <% if photo.licence.abbreviation != nil %>
-          <%= photo.licence.abbreviation %>
-        <% else %>
-          <%= photo.licence.name %>
-        <% end %>
-      </small>
+    <% if photo.licence %>
+      <small> <%= icon('creative-commons') %> <% if photo.licence.abbreviation != nil %><%= photo.licence.abbreviation %><% else %><%= photo.licence.name %><% end %></small>
     <% end %>
   </p>
 </div>

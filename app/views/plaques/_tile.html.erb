@@ -5,10 +5,10 @@
 <% end %>
 <% if plaque %>
 
-<div class="card" id="plaque-<%= plaque.id %>" style="width: 13rem;">
+<div class="card" id="plaque-<%= plaque.id %>" style="max-width: 13rem;">
   <% if plaque.main_photo %>
     <% if plaque.main_photo.file_url %>
-      <%= link_to image_tag(plaque.main_photo.file_url, {:class => 'card-img-top img-responsive', :width => 200}) , plaque_path(plaque) %>
+      <%= link_to image_tag(plaque.main_photo.file_url, {:class => 'card-img-top', :width => '100%'}) , plaque_path(plaque) %>
     <% else %>
       <%= link_to image_tag('NoPhotoSqr.png', {:class => 'card-img-top img-responsive', :width => 200}), plaque_path(plaque) %>
     <% end %>

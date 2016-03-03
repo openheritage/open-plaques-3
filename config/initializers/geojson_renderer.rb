@@ -1,4 +1,3 @@
-Mime::Type.register 'application/json', :geojson
 ActionController::Renderers.add :geojson do |object, options|
   geojson = ''
   begin

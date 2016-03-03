@@ -1,7 +1,7 @@
 <% if controller.controller_name.eql?('organisations') && controller.action_name.eql?('show')%>
-<div typeof="foaf:Organization" class="card vcard col-xl-12">
+<div class="card vcard col-xl-12" typeof="foaf:Organization">
 <% else %>
-<div typeof="foaf:Organization" class="card vcard" style="width: 13rem;">
+<div class="card vcard" style="max-width: 40rem;" typeof="foaf:Organization">
 <% end %>
   <div class="card-block">
     <h4 class="card-title">
