@@ -5,6 +5,13 @@
   <%= form_for(@series) do |f| %>
     <p><%= f.label :name %> <%= f.text_field :name %></p>
     <p><%= f.label :description %> <%= f.text_field :description %></p>
+    <fieldset>
+      <legend><%= t '.geolocation' %></legend>
+      <%= f.label :geolocated %> <%= @series.geolocated? %><br/>
+      <%= f.label :latitude %> <%= f.text_field :latitude %>
+      <%= f.label :longitude %> <%= f.text_field :longitude %>
+      <p><%= label_tag(:streetview_url, t('.google_streetview_url')) %> <%= text_field_tag(:streetview_url) %></p>
+    </fieldset>
     <p><%= f.submit t('buttons.save') , :class => :button %></p>
   <% end %>
 </div>
