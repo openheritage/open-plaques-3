@@ -20,7 +20,7 @@ gem 'meta-tags'
 gem 'will_paginate'
 gem 'redcarpet'
 
-gem 'commoner', :git => 'https://github.com/jnicho02/commoner.git', :branch => 'licence-details'
+gem 'commoner', :github => 'jnicho02/commoner', :branch => 'licence-details'
 
 gem 'rollbar', '~> 1.4.4'
 # gem 'rack-timeout'
