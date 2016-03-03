@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby "2.2.0"
+ruby '2.2.0'
 
 gem 'rails',             '4.1.6'
 gem 'pg'
@@ -10,7 +10,7 @@ gem 'curb'
 gem 'nokogiri'
 gem 'sanitize'
 
-gem 'sass-rails',        '~> 4.0.3'
+gem 'sass-rails'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'bootstrap-sass',    '~> 3.2.0'
@@ -19,7 +19,6 @@ gem 'devise'
 gem 'meta-tags'
 gem 'will_paginate'
 gem 'redcarpet'
-
 gem 'commoner', :github => 'jnicho02/commoner', :branch => 'licence-details'
 
 gem 'rollbar', '~> 1.4.4'
