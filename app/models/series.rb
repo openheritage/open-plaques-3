@@ -18,6 +18,7 @@ class Series < ActiveRecord::Base
 
   def find_centre
     if !geolocated?
+      puts '**** finding mean'
       @mean = find_mean(self.plaques)
       self.latitude = @mean.latitude
       self.longitude = @mean.longitude
@@ -25,7 +26,7 @@ class Series < ActiveRecord::Base
   end
 
   def geolocated?
-    return !(self.latitude == nil && self.longitude == nil || self.latitude == 51.475 && self.longitude == 0)
+    return !(self.latitude == nil || self.longitude == nil || self.latitude == 51.475 && self.longitude == 0)
   end
 
   def uri
@@ -54,4 +55,7 @@ class Series < ActiveRecord::Base
     }
   end
 
+  def as_wkt
+    'POINT(' + self.latitude.to_s + ' ' + self.longitude.to_s + ')'
+  end
 end

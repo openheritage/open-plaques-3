@@ -36,11 +36,11 @@ class SeriesController < ApplicationController
   end
 
   def update
-    if (params[:streetview_url])
+    if (params[:streetview_url] && params[:streetview_url]!='')
       point = help.geolocation_from params[:streetview_url]
       if !point.latitude.blank? && !point.longitude.blank?
-        @series.latitude = point.latitude
-        @series.longitude = point.longitude
+        params[:series][:latitude] = point.latitude
+        params[:series][:longitude] = point.longitude
       end
     end
     if @series.update_attributes(series_params)

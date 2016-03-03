@@ -450,6 +450,10 @@ module PlaquesHelper
     attr_accessor :latitude
     attr_accessor :longitude
     attr_accessor :zoom
+
+    def as_wkt
+      'POINT(' + self.latitude.to_s + ' ' + self.longitude.to_s + ')'
+    end
   end
 
 end
