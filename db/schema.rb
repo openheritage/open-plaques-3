@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150726122111) do
+ActiveRecord::Schema.define(version: 20160303075534) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,7 +20,6 @@ ActiveRecord::Schema.define(version: 20150726122111) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "woeid"
     t.string   "dbpedia_uri"
     t.integer  "country_id"
     t.string   "slug"
@@ -126,6 +125,8 @@ ActiveRecord::Schema.define(version: 20150726122111) do
     t.text     "introduction"
     t.string   "gender",                     default: "u"
     t.text     "aka",                        default: [],  array: true
+    t.string   "find_a_grave_id"
+    t.string   "ancestry_id"
   end
 
   add_index "people", ["born_on", "died_on"], name: "born_and_died", using: :btree
@@ -252,6 +253,8 @@ ActiveRecord::Schema.define(version: 20150726122111) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "plaques_count"
+    t.float    "latitude"
+    t.float    "longitude"
   end
 
   create_table "sponsorships", force: true do |t|
@@ -285,7 +288,6 @@ ActiveRecord::Schema.define(version: 20150726122111) do
     t.datetime "updated_at"
     t.datetime "remember_token_expires_at"
     t.boolean  "is_admin"
-    t.integer  "plaques_count"
     t.string   "encrypted_password",        limit: 128,                 null: false
     t.string   "reset_password_token"
     t.datetime "remember_created_at"

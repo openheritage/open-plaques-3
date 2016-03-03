@@ -9,11 +9,10 @@
 # * Plaques - plaques in this series.
 class Series < ActiveRecord::Base
 
+  before_validation :find_centre
   validates_presence_of :name
   has_many :plaques
   default_scope { order('name ASC') }
-
-  attr_accessor :latitude, :longitude
 
   include PlaquesHelper
 
