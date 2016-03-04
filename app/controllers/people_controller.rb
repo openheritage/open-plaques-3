@@ -117,6 +117,8 @@ class PeopleController < ApplicationController
         :wikipedia_paras,
         :dbpedia_uri,
         :born_on,
-        :died_on)
+        :died_on,
+        :find_a_grave_id,
+        :ancestry_id)
     end
 end

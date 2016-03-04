@@ -15,6 +15,8 @@
     <p><%= f.label :wikipedia_url %> <%= f.text_field :wikipedia_url %> <%= t '.wikipedia_comment' %></p>
     <%= content_tag("p", "Read more about ".html_safe + link_to(@person.name, @person.default_wikipedia_url, :target => '_blank') + " on Wikipedia.".html_safe) unless @person.default_wikipedia_url.blank? %>
     <p><%= f.label :dbpedia_uri %> <%= f.text_field :dbpedia_uri %></p>
+    <p><%= f.label :find_a_grave_id %> <%= f.text_field :find_a_grave_id %> <%= @person.find_a_grave_url unless @person.find_a_grave_id.blank? %></p>
+    <p><%= f.label :ancestry_id %> <%= f.text_field :ancestry_id %>  <%= @person.ancestry_url unless @person.ancestry_id.blank? %></p>
     <p><%= f.submit t('buttons.save'), :class => :button %></p>
   <% end %>
 

@@ -416,6 +416,14 @@ class Person < ActiveRecord::Base
     end
     false
   end
+
+  def find_a_grave_url
+    return self.find_a_grave_id ? "http://www.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=" + self.find_a_grave_id : null
+  end
+
+  def ancestry_url
+    return self.ancestry_id ? "http://www.ancestry.co.uk/genealogy/records/" + self.ancestry_id : null
+  end
     
   def uri
     "http://openplaques.org" + Rails.application.routes.url_helpers.person_path(self, :format => :json)

@@ -46,7 +46,8 @@
       </p>
     <% end %>
 
-    <p><%= "Died aged" if (@person.person? || @person.thing? || @person.animal?) && @person.dead? %><%= "Closed aged" if @person.place? && @person.dead? %><%= "Aged" if @person.alive? && @person.age%> <%= "c." + @person.age.to_s if @person.age%></p>
+    <p><%= "Died aged" if (@person.person? || @person.thing? || @person.animal?) && @person.dead? %><%= "Closed aged" if @person.place? && @person.dead? %><%= "Aged" if @person.alive? && @person.age%> <%= "c." + @person.age.to_s if @person.age%>
+    <%= link_to("Find A Grave", @person.find_a_grave_url) unless @person.find_a_grave_id.blank? %></p>
 
     <%= simple_format(@person.introduction) if @person.introduction %>
 
