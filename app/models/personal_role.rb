@@ -14,7 +14,7 @@ class PersonalRole < ActiveRecord::Base
   belongs_to :person, :counter_cache => true
   belongs_to :role, :counter_cache => true
   belongs_to :related_person, :class_name => "Person"
-  
+
   def date_range
     dates = ""
     dates += "from " + started_at.to_s.sub('-01-01','') if started_at
@@ -32,5 +32,13 @@ class PersonalRole < ActiveRecord::Base
     end_year = end_year[2..3] if end_year[0..1] == start_year[0..1]
     dates += "-" + end_year if end_year != ""
     return dates
+  end
+
+  def name
+    n = role.name
+    if related_person
+      n += ' of ' + related_person.name
+    end
+    n
   end
 end

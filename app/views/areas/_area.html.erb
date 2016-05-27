@@ -1,8 +1,4 @@
-<% if controller.controller_name.eql?('area_plaques') && controller.action_name.eql?('show') %>
 <div class="card">
-<% else %>
-<div class="card" style="width: 13rem;">
-<% end %>
   <div class="card-block">
     <div class="card-title">
       <% if controller.controller_name.eql?('area_plaques') && controller.action_name.eql?('show') %>
@@ -11,9 +7,7 @@
         <%= link_to area.name, area_plaques_path(area) %>
       <% end %>
       <% if area.country %> <span class="flag-icon flag-icon-<%= area.country.alpha2 %>"></span><% end %>
-      <span class="label label-default label-pill pull-right">
-        <%= area.plaques_count %>
-      </span>
+      <span class="label label-default label-pill pull-right"><%= area.plaques_count %></span>
     </div>
   </div>
 </div>

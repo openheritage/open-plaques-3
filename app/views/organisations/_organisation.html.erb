@@ -1,8 +1,4 @@
-<% if controller.controller_name.eql?('organisations') && controller.action_name.eql?('show')%>
-<div class="card vcard col-xl-12" typeof="foaf:Organization">
-<% else %>
-<div class="card vcard" style="max-width: 40rem;" typeof="foaf:Organization">
-<% end %>
+<div class="card vcard" typeof="foaf:Organization"> 
   <div class="card-block">
     <h4 class="card-title">
       <% if controller.controller_name.eql?('organisations') && controller.action_name.eql?('show')%>
@@ -11,18 +7,16 @@
         <%= link_to(organisation.name, organisation) %>
       <% end %>
     </h4>
-  </div>
-  <span class="label label-default label-pill pull-right">
-    <%= organisation.sponsorships.size %>
-  </span>
-  <% if controller.controller_name.eql?('organisations') && controller.action_name.eql?('show')%>
-    <% if !organisation.website.blank? %>
-      <p class="card-text" rel="foaf:homepage vcard:url">
-        <small class="text-muted"><%= link_to(h(organisation.website),organisation.website) %></small>
+    <span class="label label-default label-pill pull-right"><%= organisation.sponsorships.size %></span>
+    <% if controller.controller_name.eql?('organisations') && controller.action_name.eql?('show')%>
+      <% if !organisation.website.blank? %>
+        <p class="card-text" rel="foaf:homepage vcard:url">
+          <small class="text-muted"><%= link_to(h(organisation.website),organisation.website) %></small>
+        </p>
+      <% end %>
+      <p class="card-text">
+        <small class="text-muted"><%= simple_format(organisation.description) %></small>
       </p>
     <% end %>
-    <p class="card-text">
-      <small class="text-muted"><%= simple_format(organisation.description) %></small>
-    </p>
-  <% end %>
+  </div>
 </div>

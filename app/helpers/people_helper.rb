@@ -9,7 +9,7 @@ module PeopleHelper
     if person.roles.size == 0
       list << person.type
     elsif person.type != 'man'
-      list << person.type      
+      list << person.type
     end
     if person.roles.size > 0
       person.straight_roles.each do |personal_role|
@@ -44,20 +44,7 @@ module PeopleHelper
   end
 
   def dates(person)
-    dates = ""
-    if person.born_on
-      dates = "("
-      if person.born_on_is_circa
-        dates += circa_tag
-      end
-      dates += person.born_in.to_s
-      if person.died_on && (person.born_in != person.died_on)
-        dates += "-" + person.died_in.to_s
-      else
-        dates += "-present"
-      end
-      dates += ")"
-    end
+    person.dates
   end
 
   def dbpedia_url(person)
@@ -138,7 +125,7 @@ module PeopleHelper
       end
       verbs
     end
-	
+
 	def age_icon(age)
 	  if age < 3
 	    image_tag("age1.png", {:alt => "first age of man"})

@@ -32,10 +32,10 @@ class Role < ActiveRecord::Base
   include ApplicationHelper
 
   def related_roles
-    Role.where(['lower(name) != ? and (lower(name) LIKE ? or lower(name) LIKE ? or lower(name) LIKE ? )', name.downcase, 
+    Role.where(['lower(name) != ? and (lower(name) LIKE ? or lower(name) LIKE ? or lower(name) LIKE ? )', name.downcase,
     "#{name.downcase} %", "% #{name.downcase} %", "% #{name.downcase}"])
   end
-  
+
   def self.types
     ["person", "man", "woman", "animal", "thing", "group", "place", "relationship", "parent", "spouse", "child", "title", "letters", "military medal", "clergy"]
   end
@@ -64,7 +64,7 @@ class Role < ActiveRecord::Base
     return true if "place" == role_type
     return false
   end
-  
+
   def type
 	  return "person" if person?
 	  return "animal" if animal?
@@ -73,20 +73,20 @@ class Role < ActiveRecord::Base
 	  return "place" if place?
 	  return "?"
   end
-  
+
   # work it out from the name unless override value stored in the db
   def wikipedia_stub
     self[:wikipedia_stub] ? self[:wikipedia_stub] : self.name.capitalize.strip.gsub(/ /,"_")
   end
-  
+
   def dbpedia_url
-    "http://dbpedia.org/resource/" + wikipedia_stub
+    'http://dbpedia.org/resource/' + wikipedia_stub
   end
-  
+
   def wikipedia_url
-    "https://en.wikipedia.org/wiki/" + wikipedia_stub
+    'https://en.wikipedia.org/wiki/' + wikipedia_stub
   end
-  
+
   def relationship?
     return true if "relationship" == role_type
     return true if "parent" == role_type
@@ -95,15 +95,13 @@ class Role < ActiveRecord::Base
     return true if "group" == role_type
     false
   end
-  
+
   def used_as_a_prefix?
-    return true if "title" == role_type
-    false
+    "title" == role_type
   end
-  
+
   def military_medal?
-    return true if "military medal" == role_type
-    false
+    "military medal" == role_type
   end
 
   def used_as_a_suffix?
@@ -118,12 +116,11 @@ class Role < ActiveRecord::Base
     return abbreviation if used_as_a_suffix?
     ""
   end
-  
+
   def abbreviated?
-    return false if abbreviation.blank?
-    true
+    !abbreviation.blank?
   end
-  
+
   def confers_honourific_title?
     return true if "Baronet" == name
     return true if "Baroness" == name
@@ -165,7 +162,7 @@ class Role < ActiveRecord::Base
   def male?
     !self.female?
   end
-  
+
   def full_name
     return abbreviation + " - " + name if abbreviated?
     name
@@ -174,7 +171,7 @@ class Role < ActiveRecord::Base
   def display_name
     abbreviated? ? abbreviation : name
   end
-  
+
   def uri
     "http://openplaques.org" + Rails.application.routes.url_helpers.role_path(self.slug, :format => :json)
   end

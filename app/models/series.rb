@@ -55,4 +55,8 @@ class Series < ActiveRecord::Base
     }
   end
 
+  def as_wkt()
+    return "" if (self.longitude == nil || self.latitude == nil)
+    "POINT(" + self.longitude + " " + self.latitude + ")"
+  end
 end

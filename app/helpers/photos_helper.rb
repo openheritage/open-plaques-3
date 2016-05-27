@@ -1,23 +1,14 @@
 module PhotosHelper
 
-  def photo_img(plaque)
-    desc = ""
-    if plaque.photos.size > 0
-      photo = plaque.photos.first
-      desc += "<img src=\""+photo.url+"\"/>"
-    end
-    return desc.html_safe
-  end
-
   def thumbnail_img(thing, decorations = nil)
-    clazz = "img-rounded card-img-top img-responsive"
+    clazz = "img-rounded card-img-top"
     desc = ""
     begin
       begin
         if thing.thumbnail_url
-          desc = image_tag(thing.thumbnail_url, :class => clazz)
+          desc = image_tag(thing.thumbnail_url, :class => clazz, :width => '100%')
         else
-          desc = image_tag(thing.file_url, :class => clazz)
+          desc = image_tag(thing.file_url, :class => clazz, :width => '100%')
         end
       rescue
         begin

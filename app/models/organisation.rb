@@ -86,6 +86,11 @@ class Organisation < ActiveRecord::Base
     }
   end
 
+  def as_wkt()
+    return "" if (self.longitude == nil || self.latitude == nil)
+    "POINT(" + self.longitude + " " + self.latitude + ")"
+  end
+  
   def to_param
     slug
   end

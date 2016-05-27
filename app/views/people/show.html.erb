@@ -9,11 +9,7 @@
   <div class="card hovercard">
     <% if @person.main_photo %>
       <div class="card-background">
-        <% if @person.main_photo.thumbnail_url %>
-          <%= image_tag(@person.main_photo.thumbnail_url, :class => 'card-bkimg') %>
-        <% else %>
-          <%= image_tag(@person.main_photo.file_url, :class => 'card-bkimg') %>
-        <% end %>
+        <%= image_tag(@person.main_photo.thumbnail_url != nil ? @person.main_photo.thumbnail_url : @person.main_photo.file_url, :class => 'card-bkimg') %>
       </div>
       <div class="useravatar">
         <%= image_tag(@person.main_photo.file_url, :class => 'card-bkimg') %>
@@ -36,47 +32,92 @@
 
   <div class="row">
     <p>Known as: <%= @person.names.to_sentence %></p>
-    <% if @person.parents.size > 0 %>
-      <p><%= 'parent'.pluralize @person.parents.size %>:<%= render @person.parents %></p>
-    <% end %>
-    <% if @person.spousal_relationships.size > 0 %>
-      <p>
-        <% @person.spousal_relationships.each_with_index do |relationship, index| %>
-          <%= relationship.role.name %> of <%= dated_person relationship.related_person %>
-          <% if index == @person.spousal_relationships.size - 2 %>and<% elsif index != @person.spousal_relationships.size - 1 %>,<% end %>
-        <% end %>
-      </p>
-    <% end %>
-    <% if @person.children.size > 0 %>
-      <p><%= 'child'.pluralize @person.children.size %>:<%= render @person.children %></p>
-    <% end %>
-    <% if @person.siblings.size > 0 %>
-      <p><%= 'sibling'.pluralize @person.siblings.size %>:<%= render @person.siblings %></p>
-    <% end %>
-    <% if @person.non_family_relationships.size > 0 %>
-      <p>
-        <% @person.non_family_relationships.each_with_index do |relationship, index| %>
-          <%= relationship.role.name %> of <%= dated_person relationship.related_person %><% if index == @person.non_family_relationships.size - 2 %> and<% elsif index != @person.non_family_relationships.size - 1 %>,<% end %>
-        <% end %>
-      </p>
-    <% end %>
-    <p><%= "Died aged" if (@person.person? || @person.thing? || @person.animal?) && @person.dead? %><%= "Closed aged" if @person.place? && @person.dead? %><%= "Aged" if @person.alive? && @person.age%> <%= "c." + @person.age.to_s if @person.age%></p>
+  </div>
+
+  <div class="row">
+    <p><%= "Died aged" if (@person.person? || @person.thing? || @person.animal?) && @person.dead? %><%= "Closed aged" if @person.place? && @person.dead? %><%= "Aged" if @person.alive? && @person.age%> <%= "c." + @person.age.to_s if @person.age%>
+      <%= link_to("Find A Grave", @person.find_a_grave_url) unless @person.find_a_grave_id.blank? %>
+    </p>
     <%= simple_format(@person.introduction) if @person.introduction %>
     <%= content_tag("p", "Read more on ".html_safe + link_to("Wikipedia", @person.default_wikipedia_url, :target => '_blank')) unless @person.default_wikipedia_url.blank? %>
   </div>
 
+  <% if @person.person? %>
+    <h2>Family tree</h2>
+    <div class="row">
+      <div class="tree">
+        <ul>
+          <li>
+            <%= @person.father != nil ? link_to(@person.father.name_and_dates, @person.father) : link_to('father', '#') %>
+            <ul>
+              <li>
+                <a href='#'><%= @person.name_and_dates %></a>
+                <% if @person.children.size > 0 %>
+                  <ul>
+                    <% @person.children.each do |child| %>
+                      <li><%= link_to(child.name_and_dates, @person.father) %></li>
+                    <% end %>
+                  </ul>
+                <% end %>      
+              </li>
+              <% @person.spousal_relationships.each do |spousal_relationship| %>
+                <li><%= link_to(spousal_relationship.related_person.name_and_dates, spousal_relationship.related_person) %></li>
+              <% end %>
+              <% @person.siblings.each do |sibling| %>
+                <li><%= link_to(sibling.name_and_dates, sibling) %></li>
+              <% end %>
+            </ul>
+          </li>
+          <li><%= @person.mother != nil ? link_to(@person.mother.name_and_dates, @person.mother) : link_to('mother', '#') %></li>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @person.group? %>
+    <h2>Group</h2>
+    <div class="row">
+      <div class="tree">
+        <ul>
+          <li>
+            <a href='#'><%= @person.name_and_dates %></a>
+            <% if @person.non_family_relationships.size > 0 %>
+              <ul>
+                <% @person.non_family_relationships.each do |relationship| %>
+                  <li><%= link_to(relationship.related_person.name_and_dates, relationship.related_person) %></li>
+                <% end %>
+              </ul>
+            <% end %>      
+          </li>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <% if @person.person? %>
+      <% if @person.non_family_relationships.size > 0 %>
+        <p>
+          <% @person.non_family_relationships.each_with_index do |relationship, index| %>
+            <%= relationship.role.name %> of <%= dated_person relationship.related_person %><% if index == @person.non_family_relationships.size - 2 %> and<% elsif index != @person.non_family_relationships.size - 1 %>,<% end %>
+          <% end %>
+        </p>
+      <% end %>
+    <% end %>
+  </div>
+
 </div>
 
-<div class="row">
-  <% if @person.plaques.size > 0 %>
-    <h2>Commemorated on <%= @person.plaques.uniq.size %> <%= 'plaque'.pluralize @person.plaques.uniq.size %></h2>
-  <% else %>
-    <h2><%= t '.not_commemorated'%></h2>
-  <% end %>
-</div>  
+<% if @person.plaques.size > 0 %>
+  <h2>Commemorated on <%= @person.plaques.uniq.size %> <%= 'plaque'.pluralize @person.plaques.uniq.size %></h2>
+<% else %>
+  <h2><%= t '.not_commemorated'%></h2>
+<% end %>
 
-<div class="card-columns">
-  <%= render @person.plaques.uniq %>
+<div class="container-fluid">
+  <div class="card-columns">
+    <%= render @person.plaques.uniq %>
+  </div>
 </div>
 
 <div class="row">

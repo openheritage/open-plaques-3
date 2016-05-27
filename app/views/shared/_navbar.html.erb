@@ -1,8 +1,8 @@
-<nav class="navbar navbar-light bg-primary">
+<nav class="navbar navbar-light bg-faded">
   <div class="container">
     <div class="navbar-header">
       <%= link_to(image_tag("openplaques.png"), root_path, :class => "navbar-brand") %>
-      Open Plaques
+      <h1 class="navbar-brand">Open Plaques</h1>
       <div class="pull-right"><%= user_menu %></div>
     </div>
     <ul class="nav navbar-nav pull-left">
@@ -23,7 +23,7 @@
   </div>
 </nav>
 <% if current_user && current_user.is_admin? %>
-  <nav class="navbar navbar-light bg-primary">
+  <nav class="navbar navbar-light bg-faded">
     <ul class="nav navbar-nav">
       <%= yield :admin_menu %>
     </ul>

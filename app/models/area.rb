@@ -32,32 +32,6 @@ class Area < ActiveRecord::Base
 
   include ApplicationHelper
   include PlaquesHelper
-  
-  def as_json(options=nil)
-    options = {
-      :only => [:name, :plaques_count],
-      :include => { 
-        :country => {
-          :only => [:name],
-          :methods => :uri
-        }
-      },
-      :methods => [:uri, :plaques_uri]
-    } if !options || !options[:only]
-    super options
-  end
-
-  def as_geojson(options=nil)
-    {
-      type: 'Feature',
-      geometry:
-      {
-        type: 'Point',
-        coordinates: [self.longitude, self.latitude]
-      },
-      properties: as_json(options)
-    }
-  end
 
   def find_centre
     if !geolocated?
@@ -86,7 +60,38 @@ class Area < ActiveRecord::Base
     end
     return people.uniq
   end
+  
+  def as_json(options=nil)
+    options = {
+      :only => [:name, :plaques_count],
+      :include => { 
+        :country => {
+          :only => [:name],
+          :methods => :uri
+        }
+      },
+      :methods => [:uri, :plaques_uri]
+    } if !options || !options[:only]
+    super options
+  end
 
+  def as_geojson(options=nil)
+    {
+      type: 'Feature',
+      geometry:
+      {
+        type: 'Point',
+        coordinates: [self.longitude, self.latitude]
+      },
+      properties: as_json(options)
+    }
+  end
+
+  def as_wkt()
+    return "" if (self.longitude == nil || self.latitude == nil)
+    "POINT(" + self.longitude + " " + self.latitude + ")"
+  end
+  
   def to_param
     slug
   end

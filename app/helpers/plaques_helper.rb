@@ -422,24 +422,24 @@ module PlaquesHelper
     p = Point.new
     r = /@([-\d.\d]*),([-\d.\d]*)/
     if (url[r])
-      p.latitude = url[r,1]
-      p.longitude = url[r,2]
+      p.latitude = url[r,1].to_f.round(5)
+      p.longitude = url[r,2].to_f.round(5)
       return p
     end
     # or OSM
     # https://www.openstreetmap.org/#map=17/57.14772/-2.10572
     r = /map=[\d]*\/([-\d.\d]*)\/([-\d.\d]*)/
     if (url[r])
-      p.latitude = url[r,1]
-      p.longitude = url[r,2]
+      p.latitude = url[r,1].to_f.round(5)
+      p.longitude = url[r,2].to_f.round(5)
       return p
     end
     # or Geohack
     # https://tools.wmflabs.org/wiwosm/osm-on-ol/commons-on-osm.php?zoom=16&lat=43.725688888889&lon=7.2722138888889
     r = /&lat=([-\d.\d]*)&lon=([-\d.\d]*)/
     if (url[r])
-      p.latitude = url[r,1]
-      p.longitude = url[r,2]
+      p.latitude = url[r,1].to_f.round(5)
+      p.longitude = url[r,2].to_f.round(5)
       return p
     end
     p

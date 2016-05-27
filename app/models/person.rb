@@ -107,6 +107,23 @@ class Person < ActiveRecord::Base
     died_on.year if died_on
   end
 
+  def dates
+    dates = ""
+    if born_on
+      dates = "("
+      if born_on_is_circa
+        dates += circa_tag
+      end
+      dates += born_in.to_s
+      if died_on && (born_in != died_on)
+        dates += "-" + died_in.to_s
+      else
+        dates += "-present"
+      end
+      dates += ")"
+    end
+  end
+
   def born_at
     birth_connection.location if birth_connection
   end
@@ -124,7 +141,7 @@ class Person < ActiveRecord::Base
   def alive?
     !dead?
   end
-  
+
   def existence_word
     return "is" if alive?
     "was"
@@ -163,31 +180,19 @@ class Person < ActiveRecord::Base
     name + " " + dates
   end
 
-  def name_and_raw_dates
-    name + " " + raw_dates
-  end
+#  def name_and_raw_dates
+#    name + " " + raw_dates
+#  end
 
-  def dates
-    r = ""
-    r += "(" if born_on || died_on
-    r += creation_word + " " if born_on && !died_on
-    r += born_on.year.to_s if born_on
-    r += "-" if born_on && died_on
-    r += destruction_word + " " if !born_on && died_on
-    r += died_on.year.to_s if died_on
-    r += ")" if born_on || died_on
-    return r
-  end
-
-  def raw_dates
-    r = ""
-    r += "(" if born_on || died_on
-    r += born_on.year.to_s if born_on
-    r += "-" if born_on && died_on
-    r += died_on.year.to_s if died_on
-    r += ")" if born_on || died_on
-    return r
-  end
+#  def raw_dates
+#    r = ""
+#    r += "(" if born_on || died_on
+#    r += born_on.year.to_s if born_on
+#    r += "-" if born_on && died_on
+#    r += died_on.year.to_s if died_on
+#    r += ")" if born_on || died_on
+#    return r
+#  end
 
   def surname
     self.name[self.name.downcase.rindex(" " + self.surname_starts_with.downcase) ? self.name.downcase.rindex(" " + self.surname_starts_with.downcase) + 1: 0,self.name.size]
@@ -226,7 +231,7 @@ class Person < ActiveRecord::Base
     end
     current_roles
   end
-  
+
   def title
     title = ""
     current_roles.each do |role|
@@ -234,7 +239,7 @@ class Person < ActiveRecord::Base
         # NB a clergyman or Commonwealth citizen does not get called 'Sir'
         title += role.prefix + " " if !title.include?(role.prefix) && !(role.prefix == "Sir" && clergy?)
       elsif role.used_as_a_prefix? and !title.include?(role.display_name)
-        title += role.display_name + " " 
+        title += role.display_name + " "
       end
     end
     title.strip
@@ -243,11 +248,11 @@ class Person < ActiveRecord::Base
   def titled?
     title != ""
   end
-  
+
   def clergy?
     roles.any? { |role| role.role_type=="clergy"}
   end
-  
+
   def letters
     letters = ""
     current_roles.each do |role|
@@ -255,7 +260,7 @@ class Person < ActiveRecord::Base
     end
     letters.strip
   end
-  
+
   def full_name
     fullname = title + " " + name + " " + letters
     fullname.strip
@@ -275,7 +280,7 @@ class Person < ActiveRecord::Base
     end
     lastname = nameparts.last
     names = []
-    names << full_name # Sir Joseph Aloysius Hansom 
+    names << full_name # Sir Joseph Aloysius Hansom
     names << title + " " + name if titled? # Dame Laura Knight [DBE]
     names += self.aka # Boz, Charlie Cheese, and Crackers
     names << title + " " + firstinitial + " " + middleinitials + " " + lastname if titled? && nameparts.length > 2
@@ -292,7 +297,7 @@ class Person < ActiveRecord::Base
     names << firstname + " " + nameparts.second + " " + lastname if nameparts.length > 2 # Joseph Aaron Hansom
     names << firstname + " " + secondinitial + " " + lastname if nameparts.length > 2 # Joseph A. Hansom
     names << firstinitial + " " + secondname + " " + lastname if nameparts.length > 2 # J. Aaron Hansom
-    names << firstname + " " + lastname if nameparts.length > 2 # Joseph Hansom 
+    names << firstname + " " + lastname if nameparts.length > 2 # Joseph Hansom
     names << firstinitial + " " + lastname  if nameparts.length > 1 # J. Hansom
     names << title + " " + lastname if titled? # Lord Carlisle
     names << title + " " + firstname if titled? # Sir William
@@ -300,13 +305,27 @@ class Person < ActiveRecord::Base
     names << firstname if nameparts.length > 1 # Charles
     names.uniq
   end
-  
+
   def parents
     parents = []
     relationships.each do |relationship|
       parents << relationship.related_person if (relationship.role.name=="son" or relationship.role.name=="daughter") && relationship.related_person!=nil
     end
     parents.sort! { |a,b| a.born_on ? a.born_on : 0 <=> b.born_on ? b.born_on : 0 }
+  end
+
+  def father
+    relationships.each do |relationship|
+      return relationship.related_person if (relationship.role.name=="son" or relationship.role.name=="daughter") && relationship.related_person!=nil && relationship.related_person.male?
+    end
+    return nil
+  end
+
+  def mother
+    relationships.each do |relationship|
+      return relationship.related_person if (relationship.role.name=="son" or relationship.role.name=="daughter") && relationship.related_person!=nil && relationship.related_person.female?
+    end
+    return nil
   end
 
   def children
@@ -316,45 +335,52 @@ class Person < ActiveRecord::Base
     end
     issue.sort! { |a,b| a.born_on ? a.born_on : 0 <=> b.born_on ? b.born_on : 0 }
   end
-  
+
   def siblings
     siblings = []
-    relationships.each do |relationship|
-      siblings << relationship.related_person if relationship.role.name=="brother" or relationship.role.name=="sister" or relationship.role.name=="half-brother" or relationship.role.name=="half-sister"
+    if father != nil
+      father.children.each do |child|
+        siblings << child if child != self
+      end
     end
-    siblings.sort! { |a,b| a.born_on ? a.born_on : 0 <=> b.born_on ? b.born_on : 0 }   
+    if mother != nil
+      mother.children.each do |child|
+        siblings << child if child != self
+      end
+    end
+    siblings.uniq.sort! { |a,b| a.born_on ? a.born_on : 0 <=> b.born_on ? b.born_on : 0 }
   end
-  
+
   def spousal_relationships
     spouses = []
     relationships.each do |relationship|
       spouses << relationship if relationship.role.name=="wife" or relationship.role.name=="husband"
     end
-    spouses 
+    spouses
   end
-  
+
   def non_family_relationships
     non_family = []
     relationships.each{|relationship|
       non_family << relationship if relationship.role.name!="husband" and relationship.role.name!="wife" and relationship.role.name!="brother" and relationship.role.name!="sister" and relationship.role.name!="half-brother" and relationship.role.name!="half-sister" and relationship.role.name!="father" and relationship.role.name!="mother" and relationship.role.name!="son" and relationship.role.name!="daughter"
     }
-    non_family 
+    non_family
   end
-  
+
   def creation_word
     return "from" if (self.thing?)
     return "formed in" if (self.group?)
     return "built in" if (self.place?)
     "born in"
   end
-  
+
   def destruction_word
     return "until" if self.thing?
     return "ended in" if self.group?
     return "closed in" if self.place?
     "died in"
   end
-  
+
   def personal_pronoun
     return "it" if (self.thing? || self.group? || self.place?)
     return "he" if self.male?
@@ -402,7 +428,7 @@ class Person < ActiveRecord::Base
     return "object" if (self.thing? || self.group? || self.place?)
     "male"
   end
-  
+
   def possessive
     return "its" if (self.thing? || self.group? || self.place?)
     return "her" if self.female?
@@ -416,11 +442,19 @@ class Person < ActiveRecord::Base
     end
     false
   end
-    
+
+  def find_a_grave_url
+    return self.find_a_grave_id ? "http://www.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=" + self.find_a_grave_id : null
+  end
+
+  def ancestry_url
+    return self.ancestry_id ? "http://www.ancestry.co.uk/genealogy/records/" + self.ancestry_id : null
+  end
+
   def uri
     "http://openplaques.org" + Rails.application.routes.url_helpers.person_path(self, :format => :json)
   end
-    
+
   def to_s
     self.name
   end
@@ -432,13 +466,13 @@ class Person < ActiveRecord::Base
         :only => [],
         :include => {
           :personal_roles => {
-            :only => [], 
+            :only => [],
             :include => {
               :role => {:only => :name},
               :related_person => {
                 :only => [], :methods => [:uri, :full_name]
               }
-            }, 
+            },
             :methods => [:uri]
           }
         },

@@ -1,22 +1,7 @@
-<div class="card hovercard vcard person" typeof="<%= if (person.person?) then "foaf:Person" else "foaf:Agent" end %> vcard:VCard" about="#person">
-  <div class="card-background">
-    <% if person.main_photo && person.main_photo.thumbnail_url %>
-      <%= image_tag(person.main_photo.thumbnail_url, :class => 'card-bkimg') %>
-    <% elsif person.main_photo && person.main_photo.file_url %>
-      <%= image_tag(person.main_photo.file_url, :class => 'card-bkimg') %>
-    <% else %>
-      <img src="/assets/NoPhotoSqr.png" class="card-bkimg">
-    <% end %>
-  </div>
-  <div class="useravatar">
-    <% if person.main_photo && person.main_photo.file_url %>
-      <%= image_tag(person.main_photo.file_url, :class => 'card-bkimg') %>
-    <% else %>
-      <img src="/assets/NoPhotoSqr.png" class="card-bkimg">
-    <% end %>
-  </div>
-  <div class="card-info">
-    <span class="card-title fn">
+<div class="card vcard person" typeof="<%= if (person.person?) then "foaf:Person" else "foaf:Agent" end %> vcard:VCard" about="#person" style="min-height: 10rem; background-color: #999;">
+  <%= image_tag(person.main_photo.file_url, {:class => 'card-img', :width => '100%'}) if person.main_photo %>
+  <div class="card-img-overlay">
+    <span class="card-title">
       <%= link_to(person.full_name, person, {:class => "fn url", :property => "rdfs:label foaf:name vcard:fn", :rel => "foaf:homepage vcard:url"}) %><br/>
       <small><%= person.dates %></small>
     </span>

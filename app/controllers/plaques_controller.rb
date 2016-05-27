@@ -60,48 +60,33 @@ class PlaquesController < ApplicationController
       @plaques = Plaque.all(:select => [:id, :latitude, :longitude, :inscription])
     else
       puts "asking for all data"
+      limit = 1000000000000
       @plaques = Plaque.where(conditions).order("created_at DESC").limit(limit).preload(:language, :organisations, :colour, [:area => :country])
     end
 
     respond_to do |format|
-      format.html      
+      format.html
       format.json {
         if params[:data] && params[:data] == "simple"
           render :json => @plaques.as_json(:only => [:id, :latitude, :longitude, :inscription],
             :methods => [:title, :colour_name, :machine_tag, :thumbnail_url])
         elsif params[:data] && params[:data] == "basic"
-          render :json => @plaques.as_json(:only => [:id, :latitude, :longitude, :inscription]) 
+          render :json => @plaques.as_json(:only => [:id, :latitude, :longitude, :inscription])
         else
           render :json => @plaques.as_json(:only => [:id, :latitude, :longitude, :inscription])
         end
       }
       format.geojson { render :geojson => @plaques }
       format.rss
-      format.csv { return index_csv }
+      format.csv {
+        send_data(
+          PlaqueCsv.new(@plaques).build,
+          :type => 'text/csv',
+          :filename => 'open-plaques-all-' + Date.today.to_s + '.csv',
+          :disposition => 'attachment'
+        )
+      }
     end
-  end
-
-  def index_csv
-    send_data(
-      PlaqueCsv.new(@plaques).build,
-      :type => 'text/csv',
-      :filename => 'plaques.csv',
-      :disposition => 'attachment'
-    )
-  end
-
-  class PlaqueCsv < Julia::Builder
-    column :inscription
-    column :latitude
-    column :longitude
-    column 'Person' do |plaque|
-      plaque.people[0]
-    end
-#    column 'Birthday', :dob
-#    column 'Full name', -> { "#{ name.capitalize } #{ last_name.capitalize }" }
-#    column 'Type' do |user|
-#      user.class.name
-#    end
   end
 
   # GET /plaques/1
@@ -132,10 +117,20 @@ class PlaquesController < ApplicationController
       format.html
       format.xml { render "plaques/index" }
       format.kml {
-          render :json => {:error => "format unsupported"}.to_json, :status => 406        
+          render :json => {:error => "format unsupported"}.to_json, :status => 406
       }
       format.json { render :json => @plaque }
       format.geojson { render :geojson => @plaque }
+      format.csv {
+        @plaques = []
+        @plaques << @plaque
+        send_data(
+          PlaqueCsv.new(@plaques).build,
+          :type => 'text/csv',
+          :filename => 'open-plaque-' + @plaque.id.to_s + '.csv',
+          :disposition => 'attachment'
+        )
+      }
      end
   end
 
@@ -252,7 +247,7 @@ class PlaquesController < ApplicationController
     include PlaquesHelper
   end
 
-  private 
+  private
 
     def find
       @plaque = Plaque.find(params[:id])

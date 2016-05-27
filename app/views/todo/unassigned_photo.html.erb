@@ -1,12 +1,15 @@
 ﻿<% content_for :page_title, "To do: photos with no plaque" %>
+<% content_for :title, "Photos with no plaque" %>
+<% content_for(:admin_menu) {navbar_link_to("All to-do lists", "/todo")} %>
 
-<div class="panel">
-  <h1>Photos with no plaque</h1>
-  <section class="admin_panel"><%= link_to("All to-do lists", "/todo") %></section>
-  <%= will_paginate @photos %>
-  <p>These photos don't have a plaque yet. They have been found on the web by the openplaquebot.
-	   They either do not count as plaques on our system, match an existing plaque, or need a new plaque creating:
-  </p>
-  <%= render @photos %>
-  <%= will_paginate @photos %>
-</div>
+<% if @photos.size > 0 %>
+  <div class="container-fluid">
+    <%= will_paginate @photos %>
+    <div class="card-columns">
+      <%= render partial: 'photos/tile', :collection => @photos, as: :photo %>
+    </div>
+    <%= will_paginate @photos %>
+  </div>
+<% else %>
+  <p>Every photo is connected to a plaque. Bravo!</p>
+<% end %>

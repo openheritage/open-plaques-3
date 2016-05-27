@@ -1,7 +1,7 @@
 class PhotosController < ApplicationController
 
-  before_filter :authenticate_admin!, :only => :destroy
   before_filter :authenticate_user!, :except => [:index, :show, :update, :create]
+  before_filter :authenticate_admin!, :only => :destroy
   before_filter :find, :only => [:destroy, :edit, :show, :update]
   before_filter :get_licences, :only => [:new, :create, :edit]
 
@@ -23,14 +23,20 @@ class PhotosController < ApplicationController
   end
 
   def update
+    if (params[:streetview_url] && params[:streetview_url]!='')
+      point = help.geolocation_from params[:streetview_url]
+      if !point.latitude.blank? && !point.longitude.blank?
+        params[:photo][:latitude] = point.latitude
+        params[:photo][:longitude] = point.longitude
+      end
+    end
+    puts params.to_s
     respond_to do |format|
       if @photo.update_attributes(photo_params)
         flash[:notice] = 'Photo was successfully updated.'
         format.html { redirect_to :back }
-        format.xml  { head :ok }
       else
         format.html { render "edit" }
-        format.xml  { render :xml => @photo.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -44,6 +50,14 @@ class PhotosController < ApplicationController
     @photo.wikimedia_data
     @photo.save
     redirect_to :back
+  end
+
+  def edit
+    if (!@photo.linked?)
+      distance = 0.01
+      @plaques = Plaque.where(longitude: (@photo.longitude.to_f - distance)..(@photo.longitude.to_f + distance),
+      latitude: (@photo.latitude.to_f - distance)..(@photo.latitude.to_f + distance) )
+    end
   end
 
   def destroy
@@ -64,9 +78,20 @@ class PhotosController < ApplicationController
 
   private 
 
+    def help
+      Helper.instance
+    end
+
+    class Helper
+      include Singleton
+      include PlaquesHelper
+    end
+
   	def photo_params
       params.require(:photo).permit(
         :of_a_plaque,
+        :subject,
+        :description,
         :url,
         :file_url,
         :photographer,
@@ -74,7 +99,10 @@ class PhotosController < ApplicationController
         :licence_id,
         :plaque_id,
         :person_id,
-        :shot
+        :shot,
+        :latitude,
+        :longitude,
+        :streetview_url
       )
 	end
 end

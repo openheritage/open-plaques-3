@@ -6,8 +6,8 @@ class CountriesController < ApplicationController
 
   def index
     @countries = Country.all.to_a
-    @plaque_counts = Plaque.joins(:area).group("areas.country_id").count
-    @countries.sort! { |a,b| @plaque_counts[b.id].to_i <=> @plaque_counts[a.id].to_i }
+    @countries.delete_if {|x| x.plaques_count == 0 } 
+    @countries.sort! { |a,b| b.plaques_count <=> a.plaques_count }
     respond_to do |format|
       format.html
       format.json { render :json => @countries }

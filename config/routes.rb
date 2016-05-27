@@ -27,7 +27,7 @@ Rails.application.routes.draw do
     resource :inscription, :controller => :plaque_inscription, :only => :edit
     resource :description, :controller => :plaque_description, :only => [:edit, :show]
     resource :language, :controller => :plaque_language, :only => :edit
-    resources :connections, :controller => "personal_connections", :as => :connections
+    resources :connections, :controller => :personal_connections, :as => :connections
     resource :photos, :controller => :plaque_photos, :only => :show
     resource :talk, :controller => :plaque_talk, :only => :create
     resources :sponsorships
@@ -40,14 +40,13 @@ Rails.application.routes.draw do
     collection do
       get 'autocomplete', :controller => :areas
     end
-    resources :plaques, :controller => :country_plaques, :only => :show
+    resource :plaques, :controller => :country_plaques, :only => :show
     resources :areas do
       resource :plaques, :controller => :area_plaques, :only => :show
       resource :unphotographed, :controller => :area_plaques, :id => 'unphotographed', :only => :show
 #      resource :ungeolocated, :controller => :area_plaques, :id => 'ungeolocated', :only => :show
     end
   end
-  resources :locations, :only => [:show, :edit, :update, :destroy]
 
   resources :photos
   resources :photographers, :as => :photographers, :only => [:create, :index, :show, :new]

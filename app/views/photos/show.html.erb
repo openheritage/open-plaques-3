@@ -8,7 +8,11 @@
   <% elsif @photo.person %>
     <h1 property="dc:title rdfs:label foaf:name" about="#this"><%= t '.page_heading' %> <%= link_to(@photo.person.full_name, @photo.person) %></h1>
   <% else %>
-    <p>has not been linked to a plaque <% if @photo.of_a_plaque? %>yet<% else %> because it has been flagged as not being of a plaque<% end %>.</p>
+    <% if @photo.of_a_plaque? %>
+      <p>This photo has been flagged as not being of a plaque.</p>
+    <% else %>
+      <p>This photo has not been linked to a plaque yet.</p>
+    <% end %>.</p>
   <% end %>
 </div>
 

@@ -7,14 +7,16 @@
 </div>
 
 <% if @organisation.geolocated? %>
-  <div id="plaque-map" data-latitude="<%= @organisation.latitude %>" data-longitude="<%= @organisation.longitude %>" data-view="all" context="<%= request.path %>"></div>
+<div class="row">
+  <div id="plaque-map" class="col-xs-12" data-latitude="<%= @organisation.latitude %>" data-longitude="<%= @organisation.longitude %>" data-view="all" context="<%= request.path %>"></div>
+</div>
 <% end %>
 
 <div class="row" id="pagination-top">
   <%= will_paginate @sponsorships %>
 </div>
 
-<div class="row" id="plaques">
+<div class="container-fluid">
   <div class="card-columns">
     <%= render partial: 'plaques/plaque', collection: @sponsorships, as: :plaque %>
   </div>

@@ -23,6 +23,8 @@ class Country < ActiveRecord::Base
   @@latitude = nil
   @@longitude = nil
 
+  @@p_count = 0
+
   include PlaquesHelper
 
   def find_centre
@@ -46,24 +48,12 @@ class Country < ActiveRecord::Base
   end
 
   def plaques_count
-    areas.sum(:plaques_count)
+    @@p_count = areas.sum(:plaques_count) if @@p_count = 0
+    @@p_count
   end
 
   def zoom
     6
-  end
-
-  # Construct paths using the alpha2 code
-  def to_param
-    alpha2
-  end
-
-  def uri
-    "http://openplaques.org" + Rails.application.routes.url_helpers.country_path(self, :format => :json) if id
-  end
-
-  def to_s
-    name
   end
 
   def as_json(options={})
@@ -84,6 +74,24 @@ class Country < ActiveRecord::Base
       },
       properties: as_json(options)
     }
+  end
+
+  def as_wkt
+    return "" if (self.longitude == nil || self.latitude == nil)
+    "POINT(" + self.longitude + " " + self.latitude + ")"
+  end
+  
+  # Construct paths using the alpha2 code
+  def to_param
+    alpha2
+  end
+
+  def uri
+    "http://openplaques.org" + Rails.application.routes.url_helpers.country_path(self, :format => :json) if id
+  end
+
+  def to_s
+    name
   end
 
 end
