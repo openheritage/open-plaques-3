@@ -213,10 +213,6 @@ class Plaque < ActiveRecord::Base
     "POINT(" + self.longitude + " " + self.latitude + ")"
   end
 
-  def to_csv
-    inscription + "," + latitude.to_s
-  end
-
   def machine_tag
     "openplaques:id=" + id.to_s
   end

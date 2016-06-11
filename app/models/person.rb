@@ -109,14 +109,11 @@ class Person < ActiveRecord::Base
 
   def dates
     dates = ""
-    if born_on
+    if born_in
       dates = "("
-      if born_on_is_circa
-        dates += circa_tag
-      end
       dates += born_in.to_s
-      if died_on && (born_in != died_on)
-        dates += "-" + died_in.to_s
+      if died_in
+        dates += "-" + died_in.to_s if (born_in != died_in)
       else
         dates += "-present"
       end

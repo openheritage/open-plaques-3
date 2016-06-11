@@ -1,5 +1,6 @@
 class PlaqueCsv < Julia::Builder
   column :id
+  column :title
   column :inscription
   column :latitude
   column :longitude
@@ -13,8 +14,11 @@ class PlaqueCsv < Julia::Builder
     plaque.organisations.each do |org| orgs << org.name end
     orgs
   end
+  column 'language' do |plaque| plaque.language ? plaque.language.name : '' end
   column 'series' do |plaque| plaque.series ? plaque.series.name : '' end
   column 'series_ref'
+  column 'geolocated?'
+  column 'photographed?'
   column 'number_of_subjects' do |plaque|
     plaque.people.count
   end
@@ -38,13 +42,9 @@ class PlaqueCsv < Julia::Builder
     plaque.people.each do |subject|
       roles = []
       subject.personal_roles.each do |personal_role| roles << personal_role.name end
-      subjects << subject.name + '|' + subject.dates + '|'+ subject.type + '|' + roles.to_sentence + '|'
+      subjects << subject.name + '|' + subject.dates.to_s + '|' + subject.type + '|' + roles.to_sentence
     end
     subjects
   end
-#    column 'Person' do |plaque|
-#      plaque.people[0]
-#    end
-#    column 'Birthday', :dob
 #    column 'Full name', -> { "#{ name.capitalize } #{ last_name.capitalize }" }
 end
