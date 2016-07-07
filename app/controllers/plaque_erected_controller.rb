@@ -1,7 +1,6 @@
-class PlaqueErectedController < ApplicationController
+class PlaqueErectedController < PlaqueDetailsController
 
   def edit
-    @plaque = Plaque.find(params[:plaque_id])
     @organisations = Organisation.order(:name)
     @series = Series.order(:name)
     render "plaques/erected/edit"

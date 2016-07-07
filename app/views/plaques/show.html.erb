@@ -3,7 +3,7 @@
 <%= render 'plaques/edit_bar', :plaque => @plaque %>
 
 <div class="jumbotron">
-  <h1><%= new_linked_inscription(@plaque) %></h1>
+  <h1><%= linked_inscription(@plaque) %></h1>
 </div>
 
 <% if @plaque.foreign? %>
@@ -12,9 +12,7 @@
       <h7><%= @plaque.inscription_in_english %></h7>
     <% else %>
       <div class="goog-trans-control">xxx</div>
-      <h6 class="goog-trans-section" lang="">
-        <%= @plaque.inscription %>
-      </h6>
+      <h6 class="goog-trans-section" lang=""><%= @plaque.inscription %></h6>
       <script>
         function googleSectionalElementInit() {
           new google.translate.SectionalElement({
@@ -51,13 +49,10 @@
   </div>
 
   <div class="col-md-4">
-     <h5>Plaque <abbr title="number">№</abbr> <%= @plaque.id %></h5>
-     <div id="facebook_like_button">
-       <iframe src="http://www.facebook.com/plugins/like.php?href=<%= plaque_path(@plaque, :only_path => false) %>&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action=like&amp;font&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:75px; height:20px; text-align:right;" allowTransparency="true"></iframe>
-     </div>
+    <div id="facebook_like_button"><iframe src="http://www.facebook.com/plugins/like.php?href=<%= plaque_path(@plaque, :only_path => false) %>&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action=like&amp;font&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:75px; height:20px; text-align:right;" allowTransparency="true"></iframe></div>
 
     <% if @plaque.geolocated? %>
-      <div id="plaque-map" data-latitude="<%= @plaque.latitude %>" data-longitude="<%= @plaque.longitude %>" class="mini" data-zoom="18" data-view="one"></div>
+      <div id="plaque-map" data-latitude="<%= @plaque.latitude %>" data-longitude="<%= @plaque.longitude %>" class="mini" data-zoom="17" data-view="one"></div>
       <% if !@plaque.is_accurate_geolocation %>
         <div class="bg-danger">This is an approximate position</div>
       <% end %>
@@ -97,17 +92,17 @@
      <% end %>
     </p>
 
-    <h7><%= pluralize_word(@plaque.people.size, "Subject") %></h7>
+    <h7><%= pluralize_word(@plaque.people.size, 'Subject') %></h7>
     <p>
-      <%= render partial: "people/tile", collection: @plaque.people, as: :person %>
+      <%= render partial: 'people/tile', collection: @plaque.people, as: :person %>
       <%= 'None identified yet' if @plaque.people.size == 0 %>
     </p>
 
     <h7>Machine tag</h7>
-    <p><%= @plaque.machine_tag %> <%= button_tag "copy", id: 'copy-flickr-tag', type: 'button', :class => :button %></p>
+    <p><%= @plaque.machine_tag %> <%= button_tag 'copy', id: 'copy-flickr-tag', type: 'button', :class => :button %></p>
 
     <h7>Wikimedia tag</h7>
-    <p><%= @plaque.wikimedia_tag %> <%= button_tag "copy", id: 'copy-wikimedia-tag', type: 'button', :class => :button %></p>
+    <p><%= @plaque.wikimedia_tag %> <%= button_tag 'copy' , id: 'copy-wikimedia-tag', type: 'button', :class => :button %></p>
 
     <script>
       function copyTextToClipboard(text) {
@@ -178,7 +173,7 @@
   </div>
 <% end %>
 
-<div<%= " class=\"" + @plaque.colour.name + "plaque\"" if @plaque.colour %> about="#this" typeof="op:Plaque"></div>
+<div<%= ' class=\"' + @plaque.colour.name + 'plaque\"' if @plaque.colour %> about="#this" typeof="op:Plaque"></div>
 
 <div class="row">
   <p><%= t 'data_about_thing_as' %> .json and .geojson</p>

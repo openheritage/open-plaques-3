@@ -1,17 +1,12 @@
-<% content_for :page_title, "Edit description for plaque \#" + @plaque.id.to_s %>
+<% content_for :page_title, "Edit description for " + @plaque.title %>
 
 <%= render 'plaques/edit_bar', :plaque => @plaque %>
 
-<div class="panel">
-  <h1>Edit description for <%= link_to("plaque \#" + @plaque.id.to_s, @plaque)%></h1>
-  <%= render @plaque %>
-  <%= form_for(@plaque) do |f| %>
-    <%= f.label "Enter any additional interesting information about the plaque and links to articles about it to be displayed on the plaque detail page." %>
-    <div class="primary">
-      <div class="row">
-        <%= f.text_area :description, :class => :description %>
-      </div>
-      <%= f.submit "Save", :class => :button %>
-    </div>
-  <% end %>
-</div>
+<p>Enter any additional interesting information about the plaque and links to articles about it to be displayed on the plaque detail page.</p>
+<p>Articles can be linked using the format [name of link](http://....)</p>
+<%= form_for(@plaque) do |f| %>
+  <fieldset class="form-group row">
+    <div class="form-control"><%= f.text_area :description, {:rows => "6", :cols => "80"} %></div>
+  </fieldset>
+  <%= f.submit t('buttons.save'), :class => 'btn btn-primary' %>
+<% end %>

@@ -1,6 +1,5 @@
-class PlaquePhotosController < ApplicationController
+class PlaquePhotosController < PlaqueDetailsController
 
-  before_filter :find
   respond_to :json
 
   def show
@@ -13,11 +12,5 @@ class PlaquePhotosController < ApplicationController
       }
     end
   end
-
-  protected
-
-    def find
-      @plaque = Plaque.find(params[:plaque_id])
-    end
 
 end

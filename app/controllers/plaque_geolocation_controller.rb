@@ -2,10 +2,7 @@ require 'open-uri'
 require "rexml/document"
 include REXML
 
-class PlaqueGeolocationController < ApplicationController
-
-#  before_filter :authenticate_user!
-  before_filter :find, :only => [:edit]
+class PlaqueGeolocationController < PlaqueDetailsController
 
   def edit
     @geocodes = Array.new
@@ -31,10 +28,6 @@ class PlaqueGeolocationController < ApplicationController
       rescue
       end
       return geocodes
-    end
-
-    def find
-      @plaque = Plaque.find(params[:plaque_id])
     end
 
 end

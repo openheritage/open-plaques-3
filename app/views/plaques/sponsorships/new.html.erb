@@ -1,25 +1,61 @@
+<script>
+  $(function() {
+    $( "#organisation_name" ).autocomplete({
+      autofocus: true,
+      source: function(request, response) {
+        $.ajax({
+          url: "/organisations/autocomplete",
+          dataType: "json",
+          data: {
+            contains: request.term,
+            limit: 10
+          },
+          success: function(data) {
+            response($.map(data, function(item) {
+              return {
+                label: item.name,
+                id: item.id
+              }
+            }));
+          }
+        });
+      },
+      select: function(event, ui) {
+        $('#sponsorship_organisation_id').val(ui.item.id);
+      }
+    });
+  });
+</script>
+
 <% content_for(:page_title) {t '.page_title'} %>
 <% content_for(:title) {t '.page_heading'} %>
 <%= render 'plaques/edit_bar', :plaque => @plaque %>
 
-<div class="container">
-  <div class="row">
-    <%= render @plaque %>
-  </div>
-    <% @plaque.sponsorships.all.each do |sponsorship| %>
-      <div class="row">
-        <% if sponsorship.organisation %>
-          <div><%= render sponsorship.organisation %> <%= button_to "Delete", plaque_sponsorship_path(@plaque, sponsorship.id), :method => :delete, :class => :button %></div>
-        <% end %>
-      </div>
-    <% end %>
+<p>Open Plaques credit every organisation listed on the plaque as well as monetary sponsors.</p>
+<% @plaque.sponsorships.all.each do |sponsorship| %>
+  <% if sponsorship.organisation %>
     <div class="row">
-      <%= form_for @sponsorship, :url => plaque_sponsorships_path(@plaque) do |f| %>
-        <%= f.hidden_field :plaque_id, :value => @plaque.id %>
-        <% if @plaque.sponsorships.all.count > 0 %>Also sponsored<% end %> by <%= f.collection_select :organisation_id, @organisations, :id, :name, {:include_blank => true} %>
-        <%= f.submit "Add", :class => :button %>
-      <% end %>
+      <div class="col-xs-10"><%= render sponsorship.organisation %></div>
+      <%= button_to t('buttons.delete'), plaque_sponsorship_path(@plaque, sponsorship.id), :method => :delete, :class => 'btn btn-danger col-xs-2' %>
     </div>
+  <% end %>
+<% end %>
+<div class="row">
+  <%= form_for @sponsorship, :url => plaque_sponsorships_path(@plaque) do |f| %>
+    <%= f.hidden_field :plaque_id, :value => @plaque.id %>
+    <div class="col-xs-10">
+      <%= text_field_tag :organisation_name, "", {:placeholder => "English Heritage"} %><br/>
+      <%= f.collection_select :organisation_id, @organisations, :id, :name, {:include_blank => true} %>
+    </div>
+    <%= f.submit t('buttons.add'), :class => 'btn btn-primary col-xs-2' %>
+  <% end %>
+</div>
+<%= content_tag("p", link_to("Add new organisation", new_organisation_path)) if current_user %>
+<div class="row">
+  <%= render @plaque.main_photo %>
+</div>
+<div class="container-fluid">
+  <div class="card-columns">
+    <%= render partial: 'photos/tile', :collection => @plaque.photos, as: :photo %>
   </div>
-  <%= content_tag("p", link_to("Add new organisation", new_organisation_path)) if current_user %>
 </div>

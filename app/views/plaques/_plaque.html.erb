@@ -4,10 +4,11 @@
   <% plaque = plaque.plaque %>
 <% end %>
 <% if plaque %>
+  <% photo = plaque.main_photo %>
   <div class="card" style="max-width: 50rem;">
-    <%= link_to image_tag(plaque.main_photo.file_url, {:class => 'card-img-top img-thumbnail', :width => '100%'}) , plaque_path(plaque) if plaque.main_photo != nil %>
+    <%= link_to image_tag(photo.file_url, {:class => 'card-img-top img-thumbnail', :width => '100%'}) , plaque_path(plaque) if photo != nil %>
     <div class="card-block">
-      <h7 class="card-title"><%= new_linked_inscription(plaque) %></h7>
+      <h7 class="card-title"><%= linked_inscription(plaque) %></h7>
       <% if plaque.foreign? && plaque.inscription_in_english %>
         <p id="inscription-in-english" class="card-text"><small><%= plaque.inscription_in_english %></small></p>
       <% end %>

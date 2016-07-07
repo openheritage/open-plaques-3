@@ -1,13 +1,10 @@
 <% content_for :page_title, "Edit inscription for plaque \#" + @plaque.id.to_s %>
-
 <%= render 'plaques/edit_bar', :plaque => @plaque %>
 
-<div class="panel">
-  <h1>What does <%= link_to("plaque \#" + @plaque.id.to_s, @plaque)%> say?</h1>
-  <p><%= button_to "Not sure. Give me another one", todo_path('microtask'), :method => :get, :class => :button %></p>
-  <br/>
-  <%= render @plaque.main_photo if @plaque.main_photo  %>
-</div>
+<h1>What does <%= link_to("plaque \#" + @plaque.id.to_s, @plaque)%> say?</h1>
+<p><%= button_to "Not sure. Give me another one", todo_path('microtask'), :method => :get, :class => :button %></p>
+<br/>
+<%= render @plaque.main_photo %>
 
 <%= form_for @plaque do |f| %>
   <div class="primary">
@@ -28,7 +25,6 @@
         <%= f.text_area :inscription_in_english, {:rows => "6", :cols => "50"} %>
       </div>
     </fieldset>
-    <%= f.submit "Update", :class => :button %>
+    <%= f.submit t('buttons.save'), :class => 'btn btn-primary' %>
   </div>
 <% end %>
-

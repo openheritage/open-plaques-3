@@ -1,7 +1,6 @@
-class PlaqueColourController < ApplicationController
+class PlaqueColourController < PlaqueDetailsController
 
   def edit
-    @plaque = Plaque.find(params[:plaque_id])
     @colours = Colour.order(:name)
     render "plaques/colour/edit"
   end

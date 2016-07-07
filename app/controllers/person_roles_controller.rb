@@ -4,7 +4,6 @@ class PersonRolesController < ApplicationController
   before_filter :authenticate_user!, :except => [:index, :show]
   before_filter :find, :only => [:show]
 
-  # GET /people/1/roles
   def show
     @personal_role = PersonalRole.new
     respond_to do |format|

@@ -2,9 +2,7 @@ class PagesController < ApplicationController
 
   before_filter :authenticate_admin!, :only => :destroy
   before_filter :authenticate_user!, :except => [:show]
-
   before_filter :find_page, :only => [:show, :edit, :update]
-
   respond_to :html, :json
 
   def about
@@ -25,11 +23,9 @@ class PagesController < ApplicationController
 
   def create
     @page = Page.new(page_params)
-
     if @page.save
       redirect_to pages_path
     end
-
   end
 
   def update

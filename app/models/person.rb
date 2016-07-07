@@ -174,22 +174,8 @@ class Person < ActiveRecord::Base
   end
 
   def name_and_dates
-    name + " " + dates
+    name + " " + dates.to_s
   end
-
-#  def name_and_raw_dates
-#    name + " " + raw_dates
-#  end
-
-#  def raw_dates
-#    r = ""
-#    r += "(" if born_on || died_on
-#    r += born_on.year.to_s if born_on
-#    r += "-" if born_on && died_on
-#    r += died_on.year.to_s if died_on
-#    r += ")" if born_on || died_on
-#    return r
-#  end
 
   def surname
     self.name[self.name.downcase.rindex(" " + self.surname_starts_with.downcase) ? self.name.downcase.rindex(" " + self.surname_starts_with.downcase) + 1: 0,self.name.size]

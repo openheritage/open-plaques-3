@@ -11,12 +11,12 @@
     </div>
   </fieldset>
   <% if @plaque.created_at != @plaque.updated_at %>
-  <fieldset class="form-group row">
-    <p class='form-control-label col-sm-2'>Last updated</p>
-    <div class="col-sm-10">
-      <p class='form-control'><%= @plaque.updated_at.to_s(:long) %></p>
-    </div>
-  </fieldset>
+    <fieldset class="form-group row">
+      <p class='form-control-label col-sm-2'>Last updated</p>
+      <div class="col-sm-10">
+        <p class='form-control'><%= @plaque.updated_at.to_s(:long) %></p>
+      </div>
+    </fieldset>
   <% end %>
   <fieldset class="form-group row">
     <%= f.label :notes, :class => 'form-control-label col-sm-2' %>
@@ -30,12 +30,9 @@
       <%= f.check_box :is_current, :class => 'form-control' %>
     </div>
   </fieldset>
-  <p><%= f.submit "Save", :class => 'btn btn-primary' %></p>
+  <%= f.submit t('buttons.save'), :class => 'btn btn-primary' %>
 <% end %>
 
 <div class="row">
-  <%= button_to("Delete plaque", plaque_path(@plaque.id), {:method => :delete, :class => 'btn btn-danger'}) if current_user.try(:is_admin?) %>
+  <%= button_to('Delete plaque', plaque_path(@plaque.id), {:method => :delete, :class => 'btn btn-danger'}) if current_user.try(:is_admin?) %>
 </div>
-
-
-
