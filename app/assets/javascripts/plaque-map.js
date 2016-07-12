@@ -79,19 +79,13 @@ function initmap()
   {
     L.Icon.Default.imagePath = '/assets';
     map = L.map('plaque-map');
-
-    // basemap
-    var mapquestUrl = 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png',
-    subDomains = ['otile1','otile2','otile3','otile4'],
-    mapquestAttrib = 'Map from <a href="http://open.mapquest.co.uk" target="_blank">MapQuest</a> &amp; <a href="http://www.openstreetmap.org/" target="_blank">OSM</a>.';
-    var mapquest = new L.TileLayer(mapquestUrl, {maxZoom: 18, attribution: mapquestAttrib, subdomains: subDomains});
-    map.addLayer(mapquest);
-
+    var basemap = new L.StamenTileLayer("toner"); // toner, terrain, or watercolor
+    map.addLayer(basemap);
     var latitude = plaque_map.attr("data-latitude"), longitude = plaque_map.attr("data-longitude"), zoom = plaque_map.attr("data-zoom");
     if (zoom)
     {
       var zoom_level = parseInt(zoom);
-    } 
+    }
     else
     {
       var zoom_level = 14;
@@ -114,9 +108,9 @@ function initmap()
       iconCreateFunction: function(cluster)
       {
         return new L.DivIcon(
-        { 
-          html: cluster.getChildCount(), 
-          className : 'plaque-cluster-marker ' + clusterSize(cluster.getChildCount()), 
+        {
+          html: cluster.getChildCount(),
+          className : 'plaque-cluster-marker ' + clusterSize(cluster.getChildCount()),
           iconSize: clusterWidth(cluster.getChildCount())
         });
       }
@@ -144,7 +138,7 @@ function initmap()
   		if (data_view == "all")
       {
  //       console.log(geojsonURL);
-        var geojsonTileLayer = new L.TileLayer.GeoJSON(geojsonURL, 
+        var geojsonTileLayer = new L.TileLayer.GeoJSON(geojsonURL,
           {
             clipTiles: false
           },
@@ -176,7 +170,7 @@ function initmap()
       else if (data_path)
       {
   		   var url = data_path;
-         getPlaques(url); 
+         getPlaques(url);
          map.on('moveend', function() { getPlaques(url) });
   		}
       else
