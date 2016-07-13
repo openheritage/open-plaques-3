@@ -24,7 +24,7 @@
     <div class="edit_lat_long">
       <p><%= label_tag(:streetview_url, "OpenStreetMap/Google/Geohack url:") %> <%= text_field_tag(:streetview_url, ' ', size: 100) %></p>
       <p>
-        <%= f.label :latitude %> <%= f.text_field :latitude, :readonly => !current_user %> 
+        <%= f.label :latitude %> <%= f.text_field :latitude, :readonly => !current_user %>
         <%= f.label :longitude %> <%= f.text_field :longitude, :readonly => !current_user %> <a href="http://maps.google.com/maps?q=<%= @plaque.latitude %>,<%= @plaque.longitude %>&z=18" target="_new">on Google Maps</a>
       </p>
       <p>I am certain that this location is accurate <%= f.check_box :is_accurate_geolocation %> because it was located from a geocoded photo, or I have seen this plaque in Google Streetview/real life </p>
@@ -36,7 +36,7 @@
       var map = null;
       var lat_element = null;
       var lon_element = null;
-      var geolocation = new L.LatLng(52, 0);	
+      var geolocation = new L.LatLng(52, 0);
       var view = 5;
 
       document.addEventListener("DOMContentLoaded", function() {
@@ -52,34 +52,32 @@
 
       	map = L.map('map').setView(geolocation, view);
 
-      	L.tileLayer('http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {
-      	  maxZoom: 18,
-      	  subdomains: ['otile1','otile2','otile3','otile4']
-				}).addTo(map);
-				
+        var basemap = new L.StamenTileLayer("toner"); // toner, terrain, or watercolor
+        map.addLayer(basemap);
+
 				marker = L.marker(geolocation, {draggable: true, icon: plaque_icon});
 				marker.on('dragend', update_text_fields_from_marker);
 				marker.addTo(map);
-				
+
 				function update_geolocation_from_text_fields() {
 					if (lat_element && lat_element.value != '' && lon_element && lon_element.value != '') {
 						geolocation.lat = lat_element.value;
 						geolocation.lng = lon_element.value;
 						view = 18;
-					} 
+					}
 				}
-				
+
 			 function update_map() {
 				 update_geolocation_from_text_fields();
 				 marker.setLatLng(geolocation);
 				 map.setView(geolocation, view);
 			 }
-			 
+
 			 function update_text_fields_from_marker() {
 				 lat_element.value = marker.getLatLng().lat;
 				 lon_element.value = marker.getLatLng().lng;
 			 }
-		
+
 			});
 		</script>
   <% end %>
