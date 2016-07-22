@@ -3,12 +3,12 @@
 
 <%= render 'plaques/edit_bar', :plaque => @plaque %>
 
-<div class="panel clearfix">  
+<div class="panel clearfix">
   <% if @plaque.foreign? && !@plaque.inscription_in_english %><div class="goog-trans-section" lang=""><% end %>
   <%= plaque_class = @plaque.inscription.length > 250 ? "large_inscription" : "inscription"
     content_tag("h1", new_linked_inscription(@plaque), {:class => plaque_class, :property => "op:inscription"})%>
   <% if @plaque.inscription_in_english %>
-    <%= plaque_class = @plaque.inscription_in_english.length > 250 ? "large_inscription" : "inscription" 
+    <%= plaque_class = @plaque.inscription_in_english.length > 250 ? "large_inscription" : "inscription"
       content_tag("h1", @plaque.inscription_in_english, {:class => plaque_class, :property => "op:inscription"})%>
   <% end %>
   <% if @plaque.foreign? && !@plaque.inscription_in_english %>
@@ -41,9 +41,9 @@
       </div>
       <% if @plaque.geolocated? %>
         <div class="no_photo_geo">
-          <div id="plaque-map" data-latitude="<%= @plaque.latitude %>" data-longitude="<%= @plaque.longitude %>" class="mini" data-zoom="18" data-view="one"></div>
+          <div id="plaque-map" data-latitude="<%= @plaque.latitude %>" data-longitude="<%= @plaque.longitude %>" class="mini" data-view="one"></div>
         </div>
-      <% else %>	  
+      <% else %>
         <div class="no_location">
           <h2>Map location unknown</h2>
           <p>We haven&apos;t located this plaque on a map yet. <!--a href="#">Locate this plaque</a--></p>
