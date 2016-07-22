@@ -13,7 +13,14 @@ gem 'sanitize'
 gem 'sass-rails'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
-gem 'bootstrap-sass',    '~> 3.2.0'
+gem 'bootstrap', '~> 4.0.0.alpha3'
+# gem 'nprogress-rails'
+gem 'font-awesome-sass', '~> 4.4.0'
+# gem 'bootstrap_form'
+
+source 'https://rails-assets.org' do
+  gem 'rails-assets-tether', '>= 1.1.0'
+end
 
 gem 'devise'
 gem 'meta-tags'
@@ -38,7 +45,7 @@ end
 group :test do
   gem 'rspec', '~> 2.14.0'
   gem 'rspec-rails',        :group => :development
-  gem 'database_cleaner'  
+  gem 'database_cleaner'
 end
 
 gem 'tzinfo-data'
