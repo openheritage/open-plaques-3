@@ -23,6 +23,8 @@ class Country < ActiveRecord::Base
   @@latitude = nil
   @@longitude = nil
 
+  @@p_count = 0
+
   include PlaquesHelper
 
   def find_centre
@@ -46,11 +48,20 @@ class Country < ActiveRecord::Base
   end
 
   def plaques_count
-    areas.sum(:plaques_count)
+    @@p_count = areas.sum(:plaques_count) if @@p_count = 0
+    @@p_count
   end
 
   def zoom
     6
+  end
+
+  def as_json(options={})
+    options = {
+      :only => [:name],
+      :methods => [:uri, :plaques_count, :areas_count]
+    } if !options || !options[:only]
+    super options
   end
 
   # Construct paths using the alpha2 code
@@ -64,26 +75,6 @@ class Country < ActiveRecord::Base
 
   def to_s
     name
-  end
-
-  def as_json(options={})
-    options = {
-      :only => [:name],
-      :methods => [:uri, :plaques_count, :areas_count]
-    } if !options || !options[:only]
-    super options
-  end
-
-  def as_geojson(options={})
-    self.find_centre
-    {
-      type: 'Feature',
-      geometry: {
-        type: 'Point',
-        coordinates: [@@longitude, @@latitude]
-      },
-      properties: as_json(options)
-    }
   end
 
 end

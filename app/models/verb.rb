@@ -48,5 +48,5 @@ class Verb < ActiveRecord::Base
     end
     super(options)
   end
-  
+
 end

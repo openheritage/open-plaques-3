@@ -1,4 +1,3 @@
-
 # This class represents a commemoration of a Person on a commemorative Plaque, and acts as a
 # convenient 'join' between the two.
 # === Attributes
@@ -19,27 +18,25 @@ class PersonalConnection < ActiveRecord::Base
   attr_accessor :other_verb_id
 
   def from
-    if (verb.id == 8 or verb.id == 504)
-      return person.born_in.to_s
-    end
-    if (verb.id == 3 or verb.id == 49 or verb.id == 161 or verb.id == 288 or verb.id == 566 or verb.id == 1108)
-      return person.died_in.to_s
-    end
-    started_at ? started_at.year.to_s : ""
+    year = started_at ? started_at.year.to_s : ""
+    year = person.born_in.to_s if (verb.id == 8 or verb.id == 504)
+    year = person.died_in.to_s if (verb.id == 3 or verb.id == 49 or verb.id == 161 or verb.id == 288 or verb.id == 566 or verb.id == 1108)
+    year
   end
 
   def to
-    if (verb.id == 8 or verb.id == 504)
-      return person.born_in.to_s
-    end
-    if (verb.id == 3 or verb.id == 49 or verb.id == 161 or verb.id == 288 or verb.id == 566 or verb.id == 1108)
-      return person.died_in.to_s
-    end
-    ended_at ? ended_at.year.to_s : ""
+    year = ended_at ? ended_at.year.to_s : ""
+    year = person.born_in.to_s if (verb.id == 8 or verb.id == 504)
+    year = person.died_in.to_s if (verb.id == 3 or verb.id == 49 or verb.id == 161 or verb.id == 288 or verb.id == 566 or verb.id == 1108)
+    year
   end
 
   def full_address
     plaque.full_address
+  end
+
+  def single_year?
+    from == to
   end
 
 end

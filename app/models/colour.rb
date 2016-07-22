@@ -25,7 +25,7 @@ class Colour < ActiveRecord::Base
   def to_param
     slug
   end
-  
+
   def to_s
     name
   end
@@ -36,7 +36,7 @@ class Colour < ActiveRecord::Base
       :include => { },
       :methods => []
     } if !options[:prefixes].blank?
-    super options 
+    super options
   end
 
 end

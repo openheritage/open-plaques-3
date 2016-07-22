@@ -19,7 +19,7 @@ class Language < ActiveRecord::Base
   def to_param
     alpha2
   end
-  
+
   def to_s
     name
   end

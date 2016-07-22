@@ -28,7 +28,7 @@ class Photo < ActiveRecord::Base
 
   validates_presence_of :file_url
   validates_uniqueness_of :file_url, :message => "photo already exists in Open Plaques"
-  
+
   attr_accessor :photo_url, :accept_cc_by_licence
 
   after_initialize :assign_from_photo_url
@@ -77,12 +77,21 @@ class Photo < ActiveRecord::Base
     end
     return title
   end
-  
+
+  def attribution
+    attrib = '&copy; '
+    attrib += photographer.tr("./","__") if photographer
+    attrib += ' on ' + source
+    attrib += ' ' + licence.abbreviation if licence && licence.abbreviation != nil
+    attrib += ' ' + licence.name if licence && licence.abbreviation == nil
+    attrib
+  end
+
   def shot_name
     return nil if shot == ''
-    return shot[3,shot.length] if shot
+    return shot[4,shot.length] if shot
   end
-  
+
   def shot_order
     return shot[0,1] if shot && shot != ''
     6
@@ -91,35 +100,35 @@ class Photo < ActiveRecord::Base
   def self.shots
     ["1 - extreme close up", "2 - close up", "3 - medium close up", "4 - medium shot", "5 - long shot", "6 - establishing shot"]
   end
-    
+
   def flickr?
     url && url.include?("//www.flickr.com")
   end
-  
+
   def wikimedia?
     url && url.include?("edia.org/")
   end
-  
+
   def geograph?
     url && url.include?("//www.geograph.org.uk")
   end
-  
+
   def source
     return "Flickr" if flickr?
     return "Wikimedia Commons" if wikimedia?
     return "Geograph" if geograph?
     return "the web"
   end
-  
+
   def wikimedia_filename
     return url[url.index('File:')+5..-1] if wikimedia?
     return ""
   end
-  
+
   def wikimedia_special
     return "https://commons.wikimedia.org/wiki/Special:FilePath/"+wikimedia_filename+"?width=640"
   end
-  
+
   def flickr_photo_id
     # retrieve from url e.g. http://www.flickr.com/photos/84195101@N00/3412825200/
   end
@@ -129,16 +138,16 @@ class Photo < ActiveRecord::Base
     if (file_url.ends_with?("_b.jpg") or file_url.ends_with?("_z.jpg") or file_url.ends_with?("_z.jpg?zz=1") or file_url.ends_with?("_m.jpg") or file_url.ends_with?("_o.jpg"))
       return file_url.gsub("b.jpg", "s.jpg").gsub("z.jpg?zz=1", "s.jpg").gsub("z.jpg", "s.jpg").gsub("m.jpg", "s.jpg").gsub("o.jpg", "s.jpg")
     end
-    return "https://commons.wikimedia.org/wiki/Special:FilePath/"+wikimedia_filename+"?width=75" if wikimedia?
+    return "https://commons.wikimedia.org/wiki/Special:FilePath/"+wikimedia_filename+"?width=500" if wikimedia?
   end
-  
+
   def wikimedia_data
     if wikimedia?
       begin
         wikimedia = Commoner.details("File:"+wikimedia_filename)
         self.url = wikimedia[:page_url]
         self.subject = wikimedia[:description]
-        self.photographer = wikimedia[:author] 
+        self.photographer = wikimedia[:author]
         self.photographer_url = wikimedia[:author_url]
         self.file_url = wikimedia_special
         licence = Licence.find_by(url: wikimedia[:licence_url])
@@ -150,14 +159,14 @@ class Photo < ActiveRecord::Base
             licence.save
           end
         end
-        self.licence = licence if licence != nil    
+        self.licence = licence if licence != nil
       rescue
       end
     end
     if geograph?
       query_url = "http://api.geograph.org.uk/api/oembed?&&url=" + self.url + "&output=json"
       begin
-        ch = Curl::Easy.perform(query_url) do |curl| 
+        ch = Curl::Easy.perform(query_url) do |curl|
           curl.headers["User-Agent"] = "openplaques"
           curl.verbose = true
         end
@@ -176,7 +185,7 @@ class Photo < ActiveRecord::Base
       end
     end
   end
-  
+
   def linked?
     !(plaque.nil?)
   end
@@ -206,7 +215,7 @@ class Photo < ActiveRecord::Base
     } if !options || !options[:only]
     {
       type: 'Feature',
-      geometry: 
+      geometry:
       {
         type: 'Point',
         coordinates: [self.longitude, self.latitude]
@@ -215,30 +224,35 @@ class Photo < ActiveRecord::Base
     }
   end
 
+  def as_wkt()
+    return "" if (self.longitude == nil || self.latitude == nil)
+    "POINT(" + self.longitude + " " + self.latitude + ")"
+  end
+
   def uri
     "http://openplaques.org" + Rails.application.routes.url_helpers.photo_path(self, :format => :json)
   end
-  
+
   def to_s
     self.title
   end
-  
+
   private
-  
+
     def reset_plaque_photo_count
       if plaque_id_changed?
         Plaque.reset_counters(plaque_id_was, :photos) unless plaque_id_was == nil
         Plaque.reset_counters(plaque.id, :photos) unless plaque == nil
       end
     end
-    
+
     def geolocate_plaque
       if plaque && self.geolocated? && (!plaque.geolocated? || (plaque.geolocated? && !plaque.is_accurate_geolocation))
         plaque.longitude = self.longitude
         plaque.latitude = self.latitude
         plaque.is_accurate_geolocation = true
         plaque.save
-      end  
-      return true      
+      end
+      return true
     end
 end
