@@ -55,16 +55,16 @@ class Area < ActiveRecord::Base
       if plaque.people != nil
         plaque.people.each do |person|
           people << person
-        end 
+        end
       end
     end
     return people.uniq
   end
-  
+
   def as_json(options=nil)
     options = {
       :only => [:name, :plaques_count],
-      :include => { 
+      :include => {
         :country => {
           :only => [:name],
           :methods => :uri
@@ -75,27 +75,10 @@ class Area < ActiveRecord::Base
     super options
   end
 
-  def as_geojson(options=nil)
-    {
-      type: 'Feature',
-      geometry:
-      {
-        type: 'Point',
-        coordinates: [self.longitude, self.latitude]
-      },
-      properties: as_json(options)
-    }
-  end
-
-  def as_wkt()
-    return "" if (self.longitude == nil || self.latitude == nil)
-    "POINT(" + self.longitude + " " + self.latitude + ")"
-  end
-  
   def to_param
     slug
   end
-  
+
   def to_s
     name
   end

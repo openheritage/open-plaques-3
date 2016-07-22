@@ -18,13 +18,12 @@
 class TodoItem < ActiveRecord::Base
 
   validates_presence_of :action, :description
-
   scope :to_add, -> { where(action: 'add').where.not(url: nil) }
   scope :to_datacapture, -> { where(action: 'datacapture').where.not(url: nil) }
-  
+
   def to_datacapture?
     false
-	true if action == 'datacapture'
+	  true if action == 'datacapture'
   end
 
 end

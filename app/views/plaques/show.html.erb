@@ -99,7 +99,7 @@
         <div class="bg-danger">This is an approximate position</div>
       <% end %>
     <% end %>
-    <p><%= @plaque.address %>, <%= link_to @plaque.area if @plaque.area %>
+    <p><%= @plaque.address %>, <%= link_to(@plaque.area.name, @plaque.area)  if @plaque.area %>
       <% if @plaque.roughly_geolocated? %>
        <br/>[<%= link_to "geolocate this address", edit_plaque_geolocation_path(@plaque), {:class => :edit, :title => "Geolocate"} %>]
      <% end %>

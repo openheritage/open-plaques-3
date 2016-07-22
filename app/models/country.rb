@@ -64,23 +64,6 @@ class Country < ActiveRecord::Base
     super options
   end
 
-  def as_geojson(options={})
-    self.find_centre
-    {
-      type: 'Feature',
-      geometry: {
-        type: 'Point',
-        coordinates: [@@longitude, @@latitude]
-      },
-      properties: as_json(options)
-    }
-  end
-
-  def as_wkt
-    return "" if (self.longitude == nil || self.latitude == nil)
-    "POINT(" + self.longitude + " " + self.latitude + ")"
-  end
-  
   # Construct paths using the alpha2 code
   def to_param
     alpha2

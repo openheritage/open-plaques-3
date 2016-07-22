@@ -1,4 +1,4 @@
-# This class represents a series of commemorative plaques often to commemorate an event such as a town's anniversary. 
+# This class represents a series of commemorative plaques often to commemorate an event such as a town's anniversary.
 # A Series is usually marked on the plaque itself
 #
 # === Attributes
@@ -34,7 +34,7 @@ class Series < ActiveRecord::Base
   end
 
   def as_json(options={})
-    options = 
+    options =
     {
       :only => [:name, :description, :plaques_count],
       :methods => :uri
@@ -42,21 +42,4 @@ class Series < ActiveRecord::Base
     super(options)
   end
 
-  def as_geojson(options={})
-    self.find_centre
-    {
-      type: 'Feature',
-      geometry: 
-      {
-        type: 'Point',
-        coordinates: [self.longitude, self.latitude]
-      },
-      properties: as_json(options)
-    }
-  end
-
-  def as_wkt()
-    return "" if (self.longitude == nil || self.latitude == nil)
-    "POINT(" + self.longitude + " " + self.latitude + ")"
-  end
 end

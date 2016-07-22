@@ -67,12 +67,9 @@
     var plaque_icon = new L.DivIcon({ className: 'plaque-marker', html: '', iconSize : 16 });
 
     map = L.map('map').setView(geolocation, view);
-
-    L.tileLayer('http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {
-      maxZoom: 18,
-      subdomains: ['otile1','otile2','otile3','otile4']
-    }).addTo(map);
-
+    map.scrollWheelZoom.disable();
+    var basemap = new L.StamenTileLayer("toner"); // toner, terrain, or watercolor
+    map.addLayer(basemap);
     marker = L.marker(geolocation, {draggable: true, icon: plaque_icon});
     marker.on('dragend', update_text_fields_from_marker);
     marker.addTo(map);

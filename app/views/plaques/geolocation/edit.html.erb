@@ -43,7 +43,8 @@
       	var plaque_icon = new L.DivIcon({ className: 'plaque-marker', html: '', iconSize : 16 });
 
       	map = L.map('map').setView(geolocation, view);
-
+        map.scrollWheelZoom.disable();
+        
         var basemap = new L.StamenTileLayer("toner"); // toner, terrain, or watercolor
         map.addLayer(basemap);
 

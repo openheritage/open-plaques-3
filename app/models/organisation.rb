@@ -30,17 +30,17 @@ class Organisation < ActiveRecord::Base
 
   include ApplicationHelper
   include PlaquesHelper
-  
+
   def zoom
     10
   end
-  
+
   def most_prevelant_colour
     @plaques = self.plaques
     most_prevelant_colour = @plaques.map {|i| (i.colour.nil? || i.colour.name) || "" }.group_by {|col| col }.max_by(&:size)
     @colour = most_prevelant_colour ? most_prevelant_colour.first : ""
   end
-  
+
   def find_centre
     if !geolocated?
       @mean = find_mean(self.plaques)
@@ -52,7 +52,7 @@ class Organisation < ActiveRecord::Base
   def plaques_count
     sponsorships_count
   end
-  
+
   def geolocated?
     return !(self.latitude == nil && self.longitude == nil || self.latitude == 51.475 && self.longitude == 0)
   end
@@ -73,28 +73,10 @@ class Organisation < ActiveRecord::Base
     super options
   end
 
-  def as_geojson(options=nil)
-    find_centre
-    {
-      type: 'Feature',
-      geometry: 
-      {
-        type: 'Point',
-        coordinates: [self.longitude, self.latitude]
-      },
-      properties: as_json(options)
-    }
-  end
-
-  def as_wkt()
-    return "" if (self.longitude == nil || self.latitude == nil)
-    "POINT(" + self.longitude + " " + self.latitude + ")"
-  end
-  
   def to_param
     slug
   end
-  
+
   def to_s
     name
   end
