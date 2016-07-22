@@ -56,7 +56,7 @@ class Plaque < ActiveRecord::Base
   scope :partial_inscription, -> { where(inscription_is_stub: true).order("id DESC") }
   scope :partial_inscription_photo, -> { where(photos_count: 1..99999, inscription_is_stub: true).order("id DESC") }
   scope :no_english_version, -> { where("language_id > 1").where(inscription_is_stub: false, inscription_in_english: nil) }
-  
+
   attr_accessor :country, :other_colour_id
 
   delegate :name, :to => :colour, :prefix => true, :allow_nil => true
@@ -67,16 +67,13 @@ class Plaque < ActiveRecord::Base
   include ApplicationHelper, ActionView::Helpers::TextHelper
 
   def coordinates
-    if geolocated?
-      latitude.to_s + "," + longitude.to_s
-    else
-      ""
-    end
+    geolocated? ? latitude.to_s + "," + longitude.to_s : ""
   end
 
   def full_address
     a = address
     a += ", " + area.name + ", " + area.country.name if area
+    a
   end
 
   def erected_at_string
@@ -129,7 +126,7 @@ class Plaque < ActiveRecord::Base
         first_people << person[:name]
       end
       first_people << pluralize(people.size - number_of_subjects + 1, "other")
-      first_people.to_sentence     
+      first_people.to_sentence
     elsif people.size > number_of_subjects
       first_4_people = []
       people.first(number_of_subjects).each do |person|
@@ -143,15 +140,15 @@ class Plaque < ActiveRecord::Base
   end
 
   def as_json(options={})
-    options = 
+    options =
     {
-      :only => [:id, :inscription, :erected_at, :is_current, :updated_at],
+      :only => [:id, :inscription, :erected_at, :is_current, :updated_at, :latitude, :longitude],
       :include =>
       {
-        :photos => 
+        :photos =>
         {
-          :only => [], 
-          :methods => [:uri, :thumbnail_url]
+          :only => [],
+          :methods => [:uri, :thumbnail_url, :shot_name, :attribution]
         },
         :organisations =>
         {
@@ -162,12 +159,12 @@ class Plaque < ActiveRecord::Base
         {
           :only => [:name, :alpha2]
         },
-        :area => 
+        :area =>
         {
-          :only => :name, 
-          :include => 
+          :only => :name,
+          :include =>
           {
-            :country => 
+            :country =>
             {
               :only => [:name, :alpha2],
               :methods => :uri
@@ -175,18 +172,18 @@ class Plaque < ActiveRecord::Base
           },
           :methods => :uri
         },
-        :people => 
+        :people =>
         {
-          :only => [], 
+          :only => [],
           :methods => [:uri, :full_name]
         },
-        :see_also => 
+        :see_also =>
         {
           :only => [],
           :methods => [:uri]
         }
       },
-      :methods => [:uri, :title, :address, :subjects, :colour_name, :machine_tag, :geolocated?, :photographed?, :photo_url, :thumbnail_url, :shot_name]
+      :methods => [:uri, :title, :address, :subjects, :colour_name, :machine_tag, :geolocated?, :photographed?, :photo_url, :thumbnail_url]
     } if !options || !options[:only]
     super options
   end
@@ -198,7 +195,7 @@ class Plaque < ActiveRecord::Base
     } if !options || !options[:only]
     {
       type: 'Feature',
-      geometry: 
+      geometry:
       {
         type: 'Point',
         coordinates: [self.longitude, self.latitude],
@@ -250,7 +247,15 @@ class Plaque < ActiveRecord::Base
   def main_photo
     @main_photo ||= photos.first
   end
-  
+
+  def other_photos
+    others = []
+    photos.each do |p|
+      others << p unless p == main_photo
+    end
+    others
+  end
+
   def main_photo_reverse
     if !photos.empty?
       return photos.reverse_detail_order.first
@@ -279,12 +284,11 @@ class Plaque < ActiveRecord::Base
     end
 	  return also.inject([]){|s,e| s | [e] }
   end
-  
+
   def inscription_preferably_in_english
-    return inscription_in_english if inscription_in_english && inscription_in_english > ""
-    return inscription
+    inscription_in_english && inscription_in_english > "" ? inscription_in_english : inscription
   end
-  
+
   def erected?
     return false if erected_at? && erected_at.year > Date.today.year
     return false if erected_at? &&erected_at.day!=1 && erected_at.month!=1 && erected_at > Date.today
@@ -300,7 +304,7 @@ class Plaque < ActiveRecord::Base
     lon_max = top_left[:lng_deg].to_s
     latitude = lat_min..lat_max
     longitude = lon_max..lon_min
-    tile = "/plaques/" 
+    tile = "/plaques/"
     tile+= options + "/" if options != 'all'
     tile+= "tiles" + "/" + zoom.to_s + "/" + xtile.to_s + "/" + ytile.to_s
     puts "Rails query " + tile

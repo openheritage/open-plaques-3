@@ -21,10 +21,9 @@ class TodoItem < ActiveRecord::Base
 
   scope :to_add, -> { where(action: 'add').where.not(url: nil) }
   scope :to_datacapture, -> { where(action: 'datacapture').where.not(url: nil) }
-  
+
   def to_datacapture?
-    false
-	true if action == 'datacapture'
+    action == 'datacapture'
   end
 
 end
