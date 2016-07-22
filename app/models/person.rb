@@ -141,7 +141,7 @@ class Person < ActiveRecord::Base
   end
 
   def age
-    circa = died_on && died_on.month == 1 && died_on.day == 1 ? 'c.' : ''
+    circa = died_on && born_on && born_on.month == 1 && born_on.day == 1 && died_on.month == 1 && died_on.day == 1 ? 'c.' : ''
     return circa + (died_in - born_in).to_s if died_on && born_on
     return Time.now.year - born_in if born_in && thing?
     return Time.now.year - born_in if born_in && born_in > 1910
