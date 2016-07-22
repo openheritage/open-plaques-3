@@ -2,7 +2,7 @@ class ColoursController < ApplicationController
 
   before_filter :authenticate_admin!, :only => :destroy
   before_filter :authenticate_user!, :except => [:index]
-  before_filter :find, :only => [:edit, :update]
+  before_filter :find, :only => [:update]
 
   def index
     @colours = Colour.all.most_plaques_order
@@ -22,16 +22,6 @@ class ColoursController < ApplicationController
     redirect_to colours_path
   end
 
-  def update
-    old_slug = @colour.slug
-    if @colour.update_attributes(colour_params)
-      redirect_to colours_path
-    else
-      @colour.slug = old_slug
-      render :edit
-    end
-  end
-
   protected
 
     def find
@@ -43,7 +33,6 @@ class ColoursController < ApplicationController
     def colour_params
       params.require(:colour).permit(
         :name,
-        :dbpedia_uri,
-      )
+        :dbpedia_uri)
     end
 end

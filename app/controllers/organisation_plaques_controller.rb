@@ -1,6 +1,6 @@
 class OrganisationPlaquesController < ApplicationController
 
-  before_filter :find_organisation, :only => [:show]
+  before_filter :find, :only => [:show]
   respond_to :json
 
   def show
@@ -25,7 +25,7 @@ class OrganisationPlaquesController < ApplicationController
 
   protected
 
-    def find_organisation
+    def find
       @organisation = Organisation.find_by_slug!(params[:organisation_id])
     end
 

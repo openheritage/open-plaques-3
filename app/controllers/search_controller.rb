@@ -12,17 +12,17 @@ class SearchController < ApplicationController
       @unaccented_phrase = @phrase.tr("ÀÁÂÃÄÅàáâãäåĀāĂăĄąÇçĆćĈĉĊċČčÐðĎďĐđÈÉÊËèéêëĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħÌÍÎÏìíîïĨĩĪīĬĭĮįİıĴĵĶķĸĹĺĻļĽľĿŀŁłÑñŃńŅņŇňŉŊŋÒÓÔÕÖØòóôõöøŌōŎŏŐőŔŕŖŗŘřŚśŜŝŞşŠšſŢţŤťŦŧÙÚÛÜùúûüŨũŪūŬŭŮůŰűŲųŴŵÝýÿŶŷŸŹźŻżŽž",
 "AAAAAAaaaaaaAaAaAaCcCcCcCcCcDdDdDdEEEEeeeeEeEeEeEeEeGgGgGgGgHhHhIIIIiiiiIiIiIiIiIiJjKkkLlLlLlLlLlNnNnNnNnnNnOOOOOOooooooOoOoOoRrRrRrSsSsSsSssTtTtTtUUUUuuuuUuUuUuUuUuUuWwYyyYyYZzZzZz")
       # check people first
-      @people =  Person.where(["lower(name) LIKE ?", "%" + @phrase.gsub(" ","%").gsub(".","%") + "%"])
+      @people =  Person.where(["lower(name) LIKE ?", "%" + @phrase.tr(" ","%").tr(".","%") + "%"])
       if @phrase.match(/[À-ž]/)
-        @people += Person.where(["lower(name) LIKE ?", "%" + @unaccented_phrase.gsub(" ","%").gsub(".","%") + "%"])
+        @people += Person.where(["lower(name) LIKE ?", "%" + @unaccented_phrase.tr(" ","%").tr(".","%") + "%"])
       end
-      @people += Person.where(["lower(array_to_string(aka, ' ')) LIKE ?", "%" + @phrase.gsub(" ","%").gsub(".","%") + "%"])
+      @people += Person.where(["lower(array_to_string(aka, ' ')) LIKE ?", "%" + @phrase.tr(" ","%").tr(".","%") + "%"])
 
       @search_results = @people.uniq
 
       @plaques = Plaque.where(["lower(inscription) LIKE ?", "%" + @phrase + "%"]).includes([[:personal_connections => [:person]], [:area => :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
       # if the phrase has an accent, check for a non-accented person name
-      @plaques += Plaque.where(["lower(inscription_in_english) LIKE ?", "%" + @phrase + "%"]).includes([[:personal_connections => [:person]], [:area => :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}  
+      @plaques += Plaque.where(["lower(inscription_in_english) LIKE ?", "%" + @phrase + "%"]).includes([[:personal_connections => [:person]], [:area => :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
       if @phrase.match(/[À-ž]/)
         @plaques += Plaque.where(["lower(inscription) LIKE ?", "%" + @unaccented_phrase + "%"]).includes([[:personal_connections => [:person]], [:area => :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
         @plaques += Plaque.where(["lower(inscription_in_english) LIKE ?", "%" + @unaccented_phrase + "%"]).includes([[:personal_connections => [:person]], [:area => :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
@@ -40,7 +40,7 @@ class SearchController < ApplicationController
 
       @search_results += @plaques.uniq
     elsif  @street != nil && @street !=""
-      @search_results = Plaque.find(:all, :conditions => ["lower(address) LIKE ?", "%" + @street.downcase + "%"], :include => [[:personal_connections => [:person]], [:area => :country]])      
+      @search_results = Plaque.find(:all, :conditions => ["lower(address) LIKE ?", "%" + @street.downcase + "%"], :include => [[:personal_connections => [:person]], [:area => :country]])
       @phrase = ""
     end
     respond_to do |format|

@@ -76,7 +76,7 @@ class Role < ActiveRecord::Base
 
   # work it out from the name unless override value stored in the db
   def wikipedia_stub
-    self[:wikipedia_stub] ? self[:wikipedia_stub] : self.name.capitalize.strip.gsub(/ /,"_")
+    self[:wikipedia_stub] ? self[:wikipedia_stub] : self.name.capitalize.strip.tr(' ','_')
   end
 
   def dbpedia_url

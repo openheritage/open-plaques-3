@@ -32,11 +32,11 @@ function addPlaque(geojson)
   {
     var geometry = geojson.geometry;
     var plaque = geojson.properties.plaque;
-    if (plaques["'#"+plaque.id+"'"]==null)
+    if (plaques["'#"+plaque.id+"'"]===null)
     {
       var plaque_icon = new L.DivIcon({ className: 'plaque-marker', html: '', iconSize : 16 });
       var plaque_marker = L.marker([plaque.latitude, plaque.longitude], {icon: plaque_icon});
-      if (allow_popups==true)
+      if (allow_popups===true)
       {
         var plaque_description = '<div class="inscription">' + truncate(plaque.inscription, 255) + '</div><div class="info">' +
           '<a class="link" href="http://openplaques.org/plaques/' + plaque.id + '">Plaque ' + plaque.id + '</a>';
@@ -50,7 +50,7 @@ function addPlaque(geojson)
 
 function stateChanged()
 {
-  if (ajaxRequest.readyState==4 && ajaxRequest.status==200)
+  if (ajaxRequest.readyState===4 && ajaxRequest.status===200)
   {
     var answer = ajaxRequest.responseText;
     var json=JSON.parse(answer);
@@ -80,22 +80,13 @@ function initmap()
     L.Icon.Default.imagePath = '/assets';
     map = L.map('plaque-map');
     map.scrollWheelZoom.disable();
-
-    // basemap
-    var mapquestUrl = 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png',
-    subDomains = ['otile1','otile2','otile3','otile4'],
-    mapquestAttrib = 'Map from <a href="http://open.mapquest.co.uk" target="_blank">MapQuest</a> &amp; <a href="http://www.openstreetmap.org/" target="_blank">OSM</a>.';
-    var mapquest = new L.TileLayer(mapquestUrl, {maxZoom: 16, attribution: mapquestAttrib, subdomains: subDomains});
-    map.addLayer(mapquest);
-
+    var basemap = new L.StamenTileLayer("toner"); // toner, terrain, or watercolor
+    map.addLayer(basemap);
     var latitude = plaque_map.attr("data-latitude"), longitude = plaque_map.attr("data-longitude"), zoom = plaque_map.attr("data-zoom");
+    var zoom_level = 13;
     if (zoom)
     {
-      var zoom_level = parseInt(zoom);
-    }
-    else
-    {
-      var zoom_level = 13;
+      zoom_level = parseInt(zoom);
     }
 
     if (latitude && longitude)
@@ -134,7 +125,7 @@ function initmap()
     {
   		var data_path = plaque_map.attr("data-path");
       var geojsonURL = "/plaques/tiles/{z}/{x}/{y}.geojson";
-      if (data_view == "unphotographed") {
+      if (data_view === "unphotographed") {
         geojsonURL = "/plaques/unphotographed/tiles/{z}/{x}/{y}.geojson";
         data_view = "all"
       };
@@ -142,7 +133,7 @@ function initmap()
       {
         geojsonURL = plaque_map.attr("context") + geojsonURL
       }
-  		if (data_view == "all")
+  		if (data_view === "all")
       {
  //       console.log(geojsonURL);
         var geojsonTileLayer = new L.TileLayer.GeoJSON(geojsonURL,
@@ -163,7 +154,7 @@ function initmap()
                 layer.bindPopup(plaque_description);
                 var plaque_icon = new L.DivIcon({ className: 'plaque-marker', html: '', iconSize : 16 });
                 layer.setIcon(plaque_icon);
-                if (plaques["'#"+plaque.id+"'"]==null)
+                if (plaques["'#"+plaque.id+"'"]===null)
                 {
                   plaques["'#"+plaque.id+"'"]=plaque;
                   clusterer.addLayer(layer);

@@ -27,7 +27,7 @@ class CountryPlaquesController < ApplicationController
           :disposition => 'attachment'
         )
       }
-      end
+    end
   end
 
   protected

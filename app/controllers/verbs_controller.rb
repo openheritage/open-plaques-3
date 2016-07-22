@@ -1,6 +1,5 @@
 class VerbsController < ApplicationController
 
-  before_filter :authenticate_admin!, :only => [:destroy]
   before_filter :authenticate_user!, :except => [:index]
 
   def index
@@ -26,7 +25,7 @@ class VerbsController < ApplicationController
   end
 
   def show
-    @verb = Verb.find_by_name(params[:id].gsub('_',' '))
+    @verb = Verb.find_by_name(params[:id].tr('_',' '))
     respond_to do |format|
       format.html
       format.json { render :json => @verb }
@@ -44,13 +43,6 @@ class VerbsController < ApplicationController
     else
       render :new
     end
-  end
-
-  # DELETE /verbs/1
-  def destroy
-    @verb = Verb.find params[:id]
-    @verb.destroy
-    redirect_to verbs_path
   end
 
   private

@@ -7,47 +7,48 @@
   </div>
 </div>
 
-  <%= form_for @person do |f| %>
-    <fieldset class="form-group row">
-      <%= f.label :name, @person.possessive + " name " + @person.existence_word %>
-      <%= f.text_field :name %>
-      <%= t '.display_name' %> "<%= @person.full_name %>"
-    </fieldset>
-    <fieldset class="form-group row">
-      <%= f.label :aka %>
-      <%= f.text_field :aka %>
-    </fieldset>
-    <fieldset class="form-group row">
-      <%= @person.possessive %> surname <%= @person.existence_word %> "<%= @person.surname %>" which <%= f.label :surname_starts_with, "starts with" %> <%= f.text_field :surname_starts_with, :maxlength => 1 %>
-    </fieldset>
-    <fieldset class="form-group row">
-      <%= f.label :gender %>
-      <%= f.text_field :gender, :maxlength => 1 %>
-    </fieldset>
-    <fieldset class="form-group row">
-      <%= @person.personal_pronoun %> was <%= f.label :born_on, @person.creation_word %> <%= f.text_field :born_on, {:maxlength => "10"} %> and <%= f.label :died_on, @person.destruction_word %> <%= f.text_field :died_on, {:maxlength => "10"} %>
-    </fieldset>
-    <fieldset class="form-group row">
-      <%= f.label :find_a_grave_id %>
-      <%= f.text_field :find_a_grave_id %>
-      <%= link_to("Find A Grave", @person.find_a_grave_url) unless @person.find_a_grave_id.blank? %>
-    </fieldset>
-    <fieldset class="form-group row">
-      <%= f.label :introduction %>
-      <%= f.text_area :introduction, :cols => 80, :rows => 15 %>
-    </fieldset>
-    <fieldset class="form-group row">
-      <%= f.label :wikipedia_url %>
-      <%= f.text_field :wikipedia_url %>
-      <%= t '.wikipedia_comment' %>
-    </fieldset>
-    <%= content_tag("p", "Read more about ".html_safe + link_to(@person.name, @person.default_wikipedia_url, :target => '_blank') + " on Wikipedia.".html_safe) unless @person.default_wikipedia_url.blank? %>
-    <fieldset class="form-group row">
-      <%= f.label :dbpedia_uri %>
-      <%= f.text_field :dbpedia_uri %>
-    </fieldset>
-    <%= f.submit t('buttons.update'), :class => 'btn btn-primary' %>
-  <% end %>
+<%= form_for @person do |f| %>
+  <fieldset class="form-group row">
+    <%= f.label :name, @person.possessive + " name " + @person.existence_word %>
+    <%= f.text_field :name %>
+    <%= t '.display_name' %> "<%= @person.full_name %>"
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :aka %>
+    <%= f.text_field :aka %>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= @person.possessive %> surname <%= @person.existence_word %> "<%= @person.surname %>" which <%= f.label :surname_starts_with, "starts with" %> <%= f.text_field :surname_starts_with, :maxlength => 1 %>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :gender %>
+    <%= f.text_field :gender, :maxlength => 1 %>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= @person.personal_pronoun %> was <%= f.label :born_on, @person.creation_word %> <%= f.text_field :born_on, {:maxlength => "10"} %> and <%= f.label :died_on, @person.destruction_word %> <%= f.text_field :died_on, {:maxlength => "10"} %>
+    <%= "Died aged" if (@person.person? || @person.thing? || @person.animal?) && @person.dead? %><%= "Closed aged" if @person.place? && @person.dead? %><%= "Aged" if @person.alive? && @person.age%> <%= @person.age.to_s if @person.age%>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :find_a_grave_id %>
+    <%= f.text_field :find_a_grave_id %>
+    <%= link_to("Find A Grave", @person.find_a_grave_url) unless @person.find_a_grave_id.blank? %>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :introduction %>
+    <%= f.text_area :introduction, :cols => 80, :rows => 15 %>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :wikipedia_url %>
+    <%= f.text_field :wikipedia_url %>
+    <%= t '.wikipedia_comment' %>
+  </fieldset>
+  <%= content_tag("p", "Read more about ".html_safe + link_to(@person.name, @person.default_wikipedia_url, :target => '_blank') + " on Wikipedia.".html_safe) unless @person.default_wikipedia_url.blank? %>
+  <fieldset class="form-group row">
+    <%= f.label :dbpedia_uri %>
+    <%= f.text_field :dbpedia_uri %>
+  </fieldset>
+  <%= f.submit t('buttons.update'), :class => 'btn btn-primary' %>
+<% end %>
 
 <% if !@person.main_photo %>
   <div class="row">
@@ -74,7 +75,7 @@
 <% @person.personal_roles.each do |personal_role| %>
   <div class="row">
     <span class="col-sm-8">
-      <%= @person.name %> <%= @person.existence_word %> a <%= dated_role(personal_role).html_safe %> 
+      <%= @person.name %> <%= @person.existence_word %> a <%= dated_role(personal_role).html_safe %>
       <%= t('.conferring_the_letters') + ' ' + personal_role.role.abbreviation if personal_role.role.used_as_a_suffix? %><%= t('.conferring_the_title') + ' ' + personal_role.role.abbreviation if personal_role.role.used_as_a_prefix? %>
       <%= link_to t('buttons.edit'), edit_personal_role_path(personal_role), :class => 'btn btn-primary' %>
     </span>
@@ -104,4 +105,3 @@
     <%= link_to(t('.add_a_role'), new_role_path) %>
   </span>
 </div>
-

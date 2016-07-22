@@ -3,16 +3,10 @@
 <%# to most (but not all) views.                                       %>
 
 <%= render("shared/navbar") %>
-
 <div class="container-fluid">
-
   <%= render("shared/alerts") %>
   <%= render("shared/page_header") %>
-
   <%= yield %>
-
   <%= render("shared/footer") %>
-
 </div>
-
 <% parent_layout "base" %>

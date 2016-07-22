@@ -2,7 +2,7 @@ class PagesController < ApplicationController
 
   before_filter :authenticate_admin!, :only => :destroy
   before_filter :authenticate_user!, :except => [:show]
-  before_filter :find_page, :only => [:show, :edit, :update]
+  before_filter :find, :only => [:show, :edit, :update]
   respond_to :html, :json
 
   def about
@@ -36,7 +36,7 @@ class PagesController < ApplicationController
 
   protected
 
-    def find_page
+    def find
       @page = Page.find_by_slug!(params[:id])
     end
 

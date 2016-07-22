@@ -49,7 +49,7 @@
       <%= f.text_area :notes, :class => 'form-control' %>
     </div>
   </fieldset>
-  <%= f.submit t('buttons.update') , :class => 'btn btn-primary' %>
+  <%= f.submit t('buttons.save') , :class => 'btn btn-primary' %>
 <% end %>
 
 <div id="map" style="height: 400px; width: 100%; margin-top: 15px;"></div>
@@ -58,7 +58,7 @@
   var map = null;
   var lat_element = null;
   var lon_element = null;
-  var geolocation = new L.LatLng(52, 0);  
+  var geolocation = new L.LatLng(52, 0);
   var view = 5;
 
   document.addEventListener("DOMContentLoaded", function()
@@ -91,7 +91,7 @@
         geolocation.lat = lat_element.value;
         geolocation.lng = lon_element.value;
         view = 18;
-      } 
+      }
     }
 
     function update_map()
@@ -100,7 +100,7 @@
       marker.setLatLng(geolocation);
       map.setView(geolocation, view);
     }
-    
+
     function update_text_fields_from_marker()
     {
       lat_element.value = marker.getLatLng().lat;

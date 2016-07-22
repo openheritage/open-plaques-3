@@ -1,8 +1,9 @@
 <% content_for :page_title, "Edit language of plaque \#" + @plaque.id.to_s %>
 <%= render 'plaques/edit_bar', :plaque => @plaque %>
 
-<div class="panel">
-  <h1>What language is <%= link_to("plaque \#" + @plaque.id.to_s, @plaque)%> written in?</h1>
+<h1>What language is <%= link_to("plaque \#" + @plaque.id.to_s, @plaque)%> written in?</h1>
+
+<div class="row">
   <p><%= button_to "Not sure. Give me another one", todo_path('microtask'), :method => :get, :class => :button %></p>
   <br/>
   <%= render @plaque.main_photo if @plaque.main_photo  %>

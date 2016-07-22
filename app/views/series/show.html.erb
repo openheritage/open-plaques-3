@@ -8,20 +8,14 @@
 
 <div class="row" id="plaque-map" data-latitude="<%= @series.latitude %>" data-longitude="<%= @series.longitude %>" data-view="all" context="<%= request.path %>"></div>
 
-<div class="row">
-  <%= will_paginate @plaques %>
-</div>
-
 <div class="container-fluid">
+  <div class="row">
+    <%= will_paginate @plaques %>
+  </div>
   <div class="card-columns">
     <%= render @plaques %>
   </div>
-</div>
-
-<div class="row">
-  <%= will_paginate @plaques %>
-</div>
-
-<div class="row">
-  <p><%= t 'data_about_thing_as' %> .json and .geojson</p>
+  <div class="row">
+    <%= will_paginate @plaques %>
+  </div>
 </div>

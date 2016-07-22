@@ -7,25 +7,19 @@
 </div>
 
 <% if @organisation.geolocated? %>
-<div class="row">
-  <div id="plaque-map" class="col-xs-12" data-latitude="<%= @organisation.latitude %>" data-longitude="<%= @organisation.longitude %>" data-view="all" context="<%= request.path %>"></div>
-</div>
+  <div class="row">
+    <div id="plaque-map" class="col-xs-12" data-latitude="<%= @organisation.latitude %>" data-longitude="<%= @organisation.longitude %>" data-view="all" context="<%= request.path %>"></div>
+  </div>
 <% end %>
 
-<div class="row" id="pagination-top">
-  <%= will_paginate @sponsorships %>
-</div>
-
 <div class="container-fluid">
-  <div class="card-columns">
-    <%= render partial: 'plaques/plaque', collection: @sponsorships, as: :plaque %>
+  <div class="row" id="pagination-top">
+    <%= will_paginate @sponsorships %>
   </div>
-</div>
-
-<div class="row" id="pagination-bottom">
-  <%= will_paginate @sponsorships %>
-</div>
-
-<div class="row" id="data">
-  <p><%= t 'data_about_thing_as' %> .json and .geojson</p>
+  <div class="card-columns">
+    <%= render @sponsorships %>
+  </div>
+  <div class="row" id="pagination-bottom">
+    <%= will_paginate @sponsorships %>
+  </div>
 </div>

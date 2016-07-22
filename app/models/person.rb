@@ -91,7 +91,6 @@ class Person < ActiveRecord::Base
     return "man" if person? && male?
     return "woman" if person? && female?
     return "person" if person?
-    return "person" if person?
     return "animal" if animal?
     return "thing" if thing?
     return "group" if group?
@@ -115,7 +114,7 @@ class Person < ActiveRecord::Base
       if died_in
         dates += "-" + died_in.to_s if (born_in != died_in)
       else
-        dates += "-present"
+        dates += alive? ? "-present" : "-?"
       end
       dates += ")"
     end
@@ -130,9 +129,7 @@ class Person < ActiveRecord::Base
   end
 
   def dead?
-    return true if died_in
-    return true if (person? || animal?) && born_in && born_in < 1900
-    false
+    died_in || (person? || animal?) && born_in && born_in < 1910
   end
 
   def alive?
@@ -140,19 +137,19 @@ class Person < ActiveRecord::Base
   end
 
   def existence_word
-    return "is" if alive?
-    "was"
+    alive? ? "is" : "was"
   end
 
   def age
-    return died_in - born_in if died_in && born_in
+    circa = died_on && died_on.month == 1 && died_on.day == 1 ? 'c.' : ''
+    return circa + (died_in - born_in).to_s if died_on && born_on
     return Time.now.year - born_in if born_in && thing?
-    return Time.now.year - born_in if born_in && born_in > 1900
+    return Time.now.year - born_in if born_in && born_in > 1910
     "unknown"
-   end
+  end
 
   def age_in(year)
-    return year - born_in if born_in
+    year - born_in if born_in
   end
 
   # note that the Wikipedia url is constructed from the person's name
@@ -161,12 +158,12 @@ class Person < ActiveRecord::Base
   # is no Wikipedia record
   def default_wikipedia_url
     return wikipedia_url.gsub("http:","https:") if wikipedia_url && wikipedia_url > ""
-    untitled_name = name.gsub("Canon ","").gsub("Captain ","").gsub("Cardinal ","").gsub("Dame ","").gsub("Dr ","").gsub("Lord ","").gsub("Sir ","").strip.gsub(/ /,"_")
+    untitled_name = name.gsub("Canon ","").gsub("Captain ","").gsub("Cardinal ","").gsub("Dame ","").gsub("Dr ","").gsub('Lord ','').gsub('Sir ','').strip.tr(' ','_')
     "https://en.wikipedia.org/wiki/"+untitled_name
   end
 
   def default_dbpedia_uri
-    return default_wikipedia_url.gsub("en.wikipedia.org/wiki","dbpedia.org/resource").gsub("https","http")
+    default_wikipedia_url.gsub("en.wikipedia.org/wiki","dbpedia.org/resource").gsub("https","http")
   end
 
   def dbpedia_ntriples_uri
@@ -182,7 +179,7 @@ class Person < ActiveRecord::Base
   end
 
   def default_thumbnail_url
-    return "/assets/NoPersonSqr.png"
+    "/assets/NoPersonSqr.png"
   end
 
   def populate_from_dbpedia
@@ -284,17 +281,9 @@ class Person < ActiveRecord::Base
     names << firstinitial + " " + lastname  if nameparts.length > 1 # J. Hansom
     names << title + " " + lastname if titled? # Lord Carlisle
     names << title + " " + firstname if titled? # Sir William
-    names << lastname if nameparts.length > 1 # Kitchener
     names << firstname if nameparts.length > 1 # Charles
+    names << lastname if nameparts.length > 1 # Kitchener
     names.uniq
-  end
-
-  def parents
-    parents = []
-    relationships.each do |relationship|
-      parents << relationship.related_person if (relationship.role.name=="son" or relationship.role.name=="daughter") && relationship.related_person!=nil
-    end
-    parents.sort! { |a,b| a.born_on ? a.born_on : 0 <=> b.born_on ? b.born_on : 0 }
   end
 
   def father
@@ -319,6 +308,10 @@ class Person < ActiveRecord::Base
     issue.sort! { |a,b| a.born_on ? a.born_on : 0 <=> b.born_on ? b.born_on : 0 }
   end
 
+  def has_children?
+    children.size > 0
+  end
+
   def siblings
     siblings = []
     if father != nil
@@ -334,12 +327,20 @@ class Person < ActiveRecord::Base
     siblings.uniq.sort! { |a,b| a.born_on ? a.born_on : 0 <=> b.born_on ? b.born_on : 0 }
   end
 
-  def spousal_relationships
-    spouses = []
+  def spouses
+    people = []
     relationships.each do |relationship|
-      spouses << relationship if relationship.role.name=="wife" or relationship.role.name=="husband"
+      people << relationship.related_person if relationship.role.name=="wife" or relationship.role.name=="husband"
     end
-    spouses
+    people #.sort! { |a,b| a.born_on ? a.born_on : 0 <=> b.born_on ? b.born_on : 0 }
+  end
+
+  def spousal_relationships
+    spousal_relationships = []
+    relationships.each do |relationship|
+      spousal_relationships << relationship if relationship.role.name=="wife" or relationship.role.name=="husband"
+    end
+    spousal_relationships
   end
 
   def non_family_relationships
@@ -419,7 +420,7 @@ class Person < ActiveRecord::Base
     "his/her"
   end
 
-  def related_to(person)
+  def is_related_to?(person)
     relationships.each do |r|
       return true if r.related_person == person
     end
@@ -427,11 +428,11 @@ class Person < ActiveRecord::Base
   end
 
   def find_a_grave_url
-    return self.find_a_grave_id ? "http://www.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=" + self.find_a_grave_id : null
+    self.find_a_grave_id ? "http://www.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=" + self.find_a_grave_id : null
   end
 
   def ancestry_url
-    return self.ancestry_id ? "http://www.ancestry.co.uk/genealogy/records/" + self.ancestry_id : null
+    self.ancestry_id ? "http://www.ancestry.co.uk/genealogy/records/" + self.ancestry_id : null
   end
 
   def uri

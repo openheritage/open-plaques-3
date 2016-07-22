@@ -15,27 +15,23 @@
         <%= image_tag(@person.main_photo.file_url, :class => 'card-bkimg') %>
       </div>
     <% else %>
-      <div class="card-background">
+      <div class="card-background-no-photo">
       </div>
     <% end %>
     <div class="card-info">
       <span class="card-title fn">
-        <%= @person.name %><br/>
+        <%= @person.full_name %><br/>
         <small><%= @person.dates %></small>
       </span>
     </div>
   </div>
 
   <div class="row">
-    Roles: <%= roles_list(@person) %>
+    <h4><%= roles_list(@person) %></h4>
   </div>
 
   <div class="row">
-    <p>Known as: <%= @person.names.to_sentence %></p>
-  </div>
-
-  <div class="row">
-    <p><%= "Died aged" if (@person.person? || @person.thing? || @person.animal?) && @person.dead? %><%= "Closed aged" if @person.place? && @person.dead? %><%= "Aged" if @person.alive? && @person.age%> <%= "c." + @person.age.to_s if @person.age%>
+    <p><%= "Died aged" if (@person.person? || @person.thing? || @person.animal?) && @person.dead? %><%= "Closed aged" if @person.place? && @person.dead? %><%= "Aged" if @person.alive? && @person.age%> <%= @person.age.to_s if @person.age%>
       <%= link_to("Find A Grave", @person.find_a_grave_url) unless @person.find_a_grave_id.blank? %>
     </p>
     <%= simple_format(@person.introduction) if @person.introduction %>
@@ -48,27 +44,27 @@
       <div class="tree">
         <ul>
           <li>
-            <%= @person.father != nil ? link_to(@person.father.name_and_dates, @person.father) : link_to('father', '#') %>
+            <%= @person.father ? link_to(@person.father, @person.father) : link_to('father?', '#') %>
             <ul>
               <li>
-                <a href='#'><%= @person.name_and_dates %></a>
-                <% if @person.children.size > 0 %>
+                <%= link_to(@person) %>
+                <% if @person.has_children? %>
                   <ul>
                     <% @person.children.each do |child| %>
-                      <li><%= link_to(child.name_and_dates, @person.father) %></li>
+                      <li><%= link_to(child, child) %></li>
                     <% end %>
                   </ul>
-                <% end %>      
+                <% end %>
               </li>
-              <% @person.spousal_relationships.each do |spousal_relationship| %>
-                <li><%= link_to(spousal_relationship.related_person.name_and_dates, spousal_relationship.related_person) %></li>
+              <% @person.spouses.each do |spouse| %>
+                <li><%= link_to(spouse, spouse) %></li>
               <% end %>
               <% @person.siblings.each do |sibling| %>
-                <li><%= link_to(sibling.name_and_dates, sibling) %></li>
+                <li><%= link_to(sibling, sibling) %></li>
               <% end %>
             </ul>
           </li>
-          <li><%= @person.mother != nil ? link_to(@person.mother.name_and_dates, @person.mother) : link_to('mother', '#') %></li>
+          <li><%= @person.mother ? link_to(@person.mother, @person.mother) : link_to('mother?', '#') %></li>
         </ul>
       </div>
     </div>
@@ -87,7 +83,7 @@
                   <li><%= link_to(relationship.related_person.name_and_dates, relationship.related_person) %></li>
                 <% end %>
               </ul>
-            <% end %>      
+            <% end %>
           </li>
         </ul>
       </div>
@@ -118,8 +114,4 @@
   <div class="card-columns">
     <%= render @person.plaques.uniq %>
   </div>
-</div>
-
-<div class="row">
-  <p><%= t 'data_about_thing_as' %> .json</p>
 </div>

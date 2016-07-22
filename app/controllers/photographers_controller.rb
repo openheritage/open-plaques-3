@@ -1,7 +1,7 @@
 class PhotographersController < ApplicationController
 
   def index
-    @photographers = Photo.where.not(plaque_id: nil).group('photographer').order('count_plaque_id desc').distinct.count(:plaque_id)
+    @photographers = Photographer.all
     respond_to do |format|
       format.html
       format.json { render :json => @photographers }
@@ -29,9 +29,9 @@ class PhotographersController < ApplicationController
     help.find_photo_by_machinetag(nil, @photographer)
     redirect_to photographers_path
   end
-  
+
   protected
-    
+
     def help
       Helper.instance
     end
@@ -39,25 +39,6 @@ class PhotographersController < ApplicationController
     class Helper
       include Singleton
       include PlaquesHelper
-    end
-    
-    class Photographer
-      attr_accessor :id
-      attr_accessor :photos
-      attr_accessor :url
-      
-      def photos
-        return Photo.where(photographer: self.id)
-      end
-      
-      def plaques
-        plaque_list = []
-        photos.each do |photo|
-          plaque_list << photo.plaque if photo.linked?
-        end
-        return plaque_list
-      end
-
     end
 
 end

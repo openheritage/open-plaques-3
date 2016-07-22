@@ -67,16 +67,13 @@ class Plaque < ActiveRecord::Base
   include ApplicationHelper, ActionView::Helpers::TextHelper
 
   def coordinates
-    if geolocated?
-      latitude.to_s + "," + longitude.to_s
-    else
-      ""
-    end
+    geolocated? ? latitude.to_s + "," + longitude.to_s : ""
   end
 
   def full_address
     a = address
     a += ", " + area.name + ", " + area.country.name if area
+    a
   end
 
   def erected_at_string
@@ -294,8 +291,7 @@ class Plaque < ActiveRecord::Base
   end
 
   def inscription_preferably_in_english
-    return inscription_in_english if inscription_in_english && inscription_in_english > ""
-    return inscription
+    inscription_in_english && inscription_in_english > "" ? inscription_in_english : inscription
   end
 
   def erected?

@@ -30,7 +30,6 @@ class PhotosController < ApplicationController
         params[:photo][:longitude] = point.longitude
       end
     end
-    puts params.to_s
     respond_to do |format|
       if @photo.update_attributes(photo_params)
         flash[:notice] = 'Photo was successfully updated.'
@@ -76,7 +75,7 @@ class PhotosController < ApplicationController
       @licences = Licence.order(:name)
     end
 
-  private 
+  private
 
     def help
       Helper.instance
@@ -102,7 +101,6 @@ class PhotosController < ApplicationController
         :shot,
         :latitude,
         :longitude,
-        :streetview_url
-      )
-	end
+        :streetview_url)
+    end
 end

@@ -30,7 +30,7 @@ class AreasController < ApplicationController
     end
     render :json => @areas.as_json(
       :only => [:id,:name,:country_id],
-      :include => { 
+      :include => {
         :country => {
           :only => [:name]
         }
@@ -118,8 +118,7 @@ class AreasController < ApplicationController
         :country_id,
         :latitude,:longitude,
         :streetview_url,
-        :country_id
-      )
-	end
-  
+        :country_id)
+	   end
+
 end

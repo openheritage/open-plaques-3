@@ -131,7 +131,7 @@ class PlaquesController < ApplicationController
           :disposition => 'attachment'
         )
       }
-     end
+    end
   end
 
   # GET /plaques/new
@@ -172,7 +172,7 @@ class PlaquesController < ApplicationController
     elsif params[:area] && !params[:area].blank?
       area = country.areas.find_by_name(params[:area])
       unless area
-        area = country.areas.find_by_slug(params[:area].rstrip.lstrip.downcase.gsub(" ", "_"))
+        area = country.areas.find_by_slug(params[:area].rstrip.lstrip.downcase.tr(" ", "_"))
       end
       unless area
         area = country.areas.create!(:name => params[:area])

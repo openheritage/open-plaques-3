@@ -1,6 +1,6 @@
 module ColoursHelper
 
-  def link_to_colour(colour, options = {})
+  def link_to_colour(colour)
     link_to(colour.name, colour_path(colour))
   end
 

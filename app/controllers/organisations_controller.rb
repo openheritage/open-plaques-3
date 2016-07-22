@@ -28,7 +28,7 @@ class OrganisationsController < ApplicationController
 
   def show
     begin
-      if (params[:id]=="oxfordshire_blue_plaques_scheme") 
+      if (params[:id]=="oxfordshire_blue_plaques_scheme")
         params[:id] = "oxfordshire_blue_plaques_board"
         redirect_to(organisation_path(params[:id])) and return
       end
@@ -44,7 +44,7 @@ class OrganisationsController < ApplicationController
       format.html
       format.json { render :json => @organisation }
       format.geojson { render :geojson => @organisation }
-      end
+    end
   end
 
   def new
@@ -97,7 +97,7 @@ class OrganisationsController < ApplicationController
       include Singleton
       include PlaquesHelper
     end
-    
+
     def organisation_params
       params.require(:organisation).permit(
         :name,

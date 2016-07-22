@@ -80,7 +80,7 @@ class Photo < ActiveRecord::Base
 
   def attribution
     attrib = '&copy; '
-    attrib += photographer.gsub(".","_").gsub("/","_") if photographer
+    attrib += photographer.tr("./","__") if photographer
     attrib += ' on ' + source
     attrib += ' ' + licence.abbreviation if licence && licence.abbreviation != nil
     attrib += ' ' + licence.name if licence && licence.abbreviation == nil

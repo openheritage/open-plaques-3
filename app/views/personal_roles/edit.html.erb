@@ -1,7 +1,7 @@
 <%= form_for @personal_role do |f| %>
   <fieldset class="form-group row">
     <%= @personal_role.person.full_name %> was a <%= @personal_role.role.name %>
-    <% if @personal_role.role.relationship? %>of 
+    <% if @personal_role.role.relationship? %>of
       <%= f.text_field :related_person %>
       <%= f.hidden_field :related_person_id %>
       <%= link_to(t('.new_person'), "/people/new") %>

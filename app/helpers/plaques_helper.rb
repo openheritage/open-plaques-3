@@ -12,7 +12,7 @@ module PlaquesHelper
   def search_snippet(text, search_term)
     regex = /#{search_term}/i
     if text =~ regex
-      text = " " + text + " "  #HACK: This is so there's a space before the first word.
+      text = " " + text + " "
       indexes = []
       first_index = text.index(regex)
       indexes << first_index
@@ -187,7 +187,7 @@ module PlaquesHelper
               @photo.file_url = file_url
               @photo.url = photo_url
               @photo.taken_at = photo.attributes["datetaken"]
-              @photo.photographer_url = photo_url = "http://www.flickr.com/photos/" + photo.attributes["owner"] + "/"
+              @photo.photographer_url = "http://www.flickr.com/photos/" + photo.attributes["owner"] + "/"
               @photo.photographer = photo.attributes["ownername"]
               @photo.licence = Licence.find_by_flickr_licence_id(photo.attributes["license"])
               if photo.attributes["latitude"] != "0" && photo.attributes["longitude"] != "0" && !@plaque.geolocated?
@@ -255,21 +255,16 @@ module PlaquesHelper
       info += org_list.to_sentence.html_safe
       if plaque.erected_at?
         info += " ".html_safe
-        if plaque.erected_at.day == 1 && plaque.erected_at.month == 1
-          info += "in ".html_safe
-        else
-          info += "on ".html_safe + plaque.erected_at.strftime('%d %B') + " "
-        end
-        info += plaque.erected_at.year.to_s
+        info += erected_date(plaque)
       end
-      return content_tag("p", info)
+      return info
     else
       return content_tag("p", "by ".html_safe + content_tag("span", "unknown".html_safe, :class => :unknown))
     end
   end
 
   def linked_inscription(plaque)
-    inscription = plaque.inscription.gsub(/\r/," ").gsub(/\n/," ").strip.gsub("  "," ")
+    inscription = plaque.inscription.gsub('\r',' ').gsub('\n',' ').strip.gsub('  ',' ')
     people = plaque.people
     if people
       reduced_inscription = inscription

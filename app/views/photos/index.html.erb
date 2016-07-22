@@ -6,10 +6,6 @@
   <%= t '.explanation_html' %>
 </div>
 
-<div class="row">
-  <%= will_paginate @photos %>
-</div>
-
 <style media="screen" type="text/css">
   @media (min-width: 34em) {
       .card-columns {
@@ -42,15 +38,13 @@
 </style>
 
 <div class="container-fluid">
+  <div class="row">
+    <%= will_paginate @photos %>
+  </div>
   <div class="card-columns">
     <%= render partial: 'photos/tile', :collection => @photos, as: :photo %>
   </div>
-</div>
-
-<div class="row">
-  <%= will_paginate @photos %>
-</div>
-
-<div class="row">
-  <p><%= t 'data_about_things_as' %> .json</p>
+  <div class="row">
+    <%= will_paginate @photos %>
+  </div>
 </div>

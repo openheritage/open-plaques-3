@@ -3,9 +3,10 @@
 <% else %>
   <% content_for(:page_title) {t '.page_title_unphotographed', :area => @area.name + ", " + @area.country.name } %>
 <% end %>
-<% content_for(:title) { render @area } %>
+<% content_for(:title) {  } %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_area_path(@area), {:class => :edit, :title => t('buttons.edit')}} %>
 
+<h1><span class="flag-icon flag-icon-<%= @area.country.alpha2 %>"></span> <%= link_to(@area.country.name, @area.country) %> / <%= @area.name %></h1>
 <div class="row">
   <p>
     <% if @display!='all' %>
@@ -42,20 +43,14 @@
   <% end %>
 </div>
 
-<div class="row">
-  <%= will_paginate @plaques %>
-</div>
-
-<div class="row">
+<div class="container-fluid">
+  <div class="row">
+    <%= will_paginate @plaques %>
+  </div>
   <div class="card-columns">
     <%= render @plaques %>
   </div>
-</div>
-
-<div class="row">
-  <%= will_paginate @plaques %>
-</div>
-
-<div class="row">
-  <p><%= t 'data_about_thing_as' %> .json and .geojson</p>
+  <div class="row">
+    <%= will_paginate @plaques %>
+  </div>
 </div>

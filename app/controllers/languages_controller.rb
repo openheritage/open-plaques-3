@@ -2,7 +2,7 @@ class LanguagesController < ApplicationController
 
   before_filter :authenticate_admin!, :only => :destroy
   before_filter :authenticate_user!, :except => [:index]
-  before_filter :find, :only => [:edit, :update]
+  before_filter :find, :only => [:update]
 
   def index
     @languages = Language.all.most_plaques_order
@@ -20,14 +20,6 @@ class LanguagesController < ApplicationController
     @language = Language.new(language_params)
     @language.save
     redirect_to languages_path
-  end
-
-  def update
-    if @language.update_attributes(language_params)
-      redirect_to languages_path
-    else
-      render :edit
-    end
   end
 
   protected

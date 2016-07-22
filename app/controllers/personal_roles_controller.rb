@@ -4,13 +4,10 @@ class PersonalRolesController < ApplicationController
   before_filter :authenticate_user!
   before_filter :find, :only => [:destroy, :update, :edit]
 
-  # POST /personal_roles
-  # POST /personal_roles.xml
   def create
     @personal_role = PersonalRole.new
     @personal_role.role = Role.find(params[:personal_role][:role])
     @personal_role.person = Person.find(params[:personal_role][:person_id])
-    # TODO: need better validation on the date format here.
     if params[:personal_role][:started_at] > ""
       started_at = params[:personal_role][:started_at]
       started_at = started_at + "-01-01" if started_at =~/\d{4}/
@@ -32,8 +29,6 @@ class PersonalRolesController < ApplicationController
     end
   end
 
-  # PUT /personal_roles/1
-  # PUT /personal_roles/1.xml
   def update
     related_person = nil
     if (params[:personal_role][:related_person_id])
@@ -110,8 +105,6 @@ class PersonalRolesController < ApplicationController
     end
   end
 
-  # DELETE /personal_roles/1
-  # DELETE /personal_roles/1.xml
   def destroy
     @person = @personal_role.person
     @personal_role.destroy

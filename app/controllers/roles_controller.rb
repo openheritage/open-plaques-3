@@ -26,12 +26,10 @@ class RolesController < ApplicationController
     )
   end
 
-  # GET /roles/artist
-  # GET /roles/artist.xml
   def show
     @role = Role.includes(:personal_roles => :person).find_by_slug!(params[:id])
-    @pluralized_role = @role.full_name.include?(" of ") ? 
-      @role.name.split(/#| of /).first.pluralize + @role.name.sub(/.*? of /, ' of ') 
+    @pluralized_role = @role.full_name.include?(" of ") ?
+      @role.name.split(/#| of /).first.pluralize + @role.name.sub(/.*? of /, ' of ')
       : @role.name.pluralize
     respond_to do |format|
       format.html
@@ -39,39 +37,29 @@ class RolesController < ApplicationController
     end
   end
 
-  # GET /roles/new
-  # GET /roles/new.xml
   def new
     @role = Role.new
   end
 
-  # POST /roles
-  # POST /roles.xml
   def create
     @role = Role.new(role_params)
     respond_to do |format|
       if @role.save
         flash[:notice] = 'Role was successfully created.'
         format.html { redirect_to(role_path(@role.slug)) }
-        format.xml  { render :xml => @role, :status => :created, :location => @role }
       else
         format.html { render "new" }
-        format.xml  { render :xml => @role.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # PUT /roles/1
-  # PUT /roles/1.xml
   def update
     respond_to do |format|
-    if @role.update_attributes(role_params)
+      if @role.update_attributes(role_params)
         flash[:notice] = 'Role was successfully updated.'
         format.html { redirect_to(role_path(@role.slug)) }
-        format.xml  { head :ok }
       else
         format.html { render "edit" }
-        format.xml  { render :xml => @role.errors, :status => :unprocessable_entity }
       end
     end
   end
