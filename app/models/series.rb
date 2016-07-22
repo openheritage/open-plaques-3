@@ -9,11 +9,10 @@
 # * Plaques - plaques in this series.
 class Series < ActiveRecord::Base
 
+  before_validation :find_centre
   validates_presence_of :name
   has_many :plaques
   default_scope { order('name ASC') }
-
-  attr_accessor :latitude, :longitude
 
   include PlaquesHelper
 
@@ -26,11 +25,11 @@ class Series < ActiveRecord::Base
   end
 
   def geolocated?
-    return !(self.latitude == nil && self.longitude == nil || self.latitude == 51.475 && self.longitude == 0)
+    return !(self.latitude == nil || self.longitude == nil || self.latitude == 51.475 && self.longitude == 0)
   end
 
   def uri
-    "http://openplaques.org" + Rails.application.routes.url_helpers.series_path(self.id, :format=>:json) if id
+    'http://openplaques.org' + Rails.application.routes.url_helpers.series_path(self.id, :format=>:json) if id
   end
 
   def as_json(options={})

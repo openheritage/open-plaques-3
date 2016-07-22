@@ -36,6 +36,7 @@
   <fieldset class="form-group row">
     <%= f.label :introduction %>
     <%= f.text_area :introduction, :cols => 80, :rows => 15 %>
+<<<<<<< HEAD
   </fieldset>
   <fieldset class="form-group row">
     <%= f.label :wikipedia_url %>
@@ -46,6 +47,16 @@
   <fieldset class="form-group row">
     <%= f.label :dbpedia_uri %>
     <%= f.text_field :dbpedia_uri %>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :find_a_grave_id %>
+    <%= f.text_field :find_a_grave_id %>
+    <%= @person.find_a_grave_url unless @person.find_a_grave_id.blank? %>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :ancestry_id %>
+    <%= f.text_field :ancestry_id %>
+    <%= @person.ancestry_url unless @person.ancestry_id.blank? %>
   </fieldset>
   <%= f.submit t('buttons.update'), :class => 'btn btn-primary' %>
 <% end %>

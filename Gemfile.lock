@@ -1,6 +1,10 @@
 GIT
   remote: git://github.com/jnicho02/commoner.git
+<<<<<<< HEAD
   revision: 3a2c5a7ede1252691fbd5beb90f2ffa78618f47a
+=======
+  revision: 7ea7b86edc842f6824dccc3728fbc9a74b07eceb
+>>>>>>> master
   branch: licence-details
   specs:
     commoner (1.0.4)
@@ -50,11 +54,19 @@ GEM
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.9.0)
     callsite (0.0.11)
+<<<<<<< HEAD
     concurrent-ruby (1.0.0)
     crass (1.0.2)
     curb (0.9.1)
     database_cleaner (1.5.1)
     devise (3.5.3)
+=======
+    concurrent-ruby (1.0.1)
+    crass (1.0.2)
+    curb (0.9.1)
+    database_cleaner (1.5.1)
+    devise (3.5.6)
+>>>>>>> master
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 3.2.6, < 5)
@@ -62,10 +74,10 @@ GEM
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
-    dotenv (2.0.2)
-    dotenv-rails (2.0.2)
-      dotenv (= 2.0.2)
-      railties (~> 4.0)
+    dotenv (2.1.0)
+    dotenv-rails (2.1.0)
+      dotenv (= 2.1.0)
+      railties (>= 4.0, < 5.1)
     erubis (2.7.0)
     execjs (2.6.0)
     font-awesome-sass (4.4.0)
@@ -87,16 +99,25 @@ GEM
       mime-types (>= 1.16, < 3)
     meta-tags (2.1.0)
       actionpack (>= 3.0.0)
-    meta_request (0.3.4)
+    meta_request (0.4.0)
       callsite (~> 0.0, >= 0.0.11)
       rack-contrib (~> 1.1)
+<<<<<<< HEAD
       railties (>= 3.0.0, < 5.0.0)
     mime-types (2.99)
+=======
+      railties (>= 3.0.0, < 5.1.0)
+    mime-types (2.99.1)
+>>>>>>> master
     mini_portile2 (2.0.0)
     minitest (5.8.4)
     multi_json (1.11.2)
     multi_xml (0.5.5)
+<<<<<<< HEAD
     nokogiri (1.6.7.1)
+=======
+    nokogiri (1.6.7.2)
+>>>>>>> master
       mini_portile2 (~> 2.0.0.rc2)
     nokogumbo (1.4.7)
       nokogiri
@@ -105,7 +126,11 @@ GEM
       hodel_3000_compliant_logger
     orm_adapter (0.5.0)
     pg (0.18.4)
+<<<<<<< HEAD
     puma (2.15.3)
+=======
+    puma (3.0.2)
+>>>>>>> master
     rack (1.5.5)
     rack-contrib (1.4.0)
       git-version-bump (~> 0.15)
@@ -126,7 +151,11 @@ GEM
     rails_12factor (0.0.3)
       rails_serve_static_assets
       rails_stdout_logging
+<<<<<<< HEAD
     rails_serve_static_assets (0.0.4)
+=======
+    rails_serve_static_assets (0.0.5)
+>>>>>>> master
     rails_stdout_logging (0.0.4)
     railties (4.1.6)
       actionpack (= 4.1.6)
@@ -159,14 +188,22 @@ GEM
       crass (~> 1.0.2)
       nokogiri (>= 1.4.4)
       nokogumbo (~> 1.4.1)
+<<<<<<< HEAD
     sass (3.4.20)
+=======
+    sass (3.4.21)
+>>>>>>> master
     sass-rails (5.0.4)
       railties (>= 4.0.0, < 5.0)
       sass (~> 3.1)
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
+<<<<<<< HEAD
     spring (1.6.2)
+=======
+    spring (1.6.4)
+>>>>>>> master
     sprockets (3.5.2)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
@@ -179,10 +216,17 @@ GEM
     tilt (2.0.2)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
+<<<<<<< HEAD
     tzinfo-data (1.2015.7)
       tzinfo (>= 1.0.0)
     uniform_notifier (1.9.0)
     warden (1.2.4)
+=======
+    tzinfo-data (1.2016.1)
+      tzinfo (>= 1.0.0)
+    uniform_notifier (1.9.0)
+    warden (1.2.6)
+>>>>>>> master
       rack (>= 1.0)
     will_paginate (3.1.0)
 

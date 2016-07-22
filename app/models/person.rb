@@ -290,14 +290,14 @@ class Person < ActiveRecord::Base
     relationships.each do |relationship|
       return relationship.related_person if (relationship.role.name=="son" or relationship.role.name=="daughter") && relationship.related_person!=nil && relationship.related_person.male?
     end
-    return nil
+    nil
   end
 
   def mother
     relationships.each do |relationship|
       return relationship.related_person if (relationship.role.name=="son" or relationship.role.name=="daughter") && relationship.related_person!=nil && relationship.related_person.female?
     end
-    return nil
+    nil
   end
 
   def children
@@ -403,8 +403,7 @@ class Person < ActiveRecord::Base
       "Vera","Victoria","Violet","Virginia",
       "Wilhelmina","Winifred")
     end
-    return true if self.gender == 'f'
-    false
+    self.gender == 'f'
   end
 
   def sex
