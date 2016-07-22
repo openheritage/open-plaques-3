@@ -79,6 +79,7 @@ function initmap()
   {
     L.Icon.Default.imagePath = '/assets';
     map = L.map('plaque-map');
+    map.scrollWheelZoom.disable();
     var basemap = new L.StamenTileLayer("toner"); // toner, terrain, or watercolor
     map.addLayer(basemap);
     var latitude = plaque_map.attr("data-latitude"), longitude = plaque_map.attr("data-longitude"), zoom = plaque_map.attr("data-zoom");
@@ -88,7 +89,7 @@ function initmap()
     }
     else
     {
-      var zoom_level = 14;
+      var zoom_level = 13;
     }
 
     if (latitude && longitude)
