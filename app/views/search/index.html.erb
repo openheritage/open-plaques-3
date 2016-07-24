@@ -1,17 +1,25 @@
 <% content_for(:page_title) {t '.page_title', :phrase => @phrase} %>
+<% content_for(:title) {t '.page_heading', :phrase => @phrase} %>
 
-<div class="panel clearfix">
-  <h1><%= t '.page_heading', :phrase => @phrase %></h1>
+<h2>People matching '<%= @phrase %>'</h2>
+<div class="card-columns">
+  <%= render @people %>
 </div>
 
-<div class="panel">
-  <%= render @search_results %>
+<h2>Places matching '<%= @phrase %>'</h2>
+<div class="card-columns">
+  <%= render @places %>
+</div>
+
+<h2>Plaques matching '<%= @phrase %>'</h2>
+<div class="card-columns">
+  <%= render @plaques %>
 </div>
 
 <% if params[:from] && params[:from] == "submission" %>
-  <div class="panel"><%= t '.not_found' %> <%= link_to t('.add_it'), new_plaque_path(:checked => true) %>.</div>
+  <div class="row"><%= t '.not_found' %> <%= link_to t('.add_it'), new_plaque_path(:checked => true) %>.</div>
 <% else %>
-  <div class="panel" id="search_results_footer">
+  <div class="row" id="search_results_footer">
     <h2><%= t '.try_again' %> <%= link_to t('.add_it'), new_plaque_path(:checked => true,  :phrase => @phrase) %></h2>
     <%= render :partial => "search_form", :locals => { :phrase => @phrase } %>
   </div>
