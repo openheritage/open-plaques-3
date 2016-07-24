@@ -1,44 +1,31 @@
-<div class="navbar navbar-default navbar-static-top" role="navigation">
+<nav class="navbar navbar-light bg-faded">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <%= link_to("RailsStarter", root_path, :class => "navbar-brand") %>
+      <%= link_to(image_tag("openplaques.png"), root_path, :class => "navbar-brand") %>
+      <h1 class="navbar-brand">Open Plaques</h1>
+      <div class="pull-right"><%= user_menu %></div>
     </div>
-    <div class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        <%= navbar_link_to("Home",
-                           root_path,
-                           :active_when => { :controller => :home }) %>
-        <%= navbar_link_to("About",
-                           about_path,
-                           :active_when => {
-                             :controller => :static_pages,
-                             :action => :about
-                           }) %>
-        <li><a href="#contact">Contact</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li class="divider"></li>
-            <li class="dropdown-header">Nav header</li>
-            <li><a href="#">Separated link</a></li>
-            <li><a href="#">One more separated link</a></li>
-          </ul>
-        </li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Log in</a></li>
-        <li><a href="#">Register</a></li>
-        <li><a href="#">Help</a></li>
-      </ul>
-    </div><!--/.nav-collapse -->
+    <ul class="nav navbar-nav pull-left">
+      <%= navbar_link_to("Home", root_path, :active_when => { :controller => :home }) %>
+      <%= navbar_link_to(t('menu.about'), about_path, :active_when => { :controller => :pages }) %>
+      <%= navbar_link_to(t('menu.people'), people_path, :active_when => { :controller => :people_by_index }) %>
+      <%= navbar_link_to(t('menu.places'), countries_path, :active_when => { :controller => :people }) %>
+      <%= navbar_link_to(t('menu.organisations'), organisations_path, :active_when => { :controller => :organisations }) %>
+      <%= navbar_link_to(t('menu.photographers'), photographers_path, :active_when => { :controller => :photographers }) %>
+      <% if current_user && current_user.is_admin? %>
+      <%= navbar_link_to(t('menu.roles'), roles_path, :active_when => { :controller => :roles }) %>
+      <%= navbar_link_to(t('menu.verbs'), verbs_path, :active_when => { :controller => :verbs }) %>
+      <%= navbar_link_to(t('menu.todo_lists'), "/todo", :active_when => { :controller => :todo }) %>
+      <% end %>
+      <%= navbar_link_to(t('menu.contribute'), contribute_path, :active_when => { :controller => :pages }) %>
+    </ul>
+    <%= render 'shared/search' %>
   </div>
-</div>
+</nav>
+<% if current_user && current_user.is_admin? %>
+  <nav class="navbar navbar-light bg-faded">
+    <ul class="nav navbar-nav">
+      <%= yield :admin_menu %>
+    </ul>
+  </nav>
+<% end %>

@@ -119,11 +119,11 @@ en-GB:
       strapline_html: Documenting the historical links between <strong>people</strong> and <strong>places</strong>, as recorded by commemorative <strong>plaques</strong>.
       explore: Explore
       contribute: Contribute
-      contribute1: Spotted one? Anyone can help us and 
+      contribute1: Spotted one? Anyone can help us and
       add_a_plaque: add a plaque
       take_a_photo: Take a photo. Add it to Wikimedia Commons or Flickr and link it to our record
       spot_an_innaccuracy: Spot an innaccuracy. Tell us.
-      find_something: Or find something 
+      find_something: Or find something
       to_do: to do
       mission: You are all part of our mission to find all of the plaques in the world!
       news: News
@@ -347,7 +347,7 @@ en-GB:
       the_top_50: The top 50 are
       how_many: Open Plaques links to photographs on the internet taken by %{count} photographers.
       where: These images are held on Flickr, Wikimedia Commons, and Geograph.
-      how_they_are_licenced_html: They are all licenced with permissive <a href="http://creativecommons.org/">Creative Commons</a> licences meaning that the owner has declared via a copyright notice that other people may reuse their photograph. 
+      how_they_are_licenced_html: They are all licenced with permissive <a href="http://creativecommons.org/">Creative Commons</a> licences meaning that the owner has declared via a copyright notice that other people may reuse their photograph.
     new:
       page_title: Find Flickr photos for a photographer
       page_heading: Find Flickr photos for a photographer
@@ -421,7 +421,7 @@ en-GB:
         page_title: Photos of the %{plaque}
         page_heading: Photo
     sponsorships:
-      new:      
+      new:
         page_title: xx
         page_heading: yy
     create:
@@ -436,7 +436,7 @@ en-GB:
     new:
       page_title: Open Plaques - new plaque
       page_heading: Tell us about the plaque
-      inscription_heading: What does the plaque say? 
+      inscription_heading: What does the plaque say?
       inscription_advice: Type in the words on the plaque, in sentence case, excluding the organisation. e.g. 'John Smith 1900-1980 lived here'.
       inscription_partial: I don't know the full, exact wording yet
       language_heading: What language is it in?
@@ -470,7 +470,7 @@ en-GB:
   search:
     index:
       page_title: People or plaques matching %{phrase}
-      page_heading: People or plaques matching %{phrase}
+      page_heading: Search results
       not_found: Plaque not listed?
       add_it: Add it
       try_again: Can't find what you're looking for? Try another search or
