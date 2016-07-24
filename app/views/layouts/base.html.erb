@@ -26,9 +26,7 @@
     </title>
   </head>
   <body>
-    <% if Rails.env == 'development' %>
-      <%= render 'home/development_message' %>
-    <% end %>
+    <%= render 'home/development_message' if Rails.env == 'development' %>
     <%= yield %>
     <script src="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/js/bootstrap.js"></script>
   </body>

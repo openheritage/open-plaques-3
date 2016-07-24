@@ -1,12 +1,9 @@
 <% content_for(:page_title) {t '.page_title'} %>
 <% content_for(:title) {t '.page_heading'} %>
+<% content_for(:page_subhead) {pluralize(@organisations.length, "organisation")} %>
 <% content_for(:admin_menu) {navbar_link_to(t('buttons.add'), new_organisation_path, {:class => :edit, :title => t('buttons.add')})} %>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.9.1/holder.js"></script>
-
-<div class="row">
-  <p><%= pluralize(@organisations.length, "organisation") %></p>
-</div>
 
 <h2>Top 10</h2>
 <div class="row">
@@ -14,10 +11,8 @@
 </div>
 
 <h2>In alphabetical order</h2>
-<div class="container-fluid">
-  <div class="card-columns">
-    <%= render @organisations %>
-  </div>
+<div class="card-columns">
+  <%= render @organisations %>
 </div>
 
 <script>

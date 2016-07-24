@@ -1,10 +1,7 @@
 <% content_for(:page_title) {t '.page_title', :organisation => @organisation.name} %>
-<% content_for(:title) { } %>
+<% content_for(:title) {@organisation.name} %>
+<% content_for(:page_subhead) {@organisation.description} %>
 <% content_for(:admin_menu) {navbar_link_to(t('buttons.edit'), edit_organisation_path(@organisation), {:class => :edit, :title => t('buttons.edit')})} %>
-
-<div class="row">
-  <%= render @organisation %>
-</div>
 
 <% if @organisation.geolocated? %>
   <div class="row">

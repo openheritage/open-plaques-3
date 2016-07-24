@@ -3,11 +3,10 @@
 <% else %>
   <% content_for(:page_title) {t '.page_title_unphotographed', :area => @area.name + ", " + @area.country.name } %>
 <% end %>
-<% content_for(:title) {  } %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_area_path(@area), {:class => :edit, :title => t('buttons.edit')}} %>
 
-<h1><span class="flag-icon flag-icon-<%= @area.country.alpha2 %>"></span> <%= link_to(@area.country.name, @area.country) %> / <%= @area.name %></h1>
-<div class="row">
+<div class="jumbotron">
+  <h1><span class="flag-icon flag-icon-<%= @area.country.alpha2 %>"></span> <%= link_to(@area.country.name, @area.country) %> / <%= @area.name %></h1>
   <p>
     <% if @display!='all' %>
       <%= link_to t('buttons.all'), area_path(@area) %>
@@ -23,25 +22,23 @@
   </p>
 </div>
 
-<div class="row">
-  <% if @display!='ungeolocated' &&  %>
-    <% if @area.geolocated? %>
-      <div id="plaque-map" class="col-xs-12 full" data-latitude="<%= @area.latitude %>" data-longitude="<%= @area.longitude %>" data-view="<%= @display %>"></div>
-    <% else %>
-      <%= form_for(@area, url: country_area_path(@area.country, @area)) do |f| %>
-        <div class="edit_lat_long panel clearfix">
-          <h2>Area is not geolocated yet</h2>
-          <p>Open Plaques is quite smart. When a few plaques have been geolocated it will use the average to define where this area is.</p>
-          <p>If you'd like to see the map a bit sooner then you could help us.</p>
-          <p>Just find '<%= @area.full_name %>' <a href="http://maps.google.com/maps?q=<%= @area.full_name %>&z=18" target="_new">on Google Maps</a> and tell us the <%= label_tag(:streetview_url, "web url:") %> <%= text_field_tag(:streetview_url, ' ', size: 100) %>.</p>
-          <p>We will extract the geolocation. Probably.</p>
-          <%= f.hidden_field :name %>
-          <p><%= f.submit t('buttons.update'), :class => 'btn btn-primary' %></p>
-        </div>
-      <% end %>
+<% if @display!='ungeolocated' &&  %>
+  <% if @area.geolocated? %>
+    <div id="plaque-map" class="col-xs-12 full" data-latitude="<%= @area.latitude %>" data-longitude="<%= @area.longitude %>" data-view="<%= @display %>"></div>
+  <% else %>
+    <%= form_for(@area, url: country_area_path(@area.country, @area)) do |f| %>
+      <div class="edit_lat_long panel clearfix">
+        <h2>Area is not geolocated yet</h2>
+        <p>Open Plaques is quite smart. When a few plaques have been geolocated it will use the average to define where this area is.</p>
+        <p>If you would like to see the map a bit sooner then you could help us.</p>
+        <p>Just find '<%= @area.full_name %>' <a href="http://maps.google.com/maps?q=<%= @area.full_name %>&z=18" target="_new">on Google Maps</a> and tell us the <%= label_tag(:streetview_url, "web url:") %> <%= text_field_tag(:streetview_url, ' ', size: 100) %>.</p>
+        <p>We will extract the geolocation. Probably.</p>
+        <%= f.hidden_field :name %>
+        <p><%= f.submit t('buttons.update'), :class => 'btn btn-primary' %></p>
+      </div>
     <% end %>
   <% end %>
-</div>
+<% end %>
 
 <div class="container-fluid">
   <div class="row">

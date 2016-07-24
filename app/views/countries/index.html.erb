@@ -1,13 +1,8 @@
 <% content_for(:page_title) {t '.page_title'} %>
 <% content_for(:title) {t '.page_heading'} %>
+<% content_for(:page_subhead) {t '.different_strokes'} %>
 <% content_for(:admin_menu) {navbar_link_to(t('buttons.add'), new_country_path, {:class => :edit, :title => t('buttons.add')})} %>
 
-<div class="row">
-  <p><%= t '.different_strokes' %></p>
+<div class="card-columns">
+  <%= render @countries %>
 </div>
-
-<div class="container-fluid">
-  <div class="card-columns">
-    <%= render @countries %>
-  </div>
-<div>

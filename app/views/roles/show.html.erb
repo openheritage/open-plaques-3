@@ -1,15 +1,12 @@
-<% content_for(:page_title) {t '.page_title', :role => @pluralized_role } %>
-<% content_for(:title) { } %>
+<% content_for(:page_title) {t '.page_title', :role => @pluralized_role} %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_role_path(@role), {:class => :edit, :title => t('buttons.edit')}} %>
 
-<div class="row">
+<div class="jumbotron">
   <%= render @role %>
 </div>
 
-<div class="container">
-  <div class="card-columns">
-    <%= render @role.personal_roles %>
-  </div>
+<div class="card-columns">
+  <%= render @role.personal_roles %>
 </div>
 
 <% if @role.related_roles.size > 0 %>

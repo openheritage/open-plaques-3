@@ -1,10 +1,6 @@
 <% content_for(:page_title) {t '.page_title', :organisation => @organisation.name} %>
 <% content_for(:title) {t '.page_heading', :organisation => @organisation.name } %>
 
-<div class="row">
-  <%= render @organisation %>
-</div>
-
 <%= form_for(@organisation) do |f| %>
   <fieldset class="form-group row">
     <%= f.label :name, :class => 'form-control-label col-sm-2' %>

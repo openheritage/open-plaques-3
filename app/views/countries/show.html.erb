@@ -3,10 +3,6 @@
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_country_path(@country), {:class => :edit, :title => t('buttons.edit')}} %>
 <% content_for(:admin_menu) {navbar_link_to(t('buttons.add'), new_country_area_path(@country.alpha2), {:class => :edit, :title => t('buttons.add')})} %>
 
-<div class="row">
-  <h2>We have <%= pluralize @country.plaques_count, "plaque" %> in <%= pluralize @country.areas.size, "area" %></h2>
-</div>
-
 <div class="container-fluid">
   <div class="card-columns">
     <%= render @country.areas %>
