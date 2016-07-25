@@ -18,7 +18,7 @@
 # * Licence - The content licence under which the photo is made available.
 # * Plaque - the featured in the photo. (optional)
 # * Person - the person in the photo. (optional)
-require 'commoner'
+require 'wikimedia/commoner'
 
 class Photo < ActiveRecord::Base
 
@@ -144,7 +144,7 @@ class Photo < ActiveRecord::Base
   def wikimedia_data
     if wikimedia?
       begin
-        wikimedia = Commoner.details("File:"+wikimedia_filename)
+        wikimedia = Wikimedia::Commoner.details("File:"+wikimedia_filename)
         self.url = wikimedia[:page_url]
         self.subject = wikimedia[:description]
         self.photographer = wikimedia[:author]

@@ -26,7 +26,7 @@ gem 'devise'
 gem 'meta-tags'
 gem 'will_paginate'
 gem 'redcarpet'
-gem 'commoner', :github => 'jnicho02/commoner', :branch => 'licence-details'
+gem 'wikimedia-commoner', :github => 'jnicho02/wikimedia-commoner'
 
 gem 'rollbar', '~> 1.4.4'
 # gem 'rack-timeout'
