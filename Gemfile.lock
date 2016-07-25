@@ -1,10 +1,9 @@
 GIT
-  remote: git://github.com/jnicho02/commoner.git
-  revision: 7ea7b86edc842f6824dccc3728fbc9a74b07eceb
-  branch: licence-details
+  remote: git://github.com/jnicho02/wikimedia-commoner.git
+  revision: a982a709c19e4416b90e5cc3eaebe66239dbc952
   specs:
-    commoner (1.0.4)
-      httparty (>= 0.10)
+    wikimedia-commoner (1.0.0)
+      httparty (~> 0.10)
       sanitize
 
 GEM
@@ -195,7 +194,6 @@ DEPENDENCIES
   bcrypt (~> 3.1.7)
   bootstrap (~> 4.0.0.alpha3)
   bullet
-  commoner!
   curb
   database_cleaner
   devise
@@ -221,6 +219,7 @@ DEPENDENCIES
   sass-rails
   spring
   tzinfo-data
+  wikimedia-commoner!
   will_paginate
 
 RUBY VERSION
