@@ -1,10 +1,19 @@
 <% content_for(:page_title) {t '.page_title', :phrase => @phrase} %>
 <% content_for(:title) {t '.page_heading', :phrase => @phrase} %>
 
-<div class="container">
-  <div class="card-columns">
-    <%= render @search_results %>
-  </div>
+<h2>Subjects matching '<%= @phrase %>'</h2>
+<div class="card-columns">
+  <%= render @people %>
+</div>
+
+<h2>Places matching '<%= @phrase %>'</h2>
+<div class="card-columns">
+  <%= render @places %>
+</div>
+
+<h2>Plaques matching '<%= @phrase %>'</h2>
+<div class="card-columns">
+  <%= render @plaques %>
 </div>
 
 <% if params[:from] && params[:from] == "submission" %>

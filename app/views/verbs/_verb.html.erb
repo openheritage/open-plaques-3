@@ -8,7 +8,7 @@
       <% if controller.controller_name.eql?('verbs') && controller.action_name.eql?('show')%>
         <%= verb.name %>
       <% else %>
-        <%= link_to verb.name, verb %>
+        <%= verb.id %> <%= link_to verb.name, verb %>
       <% end %>
     </h4>
     <span class="label label-default label-pill pull-right">
