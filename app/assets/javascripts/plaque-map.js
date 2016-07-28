@@ -4,7 +4,6 @@ var plaques=[];
 var allow_popups=true;
 var plaque_markers = {};
 
-
 function getXmlHttpObject()
 {
   if (window.XMLHttpRequest) { return new XMLHttpRequest(); }
@@ -121,12 +120,12 @@ function initmap()
     var data_view = plaque_map.attr("data-view");
     if (data_view == "one")
     {
-  		var plaque_icon = new L.DivIcon({ className: 'plaque-marker', html: '', iconSize : 16 });
+      var plaque_icon = new L.DivIcon({ className: 'plaque-marker', html: '', iconSize : 16 });
       L.marker([parseFloat(latitude),parseFloat(longitude)], { icon: plaque_icon }).addTo(map);
     }
     else
     {
-  		var data_path = plaque_map.attr("data-path");
+      var data_path = plaque_map.attr("data-path");
       var geojsonURL = "/plaques/tiles/{z}/{x}/{y}.geojson";
       if (data_view == "unphotographed") {
         geojsonURL = "/plaques/unphotographed/tiles/{z}/{x}/{y}.geojson";
@@ -136,7 +135,7 @@ function initmap()
       {
         geojsonURL = plaque_map.attr("context") + geojsonURL
       }
-  		if (data_view == "all")
+      if (data_view == "all")
       {
  //       console.log(geojsonURL);
         var geojsonTileLayer = new L.TileLayer.GeoJSON(geojsonURL,
@@ -167,49 +166,49 @@ function initmap()
           }
         );
         map.addLayer(geojsonTileLayer);
-  		}
+      }
       else if (data_path)
       {
-  		   var url = data_path;
-         getPlaques(url);
-         map.on('moveend', function() { getPlaques(url) });
-  		}
+        var url = data_path;
+        getPlaques(url);
+        map.on('moveend', function() { getPlaques(url) });
+      }
       else
       {
-  		   var url = document.location.href.replace(/\?.*/,'') + '.json?data=simple&limit=1000';
-         getPlaques(url);
-         map.on('moveend', function() { getPlaques(url) });
-  		}
-	  }
+        var url = document.location.href.replace(/\?.*/,'') + '.json?data=simple&limit=1000';
+        getPlaques(url);
+        map.on('moveend', function() { getPlaques(url) });
+      }
+    }
   }
 }
 
 function clusterSize(number) {
-	if (number < 10) {
-		return 'small';
-	} else if (number < 100) {
-		return 'medium';
-	} else  {
-		return 'large';
-	}
+  if (number < 10) {
+    return 'small';
+  } else if (number < 100) {
+    return 'medium';
+  } else  {
+    return 'large';
+  }
 }
 
 function clusterWidth(number) {
-	if (number < 10) {
-		return 20;
-	} else if (number < 100) {
-		return 30;
-	} else  {
-		return 40;
-	}
+  if (number < 10) {
+    return 20;
+  } else if (number < 100) {
+    return 30;
+  } else  {
+    return 40;
+  }
 }
 
 function truncate(string, max_length) {
-	if (string.length > max_length) {
-		return string.substring(0, max_length) + '...';
-	} else {
-		return string;
-	}
+  if (string.length > max_length) {
+    return string.substring(0, max_length) + '...';
+  } else {
+    return string;
+  }
 }
 
 $(document).ready(function() {
