@@ -75,7 +75,7 @@ L.TileLayer.Ajax = L.TileLayer.extend({
         {
             json_url = this.getTileUrl(tilePoint);
             json_url = json_url.replace(/tiles\/([\d]*)/, 'tiles/14')
-            if (null == this._cache[json_url])
+            if (!this._cache[json_url])
             {
                 this._cache[json_url] = true;
                 var layer = this;
