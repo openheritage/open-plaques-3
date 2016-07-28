@@ -4,7 +4,6 @@ var plaques=[];
 var allow_popups=true;
 var plaque_markers = {};
 
-
 function getXmlHttpObject()
 {
   if (window.XMLHttpRequest) { return new XMLHttpRequest(); }
@@ -96,7 +95,7 @@ function initmap()
     else
     {
       // start the map in London
-      map.setView(L.latLng(51.54281206119232,-0.16788482666015625),zoom_level);
+      map.setView(L.latLng(51.5428,-0.1678),zoom_level);
     }
 
     clusterer = new L.MarkerClusterGroup(
@@ -116,7 +115,7 @@ function initmap()
     map.addLayer(clusterer);
 
     var data_view = plaque_map.attr("data-view");
-    if (data_view == "one")
+    if (data_view === "one")
     {
   		var plaque_icon = new L.DivIcon({ className: 'plaque-marker', html: '', iconSize : 16 });
       L.marker([parseFloat(latitude),parseFloat(longitude)], { icon: plaque_icon }).addTo(map);
@@ -135,7 +134,7 @@ function initmap()
       }
   		if (data_view === "all")
       {
- //       console.log(geojsonURL);
+        console.log(geojsonURL);
         var geojsonTileLayer = new L.TileLayer.GeoJSON(geojsonURL,
           {
             clipTiles: false

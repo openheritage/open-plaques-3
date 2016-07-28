@@ -32,6 +32,7 @@
     <% end %>
 
     <% if !controller.controller_name.eql?('people') && plaque.people.count > 0 %>
+      <h5>Subjects</h5>
       <div class="container-fluid">
         <div class="card-columns">
           <%= render :partial => 'people/tile', :collection => plaque.people, as: :person %>

@@ -1,7 +1,6 @@
 class OrganisationPlaquesController < ApplicationController
 
   before_filter :find, :only => [:show]
-  respond_to :json
 
   def show
     zoom = params[:zoom].to_i
@@ -16,10 +15,10 @@ class OrganisationPlaquesController < ApplicationController
     else
       @plaques = @organisation.plaques
     end
-    respond_with @plaques do |format|
+    respond_to do |format|
       format.html { render @plaques }
       format.json { render :json => @plaques }
-      format.geojson { render :geojson => @plaques.geolocated, :parent => @organisation }
+      format.geojson { render :geojson => @plaques, :parent => @organisation }
     end
   end
 

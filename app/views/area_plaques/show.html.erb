@@ -7,19 +7,17 @@
 
 <div class="jumbotron">
   <h1><span class="flag-icon flag-icon-<%= @area.country.alpha2 %>"></span> <%= link_to(@area.country.name, @area.country) %> / <%= @area.name %></h1>
-  <p>
-    <% if @display!='all' %>
-      <%= link_to t('buttons.all'), area_path(@area) %>
-    <% else %>
-      <strong><%= t 'buttons.all' %></strong>
-    <% end %>
-    <%= t 'buttons.or' %>
-    <% if @display!='unphotographed' %>
-      <%= link_to t('buttons.unphotographed'), area_unphotographed_path(@area) %>
-    <% else %>
-      <strong><%= t 'buttons.unphotographed' %></strong>
-    <% end %>
-  </p>
+  <% if @display!='all' %>
+    <%= link_to t('buttons.all'), area_path(@area) %>
+  <% else %>
+    <strong><%= t 'buttons.all' %></strong>
+  <% end %>
+  <%= t 'buttons.or' %>
+  <% if @display!='unphotographed' %>
+    <%= link_to t('buttons.unphotographed'), area_unphotographed_path(@area) %>
+  <% else %>
+    <strong><%= t 'buttons.unphotographed' %></strong>
+  <% end %>
 </div>
 
 <% if @display!='ungeolocated' &&  %>
@@ -40,14 +38,12 @@
   <% end %>
 <% end %>
 
-<div class="container-fluid">
-  <div class="row">
-    <%= will_paginate @plaques %>
-  </div>
-  <div class="card-columns">
-    <%= render @plaques %>
-  </div>
-  <div class="row">
-    <%= will_paginate @plaques %>
-  </div>
+<div class="row">
+  <%= will_paginate @plaques %>
+</div>
+<div class="card-columns">
+  <%= render @plaques %>
+</div>
+<div class="row">
+  <%= will_paginate @plaques %>
 </div>
