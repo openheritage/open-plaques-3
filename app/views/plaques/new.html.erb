@@ -1,3 +1,7 @@
+<% content_for(:page_title) {t('.page_title')} %>
+<% content_for(:title) {t('.page_heading')} %>
+<% content_for(:page_subhead) {t('.thanks')} %>
+
 <script>
   $(function() {
     $('#plaque_other_colour_id').prop('disabled', 'disabled');
@@ -69,12 +73,7 @@
   });
 </script>
 
-<% content_for(:page_title) {t('.page_title')} %>
-
 <div class="panel">
-  <h1><%= t '.page_heading' %></h1>
-  <p><%= t '.thanks' %></p>
-  <br/>
   <p><%= t '.you_agree_to_open_licence' %></p>
 </div>
 

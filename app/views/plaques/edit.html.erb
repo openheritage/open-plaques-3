@@ -1,6 +1,5 @@
 <% content_for :page_title do %>Edit <%= @plaque.title %><% end %>
 <% content_for :title do %>Edit <%= link_to @plaque.title, plaque_path(@plaque) %><% end %>
-
 <%= render 'plaques/edit_bar', :plaque => @plaque %>
 
 <%= form_for(@plaque) do |f| %>

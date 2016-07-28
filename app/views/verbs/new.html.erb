@@ -1,9 +1,6 @@
 <% content_for(:page_title) {t '.page_title'} %>
 <% content_for(:title) {t '.page_heading'} %>
-
-<div class="row">
-  <p><%= t '.explanation' %></p>
-</div>
+<% content_for(:page_subhead) {t '.explanation'} %>
 
 <%= form_for :verb, :url => verbs_path do |f| -%>
   <fieldset class="form-group row">

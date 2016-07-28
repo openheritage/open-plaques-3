@@ -1,13 +1,8 @@
 <% content_for(:page_title) {t '.page_title'} %>
 <% content_for(:title) {t '.page_heading'} %>
-<% content_for(:admin_menu) {navbar_link_to(t('buttons.add'), new_series_path, {:class => :new, :title => t('buttons.add')})} %>
+<% content_for(:page_subhead) {t '.explanation'} %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_series_path} %>
 
-<div class="row">
-  <p><%= t '.explanation' %></p>
-</div>
-
-<div class="container-fluid">
-  <div class="card-columns">
-    <%= render @series %>
-  </div>
+<div class="card-columns">
+  <%= render @series %>
 </div>

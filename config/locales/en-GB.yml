@@ -77,7 +77,7 @@ en-GB:
         description: Description
 
   menu:
-    people: People
+    people: Subjects
     places: Places
     organisations: Organisations
     roles: Roles
@@ -119,11 +119,11 @@ en-GB:
       strapline_html: Documenting the historical links between <strong>people</strong> and <strong>places</strong>, as recorded by commemorative <strong>plaques</strong>.
       explore: Explore
       contribute: Contribute
-      contribute1: Spotted one? Anyone can help us and 
+      contribute1: Spotted one? Anyone can help us and
       add_a_plaque: add a plaque
       take_a_photo: Take a photo. Add it to Wikimedia Commons or Flickr and link it to our record
       spot_an_innaccuracy: Spot an innaccuracy. Tell us.
-      find_something: Or find something 
+      find_something: Or find something
       to_do: to do
       mission: You are all part of our mission to find all of the plaques in the world!
       news: News
@@ -164,6 +164,7 @@ en-GB:
     index:
       page_title: Historical plaques - by colour
       page_heading: Colours
+      page_subhead: Plaques are not always blue. We have found 20+ colour formats
     new:
       page_title: Add a colour
       page_heading: Add a colour
@@ -216,6 +217,7 @@ en-GB:
     index:
       page_title: Photo licences
       page_heading: Photo licences
+      page_subhead: We collect links to variously licenced images around the web
       data_about_licences_as: data about licences as
     show:
       page_title: Licence - %{licence}
@@ -346,7 +348,7 @@ en-GB:
       the_top_50: The top 50 are
       how_many: Open Plaques links to photographs on the internet taken by %{count} photographers.
       where: These images are held on Flickr, Wikimedia Commons, and Geograph.
-      how_they_are_licenced_html: They are all licenced with permissive <a href="http://creativecommons.org/">Creative Commons</a> licences meaning that the owner has declared via a copyright notice that other people may reuse their photograph. 
+      how_they_are_licenced_html: They are all licenced with permissive <a href="http://creativecommons.org/">Creative Commons</a> licences meaning that the owner has declared via a copyright notice that other people may reuse their photograph.
     new:
       page_title: Find Flickr photos for a photographer
       page_heading: Find Flickr photos for a photographer
@@ -420,7 +422,7 @@ en-GB:
         page_title: Photos of the %{plaque}
         page_heading: Photo
     sponsorships:
-      new:      
+      new:
         page_title: Edit sponsor information for plaque
         page_heading: Which organisations were involved in erecting this plaque?
     create:
@@ -435,7 +437,7 @@ en-GB:
     new:
       page_title: Open Plaques - new plaque
       page_heading: Tell us about the plaque
-      inscription_heading: What does the plaque say? 
+      inscription_heading: What does the plaque say?
       inscription_advice: Type in the words on the plaque, in sentence case, excluding the organisation. e.g. 'John Smith 1900-1980 lived here'.
       inscription_partial: I don't know the full, exact wording yet
       language_heading: What language is it in?
@@ -504,6 +506,7 @@ en-GB:
     index:
       page_title: Verbs
       page_heading: Verbs
+      page_subhead: We keep a record of what the subject was doing at the plaque location
     new:
       page_title: New verb
       page_heading: New verb

@@ -1,9 +1,7 @@
 <% content_for :page_title, "Geocoding " + @plaque.title %>
+<% content_for :title, "Where is this plaque?" %>
+<% content_for :page_subhead, "Our goal is to accurately locate all plaques through real-life evidence. We do not use geocoding software as the results are inaccurate and it taint the openness of our data. It is okay to plot an approximate position, but please be sure to flag it as uncertain." %>
 <%= render 'plaques/edit_bar', :plaque => @plaque %>
-
-<h1>Where is this plaque?</h1>
-
-<p>Our goal is to accurately locate all plaques through real-life evidence. We do not use geocoding software as the results are inaccurate and it taint the openness of our data. It is okay to plot an approximate position, but please be sure to flag it as uncertain.</p>
 
 <div class="row">
   <%= form_for @plaque do |f| %>
@@ -44,7 +42,7 @@
 
       	map = L.map('map').setView(geolocation, view);
         map.scrollWheelZoom.disable();
-        
+
         var basemap = new L.StamenTileLayer("toner"); // toner, terrain, or watercolor
         map.addLayer(basemap);
 

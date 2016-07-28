@@ -1,9 +1,9 @@
 <% content_for(:page_title) {t '.page_title'} %>
 <% content_for(:title) {t '.page_heading'} %>
-<% content_for(:admin_menu) {navbar_link_to(t('buttons.add'), new_photographer_path, {:class => :edit, :title => t('buttons.add')})} %>
+<% content_for(:page_subhead) {t '.how_many', :count =>  @photographers.size} %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_photographer_path} %>
 
 <div class="row">
-  <%= t '.how_many', :count =>  @photographers.size%>
   <%= t '.where' %>
   <%= t '.how_they_are_licenced_html' %>
 </div>

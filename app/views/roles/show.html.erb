@@ -1,5 +1,5 @@
 <% content_for(:page_title) {t '.page_title', :role => @pluralized_role} %>
-<% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_role_path(@role), {:class => :edit, :title => t('buttons.edit')}} %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_role_path(@role)} %>
 
 <div class="jumbotron">
   <%= render @role %>

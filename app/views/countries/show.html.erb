@@ -1,10 +1,8 @@
 <% content_for(:page_title) {t '.page_title', :country => @country.name} %>
 <% content_for(:title) {render @country} %>
-<% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_country_path(@country), {:class => :edit, :title => t('buttons.edit')}} %>
-<% content_for(:admin_menu) {navbar_link_to(t('buttons.add'), new_country_area_path(@country.alpha2), {:class => :edit, :title => t('buttons.add')})} %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_country_path(@country)} %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_country_area_path(@country.alpha2)} %>
 
-<div class="container-fluid">
-  <div class="card-columns">
-    <%= render @country.areas %>
-  </div>
+<div class="card-columns">
+  <%= render @country.areas %>
 </div>

@@ -1,5 +1,5 @@
 <% content_for(:page_title) {t '.page_title'} %>
-<% content_for(:title) {t '.page_heading' } %>
+<% content_for(:title) {t '.page_heading'} %>
 
 <div class="row">
   <p>We have records of when <%=pluralize(Person.count(:born_on), "person") %> were born.

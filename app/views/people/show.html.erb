@@ -1,8 +1,8 @@
 <%= stylesheet_link_tag params[:controller] %>
 <% content_for(:page_title) {t '.page_title', :person => @person.name } %>
 <% content_for(:title) { } %>
-<% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_person_path(@person), {:class => :edit, :title => t('buttons.edit')}} %>
-<% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_person_path, {:class => :edit, :title => t('buttons.add')}} %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_person_path(@person)} %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_person_path} %>
 
 <div class="vcard person" typeof="<%= if (@person.person?) then "foaf:Person" else "foaf:Agent" end %> vcard:VCard" about="#person">
 

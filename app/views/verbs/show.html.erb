@@ -1,12 +1,6 @@
 <% content_for(:page_title) {t '.page_title', :verb => @verb.name } %>
-<% content_for(:title) { } %>
+<% content_for(:title) { @verb.name } %>
 
-<div class="row">
-  <%= render @verb %>
-</div>
-
-<div class="container-fluid">
-  <div class="card-columns">
-    <%= render @verb.personal_connections %>
-  </div>
+<div class="card-columns">
+  <%= render @verb.personal_connections %>
 </div>

@@ -1,20 +1,26 @@
 <% content_for(:page_title) {t '.page_title', :phrase => @phrase} %>
 <% content_for(:title) {t '.page_heading', :phrase => @phrase} %>
 
-<h2>Subjects matching '<%= @phrase %>'</h2>
-<div class="card-columns">
-  <%= render @people %>
-</div>
+<% if @places.count > 0 %>
+  <h2><%= pluralize @places.count,'place' %> matching '<%= @phrase %>'</h2>
+  <div class="card-columns">
+    <%= render @places %>
+  </div>
+<% end %>
 
-<h2>Places matching '<%= @phrase %>'</h2>
-<div class="card-columns">
-  <%= render @places %>
-</div>
+<% if @people.count > 0 %>
+  <h2><%= pluralize @people.count,'subject' %> matching '<%= @phrase %>'</h2>
+  <div class="card-columns">
+    <%= render @people %>
+  </div>
+<% end %>
 
-<h2>Plaques matching '<%= @phrase %>'</h2>
-<div class="card-columns">
-  <%= render @plaques %>
-</div>
+<% if @plaques.count > 0 %>
+  <h2><%= pluralize @plaques.count,'plaque inscription' %>  matching '<%= @phrase %>'</h2>
+  <div class="card-columns">
+    <%= render @plaques %>
+  </div>
+<% end %>
 
 <% if params[:from] && params[:from] == "submission" %>
   <div class="row"><%= t '.not_found' %> <%= link_to t('.add_it'), new_plaque_path(:checked => true) %>.</div>

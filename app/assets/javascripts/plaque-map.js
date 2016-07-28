@@ -1,7 +1,7 @@
 var map;
 var ajaxRequest;
-var plaques=[];
-var allow_popups=true;
+var plaques = [];
+var allow_popups = true;
 var plaque_markers = {};
 
 function getXmlHttpObject()
@@ -18,10 +18,10 @@ function addPlaque(geojson)
   {
     for (i = 0, len = features.length; i < len; i++)
     {
-      feature = features[i];
+      var feature = features[i];
       if (feature.geometries || feature.geometry || feature.features || feature.coordinates)
       {
-        this.addPlaque(features[i]);
+        this.addPlaque(feature);
       }
     }
     return this;
@@ -31,7 +31,7 @@ function addPlaque(geojson)
   {
     var geometry = geojson.geometry;
     var plaque = geojson.properties.plaque;
-    if (plaques["'#"+plaque.id+"'"]===null)
+    if (!plaques["'#"+plaque.id+"'"])
     {
       var plaque_icon = new L.DivIcon({ className: 'plaque-marker', html: '', iconSize : 16 });
       var plaque_marker = L.marker([plaque.latitude, plaque.longitude], {icon: plaque_icon});
@@ -52,7 +52,7 @@ function stateChanged()
   if (ajaxRequest.readyState===4 && ajaxRequest.status===200)
   {
     var answer = ajaxRequest.responseText;
-    var json=JSON.parse(answer);
+    var json = JSON.parse(answer);
     addPlaque(json);
   }
 }
@@ -64,8 +64,8 @@ function getPlaques(url)
   var bounds=map.getBounds();
   var minll=bounds.getSouthWest(), maxll=bounds.getNorthEast();
   //  bounding box call, e.g. http://openplaques.org/plaques.json?box=[51.5482,-0.1617],[51.5282,-0.1217]
-  msg = url + '&box=['+maxll.lat+','+minll.lng+'],['+minll.lat+','+maxll.lng+']';
-  ajaxRequest=getXmlHttpObject();
+  var msg = url + '&box=['+maxll.lat+','+minll.lng+'],['+minll.lat+','+maxll.lng+']';
+  var ajaxRequest = getXmlHttpObject();
   ajaxRequest.onreadystatechange = stateChanged;
   ajaxRequest.open('GET', msg, true);
   ajaxRequest.send(null);
@@ -148,14 +148,14 @@ function initmap()
                 if (feature.properties.plaque) {
                   plaque = feature.properties.plaque
                 }
-                var plaque_description = '<div class="inscription">' + truncate(plaque.inscription, 255) + '</div><div class="info">' +
-                '<a class="link" href="http://openplaques.org/plaques/' + plaque.id + '">Plaque ' + plaque.id + '</a>';
-                layer.bindPopup(plaque_description);
-                var plaque_icon = new L.DivIcon({ className: 'plaque-marker', html: '', iconSize : 16 });
-                layer.setIcon(plaque_icon);
-                if (plaques["'#"+plaque.id+"'"]===null)
+                if (!plaques["'#"+plaque.id+"'"])
                 {
-                  plaques["'#"+plaque.id+"'"]=plaque;
+                  var plaque_description = '<div class="inscription">' + truncate(plaque.inscription, 255) + '</div><div class="info">' +
+                    '<a class="link" href="http://openplaques.org/plaques/' + plaque.id + '">Plaque ' + plaque.id + '</a>';
+                  layer.bindPopup(plaque_description);
+                  var plaque_icon = new L.DivIcon({ className: 'plaque-marker', html: '', iconSize : 16 });
+                  layer.setIcon(plaque_icon);
+                  plaques["'#"+plaque.id+"'"] = plaque;
                   clusterer.addLayer(layer);
                 }
               }

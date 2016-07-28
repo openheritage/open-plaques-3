@@ -1,9 +1,16 @@
 <% content_for(:page_title) {t '.page_title'} %>
 <% content_for(:title) {t '.page_heading'} %>
-<% content_for(:admin_menu) {navbar_link_to(t('buttons.add'), new_photo_path, {:class => :edit, :title => t('buttons.add')})} %>
+<% content_for(:page_subhead) {t '.explanation_html'} %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_photo_path} %>
 
 <div class="row">
-  <%= t '.explanation_html' %>
+  <%= will_paginate @photos %>
+</div>
+<div class="card-columns">
+  <%= render partial: 'photos/tile', :collection => @photos, as: :photo %>
+</div>
+<div class="row">
+  <%= will_paginate @photos %>
 </div>
 
 <style media="screen" type="text/css">
@@ -36,15 +43,3 @@
       }
   }
 </style>
-
-<div class="container-fluid">
-  <div class="row">
-    <%= will_paginate @photos %>
-  </div>
-  <div class="card-columns">
-    <%= render partial: 'photos/tile', :collection => @photos, as: :photo %>
-  </div>
-  <div class="row">
-    <%= will_paginate @photos %>
-  </div>
-</div>

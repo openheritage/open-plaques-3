@@ -1,6 +1,7 @@
 <% content_for(:page_title) {t '.page_title'} %>
 <% content_for(:title) {t '.page_heading'} %>
-<% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_colour_path(), {:class => :edit, :title => t('buttons.add')}} %>
+<% content_for(:page_subhead) {t '.page_subhead'} %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_colour_path()} %>
 
 <canvas id="myCanvas" width="600" height="650">
   <div class="row">

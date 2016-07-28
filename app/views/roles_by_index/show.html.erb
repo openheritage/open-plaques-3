@@ -1,6 +1,6 @@
 <% content_for(:page_title) {t '.page_title', :letter => @index.upcase } %>
 <% content_for(:title) {t '.page_heading', :letter => @index.upcase } %>
-<% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_role_path, {:class => :edit, :title => t('buttons.add')}} %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_role_path} %>
 
 <ul class="nav">
   <% for letter in "A".."Z" %>
@@ -8,8 +8,6 @@
   <% end %>
 </ul>
 
-<div class="container-fluid">
-  <div class="card-columns">
-    <%= render @roles %>
-  </div>
+<div class="card-columns">
+  <%= render @roles %>
 </div>

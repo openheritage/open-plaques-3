@@ -1,6 +1,6 @@
 <% content_for(:page_title) {t '.page_title', :photo => @photo.title } %>
 <% content_for(:title) { } %>
-<% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_photo_path(@photo), {:class => :edit, :title => t('buttons.edit')}} %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_photo_path(@photo)} %>
 
 <div class="row">
   <% if @photo.plaque %>

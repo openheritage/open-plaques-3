@@ -10,19 +10,11 @@ class PlaquesController < ApplicationController
 
   respond_to :html, :xml, :json
 
-  # box = top_left, bottom_right
-  # e.g. http://0.0.0.0:3000/plaques?box=[52.00,-1],[50.00,0.01]
-  # or map tile http://0.0.0.0:3000/plaques/12/2046/1374.json to match http://a.tile.openstreetmap.org/12/2046/1374.png
-  # GET /plaques
-  # GET /plaques.kml
-  # GET /plaques.xml
-  # GET /plaques.json
-  # GET /plaques.rss
-  # GET /plaques.csv
-  # GET /plaques.poi
   def index
     conditions = {}
     if params[:box]
+      # box = top_left, bottom_right
+      # e.g. http://0.0.0.0:3000/plaques?box=[52.00,-1],[50.00,0.01]
       coords = params[:box][1,params[:box].length-2].split("],[")
       top_left = coords[0].split(",")
       bottom_right = coords[1].split(",")
@@ -48,18 +40,15 @@ class PlaquesController < ApplicationController
     select = "unphotographed" if params[:id] == "unphotographed"
     zoom = params[:zoom].to_i
     if zoom > 0
-      puts "asking for a tile of data"
+      # or map tile http://0.0.0.0:3000/plaques/12/2046/1374.json
       x = params[:x].to_i
       y = params[:y].to_i
       @plaques = Plaque.tile(zoom, x, y, select)
     elsif params[:data] && params[:data] == "simple"
-      puts "asking for simple data"
       @plaques = Plaque.all(:conditions => conditions, :order => "created_at DESC", :limit => limit)
     elsif params[:data] && params[:data] == "basic"
-      puts "asking for basic data"
       @plaques = Plaque.all(:select => [:id, :latitude, :longitude, :inscription])
     else
-      puts "asking for all data"
       limit = 1000000000000
       @plaques = Plaque.where(conditions).order("created_at DESC").limit(limit).preload(:language, :organisations, :colour, [:area => :country])
     end
@@ -89,10 +78,6 @@ class PlaquesController < ApplicationController
     end
   end
 
-  # GET /plaques/1
-  # GET /plaques/1.kml
-  # GET /plaques/1.xml
-  # GET /plaques/1.json
   def show
     @plaques = [@plaque]
     set_meta_tags :open_graph => {
@@ -116,9 +101,7 @@ class PlaquesController < ApplicationController
     respond_to do |format|
       format.html
       format.xml { render "plaques/index" }
-      format.kml {
-          render :json => {:error => "format unsupported"}.to_json, :status => 406
-      }
+      format.kml { render :json => {:error => "format unsupported"}.to_json, :status => 406 }
       format.json { render :json => @plaque }
       format.geojson { render :geojson => @plaque }
       format.csv {
@@ -134,8 +117,6 @@ class PlaquesController < ApplicationController
     end
   end
 
-  # GET /plaques/new
-  # GET /plaques/new.xml
   def new
     @plaque = Plaque.new(:language_id => 1)
     @plaque.photos.build
@@ -155,8 +136,6 @@ class PlaquesController < ApplicationController
     redirect_to @plaque
   end
 
-  # POST /plaques
-  # POST /plaques.xml
   def create
     @plaque = Plaque.new(plaque_params)
 
@@ -199,8 +178,6 @@ class PlaquesController < ApplicationController
     end
   end
 
-  # PUT /plaques/1
-  # PUT /plaques/1.xml
   def update
     if (params[:streetview_url])
       point = help.geolocation_from params[:streetview_url]
@@ -228,8 +205,6 @@ class PlaquesController < ApplicationController
     end
   end
 
-  # DELETE /plaques/1
-  # DELETE /plaques/1.xml
   def destroy
     @plaque.destroy
     respond_to do |format|

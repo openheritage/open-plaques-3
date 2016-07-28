@@ -1,13 +1,8 @@
 <% content_for(:page_title) {t '.page_title'} %>
 <% content_for(:title) {t '.page_heading'} %>
-<% content_for(:admin_panel) {navbar_link_to(t('buttons.add'), new_pick_path, {:class => :edit, :title => t('buttons.add')})} %>
+<% content_for(:page_subhead) {t '.explanation'} %>
+<% content_for(:admin_panel) {navbar_link_to t('buttons.add'), new_pick_path} %>
 
-<div class="row">
-  <%= t '.explanation' %>
-</div>
-
-<div class="container-fluid">
-  <div class="card-columns">
-    <%= render @picks %>
-  </div>
+<div class="card-columns">
+  <%= render @picks %>
 </div>

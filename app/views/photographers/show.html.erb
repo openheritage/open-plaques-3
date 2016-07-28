@@ -1,8 +1,9 @@
-<% content_for(:page_title) {t '.page_title', :photographer => @photographer.id } %>
-<% content_for(:title) { t '.page_heading', :photographer =>  @photographer.id } %>
+<% content_for(:page_title) {t '.page_title', :photographer => @photographer.id} %>
+<% content_for(:title) {t '.page_heading', :photographer =>  @photographer.id} %>
+<% content_for(:page_subhead) {pluralize(@photographer.photos.size,"photo")} %>
 
-<div class="row">
-  <%= pluralize(@photographer.photos.size,"photo") %>
+<div class="card-columns">
+  <%= render @photographer.photos %>
 </div>
 
 <style media="screen" type="text/css">
@@ -35,9 +36,3 @@
       }
   }
 </style>
-
-<div class="container-fluid">
-  <div class="card-columns">
-    <%= render partial: 'photos/tile', :collection => @photographer.photos, as: :photo %>
-  </div>
-</div>

@@ -1,10 +1,8 @@
 <% content_for(:page_title) {t '.page_title', :person => @person.full_name} %>
 <% content_for(:title) {t '.page_heading', :person => @person.full_name} %>
 
-<div class="container-fluid">
-  <div class="card-columns">
-    <%= render @person %>
-  </div>
+<div class="card-columns">
+  <%= render @person %>
 </div>
 
 <%= form_for @person do |f| %>
@@ -29,14 +27,8 @@
     <%= "Died aged" if (@person.person? || @person.thing? || @person.animal?) && @person.dead? %><%= "Closed aged" if @person.place? && @person.dead? %><%= "Aged" if @person.alive? && @person.age%> <%= @person.age.to_s if @person.age%>
   </fieldset>
   <fieldset class="form-group row">
-    <%= f.label :find_a_grave_id %>
-    <%= f.text_field :find_a_grave_id %>
-    <%= link_to("Find A Grave", @person.find_a_grave_url) unless @person.find_a_grave_id.blank? %>
-  </fieldset>
-  <fieldset class="form-group row">
     <%= f.label :introduction %>
     <%= f.text_area :introduction, :cols => 80, :rows => 15 %>
-<<<<<<< HEAD
   </fieldset>
   <fieldset class="form-group row">
     <%= f.label :wikipedia_url %>
@@ -86,7 +78,7 @@
 <% @person.personal_roles.each do |personal_role| %>
   <div class="row">
     <span class="col-sm-8">
-      <%= @person.name %> <%= @person.existence_word %> a <%= dated_role(personal_role).html_safe %>
+      <%= @person.personal_pronoun %> <%= @person.existence_word %> a <%= dated_role(personal_role).html_safe %>
       <%= t('.conferring_the_letters') + ' ' + personal_role.role.abbreviation if personal_role.role.used_as_a_suffix? %><%= t('.conferring_the_title') + ' ' + personal_role.role.abbreviation if personal_role.role.used_as_a_prefix? %>
       <%= link_to t('buttons.edit'), edit_personal_role_path(personal_role), :class => 'btn btn-primary' %>
     </span>

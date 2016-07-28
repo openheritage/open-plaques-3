@@ -3,7 +3,7 @@
 <% else %>
   <% content_for(:page_title) {t '.page_title_unphotographed', :area => @area.name + ", " + @area.country.name } %>
 <% end %>
-<% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_area_path(@area), {:class => :edit, :title => t('buttons.edit')}} %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_area_path(@area)} %>
 
 <div class="jumbotron">
   <h1><span class="flag-icon flag-icon-<%= @area.country.alpha2 %>"></span> <%= link_to(@area.country.name, @area.country) %> / <%= @area.name %></h1>
