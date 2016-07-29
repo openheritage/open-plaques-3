@@ -1,10 +1,14 @@
 <% content_for :page_title, "Edit colour of " + @plaque.title %>
+<% content_for :title do %>
+  What colour is the <%= link_to @plaque.title, @plaque %>?
+<% end %>
+<% content_for :page_subhead do %>
+  <% if !url_for(:only_path => false).include?('microtask') %>
+    <%= button_to "Not sure. Give me another one", todo_path('microtask'), :method => :get, :class => :button %>
+  <% end %>
+<% end %>
 <%= render 'plaques/edit_bar', :plaque => @plaque %>
 
-<h1>What colour is <%= link_to @plaque.title, @plaque %>?</h1>
-<% if url_for(:only_path => false).include?('microtask') %>
-  <p><%= button_to 'Not sure. Give me another one', todo_path('microtask'), :method => :get, :class => :button %></p>
-<% end %>
 <%= form_for @plaque do |f| %>
   <%= f.label :colour_id, "It is" %>
   <%= f.collection_select :colour_id, @colours, :id, :name, {:include_blank => true} %>

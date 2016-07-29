@@ -1,4 +1,7 @@
 <% content_for :page_title, "Edit series information for plaque \#" + @plaque.id.to_s %>
+<% content_for :title do %>
+  Edit series information for the <%= link_to @plaque.title, @plaque %>
+<% end %>
 <%= render 'plaques/edit_bar', :plaque => @plaque %>
 
 <%= form_for(@plaque) do |f| %>

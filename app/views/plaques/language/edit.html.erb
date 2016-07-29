@@ -1,14 +1,15 @@
 <% content_for :page_title, "Edit language of plaque \#" + @plaque.id.to_s %>
+<% content_for :title do %>
+  Which language is the <%= link_to @plaque.title, @plaque %> written in?
+<% end %>
+<% content_for :page_subhead do %>
+  <% if url_for(:only_path => false).include?('microtask') %>
+    <%= button_to "Not sure. Give me another one", todo_path('microtask'), :method => :get, :class => :button %>
+  <% end %>
+<% end %>
 <%= render 'plaques/edit_bar', :plaque => @plaque %>
 
-<h1>What language is <%= link_to("plaque \#" + @plaque.id.to_s, @plaque)%> written in?</h1>
-
-<div class="row">
-  <p><%= button_to "Not sure. Give me another one", todo_path('microtask'), :method => :get, :class => :button %></p>
-  <br/>
-  <%= render @plaque.main_photo if @plaque.main_photo  %>
-</div>
-
+<%= render @plaque.main_photo if @plaque.main_photo  %>
 <%= form_for @plaque do |f| %>
   <div class="primary">
     <fieldset>

@@ -1,28 +1,27 @@
 <% content_for :page_title, "Photos of the " + @plaque.title %>
-<%= render 'plaques/edit_bar', :plaque => @plaque %>
-
-<h1>Photos of <%= link_to(@plaque.title, @plaque) %></h1>
-<div class="row">
+<% content_for :title do %>
+  Photos of <%= link_to(@plaque.title, @plaque) %>
+<% end %>
+<% content_for :page_subhead do %>
   <% if @plaque.photos.size < 1 %>
     <p>We don't have a photo of this plaque yet. You could be the first!</p>
   <% end %>
   <p>We display multiple photos of each plaque. We like close-ups as well as long-shots that set the scene. The closest shot will be used as the main image so that people can read the words.</p>
-</div>
+<% end %>
+<%= render 'plaques/edit_bar', :plaque => @plaque %>
 
-<div class="container-fluid">
-  <div class="card-columns">
-    <% @plaque.photos.detail_order.each do |photo| %>
-      <div class="card">
-        <%= link_to(thumbnail_img(photo), photo_url(photo), :class => 'photographer_thumb') %>
-        <span>By <%= link_to photo.photographer, photographer_url(photo.photographer.gsub(".","_").gsub("/","_")) if photo.photographer rescue photo.photographer %></span><br/>
-        <%= form_for photo do |f| %>
-          <p>This is a <%= f.collection_select :shot, Photo.shots, :to_s, :to_s, :include_blank => true %></p>
-          <%= f.submit t('buttons.save'), :class => 'btn btn-primary' %>
-          <%= link_to(t('buttons.edit'), edit_photo_path(photo), {:class => 'btn btn-secondary', :title => "edit photo"}) if current_user && current_user.is_admin? %>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
+<div class="card-columns">
+  <% @plaque.photos.detail_order.each do |photo| %>
+    <div class="card">
+      <%= link_to(thumbnail_img(photo), photo_url(photo), :class => 'photographer_thumb') %>
+      <span>By <%= link_to photo.photographer, photographer_url(photo.photographer.gsub(".","_").gsub("/","_")) if photo.photographer rescue photo.photographer %></span><br/>
+      <%= form_for photo do |f| %>
+        <p>This is a <%= f.collection_select :shot, Photo.shots, :to_s, :to_s, :include_blank => true %></p>
+        <%= f.submit t('buttons.save'), :class => 'btn btn-primary' %>
+        <%= link_to(t('buttons.edit'), edit_photo_path(photo), {:class => 'btn btn-secondary', :title => "edit photo"}) if current_user && current_user.is_admin? %>
+      <% end %>
+    </div>
+  <% end %>
 </div>
 
 <div class="row">

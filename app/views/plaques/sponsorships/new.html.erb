@@ -1,3 +1,8 @@
+<% content_for(:page_title) {t '.page_title'} %>
+<% content_for(:title) {t '.page_heading'} %>
+<% content_for(:page_subhead) {'Open Plaques credit every organisation listed on the plaque as well as monetary sponsors.'} %>
+<%= render 'plaques/edit_bar', :plaque => @plaque %>
+
 <script>
   $(function() {
     $( "#organisation_name" ).autocomplete({
@@ -27,12 +32,6 @@
   });
 </script>
 
-<% content_for(:page_title) {t '.page_title'} %>
-<% content_for(:title) {t '.page_heading'} %>
-<% content_for(:page_subhead) {'Open Plaques credit every organisation listed on the plaque as well as monetary sponsors.'} %>
-<%= render 'plaques/edit_bar', :plaque => @plaque %>
-
-<p></p>
 <% @plaque.sponsorships.all.each do |sponsorship| %>
   <% if sponsorship.organisation %>
     <div class="row">
@@ -55,8 +54,6 @@
 <div class="row">
   <%= render @plaque.main_photo %>
 </div>
-<div class="container-fluid">
-  <div class="card-columns">
-    <%= render partial: 'photos/tile', :collection => @plaque.photos, as: :photo %>
-  </div>
+<div class="card-columns">
+  <%= render @plaque.photos %>
 </div>

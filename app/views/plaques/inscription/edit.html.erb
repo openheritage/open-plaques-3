@@ -1,11 +1,18 @@
 <% content_for :page_title, "Edit inscription for plaque \#" + @plaque.id.to_s %>
+<% content_for :title do %>
+  What does the <%= link_to @plaque.title, @plaque %> say?
+<% end %>
+<% content_for :page_subhead do %>
+  Type in all the words written on the plaque excluding the organisation.
+  Please write in sentence case, there is NO NEED TO SHOUT
+  <% if url_for(:only_path => false).include?('microtask') %>
+    <%= button_to "Not sure. Give me another one", todo_path('microtask'), :method => :get, :class => :button %>
+  <% end %>
+<% end %>
 <%= render 'plaques/edit_bar', :plaque => @plaque %>
 
-<h1>What does <%= link_to("plaque \#" + @plaque.id.to_s, @plaque)%> say?</h1>
-<p><%= button_to "Not sure. Give me another one", todo_path('microtask'), :method => :get, :class => :button %></p>
-<br/>
 <%= render @plaque.main_photo %>
-
+<br/>
 <%= form_for @plaque do |f| %>
   <div class="primary">
     <fieldset>

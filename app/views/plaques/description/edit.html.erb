@@ -1,8 +1,13 @@
 <% content_for :page_title, "Edit description for " + @plaque.title %>
+<% content_for :title do %>
+  Description of the <%= link_to @plaque.title, @plaque %>
+<% end %>
+<% content_for :page_subhead do %>
+  <p>Enter any additional interesting information about the plaque and links to articles about it to be displayed on the plaque detail page.</p>
+  <p>Articles can be linked using the format [name of link](http://....)</p>
+<% end %>
 <%= render 'plaques/edit_bar', :plaque => @plaque %>
 
-<p>Enter any additional interesting information about the plaque and links to articles about it to be displayed on the plaque detail page.</p>
-<p>Articles can be linked using the format [name of link](http://....)</p>
 <%= form_for(@plaque) do |f| %>
   <fieldset class="form-group row">
     <div class="form-control"><%= f.text_area :description, {:rows => "6", :cols => "80"} %></div>
