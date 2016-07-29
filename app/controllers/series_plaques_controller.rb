@@ -8,9 +8,11 @@ class SeriesPlaquesController < ApplicationController
       x = params[:x].to_i
       y = params[:y].to_i
       @plaques = @series.plaques.tile(zoom, x, y, '')
+    else
+      @plaques = @series.plaques
     end
     respond_to do |format|
-      format.json { render :json => @series.plaques }
+      format.json { render :json => @plaques }
       format.geojson { render :geojson => @plaques.geolocated, :parent => @series }
     end
   end

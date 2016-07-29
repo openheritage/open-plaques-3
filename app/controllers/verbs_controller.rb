@@ -3,7 +3,7 @@ class VerbsController < ApplicationController
   before_filter :authenticate_user!, :except => [:index]
 
   def index
-    @verbs = Verb.order("personal_connections_count DESC")
+    @verbs = Verb.order(personal_connections_count: :desc)
     respond_to do |format|
       format.html
       format.json { render :json => @verbs }

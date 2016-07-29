@@ -8,8 +8,6 @@ class PlaquesController < ApplicationController
 #	 before_filter :set_cache_header, :only => :index
 #  after_filter :set_access_control_headers, :only => :index
 
-  respond_to :html, :xml, :json
-
   def index
     conditions = {}
     if params[:box]

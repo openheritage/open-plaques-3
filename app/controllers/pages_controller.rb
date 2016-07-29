@@ -10,7 +10,7 @@ class PagesController < ApplicationController
   end
 
   def show
-    respond_with(@page)
+    respond_with @page
   end
 
   def index

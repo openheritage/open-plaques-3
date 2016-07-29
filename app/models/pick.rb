@@ -21,13 +21,13 @@ class Pick < ActiveRecord::Base
 
   validates_presence_of :plaque_id
   validates_uniqueness_of :plaque_id
-  
+
   def self.todays
     @todays = Pick.current.first
     self.rotate unless @todays
     @todays = Pick.current.first
   end
-  
+
   def self.rotate
     @todays = Pick.preferably_today.first
     @todays = Pick.never_been_featured.first if @todays.nil?
@@ -35,7 +35,7 @@ class Pick < ActiveRecord::Base
     if @todays
       @todays.choose
       @todays.save
-    end    
+    end
   end
 
   def choose
@@ -47,5 +47,25 @@ class Pick < ActiveRecord::Base
   def title
     "Pick #" + self.id.to_s + " " + self.plaque.title
   end
-  
+
+  def longitude
+    plaque.longitude
+  end
+
+  def latitude
+    plaque.latitude
+  end
+
+  def as_json(options={})
+    options =
+    {
+      :only => [:description, :featured_count, :proposer, :last_featured],
+      :include => {
+        :plaque => {:only => [], :methods => [:uri]}
+      },
+      :methods => [:title]
+    } if !options || !options[:only]
+    super options
+  end
+
 end

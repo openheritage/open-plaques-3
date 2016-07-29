@@ -224,11 +224,6 @@ class Photo < ActiveRecord::Base
     }
   end
 
-  def as_wkt()
-    return "" if (self.longitude == nil || self.latitude == nil)
-    "POINT(" + self.longitude + " " + self.latitude + ")"
-  end
-
   def uri
     "http://openplaques.org" + Rails.application.routes.url_helpers.photo_path(self, :format => :json)
   end
