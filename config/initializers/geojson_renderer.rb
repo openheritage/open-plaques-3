@@ -2,7 +2,6 @@ ActionController::Renderers.add :geojson do |object, options|
   self.content_type ||= Mime::JSON
   '{}'
   if object.respond_to? :each_with_index
-    puts '** each_with_index'
     geojson  = '{'
     geojson += '  "type": "FeatureCollection",'
     geojson += '  "features": ['
@@ -27,11 +26,9 @@ ActionController::Renderers.add :geojson do |object, options|
     geojson += '}'
     geojson
   elsif object.respond_to? :as_geojson
-    puts '** as_geojson'
     # object has deliberately overridden as_geojson(options)
     object.as_geojson(options).to_json
   elsif object.respond_to? :longitude
-    puts '** longitude'
     {
       type: 'Feature',
       geometry:
