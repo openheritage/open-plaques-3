@@ -1,10 +1,12 @@
 <% content_for(:page_title) {t '.page_title', :series => @series.name } %>
 <% content_for(:title) {@series.name} %>
-<% content_for(:page_subhead) {@series.description} %>
+<% content_for(:page_subhead) do %>
+  <p><%= @series.description %></p>
+  <span class="label label-default label-pill pull-right"><%= @series.plaques_count %></span>
+<% end %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_series_path(@series)} %>
 
 <div class="row" id="plaque-map" data-latitude="<%= @series.latitude %>" data-longitude="<%= @series.longitude %>" data-view="all" context="<%= request.path %>"></div>
-
 <div class="row">
   <%= will_paginate @plaques %>
 </div>

@@ -32,10 +32,40 @@
     <% end %>
 
     <% if !controller.controller_name.eql?('people') && plaque.people.count > 0 %>
+    <style media="screen" type="text/css">
+      @media (min-width: 34em) {
+          .subjects .card-columns {
+              -webkit-column-count: 2;
+              -moz-column-count: 2;
+              column-count: 2;
+          }
+      }
+      @media (min-width: 48em) {
+          .subjects .card-columns {
+              -webkit-column-count: 2;
+              -moz-column-count: 2;
+              column-count: 2;
+          }
+      }
+      @media (min-width: 62em) {
+          .subjects .card-columns {
+              -webkit-column-count: 2;
+              -moz-column-count: 2;
+              column-count: 2;
+          }
+      }
+      @media (min-width: 75em) {
+          .subjects .card-columns {
+              -webkit-column-count: 2;
+              -moz-column-count: 2;
+              column-count: 2;
+          }
+      }
+    </style>
       <h5>Subjects</h5>
-      <div class="container-fluid">
+      <div class="subjects">
         <div class="card-columns">
-          <%= render :partial => 'people/tile', :collection => plaque.people, as: :person %>
+          <%= render plaque.people %>
         </div>
       </div>
     <% end %>

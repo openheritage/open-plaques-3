@@ -1,12 +1,11 @@
 <% content_for(:page_title) {t '.page_title'} %>
 <% content_for(:title) {t '.page_heading'} %>
-<% content_for(:page_subhead) {t '.how_many', :count =>  @photographers.size} %>
-<% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_photographer_path} %>
-
-<div class="row">
+<% content_for(:page_subhead) do %>
+  <%= t '.how_many', :count =>  @photographers.size %><br/>
   <%= t '.where' %>
   <%= t '.how_they_are_licenced_html' %>
-</div>
+<% end %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_photographer_path} %>
 
 <div class="row">
   <h2><%= t '.the_top_50' %></h2>

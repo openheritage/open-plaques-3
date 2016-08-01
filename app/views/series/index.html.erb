@@ -1,6 +1,9 @@
 <% content_for(:page_title) {t '.page_title'} %>
 <% content_for(:title) {t '.page_heading'} %>
-<% content_for(:page_subhead) {t '.explanation'} %>
+<% content_for(:page_subhead) do %>
+  <p><%= t '.explanation' %></p>
+  <span class="label label-default label-pill pull-right"><%= @series.count %></span>
+<% end %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_series_path} %>
 
 <div class="card-columns">

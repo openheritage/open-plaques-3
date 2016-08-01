@@ -5,7 +5,7 @@
   <%= icon('users') if @role.group? %>
   <%= icon('building') if @role.place? %>
   <%= icon('map-marker') if @role.thing? %>
-  <%= @role.name %>
+  <%= @role.name.pluralize %>
 <% end %>
 <% content_for(:page_subhead) do %>
   <% if @role.used_as_a_suffix? %>
@@ -15,7 +15,7 @@
       <% else %>
         Confers
       <% end %>
-      the letters <strong><%= role.letters %></strong> after the name.
+      the letters <strong><%= @role.letters %></strong> after the name.
     </p>
   <% end %>
   <% if !@role.wikipedia_stub.blank? %>
@@ -23,9 +23,7 @@
       <%= icon('external-link') %><%= link_to('Wikipedia', @role.wikipedia_url, :target => "_blank") %>
     </p>
   <% end %>
-  <span class="label label-default label-pill pull-right">
-    <%= @role.personal_roles_count %>
-  </span>
+  <span class="label label-default label-pill pull-right"><%= @role.personal_roles_count %></span>
 <% end %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_role_path(@role)} %>
 

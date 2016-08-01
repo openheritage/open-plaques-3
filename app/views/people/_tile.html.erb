@@ -1,13 +1,5 @@
-<style media="screen" type="text/css">
-.card-info {
-  padding: 0.25rem;
-  padding-top: 1.25rem;
-  text-align: center;
-}
-</style>
-
 <%= link_to(person) do %>
-  <div class="card card-inverse vcard" typeof="<%= if (person.person?) then "foaf:Person" else "foaf:Agent" end %> vcard:VCard" about="#person" style="min-height: 8rem; background-color: #999;">
+  <div class="card card-inverse vcard person-tile" typeof="<%= if (person.person?) then "foaf:Person" else "foaf:Agent" end %> vcard:VCard" about="#person" style="min-height: 8rem; background-color: #999;">
     <%= image_tag(person.main_photo.file_url, {:class => 'card-img', :width => '100%'}) if person.main_photo %>
     <div class="card-info">
       <span class="card-title fn">
