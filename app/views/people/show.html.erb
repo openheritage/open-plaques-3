@@ -110,8 +110,6 @@
   <h2><%= t '.not_commemorated'%></h2>
 <% end %>
 
-<div class="container-fluid">
-  <div class="card-columns">
-    <%= render @person.plaques.uniq %>
-  </div>
+<div class="card-columns">
+  <%= render @person.plaques.uniq %>
 </div>

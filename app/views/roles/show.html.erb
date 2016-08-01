@@ -1,12 +1,36 @@
 <% content_for(:page_title) {t '.page_title', :role => @pluralized_role} %>
+<% content_for(:title) do %>
+  <%= icon('user') if @role.person?%>
+  <%= icon('paw') if @role.animal? %>
+  <%= icon('users') if @role.group? %>
+  <%= icon('building') if @role.place? %>
+  <%= icon('map-marker') if @role.thing? %>
+  <%= @role.name %>
+<% end %>
+<% content_for(:page_subhead) do %>
+  <% if @role.used_as_a_suffix? %>
+    <p>
+      <% if @role.military_medal? %>
+        A military medal that confers
+      <% else %>
+        Confers
+      <% end %>
+      the letters <strong><%= role.letters %></strong> after the name.
+    </p>
+  <% end %>
+  <% if !@role.wikipedia_stub.blank? %>
+    <p>
+      <%= icon('external-link') %><%= link_to('Wikipedia', @role.wikipedia_url, :target => "_blank") %>
+    </p>
+  <% end %>
+  <span class="label label-default label-pill pull-right">
+    <%= @role.personal_roles_count %>
+  </span>
+<% end %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_role_path(@role)} %>
 
-<div class="jumbotron">
-  <%= render @role %>
-</div>
-
 <div class="card-columns">
-  <%= render @role.personal_roles %>
+  <%= render @role.people.uniq %>
 </div>
 
 <% if @role.related_roles.size > 0 %>

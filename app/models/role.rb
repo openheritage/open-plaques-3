@@ -22,7 +22,7 @@ class Role < ActiveRecord::Base
   validates_uniqueness_of :name, :slug
 
   has_many :personal_roles, -> { order('started_at') }
-  has_many :people, -> { order('name') }, :through => :personal_roles
+  has_many :people, -> { order("name") }, :through => :personal_roles
 
   scope :by_popularity, -> { order("personal_roles_count DESC nulls last") }
   scope :alphabetically, -> { order("name ASC nulls last") }

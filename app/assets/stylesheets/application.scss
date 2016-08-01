@@ -10,10 +10,14 @@
 // Core
 @import "variables";
 @import "bootstrap";
+@import "more_columns";
 @import "icons_social";
 @import "auth";
 @import "avatar";
 @import "footer";
+
+// Model objects
+@import "person";
 
 // Plugins
 //@import 'nprogress';
