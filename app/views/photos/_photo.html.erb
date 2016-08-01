@@ -1,4 +1,4 @@
-<div class="card" style="max-width: 50rem; max-height: 50rem;">
+<div class="card photo">
   <% if photo.file_url %>
     <% if photo.plaque %>
       <%= content_tag(:span, link_to(image_tag(photo.file_url, {:class => "card-img-top img-rounded", :alt => "Photo of " + photo.plaque.to_s, :rel => "foaf:depiction", :width => '100%'}), photo.url)) %>

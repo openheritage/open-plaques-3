@@ -3,7 +3,6 @@
 
 <% unless @plaques.nil? %>
   <div id="plaque-map" data-latitude="<%= @mean.latitude %>" data-longitude="<%= @mean.longitude %>" data-view="not all" data-zoom="6"></div>
-
   <div class="row">
     <%= will_paginate @plaques %>
   </div>

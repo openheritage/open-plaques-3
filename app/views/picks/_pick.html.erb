@@ -1,14 +1,8 @@
-<% if controller.controller_name.eql?('picks') && controller.action_name.eql?('index')%>
-<div class="card" style="max-width: 20rem;">
-<% else %>
-<div class="card">
-<% end %>
-  <div class="card-block">
-    <h5><%= pick.proposer %> says,"<%= pick.description %>"</h5>
-    <h5 class="card-title"><%= link_to pick.title, pick %></h5>
-    <h6 class="card-subtitle text-muted">has been featured <%= pluralize(pick.featured_count, "time") %></h6>
-  </div>
-  <div class="card-block">
-    <%= render :partial => 'plaques/tile', locals: { plaque: pick.plaque } %>
-  </div>
+<div class="card pick">
+  <%= render pick.photo if pick.photo %>
+  <blockquote class="blockquote">
+    <p class="m-b-0"><%= pick.description %></p>
+    <footer class="blockquote-footer"><%= pick.proposer %></footer>
+  </blockquote>
+  <p class="label label-default label-pill pull-right">featured <%= pluralize(pick.featured_count, "time") %></p>
 </div>

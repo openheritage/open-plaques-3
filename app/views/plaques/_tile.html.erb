@@ -5,7 +5,7 @@
 <% end %>
 <% if plaque %>
   <% photo = plaque.main_photo %>
-  <div class="card" style="max-width: 20rem;">
+  <div class="card">
     <% if photo && photo.file_url %>
       <%= link_to image_tag(photo.file_url, {:class => 'card-img-top img-thumbnail', :width => '100%'}) , plaque_path(plaque) %>
       <p class="card-text">

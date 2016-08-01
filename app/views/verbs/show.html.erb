@@ -1,5 +1,10 @@
 <% content_for(:page_title) {t '.page_title', :verb => @verb.name } %>
 <% content_for(:title) { @verb.name } %>
+<% content_for(:page_subhead) do %>
+  <span class="label label-default label-pill pull-right">
+    <%= @verb.personal_connections_count %>
+  </span>
+<% end %>
 
 <div class="card-columns">
   <%= render @verb.personal_connections %>

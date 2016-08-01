@@ -1,8 +1,4 @@
-<% if controller.controller_name.eql?('roles') && !controller.action_name.eql?('index') %>
-<div class="card vcard col-xl-6">
-<% else %>
-<div class="card vcard" style="max-width: 15rem;">
-<% end %>
+<div class="card vcard">
   <div class="card-block">
     <h4 class="card-title">
       <% if controller.controller_name.eql?('roles') && controller.action_name.eql?('show') %>

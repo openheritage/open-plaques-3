@@ -1,8 +1,7 @@
-<% plaque = pick.plaque %>
 <div class="row">
   <%= image_tag(pick.photo.file_url, {:class => 'col-xs-12 col-sm-3'}) if pick.photo != nil %>
   <div class="col-xs-12 col-sm-9">
-    <div class="card-title"><h4><%= link_to plaque.title, plaque %></h4></div>
+    <div class="card-title"><h4><%= link_to pick.plaque.title, pick.plaque %></h4></div>
     <h5><%= pick.proposer %> says,"<%= pick.description %>"</h5>
   </div>
 </div>
