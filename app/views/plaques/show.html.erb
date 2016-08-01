@@ -67,21 +67,19 @@
 <div class="row">
 
   <div class="col-xs-12 col-md-8">
-    <div class="container">
+    <div class="container main-photo">
       <div class="col-xs-12">
         <%= render @plaque.main_photo if @plaque.main_photo %>
       </div>
     </div>
-    <div class="container-fluid">
-      <div class="card-columns">
-        <div class="card" style="max-width: 15rem;">
-          <%= link_to( image_tag("NoPhotoSqr.png", :width => '100%', :class => 'img-rounded card-img-top'), plaque_photos_path(@plaque) ) %>
-          <p class="card-text">
-            <strong><%= link_to 'How to add yours', plaque_photos_path(@plaque) %></strong>
-          </p>
+    <div class="card-columns">
+      <%= link_to plaque_photos_path(@plaque) do %>
+        <div class="card">
+          <%= image_tag("NoPhotoSqr.png", :width => '100%', :class => 'img-rounded card-img-top') %>
+          <p class="card-text">How to add yours</p>
         </div>
-        <%= render @plaque.other_photos %>
-      </div>
+      <% end %>
+      <%= render @plaque.other_photos %>
     </div>
   </div>
 
@@ -116,15 +114,45 @@
         <% end %>
       <% end %>
     </p>
-    <p>On Flickr as <i><%= @plaque.machine_tag %></i> <%= button_tag icon("clipboard"), id: 'copy-flickr-tag', type: 'button', :class => :button %></p>
-    <p>On Wikimedia as <i><%= @plaque.wikimedia_tag %></i> <%= button_tag icon("clipboard"), id: 'copy-wikimedia-tag', type: 'button', :class => :button %></p>
+    <p>Wikimedia: <i><%= @plaque.wikimedia_tag %></i> <%= button_tag icon("clipboard"), id: 'copy-wikimedia-tag', type: 'button', :class => :button %></p>
+    <p>Flickr: <i><%= @plaque.machine_tag %></i> <%= button_tag icon("clipboard"), id: 'copy-flickr-tag', type: 'button', :class => :button %></p>
     <h7><%= pluralize_word(@plaque.people.size, 'Subject') %></h7>
     <% if @plaque.people.size == 0 %>
       <p>None identified yet</p>
     <% else %>
-      <div class="container-fluid">
+      <style media="screen" type="text/css">
+        @media (min-width: 34em) {
+            .subjects .card-columns {
+                -webkit-column-count: 2;
+                -moz-column-count: 2;
+                column-count: 2;
+            }
+        }
+        @media (min-width: 48em) {
+            .subjects .card-columns {
+                -webkit-column-count: 2;
+                -moz-column-count: 2;
+                column-count: 2;
+            }
+        }
+        @media (min-width: 62em) {
+            .subjects .card-columns {
+                -webkit-column-count: 2;
+                -moz-column-count: 2;
+                column-count: 2;
+            }
+        }
+        @media (min-width: 75em) {
+            .subjects .card-columns {
+                -webkit-column-count: 2;
+                -moz-column-count: 2;
+                column-count: 2;
+            }
+        }
+      </style>
+      <div class="subjects">
         <div class="card-columns">
-          <%= render partial: 'people/tile', collection: @plaque.people, as: :person %>
+          <%= render @plaque.people %>
         </div>
       </div>
     <% end %>
@@ -138,7 +166,7 @@
 
 <% unless @plaque.see_also.empty? %>
   <h7>See also...</h7>
-  <div class="container-fluid">
+  <div class="subjects">
     <div class="card-columns">
       <%= render partial: 'plaques/tile', collection: @plaque.see_also, as: :plaque %>
     </div>

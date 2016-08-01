@@ -1,11 +1,11 @@
 <div class="card photo">
   <% if photo.file_url %>
     <% if photo.plaque %>
-      <%= content_tag(:span, link_to(image_tag(photo.file_url, {:class => "card-img-top img-rounded", :alt => "Photo of " + photo.plaque.to_s, :rel => "foaf:depiction", :width => '100%'}), photo.url)) %>
+      <%= content_tag(:span, image_tag(photo.file_url, {:class => "card-img-top img-rounded", :alt => "Photo of " + photo.plaque.to_s, :rel => "foaf:depiction", :width => '100%'})) %>
     <% elsif photo.person %>
-      <%= content_tag(:span, link_to(image_tag(photo.file_url, {:class => "card-img-top img-rounded", :alt => "Photo of " + photo.person.to_s, :rel => "foaf:depiction", :width => '100%'}), photo.url)) %>
+      <%= content_tag(:span, image_tag(photo.file_url, {:class => "card-img-top img-rounded", :alt => "Photo of " + photo.person.to_s, :rel => "foaf:depiction", :width => '100%'})) %>
     <% else %>
-      <%= content_tag(:span, link_to(image_tag(photo.file_url, {:class => "card-img-top img-rounded", :alt => "Photo", :width => '100%'}), photo.url)) %>
+      <%= content_tag(:span, image_tag(photo.file_url, {:class => "card-img-top img-rounded", :alt => "Photo", :width => '100%'})) %>
     <% end %>
   <% end %>
   <p class="card-text">
