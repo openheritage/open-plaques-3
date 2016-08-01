@@ -56,6 +56,10 @@ class Pick < ActiveRecord::Base
     plaque.latitude
   end
 
+  def photo
+    plaque.main_photo
+  end
+
   def as_json(options={})
     options =
     {

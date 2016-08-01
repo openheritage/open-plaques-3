@@ -33,8 +33,10 @@
 </div>
 
 <% if @todays %>
-  <h2><%= t '.plaque_of_the_day' %></h2>
-  <%= render 'picks/plaque_of_the_day', :pick => @todays %>
+  <div class="card plaque-of-the-day">
+    <div class="card-title"><h2><%= t '.plaque_of_the_day' %></h2></div>
+    <%= render 'picks/plaque_of_the_day', :pick => @todays %>
+  </div>
 <% end %>
 
 <% if @recent_plaques %>
