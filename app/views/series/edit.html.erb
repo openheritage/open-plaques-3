@@ -1,10 +1,6 @@
 <% content_for(:page_title) {t '.page_title', :series => @series.name} %>
 <% content_for(:title) {t '.page_heading', :series => @series.name} %>
 
-<div class="row">
-  <%= render @series %>
-</div>
-
 <%= form_for(@series) do |f| %>
   <fieldset class="form-group row">
     <%= f.label :name, :class => 'form-control-label col-sm-2' %>
