@@ -166,10 +166,8 @@
 
 <% unless @plaque.see_also.empty? %>
   <h7>See also...</h7>
-  <div class="subjects">
-    <div class="card-columns">
-      <%= render partial: 'plaques/tile', collection: @plaque.see_also, as: :plaque %>
-    </div>
+  <div class="card-columns">
+    <%= render partial: 'plaques/tile', collection: @plaque.see_also, as: :plaque %>
   </div>
 <% end %>
 
