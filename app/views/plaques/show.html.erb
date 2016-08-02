@@ -101,7 +101,7 @@
        <br/>[<%= link_to "geolocate this address", edit_plaque_geolocation_path(@plaque), {:class => :edit, :title => "Geolocate"} %>]
      <% end %>
     </p>
-    <p><% if @plaque.erected? %>Erected<% else %>To be erected<% end %> <%= erected_information @plaque %><% if @plaque.series %> as <% if @plaque.series_ref? %>#<%= content_tag(:span, @plaque.series_ref )%><% else %>part<% end %> of the <%= link_to @plaque.series %> series<% end %></p>
+    <p><% if @plaque.erected? %>Erected<% else %>To be erected<% end %> <%= erected_information @plaque %><% if @plaque.series %> as <% if @plaque.series_ref? %>#<%= content_tag(:span, @plaque.series_ref )%><% else %>part<% end %> of the <%= link_to @plaque.series.name, @plaque.series %> series<% end %></p>
     <p>Colour:
       <% if @plaque.colour %>
         <%= @plaque.colour.name  %>
