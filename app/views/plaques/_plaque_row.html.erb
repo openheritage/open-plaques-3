@@ -1,0 +1,55 @@
+<% begin %>
+  <% if plaque.inscription %><% end %>
+<% rescue %>
+  <% plaque = plaque.plaque %>
+<% end %>
+<% if plaque %>
+  <% photo = plaque.main_photo %>
+<div class="row">
+  <div class="col-xs-4">
+    <%= link_to image_tag(photo.file_url, {:class => 'card-img-top img-thumbnail', :width => '100%'}) , plaque_path(plaque) if photo != nil %>
+  </div>
+  <div class="col-xs-8">
+    <div class="details">
+      <h7 class="card-title"><%= linked_inscription(plaque) %></h7>
+      <% if plaque.foreign? && plaque.inscription_in_english %>
+        <p id="inscription-in-english" class="card-text"><small><%= plaque.inscription_in_english %></small></p>
+      <% end %>
+      <p class="card-text">
+        <small>
+          <%= plaque.address %>, <%= link_to(plaque.area.name, area_path(plaque.area)) if plaque.area %>, <%= plaque.area.country.name if plaque.area %>
+          <% if @person %> where <%= @person.personal_pronoun %> <%= verbs(@person,plaque).to_sentence.html_safe %><% end %>
+          <% '. As far as we know, it is not currently on display.' if !plaque.is_current %>
+        </small>
+      </p>
+    </div>
+    <% if plaque.series %>
+      <div class="card-footer">
+        <div class="card-text">
+          <small class="text-muted">
+            <% if plaque.series_ref? %>#<%= plaque.series_ref %> <% end %><%= link_to plaque.series.name, plaque.series %>
+          </small>
+        </div>
+      </div>
+    <% end %>
+    <% if !controller.controller_name.eql?('people') && plaque.people.count > 0 %>
+      <style media="screen" type="text/css">
+        .subjects .card-columns {
+          -webkit-column-count: 2;
+          -moz-column-count: 2;
+          column-count: 2;
+        }
+        .subjects .card-columns .card-info .card-title {
+          font-size: 12px;
+        }
+      </style>
+      <h5>Subjects</h5>
+      <div class="subjects">
+        <div class="card-columns">
+          <%= render plaque.people %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+<% end %>

@@ -3,12 +3,8 @@
 <% content_for(:page_subhead) {t '.explanation_html'} %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_photo_path} %>
 
-<div class="row">
-  <%= will_paginate @photos %>
-</div>
+<%= will_paginate @photos %>
 <div class="card-columns">
   <%= render partial: 'photos/tile', :collection => @photos, as: :photo %>
 </div>
-<div class="row">
-  <%= will_paginate @photos %>
-</div>
+<%= will_paginate @photos %>

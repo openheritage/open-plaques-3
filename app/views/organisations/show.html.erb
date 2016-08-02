@@ -9,12 +9,8 @@
   </div>
 <% end %>
 
-<div class="row" id="pagination-top">
-  <%= will_paginate @sponsorships %>
-</div>
+<%= will_paginate @sponsorships %>
 <div class="card-columns">
   <%= render @sponsorships %>
 </div>
-<div class="row" id="pagination-bottom">
-  <%= will_paginate @sponsorships %>
-</div>
+<%= will_paginate @sponsorships %>

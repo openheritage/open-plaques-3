@@ -7,12 +7,8 @@
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_series_path(@series)} %>
 
 <div class="row" id="plaque-map" data-latitude="<%= @series.latitude %>" data-longitude="<%= @series.longitude %>" data-view="all" context="<%= request.path %>"></div>
-<div class="row">
-  <%= will_paginate @plaques %>
-</div>
+<%= will_paginate @plaques %>
 <div class="card-columns">
   <%= render @plaques %>
 </div>
-<div class="row">
-  <%= will_paginate @plaques %>
-</div>
+<%= will_paginate @plaques %>

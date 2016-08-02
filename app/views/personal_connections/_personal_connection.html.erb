@@ -3,7 +3,8 @@
     <%= render personal_connection.person %>
     <p class="card-text">
       <%= personal_connection.verb.name %>
-      <%= "at " + personal_connection.full_address if personal_connection.full_address %>
+      <%= "at " unless personal_connection.verb.name.ends_with?(' near') %>
+      <%= personal_connection.full_address if personal_connection.full_address %>
       <% if personal_connection.single_year? %>
         <%= "in " + personal_connection.from if personal_connection.from != '' %>
       <% else %>

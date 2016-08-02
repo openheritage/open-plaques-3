@@ -1,7 +1,0 @@
-<% content_for(:page_title) {t '.page_title', :pick => @pick.title } %>
-<% content_for(:title) { } %>
-<% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_pick_path(@pick)} %>
-
-<div class="row">
-  <%= render @pick %>
-</div>
