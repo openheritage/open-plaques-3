@@ -16,10 +16,8 @@
 <% end %>
 
 <% if @plaques.count > 0 %>
-  <h2><%= pluralize @plaques.count,'plaque inscription' %>  matching '<%= @phrase %>'</h2>
-  <div class="card-columns">
-    <%= render @plaques %>
-  </div>
+  <h2><%= pluralize @plaques.count,'plaque' %>  matching '<%= @phrase %>'</h2>
+  <%= render partial: 'plaques/plaque_row', :collection => @plaques, as: :plaque %>
 <% end %>
 
 <% if params[:from] && params[:from] == "submission" %>
