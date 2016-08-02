@@ -52,7 +52,7 @@ class PhotosController < ApplicationController
   end
 
   def edit
-    if (!@photo.linked?)
+    if (!@photo.linked? && @photo.geolocated?)
       distance = 0.01
       @plaques = Plaque.where(longitude: (@photo.longitude.to_f - distance)..(@photo.longitude.to_f + distance),
       latitude: (@photo.latitude.to_f - distance)..(@photo.latitude.to_f + distance) )
@@ -93,6 +93,7 @@ class PhotosController < ApplicationController
         :description,
         :url,
         :file_url,
+        :thumbnail,
         :photographer,
         :photographer_url,
         :licence_id,

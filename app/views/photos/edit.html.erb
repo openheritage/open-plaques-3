@@ -7,12 +7,6 @@
 
 <%= form_for @photo do |f| %>
   <fieldset class="form-group row">
-    <%= f.label :of_a_plaque, :class => 'form-control-label col-sm-4' %>
-    <div class="col-sm-8">
-      <%= f.check_box :of_a_plaque, :class => 'form-control' %>
-    </div>
-  </fieldset>
-  <fieldset class="form-group row">
     <%= f.label :url, :class => 'form-control-label col-sm-2' %>
     <div class="col-sm-10">
        <%= link_to(icon('external-link'), @photo.url) %>
@@ -24,6 +18,13 @@
     <div class="col-sm-10">
       <%= link_to(icon('external-link'), @photo.file_url) %>
       <%= f.text_field :file_url, :maxlength => "100", :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :thumbnail, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= link_to(icon('external-link'), @photo.thumbnail) %>
+      <%= f.text_field :thumbnail, :maxlength => "100", :class => 'form-control' %>
     </div>
   </fieldset>
   <fieldset class="form-group row">
@@ -56,30 +57,39 @@
     </div>
   </fieldset>
   <fieldset class="form-group row">
-    <%= f.label :plaque_id, :class => 'form-control-label col-sm-2' %>
-    <div class="col-sm-10">
-      <%= f.text_field :plaque_id, :maxlength => "5", :class => 'form-control' %>
-      <%= link_to(@photo.plaque, @photo.plaque) if @photo.plaque %>
+    <%= f.label :of_a_plaque, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-8">
+      <%= f.check_box :of_a_plaque, :class => 'form-control' %>
     </div>
   </fieldset>
 
-  <% if @plaques %>
-    <% @plaques.each do |plaque| %>
-      <fieldset class="form-group row">
-      <div class="col-sm-2">
-        #<%= plaque.id %> ?
-      </div>
+  <!-- TODO show or hide this section depending on of_a_plaque checkbox -->
+  <div name="plaque-info">
+    <fieldset class="form-group row">
+      <%= f.label :plaque_id, :class => 'form-control-label col-sm-2' %>
       <div class="col-sm-10">
-      <%= plaque.inscription %>
+        <%= f.text_field :plaque_id, :maxlength => "5", :class => 'form-control' %>
+        <%= link_to(@photo.plaque, @photo.plaque) if @photo.plaque %>
       </div>
-      </fieldset>
+    </fieldset>
+    <% if @plaques %>
+      <% @plaques.each do |plaque| %>
+        <fieldset class="form-group row">
+        <div class="col-sm-2">
+          #<%= plaque.id %> ?
+        </div>
+        <div class="col-sm-10">
+        <%= plaque.inscription %>
+        </div>
+        </fieldset>
+      <% end %>
     <% end %>
-  <% end %>
+  </div>
 
    <fieldset class="form-group row">
     <%= label_tag(nil, t('.geolocation'), :class => 'form-control-label col-sm-2') %>
     <div class="col-sm-10">
-      <%= @photo.as_wkt %>
+      POINT(<%= @photo.longitude %>, <%= @photo.latitude %>)
     </div>
   </fieldset>
   <fieldset class="form-group row">

@@ -6,11 +6,13 @@
 <% if plaque %>
   <% photo = plaque.main_photo %>
 <div class="row">
-  <div class="col-xs-4">
-    <%= link_to image_tag(photo.file_url, {:class => 'card-img-top img-thumbnail', :width => '100%'}) , plaque_path(plaque) if photo != nil %>
-  </div>
-  <div class="col-xs-8">
-    <div class="details">
+  <% if photo != nil %>
+    <div class="col-xs-2">
+      <%= link_to image_tag(photo.file_url, {:class => 'card-img-top img-thumbnail', :width => '100%'}) , plaque_path(plaque) %>
+    </div>
+  <% end %>
+  <div class="col-xs-10">
+    <div class="container">
       <h7 class="card-title"><%= linked_inscription(plaque) %></h7>
       <% if plaque.foreign? && plaque.inscription_in_english %>
         <p id="inscription-in-english" class="card-text"><small><%= plaque.inscription_in_english %></small></p>
@@ -32,6 +34,8 @@
         </div>
       </div>
     <% end %>
+  </div>
+  <div class="row">
     <% if !controller.controller_name.eql?('people') && plaque.people.count > 0 %>
       <style media="screen" type="text/css">
         .subjects .card-columns {
