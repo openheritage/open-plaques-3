@@ -1,10 +1,10 @@
 ﻿<%= form_tag("/search", :method => "get", :class => "search_box") do %>
   <fieldset>
-    <span id="magnifying_glass"></span>
-    <div class="row">
+    <div class="rowx">
+      <%= icon('magnifying_glass') %>
       <%= label_tag(:phrase, "Search: ") %>
       <%= text_field_tag(:phrase, phrase, :type => 'search' ) %>
+      <%= submit_tag(t('menu.go'), :class => 'button', :name => nil) %>
     </div>
-    <%= submit_tag(t('menu.go'), :class => 'button', :name => nil) %>
   </fieldset>
 <% end %>
