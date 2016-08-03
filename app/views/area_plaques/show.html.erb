@@ -20,9 +20,9 @@
   <% end %>
 </div>
 
-<% if @display!='ungeolocated' &&  %>
+<% if @display!='ungeolocated' %>
   <% if @area.geolocated? %>
-    <div id="plaque-map" class="col-xs-12 full" data-latitude="<%= @area.latitude %>" data-longitude="<%= @area.longitude %>" data-view="<%= @display %>"></div>
+    <div id="plaque-map" class="full" data-latitude="<%= @area.latitude %>" data-longitude="<%= @area.longitude %>" data-view="<%= @display %>"></div>
   <% else %>
     <%= form_for(@area, url: country_area_path(@area.country, @area)) do |f| %>
       <div class="edit_lat_long panel clearfix">
@@ -39,7 +39,5 @@
 <% end %>
 
 <%= will_paginate @plaques %>
-<div class="card-columns">
-  <%= render @plaques %>
-</div>
+<%= render partial: 'plaques/plaque_row', :collection => @plaques, as: :plaque %>
 <%= will_paginate @plaques %>

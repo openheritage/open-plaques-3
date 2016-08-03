@@ -30,17 +30,14 @@
 <div class="card-columns">
   <%= render @role.people.uniq %>
 </div>
-
 <% if @role.related_roles.size > 0 %>
   <div class="row">
     <h2><%= t '.related_roles'%></h2>
   </div>
-
   <% @role.related_roles.each do |related_role| %>
     <div class="row">
       <%= render related_role %>
     </div>
-
     <div class="container-fluid">
       <div class="card-columns">
         <%= render related_role.personal_roles %>

@@ -6,9 +6,9 @@
 <% end %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_series_path(@series)} %>
 
-<div class="row" id="plaque-map" data-latitude="<%= @series.latitude %>" data-longitude="<%= @series.longitude %>" data-view="all" context="<%= request.path %>"></div>
+<% if @series.geolocated? %>
+  <div class="row" id="plaque-map" data-latitude="<%= @series.latitude %>" data-longitude="<%= @series.longitude %>" data-view="all" context="<%= request.path %>"></div>
+<% end %>
 <%= will_paginate @plaques %>
-<div class="card-columns">
-  <%= render @plaques %>
-</div>
+<%= render partial: 'plaques/plaque_row', :collection => @plaques, as: :plaque %>
 <%= will_paginate @plaques %>
