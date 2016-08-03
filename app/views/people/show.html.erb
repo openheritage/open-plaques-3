@@ -111,5 +111,5 @@
 <% end %>
 
 <div class="card-columns">
-  <%= render @person.plaques.uniq %>
+  <%= render partial: 'plaques/tile', :collection => @person.plaques.uniq, as: :plaque %>
 </div>

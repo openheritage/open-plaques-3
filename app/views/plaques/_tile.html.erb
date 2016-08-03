@@ -1,25 +1,25 @@
-<% begin %>
-  <% if plaque.inscription %><% end %>
-<% rescue %>
-  <% plaque = plaque.plaque %>
-<% end %>
 <% if plaque %>
+  <% begin %>
+    <% if plaque.inscription %><% end %>
+  <% rescue %>
+    <% plaque = plaque.plaque %>
+  <% end %>
   <% photo = plaque.main_photo %>
+  <%= link_to plaque_path(plaque) do %>
+
 <div class="card">
   <% if photo && photo.file_url %>
-    <%= link_to image_tag(photo.file_url, {:class => 'card-img-top img-thumbnail', :width => '100%'}) , plaque_path(plaque) %>
+    <%= image_tag(photo.file_url, {:class => 'card-img-top img-thumbnail', :width => '100%'}) %>
     <p class="card-text">
-      <small>
-        <%= icon('copyright') %> <%= link_to photo.photographer, photographer_url(photo.photographer.gsub(".","_").gsub("/","_")) if photo.photographer rescue photo.photographer %> on <%= link_to(photo.source, photo.file_url) %>
-      </small>
+      <small><%= icon('copyright') %><%= photo.photographer if photo.photographer %> on <%= photo.source %></small>
       <% if photo.licence %>
-        <small>
-          <%= icon('creative-commons') %> <% if photo.licence.abbreviation != nil %><%= photo.licence.abbreviation %><% else %><%= photo.licence.name %><% end %>
-        </small>
+        <small><%= icon('creative-commons') if photo.licence.creative_commons? %> <% if photo.licence.abbreviation != nil %><%= photo.licence.abbreviation %><% else %><%= photo.licence.name %><% end %></small>
       <% end %>
     </p>
   <% else %>
-    <%= link_to image_tag('NoPhotoSqr.png', {:class => 'card-img-top img-responsive', :width => '100%'}), plaque_path(plaque) %>
+    <%= image_tag('NoPhotoSqr.png', {:class => 'card-img-top img-responsive', :width => '100%'}) %>
   <% end %>
 </div>
+
+  <% end %>
 <% end %>

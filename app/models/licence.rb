@@ -15,7 +15,7 @@ class Licence < ActiveRecord::Base
   validates_uniqueness_of :url
 
   has_many :photos
-  
+
   def self.find_by_flickr_licence_id(flickr_licence_id)
     case flickr_licence_id
     when "0"
@@ -46,6 +46,10 @@ class Licence < ActiveRecord::Base
     end
   end
 
+  def creative_commons?
+    url =~ /creativecommons.org\/licenses/i
+  end
+
   def to_s
     name
   end
@@ -54,6 +58,6 @@ class Licence < ActiveRecord::Base
     options = {
       :only => [:name, :abbreviation, :url, :allows_commercial_reuse, :photos_count]
     } if !options || !options[:only]
-    super options 
+    super options
   end
 end
