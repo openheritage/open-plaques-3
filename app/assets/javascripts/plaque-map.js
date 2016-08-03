@@ -38,7 +38,7 @@ function addPlaque(geojson)
       if (allow_popups===true)
       {
         var plaque_description = '<div class="inscription">' + truncate(plaque.inscription, 255) + '</div><div class="info">' +
-          '<a class="link" href="http://openplaques.org/plaques/' + plaque.id + '">Plaque ' + plaque.id + '</a>';
+          '<a class="link" href="https://openplaques.org/plaques/' + plaque.id + '">Plaque ' + plaque.id + '</a>';
         plaque_marker.bindPopup(plaque_description);
       }
       clusterer.addLayer(plaque_marker)
@@ -63,7 +63,7 @@ function getPlaques(url)
 {
   var bounds=map.getBounds();
   var minll=bounds.getSouthWest(), maxll=bounds.getNorthEast();
-  //  bounding box call, e.g. http://openplaques.org/plaques.json?box=[51.5482,-0.1617],[51.5282,-0.1217]
+  //  bounding box call, e.g. https://openplaques.org/plaques.json?box=[51.5482,-0.1617],[51.5282,-0.1217]
   var msg = url + '&box=['+maxll.lat+','+minll.lng+'],['+minll.lat+','+maxll.lng+']';
   var ajaxRequest = getXmlHttpObject();
   ajaxRequest.onreadystatechange = stateChanged;
@@ -151,7 +151,7 @@ function initmap()
                 if (!plaques["'#"+plaque.id+"'"])
                 {
                   var plaque_description = '<div class="inscription">' + truncate(plaque.inscription, 255) + '</div><div class="info">' +
-                    '<a class="link" href="http://openplaques.org/plaques/' + plaque.id + '">Plaque ' + plaque.id + '</a>';
+                    '<a class="link" href="https://openplaques.org/plaques/' + plaque.id + '">Plaque ' + plaque.id + '</a>';
                   layer.bindPopup(plaque_description);
                   var plaque_icon = new L.DivIcon({ className: 'plaque-marker', html: '', iconSize : 16 });
                   layer.setIcon(plaque_icon);
