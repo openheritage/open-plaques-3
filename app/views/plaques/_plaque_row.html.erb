@@ -1,9 +1,9 @@
-<% begin %>
-  <% if plaque.inscription %><% end %>
-<% rescue %>
-  <% plaque = plaque.plaque %>
-<% end %>
 <% if plaque %>
+  <% begin %>
+    <% if plaque.inscription %><% end %>
+  <% rescue %>
+    <% plaque = plaque.plaque %>
+  <% end %>
   <% photo = plaque.main_photo %>
 <div class="row card">
   <div class="col-xs-3">

@@ -4,13 +4,9 @@
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_organisation_path(@organisation)} %>
 
 <% if @organisation.geolocated? %>
-  <div class="row">
-    <div id="plaque-map" class="col-xs-12" data-latitude="<%= @organisation.latitude %>" data-longitude="<%= @organisation.longitude %>" data-view="all" context="<%= request.path %>"></div>
-  </div>
+  <div id="plaque-map" data-latitude="<%= @organisation.latitude %>" data-longitude="<%= @organisation.longitude %>" data-view="all" context="<%= request.path %>"></div>
 <% end %>
 
 <%= will_paginate @sponsorships %>
-<div class="card-columns">
-  <%= render @sponsorships %>
-</div>
+<%= render @sponsorships %>
 <%= will_paginate @sponsorships %>
