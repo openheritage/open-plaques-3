@@ -130,6 +130,7 @@ en-GB:
       news_detail_html: Subscribe to <a href="http://blog.openplaques.org">our blog</a>, follow us on <a href="http://www.twitter.com/openplaques">Twitter</a> for updates.
       like_us_on_Facebook: us on Facebook for features and trivia.
       plaque_of_the_day: Plaque of the day
+      recently_photographed: Recently photographed
 
   area_plaques:
     show:
