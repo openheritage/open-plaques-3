@@ -421,6 +421,9 @@ en-GB:
         page_subhead: Type in all the words written on the plaque excluding the organisation. Please write in sentence case, there is NO NEED TO SHOUT
         the_words: The words written on the plaque excluding the organisation in sentence case are
         placeholder: Joe Bloggs lived here
+        exact_wording: We don't have the full, exact wording yet
+        language: It's written in
+        inscription_in_english: If the inscription is not in English, optionally include a translation here
     language:
       edit:
         page_title: xx

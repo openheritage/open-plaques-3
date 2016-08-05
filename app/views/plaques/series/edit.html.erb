@@ -4,15 +4,22 @@
 <% end %>
 <%= render 'plaques/edit_bar', :plaque => @plaque %>
 
-<%= form_for @plaque do |f| %>
-  <fieldset class="form-group">
-    <%= f.label :series_id, t('.series_label') %>
-    <%= f.collection_select :series_id, @series, :id, :name, {:class => 'form-control', :include_blank => true} %>
-  </fieldset>
-  <fieldset class="form-group">
-    <%= f.label :series_ref, t('.series_ref_label') %>:
-    <%= f.text_field :series_ref, {:class => 'form-control', :include_blank => true} %>
-    <%= content_tag("p", link_to(t('.add_new_series'), new_series_path)) if current_user %>
-  </fieldset>
-  <%= f.submit t('buttons.save'), :class => 'btn btn-primary' %>
-<% end %>
+<div class="row">
+  <div class="col-xs-12 col-sm-6">
+    <%= form_for @plaque do |f| %>
+      <fieldset class="form-group">
+        <%= f.label :series_id, t('.series_label') %>
+        <%= f.collection_select :series_id, @series, :id, :name, {:class => 'form-control', :include_blank => true} %>
+      </fieldset>
+      <fieldset class="form-group">
+        <%= f.label :series_ref, t('.series_ref_label') %>:
+        <%= f.text_field :series_ref, {:class => 'form-control', :include_blank => true} %>
+        <%= content_tag("p", link_to(t('.add_new_series'), new_series_path)) if current_user %>
+      </fieldset>
+      <%= f.submit t('buttons.save'), :class => 'btn btn-primary' %>
+    <% end %>
+  </div>
+  <div class="col-xs-12 col-sm-6">
+    <%= render @plaque.main_photo if @plaque.main_photo %>
+  </div>
+</div>

@@ -10,24 +10,31 @@
 <% end %>
 <%= render 'plaques/edit_bar', :plaque => @plaque %>
 
-<%= render @plaque.main_photo %>
-<br/>
-<%= form_for @plaque do |f| %>
-  <fieldset class="form-group">
-    <%= f.label :inscription, t('.the_words') %>
-    <%= f.text_area :inscription, {:class => 'form-control', :placeholder => t('.placeholder'), :autofocus => true, :rows => '6'} %>
-  </fieldset>
-  <fieldset class="form-group">
-    <%= f.label :inscription_is_stub, "We don't have the full, exact wording yet" %>
-    <%= f.check_box :inscription_is_stub, {:class => 'form-control'} %>
-  </fieldset>
-  <fieldset class="form-group">
-    <%= f.label :language_id, "It's written in" %>
-    <%= f.collection_select :language_id, @languages, :id, :name, {:class => 'form-control'} %>
-  </fieldset>
-  <fieldset class="form-group">
-    <%= f.label :inscription_in_english, "If the inscription is not in English, optionally include a translation here" %>
-    <%= f.text_area :inscription_in_english, {:class => 'form-control', :rows => '6'} %>
-  </fieldset>
-<%= f.submit t('buttons.save'), :class => 'btn btn-primary' %>
-<% end %>
+<div class="row">
+  <div class="col-xs-12 col-sm-6">
+    <%= form_for @plaque do |f| %>
+      <fieldset class="form-group">
+        <%= f.label :inscription, t('.the_words') %>
+        <%= f.text_area :inscription, {:class => 'form-control', :rows => 6, :placeholder => t('.placeholder'), :autofocus => true} %>
+      </fieldset>
+      <fieldset class="form-group">
+        <label class="form-check-label">
+          <%= f.check_box :inscription_is_stub, :class => 'form-check-input' %>
+          <%= t('.exact_wording') %>
+        </label>
+      </fieldset>
+      <fieldset class="form-group">
+        <%= f.label :language_id, t('.language') %>
+        <%= f.collection_select :language_id, @languages, :id, :name, {:class => 'form-control'} %>
+      </fieldset>
+      <fieldset class="form-group">
+        <%= f.label :inscription_in_english, t('.inscription_in_english') %>
+        <%= f.text_area :inscription_in_english, {:class => 'form-control', :rows => 6} %>
+      </fieldset>
+      <%= f.submit t('buttons.save'), :class => 'btn btn-primary' %>
+    <% end %>
+  </div>
+  <div class="col-xs-12 col-sm-6">
+    <%= render @plaque.main_photo if @plaque.main_photo %>
+  </div>
+</div>

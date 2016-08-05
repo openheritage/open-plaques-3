@@ -1,59 +1,90 @@
 <% content_for(:page_title) {t '.page_title', :plaque => @plaque.id.to_s } %>
-<% content_for(:title) { } %>
+<% content_for(:title) {@plaque.inscription_preferably_in_english}%>
 <%= render 'plaques/edit_bar', :plaque => @plaque %>
 
-<div class="jumbotron">
-  <h1><%= @plaque.inscription_preferably_in_english %></h1>
-</div>
-
-<%= form_for @personal_connection, :url => plaque_connections_path(@plaque) do |f| %>
-  <p><%= t '.from_which_we_can_establish' %></p>
-  <fieldset>
-    <div class="row">
-      <%= text_field_tag :person_name, "", {:placeholder => "John Smith"} %>
-      <%= f.hidden_field :person_id %>
-      <%= link_to(t('.new_person'), "/people/new") %>
-    </div>
-    <% if @common_verbs %>
-      <%= fieldset do %>
-        <% @common_verbs.each do |verb| %>
-          <div class="row radio">
-            <%= f.radio_button :verb_id, verb.id %>
-            <%= f.label "verb_id_" + verb.id.to_s, verb.name, :class => verb.name.downcase %>
+<style>
+// CardColumns
+@media (min-width: 34em) {
+  .card-columns {
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2;
+  }
+}
+@media (min-width: 48em) {
+  .card-columns {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
+  }
+}
+@media (min-width: 62em) {
+  .card-columns {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
+  }
+}
+@media (min-width: 75em) {
+  .card-columns {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
+  }
+}
+</style>
+<div class="row">
+  <div class="col-xs-12 col-sm-6">
+    <% if @plaque.personal_connections.count > 0 %>
+      <h2>Connections</h2>
+      <div class="card-columns">
+        <% @plaque.personal_connections.all.each do |connection| %>
+          <div class="card">
+            <%= link_to t('buttons.edit'), edit_plaque_connection_path(@plaque, connection), :class => 'btn btn-secondary' %>
+            <%= render connection %>
+            <%= button_to(t('buttons.delete'), plaque_connection_path(@plaque, connection), :method => :delete, :class => 'btn btn-danger')%>
           </div>
         <% end %>
-      <% end %>
+      </div>
     <% end %>
-    <div class="row">
-      <%= f.collection_select :verb_id, @verbs, :id, :name, { :selected => "222"}, { "style" => "width:400px" } %>  <%= link_to(t('.new_verb'), "/verbs/new") %>
-    </div>
-    <div class="row">
-      <%= t('.at') + ' ' + @personal_connection.full_address if @personal_connection.full_address %>
-    </div>
-    <div class="row">
-      <%= f.label :started_at %><%= f.text_field :started_at %><%= f.label :ended_at %> <%= f.text_field :ended_at %>
-    </div>
-  </fieldset>
-  <div class="row">
-    <%= t '.reminder' %>
-  </div>
-  <%= f.submit t('buttons.add'), :class => 'btn btn-primary' %>
-<% end %>
-
-<% if @plaque.personal_connections.count > 0 %>
-  <div class="container-fluid">
-    <h2>Connections</h2>
-    <div class="card-columns">
-      <% @plaque.personal_connections.all.each do |connection| %>
-        <div class="card">
-          <%= link_to t('buttons.edit'), edit_plaque_connection_path(@plaque, connection), :class => 'btn btn-secondary' %>
-          <%= render connection %>
-          <%= button_to(t('buttons.delete'), plaque_connection_path(@plaque, connection), :method => :delete, :class => 'btn btn-danger')%>
+    <%= form_for @personal_connection, :url => plaque_connections_path(@plaque) do |f| %>
+      <p><%= t '.from_which_we_can_establish' %></p>
+      <fieldset>
+        <div class="row">
+          <%= text_field_tag :person_name, "", {:placeholder => "John Smith"} %>
+          <%= f.hidden_field :person_id %>
+          <%= link_to(t('.new_person'), "/people/new") %>
         </div>
-      <% end %>
-    </div>
+        <% if @common_verbs %>
+          <%= fieldset do %>
+            <% @common_verbs.each do |verb| %>
+              <div class="row radio">
+                <%= f.radio_button :verb_id, verb.id %>
+                <%= f.label "verb_id_" + verb.id.to_s, verb.name, :class => verb.name.downcase %>
+              </div>
+            <% end %>
+          <% end %>
+        <% end %>
+        <div class="row">
+          <%= f.collection_select :verb_id, @verbs, :id, :name, { :selected => "222"}, { "style" => "width:400px" } %>  <%= link_to(t('.new_verb'), "/verbs/new") %>
+        </div>
+        <div class="row">
+          <%= t('.at') + ' ' + @personal_connection.full_address if @personal_connection.full_address %>
+        </div>
+        <div class="row">
+          <%= f.label :started_at %><%= f.text_field :started_at %><%= f.label :ended_at %> <%= f.text_field :ended_at %>
+        </div>
+      </fieldset>
+      <div class="row">
+        <%= t '.reminder' %>
+      </div>
+      <%= f.submit t('buttons.add'), :class => 'btn btn-primary' %>
+    <% end %>
   </div>
-<% end %>
+  <div class="col-xs-12 col-sm-6">
+    <%= render @plaque.main_photo if @plaque.main_photo %>
+  </div>
+</div>
 
 <script type="text/javascript">
   $(function() {
