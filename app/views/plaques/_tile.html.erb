@@ -8,8 +8,8 @@
   <%= link_to plaque_path(plaque) do %>
 
 <div class="card">
-  <% if photo && photo.file_url %>
-    <%= image_tag(photo.file_url, {:class => 'card-img-top img-thumbnail', :width => '100%'}) %>
+  <% if photo && photo.thumbnail_url %>
+    <%= image_tag(photo.thumbnail_url, {:class => 'card-img-top img-thumbnail', :width => '100%'}) %>
     <p class="card-text">
       <small><%= icon('copyright') %><%= photo.photographer if photo.photographer %> on <%= photo.source %></small>
       <% if photo.licence %>

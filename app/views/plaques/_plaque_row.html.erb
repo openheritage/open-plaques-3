@@ -7,7 +7,7 @@
   <% photo = plaque.main_photo %>
 <div class="row card">
   <div class="col-xs-3">
-    <%= link_to image_tag(photo.file_url, {:class => 'card-img-top img-thumbnail', :width => '100%'}) , plaque_path(plaque) if photo != nil %>
+    <%= link_to image_tag(photo.thumbnail_url, {:class => 'card-img-top img-thumbnail', :width => '100%'}) , plaque_path(plaque) if photo != nil %>
   </div>
   <div class="col-xs-9">
     <h7 class="card-title"><%= plaque.inscription %></h7>
