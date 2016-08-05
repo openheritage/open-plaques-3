@@ -394,12 +394,18 @@ en-GB:
   plaques:
     colour:
       edit:
-        page_title: xx
+        page_title: Edit colour of
+        title: What colour is the
         page_heading: yy
+        not_sure: Not sure. Give me another one
+        colour_label: It is
     description:
       edit:
         page_title: xx
         page_heading: yy
+    edit:
+      exists: We believe this plaque currently exists
+      erected_in: Erected in
     erected:
       edit:
         page_title: xx
@@ -408,22 +414,37 @@ en-GB:
       edit:
         page_title: xx
         page_heading: yy
+        page_subhead: Our goal is to accurately locate all plaques through real-life evidence. We do not use geocoding software as the results are inaccurate and it taint the openness of our data. It is okay to plot an approximate position, but please be sure to flag it as uncertain.
     inscription:
       edit:
-        page_title: xx
-        page_heading: yy
+        page_title: Edit inscription for plaque
+        page_subhead: Type in all the words written on the plaque excluding the organisation. Please write in sentence case, there is NO NEED TO SHOUT
+        the_words: The words written on the plaque excluding the organisation in sentence case are
+        placeholder: Joe Bloggs lived here
     language:
       edit:
         page_title: xx
         page_heading: yy
+        language_label: It's written in
     photos:
       show:
         page_title: Photos of the %{plaque}
         page_heading: Photo
+    series:
+      edit:
+        series_label: Part of the series
+        series_ref_label: Series reference
+        add_new_series: Add new series
     sponsorships:
       new:
         page_title: Edit sponsor information for plaque
         page_heading: Which organisations were involved in erecting this plaque?
+    show:
+      english_translation: English translation
+      does_not_exist: We believe that this plaque no longer exists
+      not_erected: This plaque has not been erected yet
+      approximate_position: This is an approximate position
+      how_to_add_yours: How to add yours
     create:
       page_title: xx
       page_heading: yy

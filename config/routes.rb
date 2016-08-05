@@ -15,13 +15,11 @@ Rails.application.routes.draw do
 
   resources :plaques do
     member do
-      post 'parse_inscription'
-      post 'unparse_inscription'
       post 'flickr_search'
       get 'flickr_search_all'
     end
     resource :location, :controller => :plaque_location, :only => :edit
-    resource :erected, :controller => :plaque_erected, :only => :edit
+    resource :series, :controller => :plaque_series, :only => :edit
     resource :colour, :controller => :plaque_colour, :only => :edit
     resource :geolocation, :controller => :plaque_geolocation, :only => :edit
     resource :inscription, :controller => :plaque_inscription, :only => :edit

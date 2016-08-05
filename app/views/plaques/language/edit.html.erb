@@ -9,15 +9,11 @@
 <% end %>
 <%= render 'plaques/edit_bar', :plaque => @plaque %>
 
-<%= render @plaque.main_photo if @plaque.main_photo  %>
 <%= form_for @plaque do |f| %>
-  <div class="primary">
-    <fieldset>
-      <div class="row">
-        <%= f.label :language_id, "It's written in" %>
-        <%= f.collection_select :language_id, @languages, :id, :name %>
-      </div>
-    </fieldset>
-    <%= f.submit t('buttons.save'), :class => 'btn btn-primary' %>
-  </div>
+  <fieldset class="form-group">
+    <%= f.label :language_id, t('.language_label') %>
+    <%= f.collection_select :language_id, @languages, :id, :name, {:class => 'form-control'} %>
+  </fieldset>
+  <%= f.submit t('buttons.save'), :class => 'btn btn-primary' %>
 <% end %>
+<%= render @plaque.main_photo if @plaque.main_photo %>

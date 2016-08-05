@@ -1,4 +1,31 @@
 <% content_for :page_title, @plaque %>
+<% content_for :title do %>
+  <%= linked_inscription @plaque %>
+<% end %>
+<% content_for :page_subhead do %>
+  <span id="facebook_like_button"><iframe src="http://www.facebook.com/plugins/like.php?href=<%= plaque_path(@plaque, :only_path => false) %>&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action=like&amp;font&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:75px; height:20px; text-align:right;" allowTransparency="true"></iframe></span>
+  <% if @plaque.foreign? %>
+    <div class="row">
+      <% if @plaque.inscription_in_english %>
+        <h7><%= t '.english_translation' %>: "<%= @plaque.inscription_in_english %>"</h7>
+      <% else %>
+        <div class="goog-trans-control"></div>
+        <h6 class="goog-trans-section" lang=""><%= @plaque.inscription %></h6>
+        <script>
+          function googleSectionalElementInit() {
+            new google.translate.SectionalElement({
+              sectionalNodeClassName: 'goog-trans-section',
+              controlNodeClassName: 'goog-trans-control',
+              background: '#f4fa58'
+            }, 'google_sectional_element');
+          }
+        </script>
+        <script src="http://translate.google.com/translate_a/element.js?cb=googleSectionalElementInit&ug=section&hl=en"></script>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
+
 <%= render 'plaques/edit_bar', :plaque => @plaque %>
 
 <script>
@@ -38,34 +65,7 @@
   });
 </script>
 
-<div class="jumbotron">
-  <h1><%= linked_inscription(@plaque) %></h1>
-  <span id="facebook_like_button"><iframe src="http://www.facebook.com/plugins/like.php?href=<%= plaque_path(@plaque, :only_path => false) %>&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action=like&amp;font&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:75px; height:20px; text-align:right;" allowTransparency="true"></iframe></span>
-</div>
-
-<% if @plaque.foreign? %>
-  <div class="row">
-    <% if @plaque.inscription_in_english %>
-      <h7><%= @plaque.inscription_in_english %></h7>
-    <% else %>
-      <div class="goog-trans-control">xxx</div>
-      <h6 class="goog-trans-section" lang=""><%= @plaque.inscription %></h6>
-      <script>
-        function googleSectionalElementInit() {
-          new google.translate.SectionalElement({
-            sectionalNodeClassName: 'goog-trans-section',
-            controlNodeClassName: 'goog-trans-control',
-            background: '#f4fa58'
-          }, 'google_sectional_element');
-        }
-      </script>
-      <script src="http://translate.google.com/translate_a/element.js?cb=googleSectionalElementInit&ug=section&hl=en"></script>
-    <% end %>
-  </div>
-<% end %>
-
 <div class="row">
-
   <div class="col-xs-12 col-md-8">
     <div class="container main-photo">
       <div class="col-xs-12">
@@ -76,7 +76,7 @@
       <%= link_to plaque_photos_path(@plaque) do %>
         <div class="card">
           <%= image_tag("NoPhotoSqr.png", :width => '100%', :class => 'img-rounded card-img-top') %>
-          <p class="card-text">How to add yours</p>
+          <p class="card-text"><%= t '.how_to_add_yours' %></p>
         </div>
       <% end %>
       <%= render @plaque.other_photos %>
@@ -84,17 +84,11 @@
   </div>
 
   <div class="col-md-4">
-    <% unless @plaque.is_current %>
-      <p class="bg-danger">We believe that this plaque no longer exists</p>
-    <% end %>
-    <% unless @plaque.erected? %>
-      <p class="bg-warning">This plaque hasn't been erected yet</p>
-    <% end %>
+    <%= content_tag(:p, t('.does_not_exist'), :class => 'bg-danger' ) unless @plaque.is_current %>
+    <%= content_tag(:p, t('.not_erected'), :class => 'bg-warning' ) unless @plaque.erected? %>
     <% if @plaque.is_current && @plaque.geolocated? %>
       <div id="plaque-map" data-latitude="<%= @plaque.latitude %>" data-longitude="<%= @plaque.longitude %>" class="mini" data-zoom="17" data-view="one"></div>
-      <% unless @plaque.is_accurate_geolocation %>
-        <div class="bg-danger">This is an approximate position</div>
-      <% end %>
+      <%= content_tag(:div, t('.approximate_position'), :class => 'bg-danger' ) unless @plaque.is_accurate_geolocation %>
     <% end %>
     <p><%= @plaque.address %>, <%= link_to(@plaque.area.name, @plaque.area)  if @plaque.area %>
       <% if @plaque.roughly_geolocated? %>
@@ -104,7 +98,7 @@
     <p><% if @plaque.erected? %>Erected<% else %>To be erected<% end %> <%= erected_information @plaque %><% if @plaque.series %> as <% if @plaque.series_ref? %>#<%= content_tag(:span, @plaque.series_ref )%><% else %>part<% end %> of the <%= link_to @plaque.series.name, @plaque.series %> series<% end %></p>
     <p>Colour:
       <% if @plaque.colour %>
-        <%= @plaque.colour.name  %>
+        <%= @plaque.colour.name %>
       <% else %>
         <% @colours = Colour.all %>
         <%= form_for @plaque do |f| %>

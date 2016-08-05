@@ -40,17 +40,15 @@
     </div>
   <% end %>
 <% end %>
-<div class="row">
-  <%= form_for @sponsorship, :url => plaque_sponsorships_path(@plaque) do |f| %>
-    <%= f.hidden_field :plaque_id, :value => @plaque.id %>
-    <div class="col-xs-10">
-      <%= text_field_tag :organisation_name, "", {:placeholder => "English Heritage"} %><br/>
-      <%= f.collection_select :organisation_id, @organisations, :id, :name, {:include_blank => true} %>
-    </div>
-    <%= f.submit t('buttons.add'), :class => 'btn btn-primary col-xs-2' %>
-  <% end %>
-</div>
-<%= content_tag("p", link_to("Add new organisation", new_organisation_path)) if current_user %>
+<%= form_for @sponsorship, :url => plaque_sponsorships_path(@plaque) do |f| %>
+  <%= f.hidden_field :plaque_id, :value => @plaque.id %>
+  <fieldset class="form-group">
+    <%= text_field_tag :organisation_name, "", {:class => 'form-control', :placeholder => "English Heritage"} %>
+    <%= f.collection_select :organisation_id, @organisations, :id, :name, {:class => 'form-control', :include_blank => true} %>
+    <%= content_tag("p", link_to("Add new organisation", new_organisation_path)) if current_user %>
+  </fieldset>
+  <%= f.submit t('buttons.add'), :class => 'btn btn-primary col-xs-2' %>
+<% end %>
 <div class="row">
   <%= render @plaque.main_photo %>
 </div>

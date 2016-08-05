@@ -1,37 +1,36 @@
 <% content_for :page_title do %>Edit <%= @plaque.title %><% end %>
-<% content_for :title do %>Edit <%= link_to @plaque.title, plaque_path(@plaque) %><% end %>
+<% content_for :title do %>
+  Edit <%= link_to @plaque.title, plaque_path(@plaque) %>
+<% end %>
+<% content_for :page_subhead do %>
+  Created <%= @plaque.created_at.to_s(:long) %> and last updated <%= @plaque.updated_at.to_s(:long) %></p>
+<% end %>
 <%= render 'plaques/edit_bar', :plaque => @plaque %>
 
 <%= form_for(@plaque) do |f| %>
   <fieldset class="form-group row">
-    <p class='form-control-label col-sm-2'>Created</p>
+    <%= f.label :erected_at_string, t('.erected_in'), :class => 'form-control-label col-sm-2' %>
     <div class="col-sm-10">
-      <p class='form-control'><%= @plaque.created_at.to_s(:long) %></p>
+      <%= f.text_field :erected_at_string, {:include_blank => true} %>
+    </div>
+    <%= content_tag(:p, t('.not_erected'), :class => 'bg-warning' ) unless @plaque.erected? %>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :is_current, t('.exists'), :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.check_box :is_current, :class => 'form-control' %>
     </div>
   </fieldset>
-  <% if @plaque.created_at != @plaque.updated_at %>
-    <fieldset class="form-group row">
-      <p class='form-control-label col-sm-2'>Last updated</p>
-      <div class="col-sm-10">
-        <p class='form-control'><%= @plaque.updated_at.to_s(:long) %></p>
-      </div>
-    </fieldset>
-  <% end %>
   <fieldset class="form-group row">
     <%= f.label :notes, :class => 'form-control-label col-sm-2' %>
     <div class="col-sm-10">
       <%= f.text_area :notes, :class => 'form-control' %>
     </div>
   </fieldset>
-  <fieldset class="form-group row">
-    <%= f.label :is_current, "We believe this plaque currently exists", :class => 'form-control-label col-sm-5' %>
-    <div class="col-sm-7">
-      <%= f.check_box :is_current, :class => 'form-control' %>
-    </div>
-  </fieldset>
   <%= f.submit t('buttons.save'), :class => 'btn btn-primary' %>
 <% end %>
 
+<br/>
 <div class="row">
   <%= button_to('Delete plaque', plaque_path(@plaque.id), {:method => :delete, :class => 'btn btn-danger'}) if current_user.try(:is_admin?) %>
 </div>
