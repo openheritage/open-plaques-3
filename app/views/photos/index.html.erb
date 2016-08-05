@@ -5,6 +5,6 @@
 
 <%= will_paginate @photos %>
 <div class="card-columns">
-  <%= render partial: 'photos/tile', :collection => @photos, as: :photo %>
+  <%= render @photos %>
 </div>
 <%= will_paginate @photos %>

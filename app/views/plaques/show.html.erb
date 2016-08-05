@@ -25,7 +25,6 @@
     </div>
   <% end %>
 <% end %>
-
 <%= render 'plaques/edit_bar', :plaque => @plaque %>
 
 <script>
@@ -69,13 +68,13 @@
   <div class="col-xs-12 col-md-8">
     <div class="container main-photo">
       <div class="col-xs-12">
-        <%= render @plaque.main_photo if @plaque.main_photo %>
+        <%= render @plaque.main_photo, large: true if @plaque.main_photo %>
       </div>
     </div>
     <div class="card-columns">
       <%= link_to plaque_photos_path(@plaque) do %>
         <div class="card">
-          <%= image_tag("NoPhotoSqr.png", :width => '100%', :class => 'img-rounded card-img-top') %>
+          <%= image_tag("NoPhotoSqr.png", :width => '100%', :class => 'card-img img-rounded') %>
           <p class="card-text"><%= t '.how_to_add_yours' %></p>
         </div>
       <% end %>
@@ -84,11 +83,11 @@
   </div>
 
   <div class="col-md-4">
-    <%= content_tag(:p, t('.does_not_exist'), :class => 'bg-danger' ) unless @plaque.is_current %>
-    <%= content_tag(:p, t('.not_erected'), :class => 'bg-warning' ) unless @plaque.erected? %>
+    <%= content_tag(:p, t('.does_not_exist'), :class => 'bg-danger') unless @plaque.is_current %>
+    <%= content_tag(:p, t('.not_erected'), :class => 'bg-warning') unless @plaque.erected? %>
     <% if @plaque.is_current && @plaque.geolocated? %>
       <div id="plaque-map" data-latitude="<%= @plaque.latitude %>" data-longitude="<%= @plaque.longitude %>" class="mini" data-zoom="17" data-view="one"></div>
-      <%= content_tag(:div, t('.approximate_position'), :class => 'bg-danger' ) unless @plaque.is_accurate_geolocation %>
+      <%= content_tag(:div, t('.approximate_position'), :class => 'bg-danger') unless @plaque.is_accurate_geolocation %>
     <% end %>
     <p><%= @plaque.address %>, <%= link_to(@plaque.area.name, @plaque.area)  if @plaque.area %>
       <% if @plaque.roughly_geolocated? %>

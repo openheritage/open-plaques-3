@@ -7,15 +7,9 @@
   <% photo = plaque.main_photo %>
   <%= link_to plaque_path(plaque) do %>
 
-<div class="card">
+<div class="card plaque">
   <% if photo && photo.thumbnail_url %>
-    <%= image_tag(photo.thumbnail_url, {:class => 'card-img-top img-thumbnail', :width => '100%'}) %>
-    <p class="card-text">
-      <small><%= icon('copyright') %><%= photo.photographer if photo.photographer %> on <%= photo.source %></small>
-      <% if photo.licence %>
-        <small><%= icon('creative-commons') if photo.licence.creative_commons? %> <% if photo.licence.abbreviation != nil %><%= photo.licence.abbreviation %><% else %><%= photo.licence.name %><% end %></small>
-      <% end %>
-    </p>
+    <%= render photo %>
   <% else %>
     <%= image_tag('NoPhotoSqr.png', {:class => 'card-img-top img-responsive', :width => '100%'}) %>
   <% end %>

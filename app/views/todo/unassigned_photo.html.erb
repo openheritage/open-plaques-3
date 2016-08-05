@@ -3,13 +3,11 @@
 <% content_for(:admin_menu) {navbar_link_to("All to-do lists", "/todo")} %>
 
 <% if @photos.size > 0 %>
-  <div class="container-fluid">
-    <%= will_paginate @photos %>
-    <div class="card-columns">
-      <%= render partial: 'photos/tile', :collection => @photos, as: :photo %>
-    </div>
-    <%= will_paginate @photos %>
+  <%= will_paginate @photos %>
+  <div class="card-columns">
+    <%= render @photos %>
   </div>
+  <%= will_paginate @photos %>
 <% else %>
   <p>Every photo is connected to a plaque. Bravo!</p>
 <% end %>
