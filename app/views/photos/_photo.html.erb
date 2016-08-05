@@ -6,6 +6,6 @@
   <% end %>
   <div class="card-info">
     <%= photo.licence.creative_commons? ? icon('creative-commons') : icon('copyright') %> <%= photo.photographer if photo.photographer %> on <%= photo.source %>
-    <% photo.licence.abbreviation ? photo.licence.abbreviation : photo.licence.name if photo.licence && !photo.licence.creative_commons? %>
+    <%= photo.licence.abbreviation ? photo.licence.abbreviation : photo.licence.name if photo.licence && !photo.licence.creative_commons? %>
   </div>
 </div>
