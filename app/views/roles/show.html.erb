@@ -10,18 +10,12 @@
 <% content_for(:page_subhead) do %>
   <% if @role.used_as_a_suffix? %>
     <p>
-      <% if @role.military_medal? %>
-        A military medal that confers
-      <% else %>
-        Confers
-      <% end %>
+      <%= @role.military_medal? ? 'A military medal that confers' : 'Confers' %>
       the letters <strong><%= @role.letters %></strong> after the name.
     </p>
   <% end %>
-  <% if !@role.wikipedia_stub.blank? %>
-    <p>
-      <%= icon('external-link') %><%= link_to('Wikipedia', @role.wikipedia_url, :target => "_blank") %>
-    </p>
+  <% unless @role.wikipedia_stub.blank? %>
+    <%= icon('external-link') %><%= link_to('Wikipedia', @role.wikipedia_url, :target => "_blank") %>
   <% end %>
   <span class="label label-default label-pill pull-right"><%= @role.personal_roles_count %></span>
 <% end %>
@@ -36,7 +30,9 @@
   </div>
   <% @role.related_roles.each do |related_role| %>
     <div class="row">
-      <%= render related_role %>
+      <%= link_to related_role do %>
+        <%= render related_role %>
+      <% end %>
     </div>
     <div class="container-fluid">
       <div class="card-columns">
