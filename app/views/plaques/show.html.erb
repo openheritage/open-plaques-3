@@ -44,7 +44,6 @@
       <%= render @plaque.other_photos %>
     </div>
   </div>
-
   <div class="col-md-4">
     <%= content_tag(:p, t('.does_not_exist'), :class => 'bg-danger') unless @plaque.is_current %>
     <%= content_tag(:p, t('.not_erected'), :class => 'bg-warning') unless @plaque.erected? %>
@@ -52,13 +51,20 @@
       <div id="plaque-map" data-latitude="<%= @plaque.latitude %>" data-longitude="<%= @plaque.longitude %>" class="mini" data-zoom="17" data-view="one"></div>
       <%= content_tag(:div, t('.approximate_position'), :class => 'bg-danger') unless @plaque.is_accurate_geolocation %>
     <% end %>
-    <p><%= @plaque.address %>, <%= link_to(@plaque.area.name, @plaque.area)  if @plaque.area %>
+    <p>
+      <%= @plaque.address %>, <%= link_to(@plaque.area.name, @plaque.area)  if @plaque.area %>
       <% if @plaque.roughly_geolocated? %>
        <br/>[<%= link_to "geolocate this address", edit_plaque_geolocation_path(@plaque), {:class => :edit, :title => "Geolocate"} %>]
      <% end %>
     </p>
-    <p><% if @plaque.erected? %>Erected<% else %>To be erected<% end %> <%= erected_information @plaque %><% if @plaque.series %> as <% if @plaque.series_ref? %>#<%= content_tag(:span, @plaque.series_ref )%><% else %>part<% end %> of the <%= link_to @plaque.series.name, @plaque.series %> series<% end %></p>
-    <p>Colour:
+    <p>
+      <%= erected_information @plaque %>
+      <% if @plaque.series %>
+        <% if @plaque.series_ref? %>#<%= content_tag(:span, @plaque.series_ref )%><% else %>Part<% end %> of the <%= link_to @plaque.series.name, @plaque.series %> series
+      <% end %>
+    </p>
+    <p>
+      Colour:
       <% if @plaque.colour %>
         <%= @plaque.colour.name %>
       <% else %>

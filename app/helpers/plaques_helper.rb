@@ -258,8 +258,6 @@ module PlaquesHelper
         info += erected_date(plaque)
       end
       return info
-    else
-      return content_tag("p", "by ".html_safe + content_tag("span", "unknown".html_safe, :class => :unknown))
     end
   end
 
