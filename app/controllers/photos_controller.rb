@@ -48,7 +48,16 @@ class PhotosController < ApplicationController
   def create
     @photo = Photo.new(photo_params)
     @photo.wikimedia_data
-    @photo.save ? flash[:notice] = 'Photo was successfully updated.' : flash[:notice] = @photo.errors.full_messages.to_sentence
+    if @photo.errors.empty?
+      @already_existing_photo = Photo.find_by_file_url @photo.file_url
+      if @already_existing_photo
+        @photo = @already_existing_photo
+        @photo.update_attributes(photo_params)
+      end
+      @photo.save ? flash[:notice] = 'Photo was successfully updated.' : flash[:notice] = @photo.errors.full_messages.to_sentence
+    else
+      flash[:notice] = @photo.errors.full_messages.to_sentence
+    end
     redirect_to :back
   end
 

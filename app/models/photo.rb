@@ -122,7 +122,7 @@ class Photo < ActiveRecord::Base
 
   def wikimedia_filename
     return url[url.index('File:')+5..-1] if wikimedia?
-    return ""
+    return ''
   end
 
   def wikimedia_special
@@ -145,21 +145,25 @@ class Photo < ActiveRecord::Base
     if wikimedia?
       begin
         wikimedia = Wikimedia::Commoner.details("File:"+wikimedia_filename)
-        self.url = wikimedia[:page_url]
-        self.subject = wikimedia[:description]
-        self.photographer = wikimedia[:author]
-        self.photographer_url = wikimedia[:author_url]
-        self.file_url = wikimedia_special
-        licence = Licence.find_by(url: wikimedia[:licence_url])
-        if (licence == nil)
-          wikimedia[:licence_url] += "/" if !wikimedia[:licence_url].ends_with? '/'
-          licence = Licence.find_by_url wikimedia[:licence_url]
-          if (licence==nil)
-            licence = Licence.new(:name => wikimedia[:licence], :url => wikimedia[:licence_url])
-            licence.save
+        if wikimedia[:description] == 'missing'
+          errors.add :file_url, 'cannot find File:#' + wikimedia_filename + ' on Wikimedia Commons'
+        else
+          self.url = wikimedia[:page_url]
+          self.subject = wikimedia[:description]
+          self.photographer = wikimedia[:author]
+          self.photographer_url = wikimedia[:author_url]
+          self.file_url = wikimedia_special
+          licence = Licence.find_by(url: wikimedia[:licence_url])
+          if (licence == nil)
+            wikimedia[:licence_url] += "/" if !wikimedia[:licence_url].ends_with? '/'
+            licence = Licence.find_by_url wikimedia[:licence_url]
+            if (licence==nil)
+              licence = Licence.new(:name => wikimedia[:licence], :url => wikimedia[:licence_url])
+              licence.save
+            end
           end
+          self.licence = licence if licence != nil
         end
-        self.licence = licence if licence != nil
       rescue
       end
     end
