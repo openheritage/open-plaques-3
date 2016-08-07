@@ -1,6 +1,7 @@
 <% content_for(:page_title) {t '.page_title', :person => @person.full_name} %>
-<% content_for(:title) {t '.page_heading', :person => @person.full_name} %>
-
+<% content_for(:title) do %>
+  <%= t '.page_heading' %> <%= link_to @person.full_name, @person %>
+<% end %>
 <div class="card-columns">
   <%= render @person %>
 </div>
@@ -28,7 +29,7 @@
   </fieldset>
   <fieldset class="form-group row">
     <%= f.label :introduction %>
-    <%= f.text_area :introduction, :cols => 80, :rows => 15 %>
+    <%= f.text_area :introduction, :class => 'form-control', :rows => 6 %>
   </fieldset>
   <fieldset class="form-group row">
     <%= f.label :wikipedia_url %>

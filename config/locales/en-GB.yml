@@ -275,7 +275,7 @@ en-GB:
   people:
     edit:
       page_title: Edit %{person}
-      page_heading: Edit %{person}
+      page_heading: Edit
       features_on: From the plaques...
       from_which_we_can_establish: ...we can establish that
       name: Name
