@@ -20,6 +20,6 @@
     <% end %>
   </div>
   <div class="col-xs-12 col-sm-6">
-    <%= render @plaque.main_photo if @plaque.main_photo %>
+    <%= render @plaque.main_photo, :large => true if @plaque.main_photo %>
   </div>
 </div>
