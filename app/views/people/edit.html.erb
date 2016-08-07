@@ -2,6 +2,7 @@
 <% content_for(:title) do %>
   <%= t '.page_heading' %> <%= link_to @person.full_name, @person %>
 <% end %>
+
 <h2>Depiction</h2>
 <div class="row">
   <div class="col-xs-2">
@@ -12,9 +13,9 @@
     open licenced and free to use.</p>
     <p>
       Find a depiction image on
-      <%= link_to(icon('external-link') +  'Wikipedia page', @person.wikipedia_url) %>
+      <%= link_to(icon('external-link') +  'Wikipedia', @person.wikipedia_url, :target => '_blank') %>
       or
-      <%= link_to(icon('external-link') +  'search Commons', 'https://commons.wikimedia.org/w/index.php?title=Special:Search&limit=20&offset=40&profile=default&search=' + @person.name) %>
+      <%= link_to(icon('external-link') +  'Wikimedia Commons', 'https://commons.wikimedia.org/w/index.php?title=Special:Search&limit=20&offset=40&profile=default&search=' + @person.name, :target => '_blank') %>
     </p>
     <p>
       <% @photo = Photo.new %>
