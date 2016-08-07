@@ -35,6 +35,7 @@ class PhotosController < ApplicationController
         flash[:notice] = 'Photo was successfully updated.'
         format.html { redirect_to :back }
       else
+        flash[:notice] = @photo.errors
         format.html { render "edit" }
       end
     end
@@ -47,7 +48,7 @@ class PhotosController < ApplicationController
   def create
     @photo = Photo.new(photo_params)
     @photo.wikimedia_data
-    @photo.save
+    @photo.save ? flash[:notice] = 'Photo was successfully updated.' : flash[:notice] = @photo.errors.full_messages.to_sentence
     redirect_to :back
   end
 

@@ -27,7 +27,7 @@ class Photo < ActiveRecord::Base
   belongs_to :person
 
   validates_presence_of :file_url
-  validates_uniqueness_of :file_url, :message => "photo already exists in Open Plaques"
+  validates_uniqueness_of :file_url, :message => "of photo already exists in Open Plaques"
 
   attr_accessor :photo_url, :accept_cc_by_licence
 
