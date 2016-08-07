@@ -1,23 +1,13 @@
 class PersonalConnectionsController < ApplicationController
 
   before_filter :authenticate_admin!, :only => :destroy
-  before_filter :find, :only => [:edit, :destroy, :update]
-  before_filter :find_plaque, :only => [:edit, :update, :new, :create]
-  before_filter :list_people_and_verbs, :only => [:new, :edit]
+  before_filter :find, :only => [:destroy]
+  before_filter :find_plaque, :only => [:new, :create]
+  before_filter :list_people_and_verbs, :only => [:new]
 
   def destroy
     @personal_connection.destroy
     redirect_to :back
-  end
-
-  def update
-    params[:personal_connection][:started_at] += "-01-01 00:00:01" if params[:personal_connection][:started_at] =~/\d{4}/
-    params[:personal_connection][:ended_at] += "-01-01 00:00:01" if params[:personal_connection][:ended_at] =~/\d{4}/
-    if @personal_connection.update_attributes(personal_connection_params)
-      redirect_to edit_plaque_path(@plaque.id)
-    else
-      render :edit
-    end
   end
 
   def new
@@ -50,7 +40,7 @@ class PersonalConnectionsController < ApplicationController
     def find_plaque
       @plaque = Plaque.find(params[:plaque_id])
     end
-    
+
     def list_people_and_verbs
       @verbs = Verb.order(:name).select('id, name')
     end

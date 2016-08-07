@@ -40,7 +40,6 @@
       <div class="card-columns">
         <% @plaque.personal_connections.all.each do |connection| %>
           <div class="card">
-            <%= link_to t('buttons.edit'), edit_plaque_connection_path(@plaque, connection), :class => 'btn btn-secondary' %>
             <%= render connection %>
             <%= button_to(t('buttons.delete'), plaque_connection_path(@plaque, connection), :method => :delete, :class => 'btn btn-danger')%>
           </div>
