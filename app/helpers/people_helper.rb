@@ -95,7 +95,8 @@ module PeopleHelper
   end
 
   def dated_person(person, options = {})
-    dates = " " + person.dates
+    dates = " "
+    dates += person.dates if person.dates
     if options[:links] == :none
       return content_tag("span", person.full_name, {:class => "fn", :property => "rdfs:label foaf:name vcard:fn"}) + dates.html_safe
     else
