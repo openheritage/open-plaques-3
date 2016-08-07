@@ -32,17 +32,17 @@
   });
 </script>
 
-<% @plaque.sponsorships.all.each do |sponsorship| %>
-  <% if sponsorship.organisation %>
-    <div class="row">
-      <div class="col-xs-10"><%= render sponsorship.organisation %></div>
-      <%= button_to t('buttons.delete'), plaque_sponsorship_path(@plaque, sponsorship.id), :method => :delete, :class => 'btn btn-danger col-xs-2' %>
-    </div>
-  <% end %>
-<% end %>
-
 <div class="row">
   <div class="col-xs-12 col-sm-6">
+    <% @plaque.sponsorships.all.each do |sponsorship| %>
+      <% if sponsorship.organisation %>
+        <div class="row">
+          <div class="col-xs-10"><%= render sponsorship.organisation %></div>
+          <%= button_to t('buttons.unlink'), plaque_sponsorship_path(@plaque, sponsorship.id), :method => :delete, :class => 'btn btn-danger col-xs-2' %>
+        </div>
+      <% end %>
+    <% end %>
+
     <%= form_for @sponsorship, :url => plaque_sponsorships_path(@plaque) do |f| %>
       <%= f.hidden_field :plaque_id, :value => @plaque.id %>
       <fieldset class="form-group">
