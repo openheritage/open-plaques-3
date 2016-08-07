@@ -99,6 +99,20 @@ class PersonalRolesController < ApplicationController
         @vice_versa.related_person = @personal_role.person
         @vice_versa.save
       end
+      if @personal_role.role.name == 'band' && @personal_role.related_person && !@personal_role.related_person.is_related_to?(@personal_role.person)
+        @vice_versa = PersonalRole.new
+        @vice_versa.person = @personal_role.related_person
+        @vice_versa.role = Role.find_by_name 'band member'
+        @vice_versa.related_person = @personal_role.person
+        @vice_versa.save
+      end
+      if @personal_role.role.name == 'band member' && @personal_role.related_person && !@personal_role.related_person.is_related_to?(@personal_role.person)
+        @vice_versa = PersonalRole.new
+        @vice_versa.person = @personal_role.related_person
+        @vice_versa.role = Role.find_by_name 'band'
+        @vice_versa.related_person = @personal_role.person
+        @vice_versa.save
+      end
       redirect_to(edit_person_path(@personal_role.person))
     else
       render :edit
