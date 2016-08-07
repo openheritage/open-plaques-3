@@ -71,8 +71,9 @@ class PhotosController < ApplicationController
 
   def destroy
     @plaque = @photo.plaque
+    @person = @photo.person
     @photo.destroy
-    redirect_to plaque_path(@plaque)
+    redirect_to @plaque ? edit_plaque_path(@plaque) : edit_person_path(@person)
   end
 
   protected

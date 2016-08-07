@@ -37,9 +37,7 @@
   <fieldset class="form-group row">
     <%= f.label :photographer, :class => 'form-control-label col-sm-2' %>
     <div class="col-sm-10">
-      <% if @photo.photographer %>
-        <%= link_to(icon('external-link'), photographer_url(@photo.photographer.gsub(".","_").gsub("/","_"))) %>
-      <% end %>
+      <%= link_to(icon('external-link'), photographer_url(@photo.photographer.gsub(".","_").gsub("/","_"))) if @photo.photographer && @photo.photographer != '' %>
       <%= f.text_field :photographer, :class => 'form-control' %>
     </div>
   </fieldset>
