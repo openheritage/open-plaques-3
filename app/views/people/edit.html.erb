@@ -13,9 +13,9 @@
     open licenced and free to use.</p>
     <p>
       Find a depiction image on
-      <%= link_to(icon('external-link') +  'Wikipedia', @person.wikipedia_url, :target => '_blank') %>
+      <%= link_to(icon('external-link') + 'Wikipedia', @person.default_wikipedia_url, :target => '_blank') %>
       or
-      <%= link_to(icon('external-link') +  'Wikimedia Commons', 'https://commons.wikimedia.org/w/index.php?title=Special:Search&limit=20&offset=40&profile=default&search=' + @person.name, :target => '_blank') %>
+      <%= link_to(icon('external-link') + 'Wikimedia Commons', 'https://commons.wikimedia.org/w/index.php?title=Special:Search&limit=20&offset=40&profile=default&search=' + @person.name, :target => '_blank') %>
     </p>
     <p>
       <% @photo = Photo.new %>
