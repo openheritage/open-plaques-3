@@ -29,7 +29,7 @@
   </div>
   <% if @person.main_photo %>
     <div class="col-xs-3">
-      <%= render @person.main_photo %>
+      <%= link_to render(@person.main_photo), @person.main_photo %>
     </div>
   <% end %>
 </div>
