@@ -2,8 +2,35 @@
 <% content_for(:title) do %>
   <%= t '.page_heading' %> <%= link_to @person.full_name, @person %>
 <% end %>
-<div class="card-columns">
-  <%= render @person %>
+<h2>Depiction</h2>
+<div class="row">
+  <div class="col-xs-2">
+    <img src="http://upload.wikimedia.org/wikipedia/commons/7/79/Wiki-commons.png"/>
+  </div>
+  <div class="col-xs-7">
+    <p>We use images from Wikimedia Commons to depict subjects on Open Plaques as they are
+    open licenced and free to use.</p>
+    <p>
+      Find a depiction image on
+      <%= link_to(icon('external-link') +  'Wikipedia page', @person.wikipedia_url) %>
+      or
+      <%= link_to(icon('external-link') +  'search Commons', 'https://commons.wikimedia.org/w/index.php?title=Special:Search&limit=20&offset=40&profile=default&search=' + @person.name) %>
+    </p>
+    <p>
+      <% @photo = Photo.new %>
+      <%= form_for @photo do |f| %>
+        <%= f.label(:url, "The Wikimedia photo page url is") %> <%= f.text_field :url %>
+        <%= f.hidden_field :person_id, :value => @person.id %>
+        <%= f.hidden_field :of_a_plaque, :value => false %>
+        <%= submit_tag(t('buttons.save'), :class=> 'btn btn-primary') %>
+      <% end %>
+    </p>
+  </div>
+  <% if @person.main_photo %>
+    <div class="col-xs-3">
+      <%= render @person.main_photo %>
+    </div>
+  <% end %>
 </div>
 
 <%= form_for @person do |f| %>
@@ -57,21 +84,9 @@
 <% if !@person.main_photo %>
   <div class="row">
     <div class="col-xs-2">
-      <img src="http://upload.wikimedia.org/wikipedia/commons/7/79/Wiki-commons.png"/>
+
     </div>
     <div class="col-xs-10">
-      <p>A great place to donate your image to the world is <a href="http://commons.wikimedia.org/">Wikimedia Commons</a>.
-      It is free, fairly easy to use, and your image will live forever (probably) as part of the awesome Wikipedia platform.
-      When you are done, paste the page url in here and Open Plaques will link to the photo.</p>
-      <p>
-        <% @photo = Photo.new %>
-        <%= form_for @photo do |f| %>
-          <%= f.label(:url, "The Wikimedia photo page url is") %> <%= f.text_field :url %>
-          <%= f.hidden_field :person_id, :value => @person.id %>
-          <%= f.hidden_field :of_a_plaque, :value => false %>
-          <%= submit_tag(t('buttons.save'), :class=> 'btn btn-primary') %>
-        <% end %>
-      </p>
     </div>
   </div>
 <% end %>
