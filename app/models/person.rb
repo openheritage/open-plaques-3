@@ -143,7 +143,7 @@ class Person < ActiveRecord::Base
   def age
     circa = died_on && born_on && born_on.month == 1 && born_on.day == 1 && died_on.month == 1 && died_on.day == 1 ? 'c.' : ''
     return circa + (died_in - born_in).to_s if died_on && born_on
-    return Time.now.year - born_in if born_in && thing?
+    return Time.now.year - born_in if born_in && inanimate_object?
     return Time.now.year - born_in if born_in && born_in > 1910
     "unknown"
   end
@@ -352,23 +352,27 @@ class Person < ActiveRecord::Base
   end
 
   def creation_word
-    return "from" if (self.thing?)
-    return "formed in" if (self.group?)
-    return "built in" if (self.place?)
+    return "from" if thing?
+    return "formed in" if group?
+    return "built in" if place?
     "born in"
   end
 
   def destruction_word
-    return "until" if self.thing?
-    return "ended in" if self.group?
-    return "closed in" if self.place?
+    return "until" if thing?
+    return "ended in" if group?
+    return "closed in" if place?
     "died in"
   end
 
+  def inanimate_object?
+    thing? || group? || place?
+  end
+
   def personal_pronoun
-    return "it" if (self.thing? || self.group? || self.place?)
-    return "he" if self.male?
-    return "she" if self.female?
+    return "it" if inanimate_object?
+    return "he" if male?
+    return "she" if female?
     "he/she"
   end
 
@@ -383,11 +387,11 @@ class Person < ActiveRecord::Base
       "Abigail","Adelaide","Adele","Ada","Agnes","Alice","Alison","Amalie","Amelia","Anastasia","Anna","Anne","Annie","Antoinette",
       "Beatriz","Bertha","Betty",
       "Caroline","Cäcilie","Charlotte","Clara","Constance",
-      "Deborah","Diana","Dolly","Doris","Dorothea",
+      "Daisy","Deborah","Diana","Dolly","Doris","Dorothea",
       "Edith","Elfriede","Elisabeth","Elise","Elizabeth","Ella","Ellen","Elly","Elsbeth","Elsa","Else","Emilie","Emma","Erika","Erna","Ernestine","Eva",
       "Fanny","Flora","Florence","Franziska","Frida","Frieda",
       "Georgia","Georgina","Gerda","Gertrud","Gladys","Greta","Grete",
-      "Hanna","Hattie","Helen","Helene","Henrietta","Henriette","Herta","Hertha","Hilde","Hildegard",
+      "Hanna","Hattie","Hazel","Helen","Helene","Henrietta","Henriette","Herta","Hertha","Hilde","Hildegard",
       "Ida","Ilse","Irene","Irma",
       "Jane","Janet","Jacqueline","Jeanne","Jenny","Johanna","Josephine","Julia","Julie",
       "Kate","Käte","Käthe","Kathleen","Klara",
@@ -408,12 +412,12 @@ class Person < ActiveRecord::Base
 
   def sex
     return "female" if female?
-    return "object" if (self.thing? || self.group? || self.place?)
+    return "object" if inanimate_object?
     "male"
   end
 
   def possessive
-    return "its" if (self.thing? || self.group? || self.place?)
+    return "its" if inanimate_object?
     return "her" if self.female?
     return "his" if self.male?
     "his/her"
