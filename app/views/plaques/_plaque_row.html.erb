@@ -6,9 +6,11 @@
   <% end %>
   <% photo = plaque.main_photo %>
 <div class="row card">
-  <div class="col-xs-3">
-    <%= link_to image_tag(photo.thumbnail_url, {:class => 'card-img-top img-thumbnail', :width => '100%'}) , plaque_path(plaque) if photo != nil %>
-  </div>
+  <%= link_to plaque_path(plaque) do %>
+    <div class="col-xs-3">
+      <%= image_tag(photo != nil ? photo.thumbnail_url : "NoPhotoSqr.png", {:class => 'card-img-top img-thumbnail', :width => '100%'}) %>
+    </div>
+  <% end %>
   <div class="col-xs-9">
     <h7 class="card-title"><%= plaque.inscription %></h7>
     <% if plaque.foreign? && plaque.inscription_in_english %>
