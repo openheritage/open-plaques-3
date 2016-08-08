@@ -76,8 +76,7 @@
     </div>
   <% end %>
 
-  <% if @person.group? %>
-    <h2>Group</h2>
+  <% if @person.group? && @person.non_family_relationships.size > 0 %>
     <div class="row">
       <div class="tree">
         <ul>
