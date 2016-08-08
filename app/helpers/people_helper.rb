@@ -11,11 +11,15 @@ module PeopleHelper
     elsif person.type != 'man'
       list << person.type
     end
-    if person.roles.size > 0
-      person.straight_roles.each do |personal_role|
-        list <<  dated_role(personal_role)
+    person.straight_roles.each do |personal_role|
+      list <<  dated_role(personal_role)
+    end
+    if person.inanimate_object?
+      person.relationships.each do |relationship|
+        list << link_to(relationship.role.name, relationship.role)
       end
     end
+    list.uniq!
     content_tag("span", list.to_sentence.html_safe, {:id => "person-" + person.id.to_s + "-roles"})
   end
 
