@@ -26,15 +26,22 @@
   </div>
 
   <div class="row">
-    <h4><%= roles_list(@person) %></h4>
+    <h4 class="col-xs-12"><%= icon('user') if @person.person?%>
+    <%= icon('paw') if @person.animal? %>
+    <%= icon('users') if @person.group? %>
+    <%= icon('building') if @person.place? %>
+    <%= icon('map-marker') if @person.thing? %>
+    <%= roles_list(@person) %></h4>
   </div>
 
   <div class="row">
-    <p><%= "Died aged" if (@person.person? || @person.thing? || @person.animal?) && @person.dead? %><%= "Closed aged" if @person.place? && @person.dead? %><%= "Aged" if @person.alive? && @person.age%> <%= @person.age.to_s if @person.age%>
-      <%= link_to("Find A Grave", @person.find_a_grave_url) unless @person.find_a_grave_id.blank? %>
-    </p>
-    <%= simple_format(@person.introduction) if @person.introduction %>
-    <%= content_tag("p", link_to(icon('external-link') + "Wikipedia", @person.default_wikipedia_url, :target => '_blank')) unless @person.default_wikipedia_url.blank? %>
+    <div class="col-xs-12">
+      <p><%= "Died aged" if (@person.person? || @person.thing? || @person.animal?) && @person.dead? %><%= "Closed aged" if @person.place? && @person.dead? %><%= "Aged" if @person.alive? && @person.age%> <%= @person.age.to_s if @person.age%>
+        <%= link_to("Find A Grave", @person.find_a_grave_url) unless @person.find_a_grave_id.blank? %>
+      </p>
+      <%= simple_format(@person.introduction) if @person.introduction %>
+      <%= content_tag("p", link_to(icon('external-link') + "Wikipedia", @person.default_wikipedia_url, :target => '_blank')) unless @person.default_wikipedia_url.blank? %>
+    </div>
   </div>
 
   <% if @person.person? %>
