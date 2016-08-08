@@ -77,21 +77,10 @@
   <% end %>
 
   <% if @person.group? && @person.non_family_relationships.size > 0 %>
-    <div class="row">
-      <div class="tree">
-        <ul>
-          <li>
-            <a href='#'><%= @person.name_and_dates %></a>
-            <% if @person.non_family_relationships.size > 0 %>
-              <ul>
-                <% @person.non_family_relationships.each do |relationship| %>
-                  <li><%= link_to(relationship.related_person.name_and_dates, relationship.related_person) %></li>
-                <% end %>
-              </ul>
-            <% end %>
-          </li>
-        </ul>
-      </div>
+    <div class="card-columns">
+      <% @person.non_family_relationships.each do |relationship| %>
+        <%= render relationship.related_person %>
+      <% end %>
     </div>
   <% end %>
 
