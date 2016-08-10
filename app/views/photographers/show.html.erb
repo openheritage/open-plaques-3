@@ -3,5 +3,9 @@
 <% content_for(:page_subhead) {pluralize(@photographer.photos.size,'photo')} %>
 
 <div class="card-columns">
-  <%= render @photographer.photos %>
+  <% @photographer.photos.each do |photo| %>
+    <%= link_to photo do %>
+      <%= render photo %>
+    <% end %>
+  <% end %>
 </div>
