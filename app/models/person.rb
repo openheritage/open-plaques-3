@@ -117,6 +117,8 @@ class Person < ActiveRecord::Base
         dates += alive? ? "-present" : "-?"
       end
       dates += ")"
+    elsif died_in
+      dates = '(d.' + died_in.to_s + ')'
     end
   end
 
