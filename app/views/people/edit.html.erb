@@ -17,8 +17,8 @@
     <p>We use images from Wikimedia Commons to depict subjects as they are open licenced and free to use.</p>
     <p>
       Find a depiction image on
-      <%= link_to(icon('external-link') + 'Wikipedia', @person.default_wikipedia_url, :target => '_blank') %>
-      or
+      <%= link_to(icon('external-link') + 'Wikipedia', @person.default_wikipedia_url, :target => '_blank')  unless @person.default_wikipedia_url.blank? %>
+      <%= 'or' unless @person.default_wikipedia_url.blank? %>
       <%= link_to(icon('external-link') + 'Wikimedia Commons', 'https://commons.wikimedia.org/w/index.php?title=Special:Search&limit=20&offset=40&profile=default&search="' + @person.name + '"', :target => '_blank') %>
     </p>
     <p>
@@ -113,7 +113,7 @@
   <fieldset class="form-group row">
     <div class="col-sm-2">
       <%= f.label :wikipedia_url, :class => 'col-form-label' %>
-      <%= link_to(icon('external-link'), @person.default_wikipedia_url, :target => '_blank') %>
+      <%= link_to(icon('external-link'), @person.default_wikipedia_url, :target => '_blank')  unless @person.default_wikipedia_url.blank? %>
     </div>
     <div class="col-sm-10">
       <%= f.text_field :wikipedia_url, :class => 'form-control' %>
