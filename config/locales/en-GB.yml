@@ -280,7 +280,7 @@ en-GB:
       features_on: From the plaques...
       from_which_we_can_establish: ...we can establish that
       name: Name
-      display_name: with titles and letters is displayed as
+      display_name: with titles and letters (from roles) this is displayed as
       introduction: Introduction
       wikipedia_url: Wikipedia url
       wikipedia_comment: overrides the default generated one if it's incorrect. Set it to blank if there is no Wikipedia page.

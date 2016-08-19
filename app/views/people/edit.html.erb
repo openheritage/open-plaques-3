@@ -1,16 +1,20 @@
 <% content_for(:page_title) {t '.page_title', :person => @person.full_name} %>
 <% content_for(:title) do %>
   <%= t '.page_heading' %> <%= link_to @person.full_name, @person %>
+  <small><%= @person.dates %></small>
 <% end %>
 
 <h2>Depiction</h2>
 <div class="row">
   <div class="col-xs-2">
-    <img src="http://upload.wikimedia.org/wikipedia/commons/7/79/Wiki-commons.png"/>
+    <% if @person.main_photo %>
+      <%= link_to render(@person.main_photo), @person.main_photo %>
+    <% else %>
+      <%= link_to image_tag('http://upload.wikimedia.org/wikipedia/commons/7/79/Wiki-commons.png'), 'https://commons.wikimedia.org/w/index.php?title=Special:Search&limit=20&offset=40&profile=default&search="' + @person.name + '"', :target => '_blank' %>
+    <% end %>
   </div>
-  <div class="col-xs-7">
-    <p>We use images from Wikimedia Commons to depict subjects on Open Plaques as they are
-    open licenced and free to use.</p>
+  <div class="col-xs-10">
+    <p>We use images from Wikimedia Commons to depict subjects as they are open licenced and free to use.</p>
     <p>
       Find a depiction image on
       <%= link_to(icon('external-link') + 'Wikipedia', @person.default_wikipedia_url, :target => '_blank') %>
@@ -27,70 +31,128 @@
       <% end %>
     </p>
   </div>
-  <% if @person.main_photo %>
-    <div class="col-xs-3">
-      <%= link_to render(@person.main_photo), @person.main_photo %>
-    </div>
-  <% end %>
 </div>
 
+<h2>Name</h2>
 <%= form_for @person do |f| %>
   <fieldset class="form-group row">
-    <%= f.label :name, @person.possessive + " name " + @person.existence_word %>
-    <%= f.text_field :name %>
-    <%= t '.display_name' %> "<%= @person.full_name %>"
+    <%= f.label :name, @person.possessive + " name " + @person.existence_word, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.text_field :name, :class => 'form-control' %>
+      <%= t '.display_name' %> "<%= @person.full_name %>"
+    </div>
   </fieldset>
   <fieldset class="form-group row">
-    <%= f.label :aka %>
-    <%= f.text_field :aka %>
+    <%= f.label :aka, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.text_field :aka, :class => 'form-control' %>
+    </div>
   </fieldset>
   <fieldset class="form-group row">
-    <%= @person.possessive %> surname <%= @person.existence_word %> "<%= @person.surname %>" which <%= f.label :surname_starts_with, "starts with" %> <%= f.text_field :surname_starts_with, :maxlength => 1 %>
+    <div class="form-control-label col-sm-2">
+      <%= @person.possessive %> surname <%= @person.existence_word %>
+    </div>
+    <div class="col-sm-10">
+      <%= @person.surname %>
+    </div>
   </fieldset>
   <fieldset class="form-group row">
-    <%= f.label :gender %>
-    <%= f.text_field :gender, :maxlength => 1 %>
+    <%= f.label :surname_starts_with, @person.surname + " starts with", :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-1">
+      <%= f.text_field :surname_starts_with, :maxlength => 1, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <h2>Details</h2>
+  <fieldset class="form-group row">
+    <%= f.label :gender, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-1">
+      <%= f.text_field :gender, :maxlength => 1, :class => 'form-control' %>
+    </div>
   </fieldset>
   <fieldset class="form-group row">
-    <%= @person.personal_pronoun %> was <%= f.label :born_on, @person.creation_word %> <%= f.text_field :born_on, {:maxlength => "10"} %> and <%= f.label :died_on, @person.destruction_word %> <%= f.text_field :died_on, {:maxlength => "10"} %>
-    <%= "Died aged" if (@person.person? || @person.thing? || @person.animal?) && @person.dead? %><%= "Closed aged" if @person.place? && @person.dead? %><%= "Aged" if @person.alive? && @person.age%> <%= @person.age.to_s if @person.age%>
+    <%= f.label :born_on, @person.personal_pronoun + ' was ' + @person.creation_word, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-2">
+      <%= f.text_field :born_on, {:class => 'form-control', :maxlength => 10}  %>
+    </div>
   </fieldset>
   <fieldset class="form-group row">
-    <%= f.label :introduction %>
+    <%= f.label :died_on, 'and ' + @person.destruction_word, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-2">
+      <%= f.text_field :died_on, {:class => 'form-control', :maxlength => "10"} %>
+    </div>
+  </fieldset>
+  <% if @person.age %>
+    <fieldset class="form-group row">
+      <div class="form-control-label col-sm-2">
+        <%= "Died aged" if (@person.person? || @person.thing? || @person.animal?) && @person.dead? %><%= "Closed aged" if @person.place? && @person.dead? %><%= "Aged" if @person.alive?%>
+      </div>
+      <div class="col-sm-2">
+        <%= @person.age.to_s %>
+      </div>
+    </fieldset>
+  <% end %>
+  <fieldset class="form-group row">
+    <%= f.label :introduction, :class => 'form-control-label' %>
     <%= f.text_area :introduction, :class => 'form-control', :rows => 6 %>
   </fieldset>
   <fieldset class="form-group row">
-    <%= f.label :wikipedia_url %>
-    <%= f.text_field :wikipedia_url %>
-    <%= t '.wikipedia_comment' %>
-  </fieldset>
-  <%= content_tag("p", "Read more about ".html_safe + link_to(@person.name, @person.default_wikipedia_url, :target => '_blank') + " on Wikipedia.".html_safe) unless @person.default_wikipedia_url.blank? %>
-  <fieldset class="form-group row">
-    <%= f.label :dbpedia_uri %>
-    <%= f.text_field :dbpedia_uri %>
-  </fieldset>
-  <fieldset class="form-group row">
-    <%= f.label :find_a_grave_id %>
-    <%= f.text_field :find_a_grave_id %>
-    <%= @person.find_a_grave_url unless @person.find_a_grave_id.blank? %>
+    <div class="col-sm-2">
+      <%= f.label :wikipedia_url, :class => 'form-control-label' %>
+      <%= link_to(icon('external-link'), @person.default_wikipedia_url, :target => '_blank') %>
+    </div>
+    <div class="col-sm-10">
+      <%= f.text_field :wikipedia_url, :class => 'form-control' %>
+      <%= t '.wikipedia_comment' %>
+    </div>
   </fieldset>
   <fieldset class="form-group row">
-    <%= f.label :ancestry_id %>
-    <%= f.text_field :ancestry_id %>
-    <%= @person.ancestry_url unless @person.ancestry_id.blank? %>
+    <div class="col-sm-2">
+      <%= f.label :dbpedia_uri, :class => 'form-control-label' %>
+      <%= link_to(icon('external-link'), @person.default_dbpedia_uri, :target => '_blank') %>
+    </div>
+    <div class="col-sm-10">
+      <%= f.text_field :dbpedia_uri, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <div class="col-sm-2">
+      <%= f.label :find_a_grave_id, :class => 'form-control-label' %>
+      <%= link_to(icon('external-link'), @person.find_a_grave_url, :target => '_blank') unless @person.find_a_grave_id.blank?%>
+    </div>
+    <div class="col-sm-10">
+      <%= f.text_field :find_a_grave_id, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <div class="col-sm-2">
+      <%= f.label :ancestry_id, :class => 'form-control-label' %>
+      <%= link_to(icon('external-link'), @person.ancestry_url, :target => '_blank') unless @person.ancestry_id.blank?%>
+    </div>
+    <div class="col-sm-10">
+      <%= f.text_field :ancestry_id, :class => 'form-control' %>
+  </div>
   </fieldset>
   <%= f.submit t('buttons.update'), :class => 'btn btn-primary' %>
 <% end %>
 
-<% if !@person.main_photo %>
-  <div class="row">
-    <div class="col-xs-2">
+<h2>Roles</h2>
+<div class="row">
+  <h4 class="col-xs-12"><%= icon('user') if @person.person?%>
+  <%= icon('paw') if @person.animal? %>
+  <%= icon('users') if @person.group? %>
+  <%= icon('building') if @person.place? %>
+  <%= icon('map-marker') if @person.thing? %>
+  <%= @person.personal_pronoun %> <%= @person.existence_word %> a
+  <%= roles_list(@person) %></h4>
+</div>
 
-    </div>
-    <div class="col-xs-10">
-    </div>
-  </div>
-<% end %>
+<div class="row">
+  <p><%= t '.features_on' %></p>
+</div>
+<%= render partial: 'plaques/plaque_row', :collection => @person.plaques, as: :plaque %>
+<div class="row">
+  <p><%= t '.from_which_we_can_establish' %></p>
+</div>
 
 <% @person.personal_roles.each do |personal_role| %>
   <div class="row">
@@ -104,16 +166,6 @@
     </span>
   </div>
 <% end %>
-
-<div class="row">
-  <p><%= t '.features_on' %></p>
-</div>
-<div class="card-columns">
-  <%= render @person.plaques.uniq %>
-</div>
-<div class="row">
-  <p><%= t '.from_which_we_can_establish' %></p>
-</div>
 
 <div class="row">
   <%= form_for @personal_role do |f| %>
