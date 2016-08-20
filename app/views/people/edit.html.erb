@@ -161,13 +161,15 @@
   <%= roles_list(@person) %></h4>
 </div>
 
-<div class="row">
-  <p><%= t '.features_on' %></p>
-</div>
-<%= render partial: 'plaques/plaque_row', :collection => @person.plaques, as: :plaque %>
-<div class="row">
-  <p><%= t '.from_which_we_can_establish' %></p>
-</div>
+<% if @person.plaques.size > 0 %>
+  <div class="row">
+    <p><%= t '.features_on' %></p>
+  </div>
+  <%= render partial: 'plaques/plaque_row', :collection => @person.plaques, as: :plaque %>
+  <div class="row">
+    <p><%= t '.from_which_we_can_establish' %></p>
+  </div>
+<% end %>
 
 <% @person.personal_roles.each do |personal_role| %>
   <div class="row">
