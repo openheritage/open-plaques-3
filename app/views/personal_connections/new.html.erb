@@ -40,8 +40,17 @@
       <div class="card-columns">
         <% @plaque.personal_connections.all.each do |connection| %>
           <div class="card">
-            <%= render connection %>
-            <%= button_to(t('buttons.unlink'), plaque_connection_path(@plaque, connection), :method => :delete, :class => 'btn btn-danger')%>
+            <%= render connection.person %>
+            <p class="card-text">
+              <%= connection.verb.name %>
+              here
+              <% if connection.single_year? %>
+                <%= "in " + connection.from if connection.from != '' %>
+              <% else %>
+                <%= "from " + connection.from if connection.from != '' %><%= " to " + connection.to  if connection.to != ''%>
+              <% end %>
+            </p>
+            <%= button_to(t('buttons.unlink'), plaque_connection_path(@plaque, connection), :method => :delete, :class => 'btn btn-danger') %>
           </div>
         <% end %>
       </div>
