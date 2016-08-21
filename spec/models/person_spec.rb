@@ -393,7 +393,7 @@ describe Person do
         @person.died_on = Date.new(2009, 1, 1)
       end
       it 'displays a death date' do
-        expect(@person.dates).to eq(nil)
+        expect(@person.dates).to eq('d.2009')
       end
     end
 
