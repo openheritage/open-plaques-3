@@ -22,7 +22,7 @@
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_role_path(@role)} %>
 
 <div class="card-columns">
-  <%= render @role.people.uniq %>
+  <%= render @role.personal_roles %>
 </div>
 <% if @role.related_roles.size > 0 %>
   <div class="row">
