@@ -47,14 +47,6 @@ module PeopleHelper
     return r
   end
 
-#  def dbpedia_url(person)
-#    unless person.dbpedia_url.empty?
-#      dbpedia_url
-#    else
-#      person.default_wikipedia_url.gsub(/[a-zA-Z]{0,2}\.wikipedia\.org\/wiki\//, "dbpedia.org/resource/")
-#    end
-#  end
-
   # select the very first html paragraph
   def wikipedia_summary(url)
     doc = Nokogiri::HTML(open(url))
@@ -108,25 +100,7 @@ module PeopleHelper
     end
   end
 
-  def verbs(person, plaque)
-    verbs = Array.new
-    connections = person.personal_connections.where(:plaque_id => plaque)
-    connections.each do |personal_connection|
-      years = ""
-      if personal_connection.from != ""
-        years += "(" + personal_connection.from
-      end
-      if personal_connection.to != "" and personal_connection.to != personal_connection.from
-        years += "-" + personal_connection.to
-      end
-      if years != ""
-        years += ")"
-      end
-      verbs << personal_connection.verb.name + " " + years
-    end
-    verbs
-  end
-
+  #TODO helper for people_alive_in(year)
   def datespan year
     ran = rand 3
     puts 'random = ' + ran.to_s

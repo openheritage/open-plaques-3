@@ -216,22 +216,6 @@ module PlaquesHelper
     end
   end
 
-  def personal_connection_path(pc)
-    url_for(:controller => "PersonalConnections", :action => :show, :id => pc.id, :plaque_id => pc.plaque_id)
-  end
-
-  def personal_connections_path(plaque)
-    url_for(:controller => "PersonalConnections", :action => :index, :plaque_id => plaque.id)
-  end
-
-  def edit_personal_connection_path(pc)
-    url_for(:controller => "PersonalConnections", :action => :edit, :id => pc.id, :plaque_id => pc.plaque_id)
-  end
-
-  def new_personal_connection_path(plaque)
-    url_for(:controller => "PersonalConnections", :action => :new, :plaque_id => plaque.id)
-  end
-
   def erected_date(plaque)
     if plaque.erected_at?
       if plaque.erected_at.day == 1 && plaque.erected_at.month == 1
@@ -262,7 +246,7 @@ module PlaquesHelper
   end
 
   def linked_inscription(plaque)
-    inscription = plaque.inscription.gsub('\r',' ').gsub('\n',' ').strip.gsub('  ',' ')
+    inscription = plaque.inscription.split.join(' ').strip.gsub('  ',' ')
     people = plaque.people
     if people
       reduced_inscription = inscription
