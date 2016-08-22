@@ -50,10 +50,13 @@
       <div class="tree">
         <ul>
           <li>
-            <%= @person.father ? link_to(@person.father, @person.father) : link_to('father?', '#') %>
+            <%= @person.father ? link_to(@person.father, @person.father) : link_to('father?', '#') %> <%= @person.mother ? link_to(@person.mother, @person.mother) : link_to('mother?', '#') %>
             <ul>
               <li>
                 <%= link_to(@person) %>
+                <% @person.spouses.each do |spouse| %>
+                  <%= link_to(spouse, spouse) %>
+                <% end %>
                 <% if @person.has_children? %>
                   <ul>
                     <% @person.children.each do |child| %>
@@ -62,15 +65,11 @@
                   </ul>
                 <% end %>
               </li>
-              <% @person.spouses.each do |spouse| %>
-                <li><%= link_to(spouse, spouse) %></li>
-              <% end %>
               <% @person.siblings.each do |sibling| %>
                 <li><%= link_to(sibling, sibling) %></li>
               <% end %>
             </ul>
           </li>
-          <li><%= @person.mother ? link_to(@person.mother, @person.mother) : link_to('mother?', '#') %></li>
         </ul>
       </div>
     </div>
