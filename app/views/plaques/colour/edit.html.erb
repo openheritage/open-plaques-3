@@ -9,17 +9,10 @@
 <% end %>
 <%= render 'plaques/edit_bar', :plaque => @plaque %>
 
-<div class="row">
-  <div class="col-xs-12 col-sm-6">
-    <%= form_for @plaque do |f| %>
-      <fieldset class="form-group">
-        <%= f.label :colour_id, t('.colour_label') %>
-        <%= f.collection_select :colour_id, @colours, :id, :name, {:class => 'form-control', :include_blank => true} %>
-      </fieldset>
-      <%= f.submit t('buttons.save'), :class => 'btn btn-primary' %>
-    <% end %>
-  </div>
-  <div class="col-xs-12 col-sm-6">
-    <%= render @plaque.main_photo, :large => true if @plaque.main_photo %>
-  </div>
-</div>
+<%= form_for @plaque do |f| %>
+  <fieldset class="form-group">
+    <%= f.label :colour_id, t('.colour_label') %>
+    <%= f.collection_select :colour_id, @colours, :id, :name, {:class => 'form-control', :include_blank => true} %>
+  </fieldset>
+  <%= f.submit t('buttons.save'), :class => 'btn btn-primary' %>
+<% end %>

@@ -7,6 +7,7 @@ class PlaquesController < ApplicationController
   before_filter :find, :only => [:show, :flickr_search, :flickr_search_all, :update, :destroy, :edit]
 #	 before_filter :set_cache_header, :only => :index
 #  after_filter :set_access_control_headers, :only => :index
+  layout 'plaque_edit', :only => :edit
 
   def index
     conditions = {}

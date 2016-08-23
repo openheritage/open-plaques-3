@@ -1,8 +1,8 @@
-<%= render("shared/navbar") %>
+<%= render 'shared/navbar' %>
 <div class="container-fluid">
-  <%= render("shared/alerts") %>
-  <%= render("shared/page_header") %>
+  <%= render 'shared/alerts' %>
+  <%= render 'shared/page_header' %>
   <%= yield %>
-  <%= render("shared/footer") %>
+  <%= render 'shared/footer' %>
 </div>
-<% parent_layout "base" %>
+<% parent_layout 'base' %>
