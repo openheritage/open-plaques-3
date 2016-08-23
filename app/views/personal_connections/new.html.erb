@@ -33,78 +33,70 @@
   }
 }
 </style>
-<div class="row">
-  <div class="col-xs-12 <% if @plaque.main_photo %>col-sm-6<% end %>">
-    <% if @plaque.personal_connections.count > 0 %>
-      <h2>Connections</h2>
-      <div class="card-columns">
-        <% @plaque.personal_connections.all.each do |connection| %>
-          <div class="card">
-            <%= render connection.person %>
-            <p class="card-text">
-              <%= connection.verb.name %>
-              here
-              <% if connection.single_year? %>
-                <%= "in " + connection.from if connection.from != '' %>
-              <% else %>
-                <%= "from " + connection.from if connection.from != '' %><%= " to " + connection.to  if connection.to != ''%>
-              <% end %>
-            </p>
-            <%= button_to(t('buttons.unlink'), plaque_connection_path(@plaque, connection), :method => :delete, :class => 'btn btn-danger') %>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
 
-    <h2>New connection</h2>
-    <%= form_for @personal_connection, :url => plaque_connections_path(@plaque) do |f| %>
-      <p><%= t '.from_which_we_can_establish' %></p>
-      <fieldset class="form-group">
-        <%= text_field_tag :person_name, "", {:class => 'form-control', :placeholder => "John Smith"} %>
-        <%= f.hidden_field :person_id %>
-        <%= link_to(icon('user') + t('.new_person'), "/people/new") %>
-      </fieldset>
-      <% if @common_verbs %>
-        <fieldset>
-          <% @common_verbs.each do |verb| %>
-            <div class="row radio">
-              <%= f.radio_button :verb_id, verb.id %>
-              <%= f.label "verb_id_" + verb.id.to_s, verb.name, :class => verb.name.downcase %>
-            </div>
+<% if @plaque.personal_connections.count > 0 %>
+  <h2>Connections</h2>
+  <div class="card-columns">
+    <% @plaque.personal_connections.all.each do |connection| %>
+      <div class="card">
+        <%= render connection.person %>
+        <p class="card-text">
+          <%= connection.verb.name %>
+          here
+          <% if connection.single_year? %>
+            <%= "in " + connection.from if connection.from != '' %>
+          <% else %>
+            <%= "from " + connection.from if connection.from != '' %><%= " to " + connection.to  if connection.to != ''%>
           <% end %>
-        </fieldset>
-      <% end %>
-      <fieldset class="form-group">
-        <%= f.collection_select :verb_id, @verbs, :id, :name, {:selected => "222"}, {:class => 'form-control', "style" => "width:400px" } %>
-        <%= link_to(t('.new_verb'), "/verbs/new") %>
-      </fieldset>
-      <fieldset class="form-group">
-        <%= t('.at') + ' ' + @personal_connection.full_address if @personal_connection.full_address %>
-      </fieldset>
-      <fieldset class="form-group row">
-        <%= f.label :started_at, :class => 'col-form-label col-sm-2' %>
-        <div class="col-sm-10">
-          <%= f.text_field :started_at, :class => 'form-control' %>
-        </div>
-      </fieldset>
-      <fieldset class="form-group row">
-        <%= f.label :ended_at, :class => 'col-form-label col-sm-2' %>
-        <div class="col-sm-10">
-          <%= f.text_field :ended_at, :class => 'form-control' %>
-        </div>
-      </fieldset>
-      <div class="form-group">
-        <%= t '.reminder' %>
+        </p>
+        <%= button_to(t('buttons.unlink'), plaque_connection_path(@plaque, connection), :method => :delete, :class => 'btn btn-danger') %>
       </div>
-      <%= f.submit t('buttons.add'), :class => 'btn btn-primary' %>
     <% end %>
   </div>
-  <% if @plaque.main_photo %>
-    <div class="col-xs-12 col-sm-6">
-      <%= render @plaque.main_photo, :large => true %>
-    </div>
+<% end %>
+
+<h2>New connection</h2>
+<%= form_for @personal_connection, :url => plaque_connections_path(@plaque) do |f| %>
+  <p><%= t '.from_which_we_can_establish' %></p>
+  <fieldset class="form-group">
+    <%= text_field_tag :person_name, "", {:class => 'form-control', :placeholder => "John Smith"} %>
+    <%= f.hidden_field :person_id %>
+    <%= link_to(icon('user') + t('.new_person'), "/people/new") %>
+  </fieldset>
+  <% if @common_verbs %>
+    <fieldset>
+      <% @common_verbs.each do |verb| %>
+        <div class="row radio">
+          <%= f.radio_button :verb_id, verb.id %>
+          <%= f.label "verb_id_" + verb.id.to_s, verb.name, :class => verb.name.downcase %>
+        </div>
+      <% end %>
+    </fieldset>
   <% end %>
-</div>
+  <fieldset class="form-group">
+    <%= f.collection_select :verb_id, @verbs, :id, :name, {:selected => "222"}, {:class => 'form-control', "style" => "width:400px" } %>
+    <%= link_to(t('.new_verb'), "/verbs/new") %>
+  </fieldset>
+  <fieldset class="form-group">
+    <%= t('.at') + ' ' + @personal_connection.full_address if @personal_connection.full_address %>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :started_at, :class => 'col-form-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.text_field :started_at, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :ended_at, :class => 'col-form-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.text_field :ended_at, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <div class="form-group">
+    <%= t '.reminder' %>
+  </div>
+  <%= f.submit t('buttons.add'), :class => 'btn btn-primary' %>
+<% end %>
 
 <script type="text/javascript">
   $(function() {
