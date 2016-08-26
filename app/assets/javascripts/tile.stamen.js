@@ -7,16 +7,16 @@
 var SUBDOMAINS = "a. b. c. d.".split(" "),
     MAKE_PROVIDER = function(layer, type, minZoom, maxZoom) {
         return {
-            "url":          ["http://{S}tile.stamen.com/", layer, "/{Z}/{X}/{Y}.", type].join(""),
+            "url":          ["https://stamen-tiles-{S}a.ssl.fastly.net/", layer, "/{Z}/{X}/{Y}.", type].join(""),
             "type":         type,
             "subdomains":   SUBDOMAINS.slice(),
             "minZoom":      minZoom,
             "maxZoom":      maxZoom,
             "attribution":  [
-                'Map tiles by <a href="http://stamen.com/">Stamen Design</a>, ',
-                'under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. ',
-                'Data by <a href="http://openstreetmap.org/">OpenStreetMap</a>, ',
-                'under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.'
+                'Map tiles by <a href="https://stamen.com/">Stamen Design</a>, ',
+                'under <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. ',
+                'Data by <a href="https://openstreetmap.org/">OpenStreetMap</a>, ',
+                'under <a href="https://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.'
             ].join("")
         };
     },
@@ -26,7 +26,7 @@ var SUBDOMAINS = "a. b. c. d.".split(" "),
         "terrain-classic": MAKE_PROVIDER("terrain-classic", "png", 0, 18),
         "watercolor":   MAKE_PROVIDER("watercolor", "jpg", 1, 18),
         "trees-cabs-crime": {
-            "url": "http://{S}.tiles.mapbox.com/v3/stamen.trees-cabs-crime/{Z}/{X}/{Y}.png",
+            "url": "https://{S}.tiles.mapbox.com/v3/stamen.trees-cabs-crime/{Z}/{X}/{Y}.png",
             "type": "png",
             "subdomains": "a b c d".split(" "),
             "minZoom": 11,
@@ -36,15 +36,15 @@ var SUBDOMAINS = "a. b. c. d.".split(" "),
                 {"lat": 37.684, "lon": -122.313}
             ],
             "attribution": [
-                'Design by Shawn Allen at <a href="http://stamen.com/">Stamen</a>.',
-                'Data courtesy of <a href="http://fuf.net/">FuF</a>,',
-                '<a href="http://www.yellowcabsf.com/">Yellow Cab</a>',
-                '&amp; <a href="http://sf-police.org/">SFPD</a>.'
+                'Design by Shawn Allen at <a href="https://stamen.com/">Stamen</a>.',
+                'Data courtesy of <a href="https://fuf.net/">FuF</a>,',
+                '<a href="https://www.yellowcabsf.com/">Yellow Cab</a>',
+                '&amp; <a href="https://sf-police.org/">SFPD</a>.'
             ].join(" ")
         }
     };
 
-PROVIDERS["terrain-classic"].url = "http://{S}tile.stamen.com/terrain/{Z}/{X}/{Y}.png";
+PROVIDERS["terrain-classic"].url = "https://stamen-tiles-{S}a.ssl.fastly.net//terrain/{Z}/{X}/{Y}.png";
 
 // set up toner and terrain flavors
 setupFlavors("toner", ["hybrid", "labels", "lines", "background", "lite"]);
@@ -75,10 +75,10 @@ for (var i = 0; i < odbl.length; i++) {
 
     PROVIDERS[key].retina = true;
     PROVIDERS[key].attribution = [
-        'Map tiles by <a href="http://stamen.com/">Stamen Design</a>, ',
-        'under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. ',
-        'Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, ',
-        'under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.'
+        'Map tiles by <a href="https://stamen.com/">Stamen Design</a>, ',
+        'under <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. ',
+        'Data by <a href="https://openstreetmap.org">OpenStreetMap</a>, ',
+        'under <a href="https://www.openstreetmap.org/copyright">ODbL</a>.'
     ].join("");
 }
 
@@ -167,7 +167,7 @@ if (typeof MM === "object") {
 
 /*
  * StamenTileLayer for Leaflet
- * <http://leaflet.cloudmade.com/>
+ * <https://leaflet.cloudmade.com/>
  *
  * Tested with version 0.3 and 0.4, but should work on all 0.x releases.
  */
@@ -200,7 +200,7 @@ if (typeof L === "object") {
 
 /*
  * StamenTileLayer for OpenLayers
- * <http://openlayers.org/>
+ * <https://openlayers.org/>
  *
  * Tested with v2.1x.
  */
@@ -212,7 +212,7 @@ if (typeof OpenLayers === "object") {
         });
     }
 
-    // based on http://www.bostongis.com/PrinterFriendly.aspx?content_name=using_custom_osm_tiles
+    // based on https://www.bostongis.com/PrinterFriendly.aspx?content_name=using_custom_osm_tiles
     OpenLayers.Layer.Stamen = OpenLayers.Class(OpenLayers.Layer.OSM, {
         initialize: function(name, options) {
             var provider = getProvider(name),
@@ -230,8 +230,8 @@ if (typeof OpenLayers === "object") {
                 "numZoomLevels":        provider.maxZoom,
                 "buffer":               0,
                 "transitionEffect":     "resize",
-                // see: <http://dev.openlayers.org/apidocs/files/OpenLayers/Layer/OSM-js.html#OpenLayers.Layer.OSM.tileOptions>
-                // and: <http://dev.openlayers.org/apidocs/files/OpenLayers/Tile/Image-js.html#OpenLayers.Tile.Image.crossOriginKeyword>
+                // see: <https://dev.openlayers.org/apidocs/files/OpenLayers/Layer/OSM-js.html#OpenLayers.Layer.OSM.tileOptions>
+                // and: <https://dev.openlayers.org/apidocs/files/OpenLayers/Tile/Image-js.html#OpenLayers.Tile.Image.crossOriginKeyword>
                 "tileOptions": {
                     "crossOriginKeyword": null
                 },
@@ -249,7 +249,7 @@ if (typeof OpenLayers === "object") {
 if (typeof google === "object" && typeof google.maps === "object") {
 
     // Extending Google class based on a post by Bogart Salzberg of Portland Webworks,
-    // http://www.portlandwebworks.com/blog/extending-googlemapsmap-object
+    // https://www.portlandwebworks.com/blog/extending-googlemapsmap-object
     google.maps.ImageMapType = (function(_constructor){
         var f = function() {
             if (!arguments.length) {
