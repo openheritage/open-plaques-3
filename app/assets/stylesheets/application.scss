@@ -50,6 +50,14 @@ body {
   }
 }
 
+// everything except jumbotron gets a bit of padding
+.header,
+.row,
+.footer {
+  padding-right: 1rem;
+  padding-left: 1rem;
+}
+
 // Postion loading spinner at bottom right
 #nprogress .spinner {
   bottom: 15px;
