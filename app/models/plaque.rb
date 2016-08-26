@@ -291,13 +291,30 @@ class Plaque < ActiveRecord::Base
   end
 
   def inscription_preferably_in_english
-    inscription_in_english && inscription_in_english > "" ? inscription_in_english : inscription
+    translate
+    inscription_in_english && !inscription_in_english.blank? ? inscription_in_english : inscription
   end
 
   def erected?
     return false if erected_at? && erected_at.year > Date.today.year
-    return false if erected_at? &&erected_at.day!=1 && erected_at.month!=1 && erected_at > Date.today
+    return false if erected_at? && erected_at.day!=1 && erected_at.month!=1 && erected_at > Date.today
     true
+  end
+
+  def translate
+    if foreign? && inscription_in_english.blank? && language.alpha2 == "de"
+      inscription_in_english = inscription
+      inscription_in_english.gsub!('Hier wohnte','Here lived')
+      inscription_in_english.gsub!('jg.','born')
+      inscription_in_english.gsub!('deportiert','deported')
+      inscription_in_english.gsub!('Deportiert','deported')
+      inscription_in_english.gsub!('ermordet','murdered')
+      inscription_in_english.gsub!('Ermordet','murdered')
+      inscription_in_english.gsub!('geb.','nee')
+      inscription_in_english.gsub!('geb.','nee')
+      inscription_in_english.gsub!('geb.','nee')
+      inscription_in_english.gsub!('geb.','nee')
+    end
   end
 
   def Plaque.tile(zoom, xtile, ytile, options)

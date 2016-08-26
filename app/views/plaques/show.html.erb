@@ -6,11 +6,11 @@
   <span id="facebook_like_button"><iframe src="http://www.facebook.com/plugins/like.php?href=<%= plaque_path(@plaque, :only_path => false) %>&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action=like&amp;font&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:75px; height:20px; text-align:right;" allowTransparency="true"></iframe></span>
   <% if @plaque.foreign? %>
     <div class="row">
-      <% if @plaque.inscription_in_english %>
+      <% if !@plaque.inscription_in_english.blank? %>
         <h7><%= t '.english_translation' %>: "<%= @plaque.inscription_in_english %>"</h7>
       <% else %>
         <div class="goog-trans-control"></div>
-        <h6 class="goog-trans-section" lang=""><%= @plaque.inscription %></h6>
+        <h6 class="goog-trans-section" lang=""><%= @plaque.inscription_preferably_in_english %></h6>
         <script>
           function googleSectionalElementInit() {
             new google.translate.SectionalElement({
@@ -29,7 +29,7 @@
 
 <div class="row">
   <div class="col-xs-12 col-md-8">
-    <div class="container main-photo">
+    <div class="container">
       <div class="col-xs-12">
         <%= render @plaque.main_photo, large: true if @plaque.main_photo %>
       </div>
