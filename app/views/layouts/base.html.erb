@@ -12,7 +12,6 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <%= stylesheet_link_tag "application" %>
     <%= javascript_include_tag 'application' %>
-    <%= javascript_include_tag 'https://maps.stamen.com/js/tile.stamen.js?v1.3.0' %>
     <%= javascript_include_tag 'https://openlayers.org/dev/OpenLayers.js' if @map %>
     <%= tag("link", :rel => "shortcut icon", :href => image_path("openplaques-icon.png"))%>
     <%= csrf_meta_tags %>
