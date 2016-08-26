@@ -3,7 +3,7 @@
   <%= linked_inscription @plaque %>
 <% end %>
 <% content_for :page_subhead do %>
-  <span id="facebook_like_button"><iframe src="http://www.facebook.com/plugins/like.php?href=<%= plaque_path(@plaque, :only_path => false) %>&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action=like&amp;font&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:75px; height:20px; text-align:right;" allowTransparency="true"></iframe></span>
+  <span id="facebook_like_button"><iframe src="https://www.facebook.com/plugins/like.php?href=<%= plaque_path(@plaque, :only_path => false) %>&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action=like&amp;font&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:75px; height:20px; text-align:right;" allowTransparency="true"></iframe></span>
   <% if @plaque.foreign? %>
     <div class="row">
       <% if !@plaque.inscription_in_english.blank? %>
@@ -20,7 +20,7 @@
             }, 'google_sectional_element');
           }
         </script>
-        <script src="http://translate.google.com/translate_a/element.js?cb=googleSectionalElementInit&ug=section&hl=en"></script>
+        <script src="https://translate.google.com/translate_a/element.js?cb=googleSectionalElementInit&ug=section&hl=en"></script>
       <% end %>
     </div>
   <% end %>

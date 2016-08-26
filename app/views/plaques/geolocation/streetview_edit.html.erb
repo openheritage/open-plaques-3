@@ -8,7 +8,7 @@
   <br/>
   <%= render @plaque %>
   <%= form_for(@plaque) do |f| %>
-	<p>Find <%= @plaque.address %> on <a href="http://maps.google.co.uk/maps?q=<%= @plaque.location.name if @plaque.location %>,<%= @plaque.area.name if @plaque.area %>&z=18" target="_new">Google Maps</a>, move around until the plaque is in front of you, click on the link button to copy the Streetview url and paste it in below. If you are sure that it is more-or-less the right address but cannot actually see it then you can still tell us.</p>
+	<p>Find <%= @plaque.address %> on <a href="https://maps.google.co.uk/maps?q=<%= @plaque.location.name if @plaque.location %>,<%= @plaque.area.name if @plaque.area %>&z=18" target="_new">Google Maps</a>, move around until the plaque is in front of you, click on the link button to copy the Streetview url and paste it in below. If you are sure that it is more-or-less the right address but cannot actually see it then you can still tell us.</p>
 	<br/>
     <div class="edit_lat_long">
       <p><%= f.label :is_accurate_geolocation, "The plaque can be seen" %> <%= f.check_box :is_accurate_geolocation %></p>

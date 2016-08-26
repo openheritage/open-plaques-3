@@ -10,7 +10,7 @@
     <% if @person.main_photo %>
       <%= link_to render(@person.main_photo), @person.main_photo %>
     <% else %>
-      <%= link_to image_tag('http://upload.wikimedia.org/wikipedia/commons/7/79/Wiki-commons.png'), 'https://commons.wikimedia.org/w/index.php?title=Special:Search&limit=20&offset=40&profile=default&search="' + @person.name + '"', :target => '_blank' %>
+      <%= link_to image_tag('https://upload.wikimedia.org/wikipedia/commons/7/79/Wiki-commons.png'), 'https://commons.wikimedia.org/w/index.php?title=Special:Search&limit=20&offset=40&profile=default&search="' + @person.name + '"', :target => '_blank' %>
     <% end %>
   </div>
   <div class="col-xs-10">

@@ -5,16 +5,16 @@
 
 <%= form_for @plaque do |f| %>
   <% if current_user %>
-    <p><%= label_tag(:address) %> <%= f.text_field(:address, size: 100) %> <a href="http://maps.google.com/maps?q=<%= @plaque.full_address %>&z=18" target="_new">on Google Maps</a></p>
+    <p><%= label_tag(:address) %> <%= f.text_field(:address, size: 100) %> <a href="https://maps.google.com/maps?q=<%= @plaque.full_address %>&z=18" target="_new">on Google Maps</a></p>
     <p><%= f.label :area_id, "It's in" %> <%= f.collection_select :area_id, @areas, :id, :full_name, {:include_blank => true} %></p>
   <% else %>
-    <p>Find the address '<%= @plaque.full_address %>' <a href="http://maps.google.com/maps?q=<%= @plaque.full_address %>&z=18" target="_new">on Google Maps</a></p>
+    <p>Find the address '<%= @plaque.full_address %>' <a href="https://maps.google.com/maps?q=<%= @plaque.full_address %>&z=18" target="_new">on Google Maps</a></p>
   <% end %>
   <div class="edit_lat_long">
     <p><%= label_tag(:streetview_url, "OpenStreetMap/Google/Geohack url:") %> <%= text_field_tag(:streetview_url, ' ', size: 100) %></p>
     <p>
       <%= f.label :latitude %> <%= f.text_field :latitude, :readonly => !current_user %>
-      <%= f.label :longitude %> <%= f.text_field :longitude, :readonly => !current_user %> <a href="http://maps.google.com/maps?q=<%= @plaque.latitude %>,<%= @plaque.longitude %>&z=18" target="_new">on Google Maps</a>
+      <%= f.label :longitude %> <%= f.text_field :longitude, :readonly => !current_user %> <a href="https://maps.google.com/maps?q=<%= @plaque.latitude %>,<%= @plaque.longitude %>&z=18" target="_new">on Google Maps</a>
     </p>
     <p>I am certain that this location is accurate <%= f.check_box :is_accurate_geolocation %> because it was located from a geocoded photo, or I have seen this plaque in Google Streetview/real life </p>
     <p><%= f.submit "Update", :class => :button  %></p>
