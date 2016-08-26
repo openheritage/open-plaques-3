@@ -13,7 +13,9 @@
 <div class="card-columns">
   <% @plaque.photos.detail_order.each do |photo| %>
     <div class="card">
-      <%= link_to(thumbnail_img(photo), photo_url(photo), :class => 'photographer_thumb') %>
+      <%= link_to photo_url(photo) do %>
+        <% render photo %>
+      <% end %>
       <span>By <%= link_to photo.photographer, photographer_url(photo.photographer.gsub(".","_").gsub("/","_")) if photo.photographer rescue photo.photographer %></span><br/>
       <%= form_for photo do |f| %>
         <p>This is a <%= f.collection_select :shot, Photo.shots, :to_s, :to_s, :include_blank => true %></p>
