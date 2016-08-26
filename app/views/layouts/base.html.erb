@@ -10,7 +10,6 @@
     <meta charset="utf8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/css/bootstrap.css">
     <%= stylesheet_link_tag "application" %>
     <%= javascript_include_tag 'application' %>
     <%= javascript_include_tag 'http://maps.stamen.com/js/tile.stamen.js?v1.3.0' %>
@@ -28,6 +27,5 @@
   <body>
     <%= render 'home/development_message' if Rails.env == 'development' %>
     <%= yield %>
-    <script src="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/js/bootstrap.js"></script>
   </body>
 </html>
