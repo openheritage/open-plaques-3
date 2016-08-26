@@ -303,17 +303,18 @@ class Plaque < ActiveRecord::Base
 
   def translate
     if foreign? && inscription_in_english.blank? && language.alpha2 == "de"
-      inscription_in_english = inscription
-      inscription_in_english.gsub!('Hier wohnte','Here lived')
-      inscription_in_english.gsub!('jg.','born')
-      inscription_in_english.gsub!('deportiert','deported')
-      inscription_in_english.gsub!('Deportiert','deported')
-      inscription_in_english.gsub!('ermordet','murdered')
-      inscription_in_english.gsub!('Ermordet','murdered')
-      inscription_in_english.gsub!('geb.','nee')
-      inscription_in_english.gsub!('geb.','nee')
-      inscription_in_english.gsub!('geb.','nee')
-      inscription_in_english.gsub!('geb.','nee')
+      in_english = inscription
+      in_english = in_english.gsub('Hier wohnte','Here lived')
+      in_english = in_english.gsub('jg.','born')
+      in_english = in_english.gsub('deportiert','deported')
+      in_english = in_english.gsub('Deportiert','deported')
+      in_english = in_english.gsub('ermordet','murdered')
+      in_english = in_english.gsub('Ermordet','murdered')
+      in_english = in_english.gsub('geb.','nee')
+      in_english = in_english.gsub('geb.','nee')
+      in_english = in_english.gsub('geb.','nee')
+      in_english = in_english.gsub('geb.','nee')
+      self.inscription_in_english = in_english
     end
   end
 
