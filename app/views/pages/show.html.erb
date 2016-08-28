@@ -3,5 +3,5 @@
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_page_path(@page.slug)} %>
 
 <div class="row">
-  <%= simple_format(@page.body) %>
+  <%= markdown(@page.body) %>
 </div>
