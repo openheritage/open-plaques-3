@@ -165,7 +165,7 @@
   <div class="row">
     <p><%= t '.features_on' %></p>
   </div>
-  <%= render partial: 'plaques/plaque_row', :collection => @person.plaques, as: :plaque %>
+  <%= render partial: 'plaques/plaque_row', :collection => @person.plaques.uniq, as: :plaque %>
   <div class="row">
     <p><%= t '.from_which_we_can_establish' %></p>
   </div>
