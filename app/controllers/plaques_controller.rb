@@ -48,7 +48,7 @@ class PlaquesController < ApplicationController
     elsif params[:data] && params[:data] == "basic"
       @plaques = Plaque.all(:select => [:id, :latitude, :longitude, :inscription])
     else
-      limit = 1000000000000
+#      limit = 1000000000000
       @plaques = Plaque.where(conditions).order("created_at DESC").limit(limit).preload(:language, :organisations, :colour, [:area => :country])
     end
 
