@@ -3,16 +3,48 @@
 
 <% if @places.count > 0 %>
   <h2><%= pluralize @places.count,'place' %> matching '<%= @phrase %>'</h2>
-  <div class="card-columns">
-    <%= render @places %>
-  </div>
+  <% if @places.count < 3 %>
+    <div class="row">
+      <% @places.each do |place| %>
+        <div class="col-xs-6 col-sm-4 col-md-3"><%= render place %></div>
+      <% end %>
+    </div>
+  <% elsif @places.count < 11 %>
+    <div class="row">
+      <% cols = (12 / @places.count).ceil %>
+      <% cols = [cols,2].max %>
+      <% @places.each do |place| %>
+        <div class="col-xs-6 col-sm-<%= cols %>"><%= render place %></div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="card-columns">
+      <%= render @places %>
+    </div>
+  <% end %>
 <% end %>
 
 <% if @people.count > 0 %>
   <h2><%= pluralize @people.count,'subject' %> matching '<%= @phrase %>'</h2>
-  <div class="card-columns">
-    <%= render @people %>
-  </div>
+  <% if @people.count < 3 %>
+    <div class="row">
+      <% @people.each do |person| %>
+        <div class="col-xs-6 col-sm-4 col-md-3"><%= render person %></div>
+      <% end %>
+    </div>
+  <% elsif @people.count < 8 %>
+    <div class="row">
+      <% cols = (12 / @people.count).ceil %>
+      <% cols = [cols,2].max %>
+      <% @people.each do |person| %>
+        <div class="col-xs-6 col-sm-<%= cols %>"><%= render person %></div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="card-columns">
+      <%= render @people %>
+    </div>
+  <% end %>
 <% end %>
 
 <% if @plaques.count > 0 %>
