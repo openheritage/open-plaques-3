@@ -1,5 +1,10 @@
 <% content_for(:page_title) {t '.page_title', :plaque => @plaque.id.to_s } %>
-<% content_for(:title) {linked_inscription @plaque}%>
+<% content_for(:title) do %>
+  <%= linked_inscription @plaque %>
+  <% if !@plaque.inscription_in_english.blank? %>
+    <br/><br/><%= t '.english_translation' %>: "<%= @plaque.inscription_in_english %>"
+  <% end %>
+<% end %>
 <%= render 'plaques/edit_bar', :plaque => @plaque %>
 
 <style>
