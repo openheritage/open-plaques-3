@@ -7,6 +7,22 @@
   </span>
 <% end %>
 
-<div class="card-columns">
-  <%= render @verb.personal_connections %>
-</div>
+<% if @verb.personal_connections.count < 3 %>
+  <div class="row">
+    <% @verb.personal_connections.each do |personal_connection| %>
+      <div class="col-xs-6 col-sm-4 col-md-3"><%= render personal_connection %></div>
+    <% end %>
+  </div>
+<% elsif @verb.personal_connections.count < 11 %>
+  <div class="row">
+    <% cols = (12 / @verb.personal_connections.count).ceil %>
+    <% cols = [cols,2].max %>
+    <% @verb.personal_connections.each do |personal_connection| %>
+      <div class="col-xs-6 col-sm-<%= cols %>"><%= render personal_connection %></div>
+    <% end %>
+  </div>
+<% else %>
+  <div class="card-columns">
+    <%= render @verb.personal_connections %>
+  </div>
+<% end %>
