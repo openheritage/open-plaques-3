@@ -31,9 +31,25 @@
       </style>
       <h5>Subjects</h5>
       <div class="subjects">
-        <div class="card-columns">
-          <%= render plaque.people %>
-        </div>
+        <% if plaque.people.count < 3 %>
+          <div class="row">
+            <% plaque.people.each do |person| %>
+              <div class="col-xs-6 col-sm-4 col-md-3"><%= render person %></div>
+            <% end %>
+          </div>
+        <% elsif plaque.people.count < 11 %>
+          <div class="row">
+            <% cols = (12 / plaque.people.count).ceil %>
+            <% cols = [cols,2].max %>
+            <% plaque.people.each do |person| %>
+              <div class="col-xs-6 col-sm-<%= cols %>"><%= render person %></div>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="card-columns">
+            <%= render plaque.people %>
+          </div>
+        <% end %>
       </div>
     <% end %>
   </div>
