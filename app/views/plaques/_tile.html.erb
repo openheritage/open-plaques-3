@@ -12,6 +12,9 @@
     <%= render photo %>
   <% else %>
     <%= image_tag('NoPhotoSqr.png', {:class => 'card-img-top img-responsive w-100'}) %>
+    <div class="card-block">
+      <h7 class="card-title"><%= plaque.inscription %></h7>
+    </div>
   <% end %>
 </div>
 
