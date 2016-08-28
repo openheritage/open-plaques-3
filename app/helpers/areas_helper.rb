@@ -28,12 +28,4 @@ module AreasHelper
     url_for(options.merge(:controller => :area_plaques, :action => :show, :country_id => area.country.alpha2, :area_id => area.slug, :id => :ungeolocated))
   end
 
-  def list_of_area_links(areas)
-    links = []
-    areas.each do |area|
-      links << link_to(area.name, area_path(area))
-    end
-    links.to_sentence.html_safe
-  end
-
 end

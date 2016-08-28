@@ -77,22 +77,22 @@ ru:
         description: Описание
 
   menu:
-    people: Люди 
-    places: Места 
-    organisations: Организации 
-    roles: Роли 
-    verbs: Глаголы 
-    photographers: Фотографы 
-    todo_lists: Задачи 
-    contribute: Участвовать 
-    about: О проекте 
-    contact: Контакты 
-    the_data: Данные 
-    blog: Блог 
-    twitter: Твиттер 
-    facebook: Фейсбук 
-    search: Поиск 
-    go: Искать 
+    people: Люди
+    places: Места
+    organisations: Организации
+    roles: Роли
+    verbs: Глаголы
+    photographers: Фотографы
+    todo_lists: Задачи
+    contribute: Участвовать
+    about: О проекте
+    contact: Контакты
+    the_data: Данные
+    blog: Блог
+    twitter: Твиттер
+    facebook: Фейсбук
+    search: Поиск
+    go: Искать
     search_placeholder: Искать по имени, месту или организации...
 
   buttons:
@@ -100,6 +100,7 @@ ru:
     update: обновить
     edit: изменить
     delete: удалить
+    unlink:
     all: все
     save: сохранить
     unphotographed: без фотографии
@@ -119,11 +120,11 @@ ru:
       strapline_html: Документируем исторические связи <strong>людей</strong> и <strong>мест</strong>, сохраненные памятными <strong>табличками</strong>.
       explore: Просмотр
       contribute: Поучаствовать
-      contribute1: Нашли табличку? Любой человек может помочь нам и 
+      contribute1: Нашли табличку? Любой человек может помочь нам и
       add_a_plaque: добавить её
       take_a_photo: Сделайте фотографию. Загрузите её в Wikimedia Commons или Flickr и свяжите фото с нашей базой
       spot_an_innaccuracy: Заметили неточность? Сообщите нам.
-      find_something: Или найдите что исправить в  
+      find_something: Или найдите что исправить в
       to_do: задачах
       mission: Вы участвуете в нашей миссии - найти все памятные таблички мира!
       news: Новости
@@ -164,7 +165,6 @@ ru:
   countries:
     edit:
       page_title: Изменить %{country}
-      page_heading_html: Изменить %{country}
       add_an_area: Добавить место
     index:
       page_title: Страны где есть таблички
@@ -210,7 +210,7 @@ ru:
     index:
       page_title: Лицензии на фотографии
       page_heading: Лицензии на фотографии
-      data_about_licences_as: данные о лицензиях 
+      data_about_licences_as: данные о лицензиях
     show:
       page_title: Лицензия - %{licence}
       page_heading: Лицензия - %{licence}
@@ -267,11 +267,11 @@ ru:
   people:
     edit:
       page_title: Изменить %{person}
-      page_heading: Изменить %{person}
+      page_heading: Изменить
       features_on: По табличкам...
       from_which_we_can_establish: ...можно понять что...
       name: Имя
-      display_name: с инициалами и титулом отображается как 
+      display_name: с инициалами и титулом отображается как
       introduction: Введение
       wikipedia_url: ссылка на Википидию
       wikipedia_comment: заменяет сгенерированную автоматически, если она неверна. Пустое поле если страница Википедии отсутствует.
@@ -340,7 +340,7 @@ ru:
       the_top_50: Список 50 наиболее активных
       how_many: Open Plaques ссылается на фотографии в интернете авторства %{count} фотографов.
       where: Сами изображения хранятся на Flickr, Wikimedia Commons и Geograph.
-      how_they_are_licenced_html: Все они лицензированы по разрешительным <a href="http://creativecommons.org/">Creative Commons</a> лицензиям, означающим что авторы явно разрешили использование их изображений другим людям. 
+      how_they_are_licenced_html: Все они лицензированы по разрешительным <a href="http://creativecommons.org/">Creative Commons</a> лицензиям, означающим что авторы явно разрешили использование их изображений другим людям.
     new:
       page_title: Найти на Flickr фото фотографа
       page_heading: Найти на Flickr фото фотографа
@@ -414,7 +414,7 @@ ru:
         page_title: Фотографии %{plaque}
         page_heading: Фотографии
     sponsorships:
-      new:      
+      new:
         page_title: xx
         page_heading: yy
     create:
@@ -429,7 +429,7 @@ ru:
     new:
       page_title: Open Plaques - новая табличка
       page_heading: Расскажите нам о табличке
-      inscription_heading: Что написано на табличке? 
+      inscription_heading: Что написано на табличке?
       inscription_advice: Введите надпись на табличке (за исключением данных установившей её организации), к примеру 'Иван Кузнецов жил здесь в 1900-1980'.
       inscription_partial: Точный текст пока неизвестен
       language_heading: На каком языке надпись?
@@ -445,7 +445,7 @@ ru:
   roles:
     edit:
       page_title: Изменить роль %{role}
-      page_heading: Изменить роль %{role}
+      page_heading: Изменить роль
     new:
       page_title: Новая роль
       page_heading: Новая роль

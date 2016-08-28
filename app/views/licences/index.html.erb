@@ -1,12 +1,12 @@
 <% content_for(:page_title) {t '.page_title'} %>
+<% content_for(:title) {t '.page_heading'} %>
+<% content_for(:page_subhead) {t '.page_subhead'} %>
 
-<div class="panel">
-  <h1><%= t '.page_heading' %></h1>
-  <canvas id="myCanvas" width="1000" height="1000">
-    <%= render @licences %>    
-  </canvas>
-  <p class="alternate_formats"><%= t 'data_about_things_as' %> <%= alternate_link_to "JSON", licences_path(:json), :json %></p>
-</div>
+<canvas id="myCanvas" width="1000" height="1000">
+  <div class="row">
+    <%= render @licences %>
+  </div>
+</canvas>
 
 <script>
   window.onload = function ()

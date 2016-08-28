@@ -1,64 +1,196 @@
 <% content_for(:page_title) {t '.page_title', :person => @person.full_name} %>
+<% content_for(:title) do %>
+  <%= t '.page_heading' %> <%= link_to @person.full_name, @person %>
+  <small><%= @person.dates %></small>
+<% end %>
 
-<div class="panel">
-  <h1><%= t '.page_heading', :person => @person.full_name %></h1>
-   <%= content_tag(:p, link_to(thumbnail_img(@person), photo_url(@person.main_photo))) if @person.main_photo %>
-   <%= form_for @person do |f| %>
-    <p><%= f.label :name, @person.possessive + " name " + @person.existence_word %> <%= f.text_field :name %></p>
-    <p><%= t '.display_name' %> "<%= @person.full_name %>"</p>
-    <p><%= f.label :aka %> <%= f.text_field :aka %></p>
-    <p><%= @person.possessive %> surname <%= @person.existence_word %> "<%= @person.surname %>" which <%= f.label :surname_starts_with, "starts with" %> <%= f.text_field :surname_starts_with, :maxlength => 1 %></p>
-    <p><%= f.label :gender %> <%= f.text_field :gender, :maxlength => 1 %></p>
-    <p><%= @person.personal_pronoun %> was <%= f.label :born_on, @person.creation_word %> <%= f.text_field :born_on, {:maxlength => "10"} %> and <%= f.label :died_on, @person.destruction_word %> <%= f.text_field :died_on, {:maxlength => "10"} %></p>
-    <p><%= f.label :introduction %></p>
-    <%= f.text_area :introduction, :cols => 80, :rows => 15 %>
-    <p><%= f.label :wikipedia_url %> <%= f.text_field :wikipedia_url %> <%= t '.wikipedia_comment' %></p>
-    <%= content_tag("p", "Read more about ".html_safe + link_to(@person.name, @person.default_wikipedia_url, :target => '_blank') + " on Wikipedia.".html_safe) unless @person.default_wikipedia_url.blank? %>
-    <p><%= f.label :dbpedia_uri %> <%= f.text_field :dbpedia_uri %></p>
-    <p><%= f.label :find_a_grave_id %> <%= f.text_field :find_a_grave_id %> <%= @person.find_a_grave_url unless @person.find_a_grave_id.blank? %></p>
-    <p><%= f.label :ancestry_id %> <%= f.text_field :ancestry_id %>  <%= @person.ancestry_url unless @person.ancestry_id.blank? %></p>
-    <p><%= f.submit t('buttons.save'), :class => :button %></p>
-  <% end %>
-
-  <section id="using_wikimedia" class="inside_panel">
-    <p><img src="http://upload.wikimedia.org/wikipedia/commons/7/79/Wiki-commons.png"/></p>
-    <h2>I found, or would like to add, a photo of this person on Wikimedia Commons...</h2>
-    <p>A great place to donate your image to the world is <a href="http://commons.wikimedia.org/">Wikimedia Commons</a>.
-    It is free, fairly easy to use, and your image will live forever (probably) as part of the awesome Wikipedia platform.
-    When you are done, paste the page url in here and Open Plaques will link to the photo.</p>
+<h2>Depiction</h2>
+<div class="row">
+  <div class="col-xs-2">
+    <% if @person.main_photo %>
+      <%= link_to render(@person.main_photo), @person.main_photo %>
+    <% else %>
+      <%= link_to image_tag('https://upload.wikimedia.org/wikipedia/commons/7/79/Wiki-commons.png'), 'https://commons.wikimedia.org/w/index.php?title=Special:Search&limit=20&offset=40&profile=default&search="' + @person.name + '"', :target => '_blank' %>
+    <% end %>
+  </div>
+  <div class="col-xs-10">
+    <p>We use images from Wikimedia Commons to depict subjects as they are open licenced and free to use.</p>
+    <p>
+      Find a depiction image on
+      <%= link_to(icon('external-link') + 'Wikipedia', @person.default_wikipedia_url, :target => '_blank')  unless @person.default_wikipedia_url.blank? %>
+      <%= 'or' unless @person.default_wikipedia_url.blank? %>
+      <%= link_to(icon('external-link') + 'Wikimedia Commons', 'https://commons.wikimedia.org/w/index.php?title=Special:Search&limit=20&offset=40&profile=default&search="' + @person.name + '"', :target => '_blank') %>
+    </p>
     <p>
       <% @photo = Photo.new %>
       <%= form_for @photo do |f| %>
         <%= f.label(:url, "The Wikimedia photo page url is") %> <%= f.text_field :url %>
         <%= f.hidden_field :person_id, :value => @person.id %>
         <%= f.hidden_field :of_a_plaque, :value => false %>
-        <%= submit_tag(t('buttons.save'), :class=>'button secondary_button') %>
+        <%= submit_tag(t('buttons.save'), :class=> 'btn btn-primary') %>
       <% end %>
     </p>
-  </section>
+  </div>
 </div>
 
-<div class="panel">
-  <% @person.personal_roles.each do |personal_role| %>
-    <div class="inside_panel">
-      <%= @person.name %> <%= @person.existence_word %> a <%= dated_role(personal_role).html_safe %> 
-      <%= t('.conferring_the_letters') + ' ' + personal_role.role.abbreviation if personal_role.role.used_as_a_suffix? %><%= t('.conferring_the_title') + ' ' + personal_role.role.abbreviation if personal_role.role.used_as_a_prefix? %>
-      <%= link_to t('buttons.edit'), edit_personal_role_path(personal_role) %>
-      <%= button_to t('buttons.delete'), personal_role, :method => :delete, :class => :button %>
+<h2>Name</h2>
+<%= form_for @person do |f| %>
+  <fieldset class="form-group row">
+    <%= f.label :name, @person.possessive + " name " + @person.existence_word, :class => 'col-form-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.text_field :name, :class => 'form-control' %>
+      <%= t '.display_name' %> "<%= @person.full_name %>"
     </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :aka, :class => 'col-form-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.text_field :aka, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <div class="col-form-label col-sm-2">
+      <%= @person.possessive %> surname <%= @person.existence_word %>
+    </div>
+    <div class="form-control-static col-sm-10">
+      <%= @person.surname %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :surname_starts_with, @person.surname + " starts with", :class => 'col-form-label col-sm-2' %>
+    <div class="col-sm-1">
+      <%= f.text_field :surname_starts_with, :maxlength => 1, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <%= f.submit t('buttons.update'), :class => 'btn btn-primary' %>
+
+  <h2>Details</h2>
+  <fieldset class="form-group row">
+    <%= f.label :gender, :class => 'col-form-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.radio_button :gender, 'm' %>
+      <%= f.label :gender, 'Male', :value => 'm' %>
+      <%= f.radio_button :gender, 'f' %>
+      <%= f.label :gender, 'Female', :value => 'f' %>
+      <%= f.radio_button :gender, 'u' %>
+      <%= f.label :gender, 'Unknown', :value => 'u' %>
+      <%= f.radio_button :gender, 'n' %>
+      <%= f.label :gender, 'None', :value => 'n' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :born_on, @person.personal_pronoun + ' was ' + @person.creation_word, :class => 'col-form-label col-sm-2' %>
+    <div class="col-sm-2">
+      <%= f.text_field :born_on, {:class => 'form-control', :maxlength => 10}  %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :died_on, 'and ' + @person.destruction_word, :class => 'col-form-label col-sm-2' %>
+    <div class="col-sm-2">
+      <%= f.text_field :died_on, {:class => 'form-control', :maxlength => "10"} %>
+    </div>
+  </fieldset>
+  <% if @person.age %>
+    <fieldset class="form-group row">
+      <div class="col-form-label col-sm-2">
+        <%= "Died aged" if (@person.person? || @person.thing? || @person.animal?) && @person.dead? %><%= "Closed aged" if @person.place? && @person.dead? %><%= "Aged" if @person.alive?%>
+      </div>
+      <div class="form-control-static col-sm-2">
+        <%= @person.age.to_s %>
+      </div>
+    </fieldset>
   <% end %>
-  <p>
-    <%= form_for @personal_role do |f| %>
-      <%= f.hidden_field :person_id, :value => @person.id %>
-      <%= @person.name %> <%= @person.existence_word %> a <%= f.collection_select :role, @roles, :id, :full_name %> from <%= f.text_field :started_at %> to <%= f.text_field :ended_at %>
-      <%= f.submit t('buttons.add'), :class => :button %>
-    <% end %>
-  </p>
-  <%= content_tag("p", link_to(t('.add_a_role'), new_role_path)) if current_user %>
+  <%= f.submit t('buttons.update'), :class => 'btn btn-primary' %>
+
+  <h2>Description</h2>
+  <fieldset class="form-group row">
+    <%= f.label :introduction, :class => 'col-form-label' %>
+    <%= f.text_area :introduction, :class => 'form-control', :rows => 6 %>
+  </fieldset>
+  <%= f.submit t('buttons.update'), :class => 'btn btn-primary' %>
+
+  <h2>Links</h2>
+  <fieldset class="form-group row">
+    <div class="col-sm-2">
+      <%= f.label :wikipedia_url, :class => 'col-form-label' %>
+      <%= link_to(icon('external-link'), @person.default_wikipedia_url, :target => '_blank')  unless @person.default_wikipedia_url.blank? %>
+    </div>
+    <div class="col-sm-10">
+      <%= f.text_field :wikipedia_url, :class => 'form-control' %>
+      <%= t '.wikipedia_comment' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <div class="col-sm-2">
+      <%= f.label :dbpedia_uri, :class => 'col-form-label' %>
+      <%= link_to(icon('external-link'), @person.default_dbpedia_uri, :target => '_blank') %>
+    </div>
+    <div class="col-sm-10">
+      <%= f.text_field :dbpedia_uri, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <div class="col-sm-2">
+      <%= f.label :find_a_grave_id, :class => 'col-form-label' %>
+      <%= link_to(icon('external-link'), @person.find_a_grave_url, :target => '_blank') unless @person.find_a_grave_id.blank?%>
+    </div>
+    <div class="col-sm-10">
+      <%= f.text_field :find_a_grave_id, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <div class="col-sm-2">
+      <%= f.label :ancestry_id, :class => 'col-form-label' %>
+      <%= link_to(icon('external-link'), @person.ancestry_url, :target => '_blank') unless @person.ancestry_id.blank?%>
+    </div>
+    <div class="col-sm-10">
+      <%= f.text_field :ancestry_id, :class => 'form-control' %>
+  </div>
+  </fieldset>
+  <%= f.submit t('buttons.update'), :class => 'btn btn-primary' %>
+<% end %>
+
+<h2>Roles</h2>
+<div class="row">
+  <h4 class="col-xs-12"><%= icon('user') if @person.person?%>
+  <%= icon('paw') if @person.animal? %>
+  <%= icon('users') if @person.group? %>
+  <%= icon('building') if @person.place? %>
+  <%= icon('map-marker') if @person.thing? %>
+  <%= @person.personal_pronoun %> <%= @person.existence_word %> a
+  <%= roles_list(@person) %></h4>
 </div>
 
-<div class="panel">
-  <p><%= t '.features_on' %></p>
-  <p><%= t '.from_which_we_can_establish' %></p>
-  <%= render @person.plaques.uniq %>
+<% if @person.plaques.size > 0 %>
+  <div class="row">
+    <p><%= t '.features_on' %></p>
+  </div>
+  <%= render partial: 'plaques/plaque_row', :collection => @person.plaques.uniq, as: :plaque %>
+  <div class="row">
+    <p><%= t '.from_which_we_can_establish' %></p>
+  </div>
+<% end %>
+
+<% @person.personal_roles.each do |personal_role| %>
+  <div class="row">
+    <span class="col-sm-8">
+      <%= @person.personal_pronoun %> <%= @person.existence_word %> a <%= dated_role(personal_role).html_safe %>
+      <%= t('.conferring_the_letters') + ' ' + personal_role.role.suffix if personal_role.role.used_as_a_suffix? %><%= t('.conferring_the_title') + ' ' + personal_role.role.prefix if personal_role.role.used_as_a_prefix? %>
+      <%= link_to t('buttons.edit'), edit_personal_role_path(personal_role), :class => 'btn btn-primary' %>
+    </span>
+    <span class="col-sm-4">
+      <%= button_to t('buttons.delete'), personal_role, :method => :delete, :class => 'btn btn-danger' %>
+    </span>
+  </div>
+<% end %>
+
+<div class="row">
+  <%= form_for @personal_role do |f| %>
+    <%= @person.name %> <%= @person.existence_word %> a <%= f.collection_select :role, @roles, :id, :full_name %> from <%= f.text_field :started_at %> to <%= f.text_field :ended_at %>
+    <%= f.hidden_field :person_id, :value => @person.id %>
+    <%= f.submit t('buttons.add'), :class => 'btn btn-primary' %>
+  <% end %>
+  <span class="col-sm-12">
+    <%= link_to(t('.add_a_role'), new_role_path) %>
+  </span>
 </div>

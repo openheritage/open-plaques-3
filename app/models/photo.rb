@@ -27,7 +27,7 @@ class Photo < ActiveRecord::Base
   belongs_to :person
 
   validates_presence_of :file_url
-  validates_uniqueness_of :file_url, :message => "photo already exists in Open Plaques"
+  validates_uniqueness_of :file_url, :message => "of photo already exists in Open Plaques"
 
   attr_accessor :photo_url, :accept_cc_by_licence
 
@@ -122,7 +122,7 @@ class Photo < ActiveRecord::Base
 
   def wikimedia_filename
     return url[url.index('File:')+5..-1] if wikimedia?
-    return ""
+    return ''
   end
 
   def wikimedia_special
@@ -136,30 +136,34 @@ class Photo < ActiveRecord::Base
   def thumbnail_url
     return self.thumbnail if self.thumbnail?
     if (file_url.ends_with?("_b.jpg") or file_url.ends_with?("_z.jpg") or file_url.ends_with?("_z.jpg?zz=1") or file_url.ends_with?("_m.jpg") or file_url.ends_with?("_o.jpg"))
-      return file_url.gsub("b.jpg", "s.jpg").gsub("z.jpg?zz=1", "s.jpg").gsub("z.jpg", "s.jpg").gsub("m.jpg", "s.jpg").gsub("o.jpg", "s.jpg")
+      return file_url.gsub("b.jpg", "m.jpg").gsub("z.jpg?zz=1", "m.jpg").gsub("z.jpg", "m.jpg").gsub("m.jpg", "m.jpg").gsub("o.jpg", "m.jpg")
     end
-    return "https://commons.wikimedia.org/wiki/Special:FilePath/"+wikimedia_filename+"?width=500" if wikimedia?
+    return "https://commons.wikimedia.org/wiki/Special:FilePath/"+wikimedia_filename+"?width=250" if wikimedia?
   end
 
   def wikimedia_data
     if wikimedia?
       begin
         wikimedia = Wikimedia::Commoner.details("File:"+wikimedia_filename)
-        self.url = wikimedia[:page_url]
-        self.subject = wikimedia[:description]
-        self.photographer = wikimedia[:author]
-        self.photographer_url = wikimedia[:author_url]
-        self.file_url = wikimedia_special
-        licence = Licence.find_by(url: wikimedia[:licence_url])
-        if (licence == nil)
-          wikimedia[:licence_url] += "/" if !wikimedia[:licence_url].ends_with? '/'
-          licence = Licence.find_by_url wikimedia[:licence_url]
-          if (licence==nil)
-            licence = Licence.new(:name => wikimedia[:licence], :url => wikimedia[:licence_url])
-            licence.save
+        if wikimedia[:description] == 'missing'
+          errors.add :file_url, 'cannot find File:#' + wikimedia_filename + ' on Wikimedia Commons'
+        else
+          self.url = wikimedia[:page_url]
+          self.subject = wikimedia[:description]
+          self.photographer = wikimedia[:author]
+          self.photographer_url = wikimedia[:author_url]
+          self.file_url = wikimedia_special
+          licence = Licence.find_by(url: wikimedia[:licence_url])
+          if (licence == nil)
+            wikimedia[:licence_url] += "/" if !wikimedia[:licence_url].ends_with? '/'
+            licence = Licence.find_by_url wikimedia[:licence_url]
+            if (licence==nil)
+              licence = Licence.new(:name => wikimedia[:licence], :url => wikimedia[:licence_url])
+              licence.save
+            end
           end
+          self.licence = licence if licence != nil
         end
-        self.licence = licence if licence != nil
       rescue
       end
     end
@@ -222,11 +226,6 @@ class Photo < ActiveRecord::Base
       },
       properties: as_json(options)
     }
-  end
-
-  def as_wkt()
-    return "" if (self.longitude == nil || self.latitude == nil)
-    "POINT(" + self.longitude + " " + self.latitude + ")"
   end
 
   def uri

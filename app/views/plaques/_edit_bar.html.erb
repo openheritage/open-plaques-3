@@ -1,13 +1,9 @@
-<% if current_user && current_user.is_admin? %>
-  <section class="admin_panel">
-    <%= link_to "Core", edit_plaque_path(plaque), {:class => :edit, :title => "Edit core details"} %>
-    <%= link_to "Inscription", edit_plaque_inscription_path(plaque), {:class => :edit, :title => "Edit inscription"} %>
-    <%= link_to "Connections", new_plaque_connection_path(plaque), {:class => :edit, :title => "Establish connections"} %>
-    <%= link_to "Sponsors", plaque_sponsorships_path(plaque), {:class => :edit, :title => "Establish sponsors"} %>
-    <%= link_to "Description", edit_plaque_description_path(plaque), {:class => :edit, :title => "Edit description"} %>
-    <%= link_to "Colour", edit_plaque_colour_path(plaque), {:class => :edit, :title => "Edit colour"} %>
-    <%= link_to "Location", edit_plaque_geolocation_path(plaque), {:class => :edit, :title => "Edit geolocation"} %>
-    <%= link_to "Erected date", edit_plaque_erected_path(plaque), {:class => :edit, :title => "Edit organisation"} %>
-    <%= link_to "Photos", plaque_photos_path(plaque), {:class => :show, :title => "Show photos"} %>
-  </section>
-<% end %>
+<% content_for(:admin_menu) {navbar_link_to "Core", edit_plaque_path(plaque)} %>
+<% content_for(:admin_menu) {navbar_link_to "Inscription", edit_plaque_inscription_path(plaque)} %>
+<% content_for(:admin_menu) {navbar_link_to "Connections", new_plaque_connection_path(plaque)} %>
+<% content_for(:admin_menu) {navbar_link_to "Sponsors", plaque_sponsorships_path(plaque)} %>
+<% content_for(:admin_menu) {navbar_link_to "Description", edit_plaque_description_path(plaque)} %>
+<% content_for(:admin_menu) {navbar_link_to "Colour", edit_plaque_colour_path(plaque)} %>
+<% content_for(:admin_menu) {navbar_link_to "Location", edit_plaque_geolocation_path(plaque)} %>
+<% content_for(:admin_menu) {navbar_link_to "Series", edit_plaque_series_path(plaque)} %>
+<% content_for(:admin_menu) {navbar_link_to "Photos", plaque_photos_path(plaque)} %>

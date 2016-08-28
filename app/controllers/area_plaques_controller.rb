@@ -1,43 +1,42 @@
 class AreaPlaquesController < ApplicationController
 
   before_filter :find, :only => [:show]
-  respond_to :html, :xml, :json
+  respond_to :html, :json, :csv
 
   def show
     @display = 'all'
     if (params[:id] && params[:id]=='unphotographed')
-      if request.format == 'json' or request.format == 'xml'
-        @plaques = @area.plaques.unphotographed
-      else
+      request.format == 'html' ?
         @plaques = @area.plaques.unphotographed.paginate(:page => params[:page], :per_page => 50)
-      end
+        : @plaques = @area.plaques.unphotographed
       @display = 'unphotographed'
     elsif (params[:id] && params[:id]=='current')
-      if request.format == 'json' or request.format == 'xml'
-        @plaques = @area.plaques.current
-      else
+      request.format == 'html' ?
         @plaques = @area.plaques.current.paginate(:page => params[:page], :per_page => 50)
-      end
+        : @plaques = @area.plaques.current
     elsif (params[:id] && params[:id]=='ungeolocated')
-      if request.format == 'json' or request.format == 'xml'
-        @plaques = @area.plaques.ungeolocated
-      else
+      request.format == 'html' ?
         @plaques = @area.plaques.ungeolocated.paginate(:page => params[:page], :per_page => 50)
-      end
+        : @plaques = @area.plaques.ungeolocated
       @display = 'ungeolocated'
     else
-      if request.format == 'json' or request.format == 'xml'
-        @plaques = @area.plaques
-      else
+      request.format == 'html' ?
         @plaques = @area.plaques.paginate(:page => params[:page], :per_page => 50)
-      end
+        : @plaques = @area.plaques
     end
     @area.find_centre if !@area.geolocated?
     respond_with @plaques do |format|
       format.html
-      format.xml
       format.json { render :json => @plaques }
       format.geojson { render :geojson => @plaques.geolocated, :parent => @area }
+      format.csv {
+        send_data(
+          PlaqueCsv.new(@plaques).build,
+          :type => 'text/csv',
+          :filename => 'open-plaques-' + @area.slug + '-' + Date.today.to_s + '.csv',
+          :disposition => 'attachment'
+        )
+      }
     end
   end
 

@@ -1,12 +1,6 @@
 <% content_for(:page_title) {t '.page_title'} %>
+<% content_for(:title) {t '.page_heading'} %>
+<% content_for(:page_subhead) {t '.explanation'} %>
+<% content_for(:admin_panel) {navbar_link_to t('buttons.add'), new_pick_path} %>
 
-<div class="panel">
-  <% if current_user && current_user.is_admin? %>
-    <section class="admin_panel">
-      <%= link_to(t('buttons.add'), new_pick_path, {:class => :edit, :title => t('buttons.add')})%>
-    </section>
-  <% end %>
-  <h1><%= t '.page_heading' %></h1>
-  <p><%= t '.explanation' %></p>
-  <%= render @picks %>
-</div>
+<%= render partial: 'picks/pick_row', :collection => @picks, as: :pick %>

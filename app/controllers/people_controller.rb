@@ -21,8 +21,6 @@ class PeopleController < ApplicationController
     )
   end
 
-  # GET /people/1
-  # GET /people/1.json
   def show
     respond_to do |format|
       format.html
@@ -31,8 +29,6 @@ class PeopleController < ApplicationController
     end
   end
 
-  # GET /people/new
-  # GET /people/new.xml
   def new
     @person = Person.new
     respond_to do |format|
@@ -41,14 +37,11 @@ class PeopleController < ApplicationController
     end
   end
 
-  # GET /people/1/edit
   def edit
     @roles = Role.order(:name)
     @personal_role = PersonalRole.new
   end
 
-  # POST /people
-  # POST /people.xml
   def create
     params[:person][:born_on] += "-01-01" if params[:person][:born_on] =~/\d{4}/
     params[:person][:died_on] += "-01-01" if params[:person][:died_on] =~/\d{4}/
@@ -71,8 +64,6 @@ class PeopleController < ApplicationController
     end
   end
 
-  # PUT /people/1
-  # PUT /people/1.xml
   def update
     params[:person][:born_on] += "-01-01" if params[:person][:born_on] =~/\d{4}/
     params[:person][:died_on] += "-01-01" if params[:person][:died_on] =~/\d{4}/
@@ -88,8 +79,6 @@ class PeopleController < ApplicationController
     end
   end
 
-  # DELETE /people/1
-  # DELETE /people/1.xml
   def destroy
     @person.destroy
     respond_to do |format|

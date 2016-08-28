@@ -1,21 +1,24 @@
-<% content_for(:page_title) {t '.page_title', :photo => @photo.title } %>
-
-<div class="panel clearfix">
-  <% if current_user && current_user.is_admin? %>
-    <section class="admin_panel">
-      <%= link_to t('buttons.edit'), edit_photo_path(@photo), {:class => :edit, :title => t('buttons.edit')} %>
-    </section>
-  <% end %>
+<% content_for(:page_title) {t '.page_title', :photo => @photo.title} %>
+<% content_for(:title) do %>
   <% if @photo.plaque %>
-    <h1 property="dc:title rdfs:label foaf:name" about="#this"><%= t '.page_heading' %> <%= link_to(@photo.plaque.title, @photo.plaque) %></h1>
+    <%= t '.page_heading' %> <%= link_to(@photo.plaque.title, @photo.plaque) %>
   <% elsif @photo.person %>
-    <h1 property="dc:title rdfs:label foaf:name" about="#this"><%= t '.page_heading' %> <%= link_to(@photo.person.full_name, @photo.person) %></h1>
+    <%= t '.page_heading' %> <%= link_to(@photo.person.full_name, @photo.person) %>
   <% else %>
-    <p>has not been linked to a plaque <% if @photo.of_a_plaque? %>yet<% else %> because it has been flagged as not being of a plaque<% end %>.</p>
+    <% if @photo.of_a_plaque? %>
+      <p>This photo has been flagged as not being of a plaque.</p>
+    <% else %>
+      <p>This photo has not been linked to a plaque yet.</p>
+    <% end %>.</p>
   <% end %>
-  <div class="panel clearfix">
-    <%= render @photo %>
-  </div>
-</div>
+<% end %>
+<% content_for(:page_subhead) do %>
+  This image comes from <%= @photo.source %>
+<% end %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_photo_path(@photo)} %>
 
-<p class="alternate_formats"><%= t 'data_about_thing_as' %> <%= alternate_link_to "JSON", photo_path(@photo, :format => :json), :json %></p>
+<div class="row">
+  <%= link_to @photo.url do %>
+    <%= render @photo, large: true %>
+  <% end %>
+</div>

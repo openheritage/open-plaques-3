@@ -1,6 +1,10 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
+  def button_delete(path)
+    button_to(t('buttons.delete'), path, {:method => :delete, :class => 'btn btn-danger'})
+  end
+
   def alternate_link_to(text, path, format)
     link_to text, path, :type => Mime::Type.lookup_by_extension(format.to_s).to_s, :rel => [:alternate,:nofollow]
   end
@@ -124,23 +128,23 @@ module ApplicationHelper
       pluralize(number, name)
     end
   end
-  
+
   def pluralize_word(count, singular, plural = nil)
     (count == 1 || count =~ %r/^1(\.0+)?$/) ? singular : (plural || singular.pluralize)
   end
 
   def make_slug_not_war
     if slug.blank?
-      self.slug = name.to_s.rstrip.lstrip.downcase.gsub(" ", "_").gsub("-", "_").gsub(",", "_").gsub(".", "_").gsub("'", "").gsub("__", "_")
+      self.slug = name.to_s.rstrip.lstrip.downcase.tr(" ", "_").tr("-", "_").tr(",", "_").tr(".", "_").tr("'", "").gsub("__", "_")
     end
   end
 
   def markdown(text)
     markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML,
-    no_intra_emphasis: true, 
-    fenced_code_blocks: true,   
+    no_intra_emphasis: true,
+    fenced_code_blocks: true,
     disable_indented_code_blocks: true)
     return markdown.render(text).html_safe
   end
-  
+
 end

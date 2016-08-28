@@ -46,6 +46,10 @@ class Licence < ActiveRecord::Base
     end
   end
 
+  def creative_commons?
+    url =~ /creativecommons.org\/licenses/i
+  end
+
   def to_s
     name
   end

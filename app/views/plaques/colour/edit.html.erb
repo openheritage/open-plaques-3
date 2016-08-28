@@ -1,19 +1,18 @@
-<% content_for :page_title, "Edit colour of " + @plaque.title %>
-
+<% content_for :page_title, t('.page_title') + @plaque.title %>
+<% content_for :title do %>
+  <%= t '.title' %> <%= link_to @plaque.title, @plaque %>?
+<% end %>
+<% content_for :page_subhead do %>
+  <% if url_for(:only_path => false).include?('microtask') %>
+    <%= button_to t('.not_sure'), todo_path('microtask'), :method => :get, :class => :button %>
+  <% end %>
+<% end %>
 <%= render 'plaques/edit_bar', :plaque => @plaque %>
 
-<div class="panel">
-  <h1>What colour is <%= link_to @plaque.title, @plaque %>?</h1>
-  <% if url_for(:only_path => false).include?('microtask') %>
-    <p><%= button_to "Not sure. Give me another one", todo_path('microtask'), :method => :get, :class => :button %></p>
-  <% end %>
-  <br style="clear: both;" />
-  <%= form_for @plaque do |f| %>
-    <%= f.label :colour_id, "It's" %>
-    <%= f.collection_select :colour_id, @colours, :id, :name, {:include_blank => true} %>
-    <%= f.submit "Save", :class => :button %>
-    <%= content_tag("p", "Or ".html_safe + link_to("add a new colour", new_colour_path) + ".") if current_user && current_user.is_admin? %>
-  <% end %>
-  <br/>
-  <%= render @plaque.photos %>
-</div>
+<%= form_for @plaque do |f| %>
+  <fieldset class="form-group">
+    <%= f.label :colour_id, t('.colour_label') %>
+    <%= f.collection_select :colour_id, @colours, :id, :name, {:class => 'form-control', :include_blank => true} %>
+  </fieldset>
+  <%= f.submit t('buttons.save'), :class => 'btn btn-primary' %>
+<% end %>

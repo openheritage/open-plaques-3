@@ -12,7 +12,7 @@ module PlaquesHelper
   def search_snippet(text, search_term)
     regex = /#{search_term}/i
     if text =~ regex
-      text = " " + text + " "  #HACK: This is so there's a space before the first word.
+      text = " " + text + " "
       indexes = []
       first_index = text.index(regex)
       indexes << first_index
@@ -129,7 +129,7 @@ module PlaquesHelper
 
     # pass null to search all photos on Flickr
     def crawl_flickr(group_id='74191472@N00')
-    
+
       key = "86c115028094a06ed5cd19cfe72e8f8b" # FLICKR_KEY
       content_type = "1" # Photos only
       flickr_url = "https://api.flickr.com/services/rest/"
@@ -138,7 +138,7 @@ module PlaquesHelper
       black = Colour.find_by_name('black')
       english = Language.find_by_name('English')
       new_photos_count = 0
-            
+
       19.times do |page|
         puts page.to_s
         url = flickr_url + "?api_key=" + key + "&method=" + method + "&page=" + page.to_s + "&per_page=5&content_type=" + content_type + "&extras=date_taken,owner_name,license,geo,description"
@@ -187,7 +187,7 @@ module PlaquesHelper
               @photo.file_url = file_url
               @photo.url = photo_url
               @photo.taken_at = photo.attributes["datetaken"]
-              @photo.photographer_url = photo_url = "http://www.flickr.com/photos/" + photo.attributes["owner"] + "/"
+              @photo.photographer_url = "http://www.flickr.com/photos/" + photo.attributes["owner"] + "/"
               @photo.photographer = photo.attributes["ownername"]
               @photo.licence = Licence.find_by_flickr_licence_id(photo.attributes["license"])
               if photo.attributes["latitude"] != "0" && photo.attributes["longitude"] != "0" && !@plaque.geolocated?
@@ -216,22 +216,6 @@ module PlaquesHelper
     end
   end
 
-  def personal_connection_path(pc)
-    url_for(:controller => "PersonalConnections", :action => :show, :id => pc.id, :plaque_id => pc.plaque_id)
-  end
-
-  def personal_connections_path(plaque)
-    url_for(:controller => "PersonalConnections", :action => :index, :plaque_id => plaque.id)
-  end
-
-  def edit_personal_connection_path(pc)
-    url_for(:controller => "PersonalConnections", :action => :edit, :id => pc.id, :plaque_id => pc.plaque_id)
-  end
-
-  def new_personal_connection_path(plaque)
-    url_for(:controller => "PersonalConnections", :action => :new, :plaque_id => plaque.id)
-  end
-
   def erected_date(plaque)
     if plaque.erected_at?
       if plaque.erected_at.day == 1 && plaque.erected_at.month == 1
@@ -255,114 +239,14 @@ module PlaquesHelper
       info += org_list.to_sentence.html_safe
       if plaque.erected_at?
         info += " ".html_safe
-        if plaque.erected_at.day == 1 && plaque.erected_at.month == 1
-          info += "in ".html_safe
-        else
-          info += "on ".html_safe + plaque.erected_at.strftime('%d %B') + " "
-        end
-        info += plaque.erected_at.year.to_s
+        info += erected_date(plaque)
       end
-      return content_tag("p", info)
-    else
-      return content_tag("p", "by ".html_safe + content_tag("span", "unknown".html_safe, :class => :unknown))
-    end
-  end
-  
-  def geolocation_if_known(plaque)
-    if plaque.geolocated?
-      geo_microformat(plaque)
-    else
-      unknown()
+      return info
     end
   end
 
-  def map_icon_if_known(plaque)
-    if plaque.geolocated?
-      geo_map_icon_link(plaque)
-    else
-      ""
-    end
-  end
-
-  def google_map_if_known(content, plaque)
-    if plaque.geolocated?
-      link_to_google_map(content, plaque.latitude, plaque.longitude)
-    else
-      unknown()
-    end
-  end
-
-  def google_streetview_if_known(content, plaque)
-    if plaque.geolocated?
-      link_to_google_streetview(content, plaque.latitude, plaque.longitude)
-    else
-      unknown()
-    end
-  end
-
-  def google_earth_if_known(content, plaque)
-    if plaque.geolocated?
-      link_to_google_earth(content, plaque.id)
-    else
-      unknown()
-    end
-  end
-
-  # Generates a link to Open Street Map using latitude ang longitude.
-  def link_to_osm(content, latitude, longitude, marker = true)
-   link_to(content, "http://www.openstreetmap.org/?lat=" + latitude.to_s + "&amp;lon=" + longitude.to_s + "&amp;zoom=17&amp;mlat=" + latitude.to_s + "&amp;mlon=" + longitude.to_s)
-  end
-
-  # Generates a link to Google Maps using latitude ang longitude.
-  def link_to_google_map(content, latitude, longitude)
-   link_to(content, "http://maps.google.co.uk?q=" + latitude.to_s + "," + longitude.to_s)
-  end
-
-  # Generates a link to Google Street View using latitude ang longitude.
-  def link_to_google_streetview(content, latitude, longitude)
-   link_to(content, "http://maps.google.co.uk/?q=" + latitude.to_s + "," + longitude.to_s + "&layer=c&cbll=" + latitude.to_s + "," + longitude.to_s + "&cbp=12,0,,0,5")
-  end
-
-  # Generates a link to Google Earth using id for kml.
-  def link_to_google_earth(content, id)
-   link_to(content, "http://maps.google.co.uk?t=f&q=http://openplaques.org/plaques/" + id.to_s + ".kml")
-  end
-
-  def osm_iframe(latitude, longitude, bboffset = 0.001, height = 200, width = 300, marker = true)
-    bb = (longitude - bboffset).to_s + "," + (latitude - bboffset).to_s + "," + (longitude + bboffset).to_s + "," + (latitude + bboffset).to_s
-
-    osm_embed_src = "http://www.openstreetmap.org/export/embed.html?bbox=" + bb + "&amp;marker=" + latitude.to_s + "," + longitude.to_s + "&amp;layer=mapnik"
-    return content_tag("iframe","",{:height => height, :width => width, :scrolling => "no", :frameborder => "no", :marginheight => "0", :marginwidth => "0", :src => osm_embed_src, :class => "osm"})
-  end
-
-  def geo_microformat(plaque, container = "span")
-    if !plaque.geolocated?
-      return ""
-    end
-    @lat = content_tag("span", plaque.latitude, {:class => "latitude", :property => "geo:lat", :about => "#plaque_location"})
-    @lon = content_tag("span", plaque.longitude, {:class => "longitude", :property => "geo:long", :about => "#plaque_location"})
-    content_tag(container, link_to_osm("[osm]", plaque.latitude, plaque.longitude), {:class => "geo", :typeof => "geo:Point", :about => "#plaque_location"})
-  end
-
-  def geo_map_icon_link(plaque)
-    if !plaque.geolocated?
-    return "";
-    end
-    @alt = plaque.latitude.to_s + ", " + plaque.longitude.to_s
-    @image = image_tag("map_icon.png", {:alt => @alt})
-    link_to_osm(@image, plaque.latitude, plaque.longitude )
-  end
-
-  def plaque_icon(plaque)
-    if plaque.colour && plaque.colour.slug =~ /(blue|black|yellow|red|white|green)/
-      image_tag("icon-" + plaque.colour.slug + ".png", :size => "16x16")
-    else
-      image_tag("icon-blue.png", :size => "16x16")
-    end
-  end
-
-  def new_linked_inscription(plaque)
-    inscription = plaque.inscription.gsub(/\r/," ").gsub(/\n/," ").strip.gsub("  "," ")
+  def linked_inscription(plaque)
+    inscription = plaque.inscription.split.join(' ').strip.gsub('  ',' ')
     people = plaque.people
     if people
       reduced_inscription = inscription
@@ -372,9 +256,7 @@ module PlaquesHelper
         person.names.each_with_index do |name, index|
           if (!matched)
             search_for = name
-#            puts '*** search ' + reduced_inscription + " for " + search_for
-            matched = true if reduced_inscription.index(search_for) != nil
-#            puts '*** found ' + search_for + " [" + index.to_s + "]" if matched
+            matched = reduced_inscription.index(search_for) != nil
           end
         end
         reduced_inscription = reduced_inscription.gsub(search_for, "") if matched
@@ -382,7 +264,7 @@ module PlaquesHelper
       end
     end
     inscription += " [full inscription unknown]" if plaque.inscription_is_stub
-    inscription += " [has not been erected yet]" if !plaque.erected? 
+    inscription += " [has not been erected yet]" if !plaque.erected?
     return inscription
   end
 
@@ -422,24 +304,24 @@ module PlaquesHelper
     p = Point.new
     r = /@([-\d.\d]*),([-\d.\d]*)/
     if (url[r])
-      p.latitude = url[r,1]
-      p.longitude = url[r,2]
+      p.latitude = url[r,1].to_f.round(5)
+      p.longitude = url[r,2].to_f.round(5)
       return p
     end
     # or OSM
     # https://www.openstreetmap.org/#map=17/57.14772/-2.10572
     r = /map=[\d]*\/([-\d.\d]*)\/([-\d.\d]*)/
     if (url[r])
-      p.latitude = url[r,1]
-      p.longitude = url[r,2]
+      p.latitude = url[r,1].to_f.round(5)
+      p.longitude = url[r,2].to_f.round(5)
       return p
     end
     # or Geohack
     # https://tools.wmflabs.org/wiwosm/osm-on-ol/commons-on-osm.php?zoom=16&lat=43.725688888889&lon=7.2722138888889
     r = /&lat=([-\d.\d]*)&lon=([-\d.\d]*)/
     if (url[r])
-      p.latitude = url[r,1]
-      p.longitude = url[r,2]
+      p.latitude = url[r,1].to_f.round(5)
+      p.longitude = url[r,2].to_f.round(5)
       return p
     end
     p

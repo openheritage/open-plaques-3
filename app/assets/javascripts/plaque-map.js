@@ -1,7 +1,7 @@
 var map;
 var ajaxRequest;
-var plaques=[];
-var allow_popups=true;
+var plaques = [];
+var allow_popups = true;
 var plaque_markers = {};
 
 function getXmlHttpObject()
@@ -18,10 +18,10 @@ function addPlaque(geojson)
   {
     for (i = 0, len = features.length; i < len; i++)
     {
-      feature = features[i];
+      var feature = features[i];
       if (feature.geometries || feature.geometry || feature.features || feature.coordinates)
       {
-        this.addPlaque(features[i]);
+        this.addPlaque(feature);
       }
     }
     return this;
@@ -31,14 +31,14 @@ function addPlaque(geojson)
   {
     var geometry = geojson.geometry;
     var plaque = geojson.properties.plaque;
-    if (plaques["'#"+plaque.id+"'"]==null)
+    if (!plaques["'#"+plaque.id+"'"])
     {
       var plaque_icon = new L.DivIcon({ className: 'plaque-marker', html: '', iconSize : 16 });
       var plaque_marker = L.marker([plaque.latitude, plaque.longitude], {icon: plaque_icon});
-      if (allow_popups==true)
+      if (allow_popups===true)
       {
         var plaque_description = '<div class="inscription">' + truncate(plaque.inscription, 255) + '</div><div class="info">' +
-          '<a class="link" href="http://openplaques.org/plaques/' + plaque.id + '">Plaque ' + plaque.id + '</a>';
+          '<a class="link" href="https://openplaques.org/plaques/' + plaque.id + '">Plaque ' + plaque.id + '</a>';
         plaque_marker.bindPopup(plaque_description);
       }
       clusterer.addLayer(plaque_marker)
@@ -49,10 +49,10 @@ function addPlaque(geojson)
 
 function stateChanged()
 {
-  if (ajaxRequest.readyState==4 && ajaxRequest.status==200)
+  if (ajaxRequest.readyState===4 && ajaxRequest.status===200)
   {
     var answer = ajaxRequest.responseText;
-    var json=JSON.parse(answer);
+    var json = JSON.parse(answer);
     addPlaque(json);
   }
 }
@@ -63,9 +63,9 @@ function getPlaques(url)
 {
   var bounds=map.getBounds();
   var minll=bounds.getSouthWest(), maxll=bounds.getNorthEast();
-  //  bounding box call, e.g. http://openplaques.org/plaques.json?box=[51.5482,-0.1617],[51.5282,-0.1217]
-  msg = url + '&box=['+maxll.lat+','+minll.lng+'],['+minll.lat+','+maxll.lng+']';
-  ajaxRequest=getXmlHttpObject();
+  //  bounding box call, e.g. https://openplaques.org/plaques.json?box=[51.5482,-0.1617],[51.5282,-0.1217]
+  var msg = url + '&box=['+maxll.lat+','+minll.lng+'],['+minll.lat+','+maxll.lng+']';
+  var ajaxRequest = getXmlHttpObject();
   ajaxRequest.onreadystatechange = stateChanged;
   ajaxRequest.open('GET', msg, true);
   ajaxRequest.send(null);
@@ -82,13 +82,10 @@ function initmap()
     var basemap = new L.StamenTileLayer("toner"); // toner, terrain, or watercolor
     map.addLayer(basemap);
     var latitude = plaque_map.attr("data-latitude"), longitude = plaque_map.attr("data-longitude"), zoom = plaque_map.attr("data-zoom");
+    var zoom_level = 13;
     if (zoom)
     {
-      var zoom_level = parseInt(zoom);
-    }
-    else
-    {
-      var zoom_level = 13;
+      zoom_level = parseInt(zoom);
     }
 
     if (latitude && longitude)
@@ -98,7 +95,7 @@ function initmap()
     else
     {
       // start the map in London
-      map.setView(L.latLng(51.54281206119232,-0.16788482666015625),zoom_level);
+      map.setView(L.latLng(51.5428,-0.1678),zoom_level);
     }
 
     clusterer = new L.MarkerClusterGroup(
@@ -118,16 +115,16 @@ function initmap()
     map.addLayer(clusterer);
 
     var data_view = plaque_map.attr("data-view");
-    if (data_view == "one")
+    if (data_view === "one")
     {
-      var plaque_icon = new L.DivIcon({ className: 'plaque-marker', html: '', iconSize : 16 });
+  		var plaque_icon = new L.DivIcon({ className: 'plaque-marker', html: '', iconSize : 16 });
       L.marker([parseFloat(latitude),parseFloat(longitude)], { icon: plaque_icon }).addTo(map);
     }
     else
     {
-      var data_path = plaque_map.attr("data-path");
+  		var data_path = plaque_map.attr("data-path");
       var geojsonURL = "/plaques/tiles/{z}/{x}/{y}.geojson";
-      if (data_view == "unphotographed") {
+      if (data_view === "unphotographed") {
         geojsonURL = "/plaques/unphotographed/tiles/{z}/{x}/{y}.geojson";
         data_view = "all"
       };
@@ -135,9 +132,9 @@ function initmap()
       {
         geojsonURL = plaque_map.attr("context") + geojsonURL
       }
-      if (data_view == "all")
+  		if (data_view === "all")
       {
- //       console.log(geojsonURL);
+        console.log(geojsonURL);
         var geojsonTileLayer = new L.TileLayer.GeoJSON(geojsonURL,
           {
             clipTiles: false
@@ -151,14 +148,14 @@ function initmap()
                 if (feature.properties.plaque) {
                   plaque = feature.properties.plaque
                 }
-                var plaque_description = '<div class="inscription">' + truncate(plaque.inscription, 255) + '</div><div class="info">' +
-                '<a class="link" href="http://openplaques.org/plaques/' + plaque.id + '">Plaque ' + plaque.id + '</a>';
-                layer.bindPopup(plaque_description);
-                var plaque_icon = new L.DivIcon({ className: 'plaque-marker', html: '', iconSize : 16 });
-                layer.setIcon(plaque_icon);
-                if (plaques["'#"+plaque.id+"'"]==null)
+                if (!plaques["'#"+plaque.id+"'"])
                 {
-                  plaques["'#"+plaque.id+"'"]=plaque;
+                  var plaque_description = '<div class="inscription">' + truncate(plaque.inscription, 255) + '</div><div class="info">' +
+                    '<a class="link" href="https://openplaques.org/plaques/' + plaque.id + '">Plaque ' + plaque.id + '</a>';
+                  layer.bindPopup(plaque_description);
+                  var plaque_icon = new L.DivIcon({ className: 'plaque-marker', html: '', iconSize : 16 });
+                  layer.setIcon(plaque_icon);
+                  plaques["'#"+plaque.id+"'"] = plaque;
                   clusterer.addLayer(layer);
                 }
               }
@@ -166,49 +163,49 @@ function initmap()
           }
         );
         map.addLayer(geojsonTileLayer);
-      }
+  		}
       else if (data_path)
       {
-        var url = data_path;
-        getPlaques(url);
-        map.on('moveend', function() { getPlaques(url) });
-      }
+  		   var url = data_path;
+         getPlaques(url);
+         map.on('moveend', function() { getPlaques(url) });
+  		}
       else
       {
-        var url = document.location.href.replace(/\?.*/,'') + '.json?data=simple&limit=1000';
-        getPlaques(url);
-        map.on('moveend', function() { getPlaques(url) });
-      }
-    }
+  		   var url = document.location.href.replace(/\?.*/,'') + '.json?data=simple&limit=1000';
+         getPlaques(url);
+         map.on('moveend', function() { getPlaques(url) });
+  		}
+	  }
   }
 }
 
 function clusterSize(number) {
-  if (number < 10) {
-    return 'small';
-  } else if (number < 100) {
-    return 'medium';
-  } else  {
-    return 'large';
-  }
+	if (number < 10) {
+		return 'small';
+	} else if (number < 100) {
+		return 'medium';
+	} else  {
+		return 'large';
+	}
 }
 
 function clusterWidth(number) {
-  if (number < 10) {
-    return 20;
-  } else if (number < 100) {
-    return 30;
-  } else  {
-    return 40;
-  }
+	if (number < 10) {
+		return 20;
+	} else if (number < 100) {
+		return 30;
+	} else  {
+		return 40;
+	}
 }
 
 function truncate(string, max_length) {
-  if (string.length > max_length) {
-    return string.substring(0, max_length) + '...';
-  } else {
-    return string;
-  }
+	if (string.length > max_length) {
+		return string.substring(0, max_length) + '...';
+	} else {
+		return string;
+	}
 }
 
 $(document).ready(function() {

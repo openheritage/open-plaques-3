@@ -1,37 +1,29 @@
 <% content_for(:page_title) {t '.page_title'} %>
+<% content_for(:title) {t '.page_heading'} %>
+<% content_for(:page_subhead) do %>
+  <%= t '.how_many', :count =>  @photographers.size %><br/>
+  <%= t '.where' %>
+  <%= t '.how_they_are_licenced_html' %>
+<% end %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_photographer_path} %>
 
-<div class="panel clearfix">
-  <% if current_user && current_user.is_admin? %>
-    <section class="admin_panel">
-      <%= link_to(t('buttons.add'), new_photographer_path, {:class => :edit, :title => t('buttons.add')})%>
-    </section>
-  <% end %>
-  <h1><%= t '.page_heading' %></h1>
-  <p>
-    <%= t '.how_many', :count =>  @photographers.size%>
-    <%= t '.where' %>
-    <%= t '.how_they_are_licenced_html' %>
-  </p>
+<div class="row">
   <h2><%= t '.the_top_50' %></h2>
   <canvas id="myCanvas" width="1000" height="1000">
     <ol>
-      <% for photographer in @photographers %>
-        <% if photographer[0] != nil %>
-          <li><%= link_to(photographer[0], photographer_url(photographer[0].gsub(/\./,'_').gsub('/','_'))) rescue photographer[0] %> - <%= pluralize(photographer[1], "") %> </li>
-        <% end %>
+      <% @photographers.each do |photographer| %>
+        <li><%= link_to(photographer.id, photographer_url(photographer.id.gsub(/\./,'_').gsub('/','_'))) rescue photographer %> - <%= pluralize(photographer.photos_count, "") %> </li>
       <% end %>
    </ol>
- </canvas>
+  </canvas>
 </div>
-
-<p class="alternate_formats"><%= t 'data_about_things_as' %> <%= alternate_link_to "JSON", photographers_path(:json), :json %></p>
 
 <script>
   window.onload = function ()
   {
-    var data = [<% @photographers.sort_by { |p| 1 - p[1] }.each_with_index do |photographer, idx| %><% if idx < 50 %><%= photographer[1] %>,<% end %><% end %>];
+    var data = [<% @photographers.each_with_index do |photographer, idx| %><% if idx < 50 %><%= photographer.photos_count %>,<% end %><% end %>];
     var hbar = new RGraph.HBar('myCanvas', data);
-    hbar.Set('chart.labels', [<% @photographers.sort_by { |p| 1 - p[1] }.each_with_index do |photographer, idx| %><% if idx < 50 %>'<%= photographer[0] %>',<% end %><% end %>]);
+    hbar.Set('chart.labels', [<% @photographers.each_with_index do |photographer, idx| %><% if idx < 50 %>'<%= photographer.id %>',<% end %><% end %>]);
     hbar.Set('chart.strokestyle', 'rgba(0,0,0,0)');
     hbar.Set('chart.labels.above', true);
     hbar.Set('chart.vmargin', 15);

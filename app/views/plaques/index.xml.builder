@@ -1,7 +1,7 @@
 xml.instruct! :xml, :version=>"1.0"
 xml.openplaques(){
     @plaques.each do |plaque|
-      
+
       xml.plaque(:uri => plaque.uri, :machine_tag => plaque.machine_tag, :created_at => plaque.created_at.xmlschema, :updated_at => plaque.updated_at.xmlschema){
         xml.title plaque.title
         xml.subjects plaque.subjects

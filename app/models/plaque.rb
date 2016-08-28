@@ -205,6 +205,11 @@ class Plaque < ActiveRecord::Base
     }
   end
 
+  def as_wkt()
+    return "" if (self.longitude == nil || self.latitude == nil)
+    "POINT(" + self.longitude + " " + self.latitude + ")"
+  end
+
   def machine_tag
     "openplaques:id=" + id.to_s
   end
@@ -286,13 +291,31 @@ class Plaque < ActiveRecord::Base
   end
 
   def inscription_preferably_in_english
-    inscription_in_english && inscription_in_english > "" ? inscription_in_english : inscription
+    translate
+    inscription_in_english && !inscription_in_english.blank? ? inscription_in_english : inscription
   end
 
   def erected?
     return false if erected_at? && erected_at.year > Date.today.year
-    return false if erected_at? &&erected_at.day!=1 && erected_at.month!=1 && erected_at > Date.today
+    return false if erected_at? && erected_at.day!=1 && erected_at.month!=1 && erected_at > Date.today
     true
+  end
+
+  def translate
+    if foreign? && inscription_in_english.blank? && language.alpha2 == "de"
+      in_english = inscription
+      in_english = in_english.gsub('Hier wohnte','Here lived')
+      in_english = in_english.gsub('jg.','born')
+      in_english = in_english.gsub('deportiert','deported')
+      in_english = in_english.gsub('Deportiert','deported')
+      in_english = in_english.gsub('ermordet','murdered')
+      in_english = in_english.gsub('Ermordet','murdered')
+      in_english = in_english.gsub('geb.','nee')
+      in_english = in_english.gsub('geb.','nee')
+      in_english = in_english.gsub('geb.','nee')
+      in_english = in_english.gsub('geb.','nee')
+      self.inscription_in_english = in_english
+    end
   end
 
   def Plaque.tile(zoom, xtile, ytile, options)

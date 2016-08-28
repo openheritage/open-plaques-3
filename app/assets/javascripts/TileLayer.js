@@ -57,7 +57,7 @@ L.TileLayer.Ajax = L.TileLayer.extend({
             tilePoint4.y = tempY + 1;
             tile4 = { datum: null, processed: false };
             this._loadTile(newZoom, tile4, tilePoint4);
-        } 
+        }
         else if (zoom > 14)
         {
             // zoomed in to too fine a detail

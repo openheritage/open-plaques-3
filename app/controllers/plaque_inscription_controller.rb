@@ -1,7 +1,8 @@
-class PlaqueInscriptionController < ApplicationController
+class PlaqueInscriptionController < PlaqueDetailsController
+
+  layout 'plaque_edit', :only => :edit
 
   def edit
-    @plaque = Plaque.find(params[:plaque_id])
     @languages = Language.order(:name)
     render 'plaques/inscription/edit'
   end

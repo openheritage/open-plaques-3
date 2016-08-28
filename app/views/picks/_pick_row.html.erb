@@ -1,0 +1,12 @@
+<div class="row pick">
+  <div class="col-xs-4">
+    <%= render pick.photo if pick.photo %>
+  </div>
+  <div class="col-xs-8">
+    <blockquote class="blockquote">
+      <p class="m-b-0">"<%= pick.description %>"</p>
+      <footer class="blockquote-footer"><%= pick.proposer %></footer>
+    </blockquote>
+    <p class="label label-default label-pill pull-right">featured <%= pluralize(pick.featured_count, "time") %></p>
+  </div>
+</div>

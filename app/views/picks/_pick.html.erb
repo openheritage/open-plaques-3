@@ -1,7 +1,8 @@
-<div class="inside-panel">
-  <div>
-    <%= link_to(pick.title, pick_path(pick)) %> has been featured <%= pluralize(pick.featured_count, "time") %>.
-    <% if pick.feature_on %>It would be great to specifically feature it on <%= pick.feature_on.strftime('%d/%m/%Y') %><% end %>
-  </div>
-  <%= render pick.plaque %>
+<div class="card pick">
+  <%= render pick.photo if pick.photo %>
+  <blockquote class="blockquote">
+    <p class="m-b-0">"<%= pick.description %>"</p>
+    <footer class="blockquote-footer"><%= pick.proposer %></footer>
+  </blockquote>
+  <p class="label label-default label-pill pull-right">featured <%= pluralize(pick.featured_count, "time") %></p>
 </div>

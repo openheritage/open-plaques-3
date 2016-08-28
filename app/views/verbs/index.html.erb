@@ -1,13 +1,8 @@
-<% content_for(:page_title) {t '.page_title' } %>
+<% content_for(:page_title) {t '.page_title'} %>
+<% content_for(:title) {t '.page_heading'} %>
+<% content_for(:page_subhead) {t '.page_subhead'} %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_verb_path} %>
 
-<div class="panel clearfix">
-  <% if current_user && current_user.is_admin? %>
-    <section class="admin_panel">
-      <%= link_to t('buttons.add'), new_verb_path, {:class => :edit, :title => t('buttons.add')} %>
-    </section>
-  <% end %>
-  <h1><%= t '.page_heading' %></h1>
+<div class="card-columns">
   <%= render @verbs %>
 </div>
-
-<p class="alternate_formats"><%= t 'data_about_things_as' %> <%= alternate_link_to "JSON", verbs_path(:json), :json %></p>

@@ -1,14 +1,15 @@
 ﻿<% content_for :page_title, "To do: Plaques with photos but partial inscriptions" %>
+<% content_for :title, "Plaques with photos but partial inscriptions" %>
+<% content_for(:admin_menu) {navbar_link_to("All to-do lists", "/todo")} %>
 
-<div class="panel">
-  <h1>Plaques with photos but partial inscriptions</h1>
-  <section class="admin_panel"><%= link_to("All to-do lists", "/todo") %></section>
-  <%= will_paginate @plaques %>
-  <% if @plaques.size > 0 %>
+<% if @plaques.size > 0 %>
+  <div class="container-fluid">
     <%= will_paginate @plaques %>
-    <%= render @plaques %>
+    <div class="card-columns">
+      <%= render @plaques %>
+    </div>
     <%= will_paginate @plaques %>
-  <% else %>
-    <p>All plaques have inscriptions. Bravo!</p>
-  <% end %>
-</div>
+  </div>
+<% else %>
+  <p>Every plaque has an inscription. Bravo!</p>
+<% end %>

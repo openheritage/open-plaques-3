@@ -1,7 +1,7 @@
 class PeopleDiedOnController < ApplicationController
 
   def index
-    @counts = Person.group(:died_on).order(:died_on).count
+    @counts = Person.group(:died_on).order(died_on: :desc).count
     respond_to do |format|
       format.html
       format.json { render :json => @counts }

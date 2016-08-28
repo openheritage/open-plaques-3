@@ -1,0 +1,9 @@
+<div class="row card">
+  <div class="card-block">
+    <h4 class="card-title"><%= link_to series.name, series %></h4>
+    <p class="card-text"><%= series.description %></p>
+    <div class="card-columns">
+      <%= render partial: 'plaques/tile', collection: series.plaques.photographed.limit(5), as: :plaque %>
+    </div>
+  </div>
+</div>

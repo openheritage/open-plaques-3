@@ -1,23 +1,11 @@
-class PlaquePhotosController < ApplicationController
-
-  before_filter :find
-  respond_to :json
+class PlaquePhotosController < PlaqueDetailsController
 
   def show
   	respond_to do |format|
-      format.html {
-      	render 'plaques/photos/show'
-      }
-      format.json {
-        render :json => @plaque.photos.as_json
-      }
+      format.html { render 'plaques/photos/show' }
+      format.json { render :json => @plaque.photos }
+      format.geojson { render :geojson => @plaque.photos }
     end
   end
-
-  protected
-
-    def find
-      @plaque = Plaque.find(params[:plaque_id])
-    end
 
 end

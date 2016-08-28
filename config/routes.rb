@@ -15,19 +15,17 @@ Rails.application.routes.draw do
 
   resources :plaques do
     member do
-      post 'parse_inscription'
-      post 'unparse_inscription'
       post 'flickr_search'
       get 'flickr_search_all'
     end
     resource :location, :controller => :plaque_location, :only => :edit
-    resource :erected, :controller => :plaque_erected, :only => :edit
+    resource :series, :controller => :plaque_series, :only => :edit
     resource :colour, :controller => :plaque_colour, :only => :edit
     resource :geolocation, :controller => :plaque_geolocation, :only => :edit
     resource :inscription, :controller => :plaque_inscription, :only => :edit
     resource :description, :controller => :plaque_description, :only => [:edit, :show]
     resource :language, :controller => :plaque_language, :only => :edit
-    resources :connections, :controller => "personal_connections", :as => :connections
+    resources :connections, :controller => :personal_connections, :as => :connections
     resource :photos, :controller => :plaque_photos, :only => :show
     resource :talk, :controller => :plaque_talk, :only => :create
     resources :sponsorships
@@ -40,14 +38,13 @@ Rails.application.routes.draw do
     collection do
       get 'autocomplete', :controller => :areas
     end
-    resources :plaques, :controller => :country_plaques, :only => :show
+    resource :plaques, :controller => :country_plaques, :only => :show
     resources :areas do
       resource :plaques, :controller => :area_plaques, :only => :show
       resource :unphotographed, :controller => :area_plaques, :id => 'unphotographed', :only => :show
 #      resource :ungeolocated, :controller => :area_plaques, :id => 'ungeolocated', :only => :show
     end
   end
-  resources :locations, :only => [:show, :edit, :update, :destroy]
 
   resources :photos
   resources :photographers, :as => :photographers, :only => [:create, :index, :show, :new]

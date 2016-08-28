@@ -1,9 +1,9 @@
-class PlaqueDescriptionController < ApplicationController
+class PlaqueDescriptionController < PlaqueDetailsController
 
   before_filter :authenticate_user!
+  layout 'plaque_edit', :only => :edit
 
   def edit
-  	@plaque = Plaque.find(params[:plaque_id])
     render "plaques/description/edit"
   end
 

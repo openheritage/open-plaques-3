@@ -1,0 +1,13 @@
+<div class="row">
+  <% if pick.photo %>
+    <%= link_to pick.plaque do %>
+      <div class="col-xs-12 col-sm-3">
+        <%= render pick.plaque.main_photo %>
+      </div>
+    <% end %>
+  <% end %>
+  <div class="col-xs-12<% if pick.photo %> col-sm-9<% end %>">
+    <div class="card-title"><h4><%= link_to pick.plaque.title, pick.plaque %></h4></div>
+    <h5><%= pick.proposer %> says,"<%= pick.description %>"</h5>
+  </div>
+</div>

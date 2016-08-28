@@ -48,4 +48,28 @@ class Pick < ActiveRecord::Base
     "Pick #" + self.id.to_s + " " + self.plaque.title
   end
 
+  def longitude
+    plaque.longitude
+  end
+
+  def latitude
+    plaque.latitude
+  end
+
+  def photo
+    plaque.main_photo
+  end
+
+  def as_json(options={})
+    options =
+    {
+      :only => [:description, :featured_count, :proposer, :last_featured],
+      :include => {
+        :plaque => {:only => [], :methods => [:uri]}
+      },
+      :methods => [:title]
+    } if !options || !options[:only]
+    super options
+  end
+
 end

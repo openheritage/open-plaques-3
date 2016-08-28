@@ -1,15 +1,8 @@
 <% content_for(:page_title) {t '.page_title', :country => @country.name} %>
+<% content_for(:title) {render @country} %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_country_path(@country)} %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_country_area_path(@country.alpha2)} %>
 
-<div class="panel clearfix">
-  <% if current_user && current_user.is_admin? %>
-    <section class="admin_panel">
-      <%= link_to t('buttons.edit'), edit_country_path(@country), {:class => :edit, :title => t('buttons.edit')} %>
-      <%= link_to(t('buttons.add'), new_country_area_path(@country.alpha2), {:class => :edit, :title => t('buttons.add')})%>
-    </section>
-  <% end %>
-  <h1><%= @country.name %></h1>
-  <h2>We have <%= pluralize @country.plaques_count, "plaque" %> in <%= pluralize @country.areas.size, "area" %></h2>
+<div class="card-columns">
   <%= render @country.areas %>
 </div>
-
-<div class="alternate_formats"><%= t 'data_about_thing_as' %> .json and .geojson</div>

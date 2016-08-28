@@ -1,9 +1,15 @@
 <% content_for :page_title, "To do: plaques with no description" %>
+<% content_for :title, "Plaques with no description" %>
+<% content_for(:admin_menu) {navbar_link_to("All to-do lists", "/todo")} %>
 
-<div class="panel">
-  <h1>Plaques with no description</h1>
-  <section class="admin_panel"><%= link_to("All to-do lists", "/todo") %></section>
-  <%= will_paginate @plaques %>
-    <%= render @plaques %>
+<% if @plaques.size > 0 %>
+  <div class="container-fluid">
     <%= will_paginate @plaques %>
-</div>
+    <div class="card-columns">
+      <%= render @plaques %>
+    </div>
+    <%= will_paginate @plaques %>
+  </div>
+<% else %>
+  <p>Every plaque has a description. Bravo!</p>
+<% end %>

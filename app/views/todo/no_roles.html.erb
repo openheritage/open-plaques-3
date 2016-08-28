@@ -1,13 +1,15 @@
 ﻿<% content_for :page_title, "To do: people with no role" %>
+<% content_for :title, "Subjects with no role" %>
+<% content_for(:admin_menu) {navbar_link_to("All to-do lists", "/todo")} %>
 
-<div class="panel">
-  <h1>Subjects with no role</h1>
-  <section class="admin_panel"><%= link_to("All to-do lists", "/todo") %></section>
-  <% if @people.size > 0 %>
-    <%= will_paginate @people %>
-    <%= render @people %>
-    <%= will_paginate @people %>
-  <% else %>
-    <p>Every person has a role. Bravo!</p>
-  <% end %>
-</div>
+<% if @plaques.size > 0 %>
+  <div class="container-fluid">
+    <%= will_paginate @plaques %>
+    <div class="card-columns">
+      <%= render @plaques %>
+    </div>
+    <%= will_paginate @plaques %>
+  </div>
+<% else %>
+  <p>Every person has a role. Bravo!</p>
+<% end %>

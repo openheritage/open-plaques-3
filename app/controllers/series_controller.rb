@@ -44,6 +44,7 @@ class SeriesController < ApplicationController
       end
     end
     if @series.update_attributes(series_params)
+      flash[:notice] = 'Updates to series saved.'
       redirect_to series_path(@series)
     else
       render :edit

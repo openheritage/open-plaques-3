@@ -1,5 +1,13 @@
-<div class="panel">
-  <% if area %>
-    <%= link_to area.name, area_plaques_path(area) %><% if area.country %>, <%= area.country %><% end %> [<%= area.plaques_count %>]
-  <% end %>
+<div class="card">
+  <div class="card-block">
+    <div class="card-title">
+      <% if controller.controller_name.eql?('area_plaques') && controller.action_name.eql?('show') %>
+        <%= area.name %>
+      <% else %>
+        <%= link_to area.name, area_plaques_path(area) %>
+      <% end %>
+      <% if area.country %> <span class="flag-icon flag-icon-<%= area.country.alpha2 %>"></span><% end %>
+      <span class="label label-default label-pill pull-right"><%= area.plaques_count %></span>
+    </div>
+  </div>
 </div>

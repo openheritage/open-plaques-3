@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Person do
-  
+
   describe '#full_name' do
     context 'a person' do
       before do
@@ -102,7 +102,7 @@ describe Person do
         expect(@person.full_name).to eq('John Smith Td')
       end
     end
- 
+
     context 'a person with multiple higher education qualifications' do
       before do
         @person = Person.new(name: 'John Smith')
@@ -115,7 +115,7 @@ describe Person do
         expect(@person.full_name).to eq('John Smith Td P')
       end
     end
- 
+
     context 'a princess who became queen' do
       before do
         @victoria = Person.new(name: 'Victoria')
@@ -243,7 +243,7 @@ describe Person do
   describe '#dead?' do
     context 'a person with no dates' do
       before do
-        @person = Person.new()
+        @person = Person.new
       end
       it 'is still alive' do
         expect(@person).to be_alive
@@ -252,7 +252,7 @@ describe Person do
 
     context 'a person with a date of death' do
       before do
-        @person = Person.new()
+        @person = Person.new
         @person.died_on = Date.new(2009, 1, 1)
       end
       it 'is dead' do
@@ -262,7 +262,7 @@ describe Person do
 
     context 'a person with a date of death and a date of birth' do
       before do
-        @person = Person.new()
+        @person = Person.new
         @person.born_on = Date.new(1932, 7, 8)
         @person.died_on = Date.new(2009, 1, 1)
       end
@@ -273,7 +273,7 @@ describe Person do
 
     context 'a person with a date of birth and no date of death' do
       before do
-        @person = Person.new()
+        @person = Person.new
         @person.born_on = Date.new(1980, 1, 1)
       end
       it 'is alive' do
@@ -283,7 +283,7 @@ describe Person do
 
     context 'a person with a date of birth before 1900' do
       before do
-        @person = Person.new()
+        @person = Person.new
         @person.born_on = Date.new(1880, 1, 1)
       end
       it 'is dead by now' do
@@ -293,7 +293,7 @@ describe Person do
 
     context 'a building built before 1900' do
       before do
-        @person = Person.new()
+        @person = Person.new
         @person.born_on = Date.new(1880, 1, 1)
         @person.roles << Role.new(name: 'building', role_type: 'thing')
       end
@@ -306,7 +306,7 @@ describe Person do
   describe '#age' do
     context 'a person with no dates' do
       before do
-        @person = Person.new()
+        @person = Person.new
       end
       it 'is of unknown age' do
         expect(@person.age).to eq('unknown')
@@ -315,7 +315,7 @@ describe Person do
 
     context 'a person with only a date of death' do
       before do
-        @person = Person.new()
+        @person = Person.new
         @person.died_on = Date.new(2009, 1, 1)
       end
       it 'is of unknown age' do
@@ -325,18 +325,18 @@ describe Person do
 
     context 'a person born in 1932 and died in 2009' do
       before do
-        @person = Person.new()
+        @person = Person.new
         @person.born_on = Date.new(1932, 7, 8)
         @person.died_on = Date.new(2009, 1, 1)
       end
       it 'was 77' do
-        expect(@person.age).to be > 76
+        expect(@person.age).to be == '77'
       end
     end
 
     context 'a person with a date of birth and no date of death' do
       before do
-        @person = Person.new()
+        @person = Person.new
         @person.born_on = Date.new(1980, 1, 1)
       end
       it 'has an age' do
@@ -346,7 +346,7 @@ describe Person do
 
     context 'a person born in 1880 with no date of death' do
       before do
-        @person = Person.new()
+        @person = Person.new
         @person.born_on = Date.new(1880, 1, 1)
       end
       it 'is of unknown age' do
@@ -356,7 +356,7 @@ describe Person do
 
     context 'a building built before 1900' do
       before do
-        @person = Person.new()
+        @person = Person.new
         @person.born_on = Date.new(1880, 1, 1)
         @person.roles << Role.new(name: 'building', role_type: 'thing')
       end
@@ -369,7 +369,7 @@ describe Person do
   describe '#dates' do
     context 'a person born in 1932 and died in 2009' do
       before do
-        @person = Person.new()
+        @person = Person.new
         @person.born_on = Date.new(1932, 7, 8)
         @person.died_on = Date.new(2009, 1, 1)
       end
@@ -380,41 +380,41 @@ describe Person do
 
     context 'a person with no dates' do
       before do
-        @person = Person.new()
+        @person = Person.new
       end
       it 'can\'t display a date range' do
-        expect(@person.dates).to eq('')
+        expect(@person.dates).to eq(nil)
       end
     end
 
     context 'a person who died in 2009' do
       before do
-        @person = Person.new()
+        @person = Person.new
         @person.died_on = Date.new(2009, 1, 1)
       end
       it 'displays a death date' do
-        expect(@person.dates).to eq('(died in 2009)')
+        expect(@person.dates).to eq('(d.2009)')
       end
     end
 
     context 'a person born in 1980 with no date of death' do
       before do
-        @person = Person.new()
+        @person = Person.new
         @person.born_on = Date.new(1980, 1, 1)
       end
       it 'displays a birth date' do
-        expect(@person.dates).to eq('(born in 1980)')
+        expect(@person.dates).to eq('(1980-present)')
       end
     end
 
     context 'a building built in 1880' do
       before do
-        @person = Person.new()
+        @person = Person.new
         @person.born_on = Date.new(1880, 1, 1)
         @person.roles << Role.new(name: 'building', role_type: 'place')
       end
       it 'displays a built date' do
-        expect(@person.dates).to eq('(built in 1880)')
+        expect(@person.dates).to eq('(1880-present)')
       end
     end
   end

@@ -1,17 +1,50 @@
 <% content_for(:page_title) {t '.page_title'} %>
+<% content_for(:title) {t '.page_heading'} %>
 
-<div class="panel">
-  <h1><%= t '.page_heading' %></h1>
-  <%= form_for @photo do |f| %>
-    <h2><%= t '.required' %></h2>
-    <p><%= f.label :url %> <%= f.text_field :url %></p>
-    <p><%= f.label :licence_id %> <%= f.collection_select :licence_id, @licences, :id, :name, {:include_blank => true} %></p>
-    <h2><%= t '.optional' %></h2>
-    <p><%= f.label :photographer %> <%= f.text_field :photographer %></p>
-    <p><%= f.label :photographer_url %> <%= f.text_field :photographer_url %></p>
-    <p><%= f.label :file_url %> <%= f.text_field :file_url %></p>
-    <p><%= f.label :plaque_id %> <%= f.text_field :plaque_id %></p>
-    <p><%= f.label :shot %> <%= f.collection_select :shot, Photo.shots, :to_s, :to_s, :include_blank => true %></p> 
-    <p><%= f.submit t('buttons.save'), :class => :button %></p>
-  <% end %>
-</div>
+<h2><%= t '.required' %></h2>
+
+<%= form_for @photo do |f| %>
+  <fieldset class="form-group row">
+    <%= f.label :url, :class => 'form-control-label col-sm-4' %>
+    <div class="col-sm-8">
+      <%= f.text_field :url, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :licence_id, :class => 'form-control-label col-sm-4' %>
+    <div class="col-sm-8">
+      <%= f.collection_select :licence_id, @licences, :id, :name, {:include_blank => true, :class => 'form-control'} %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :photographer, :class => 'form-control-label col-sm-4' %>
+    <div class="col-sm-8">
+      <%= f.text_field :photographer, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :photographer_url, :class => 'form-control-label col-sm-4' %>
+    <div class="col-sm-8">
+      <%= f.text_field :photographer_url, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :file_url, :class => 'form-control-label col-sm-4' %>
+    <div class="col-sm-8">
+      <%= f.text_field :file_url, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :plaque_id, :class => 'form-control-label col-sm-4' %>
+    <div class="col-sm-8">
+      <%= f.text_field :plaque_id, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :shot, :class => 'form-control-label col-sm-4' %>
+    <div class="col-sm-8">
+      <%= f.collection_select :shot, Photo.shots, :to_s, :to_s, {:include_blank => true, :class => 'form-control'} %>
+    </div>
+  </fieldset>
+  <%= f.submit t('buttons.save'), :class => 'btn btn-primary' %>
+<% end %>

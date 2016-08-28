@@ -82,7 +82,7 @@ class TodoController < ApplicationController
       when 'unassigned_photo'
         @photos = Photo.unassigned.paginate(:page => params[:page], :per_page => 100)
         render :unassigned_photo
-      
+
       when 'microtask'
         case 5 # rand(7)
           when 0
@@ -98,7 +98,7 @@ class TodoController < ApplicationController
             @plaques = Plaque.partial_inscription_photo
             @plaque = @plaques[rand @plaques.length]
             if (@plaque)
-              @languages = Language.all(:order => :name)
+              @languages = Language.all.order(:name)
               render 'plaque_inscription/edit' and return
             end
           when 2
@@ -106,7 +106,7 @@ class TodoController < ApplicationController
             @people = Person.no_role
             @person = @people[rand @people.length]
             if (@person)
-              @roles = Role.all(:order => :name)
+              @roles = Role.all.order(:name)
               @personal_role = PersonalRole.new
               @died_on = @person.died_on.year if @person.died_on
               @born_on = @person.born_on.year if @person.born_on
@@ -128,7 +128,7 @@ class TodoController < ApplicationController
             @died_on = @person.died_on.year if @person.died_on
             @born_on = @person.born_on.year if @person.born_on
             if (@person)
-              @roles = Role.all(:order => :name)
+              @roles = Role.all.order(:name)
               render 'people/dates/edit' and return
             end
           when 5
@@ -139,7 +139,7 @@ class TodoController < ApplicationController
               #    if @photo.unnassigned?
                     @plaques = [Plaque.find(100)]
               #    end
-              @licences = Licence.all(:order => :name)
+              @licences = Licence.all.order(:name)
               render 'photos/plaque/edit' and return
             end
           when 6
@@ -149,14 +149,14 @@ class TodoController < ApplicationController
             if (@plaque)
               render 'plaque_inscription/edit' and return
             end
-            
+
         end
         redirect_to todo_path and return
-        
+
       else
         puts 'what to do?'
     end
-    
+
   end
 
   def new

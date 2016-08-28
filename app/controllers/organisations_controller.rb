@@ -28,7 +28,7 @@ class OrganisationsController < ApplicationController
 
   def show
     begin
-      if (params[:id]=="oxfordshire_blue_plaques_scheme") 
+      if (params[:id]=="oxfordshire_blue_plaques_scheme")
         params[:id] = "oxfordshire_blue_plaques_board"
         redirect_to(organisation_path(params[:id])) and return
       end
@@ -44,7 +44,7 @@ class OrganisationsController < ApplicationController
       format.html
       format.json { render :json => @organisation }
       format.geojson { render :geojson => @organisation }
-      end
+    end
   end
 
   def new
@@ -62,12 +62,19 @@ class OrganisationsController < ApplicationController
 
   def update
     old_slug = @organisation.slug
+    if (params[:streetview_url] && params[:streetview_url]!='')
+      point = help.geolocation_from params[:streetview_url]
+      if !point.latitude.blank? && !point.longitude.blank?
+        params[:organisation][:latitude] = point.latitude
+        params[:organisation][:longitude] = point.longitude
+      end
+    end
     if @organisation.update_attributes(organisation_params)
       flash[:notice] = 'Updates to organisation saved.'
       redirect_to organisation_path(@organisation.slug)
     else
       @organisation.slug = old_slug
-      render "edit"
+      render :edit
     end
   end
 
@@ -80,6 +87,8 @@ class OrganisationsController < ApplicationController
       end
     end
 
+  private
+
     def help
       Helper.instance
     end
@@ -89,14 +98,13 @@ class OrganisationsController < ApplicationController
       include PlaquesHelper
     end
 
-  private
-
     def organisation_params
       params.require(:organisation).permit(
         :name,
         :slug,
         :latitude,
         :longitude,
+        :streetview_url,
         :website,
         :description,
         :notes)

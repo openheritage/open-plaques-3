@@ -1,16 +1,25 @@
 <% content_for(:page_title) {t '.page_title', :country => @country.name} %>
+<% content_for(:title) {render @country} %>
+<% content_for(:admin_menu) {navbar_link_to(t('.add_an_area'), new_country_area_path(@country.alpha2), {:class => :edit, :title => t('buttons.add')})} %>
 
-<div class="panel clearfix">
-  <% if current_user && current_user.is_admin? %>
-    <section class="admin_panel">
-      <%= link_to(t('.add_an_area'), new_country_area_path(@country.alpha2), {:class => :edit, :title => t('buttons.add')})%>
-    </section>
-  <% end %>
-  <h1><%= t '.page_heading_html', :country => link_to(@country.name, @country) %></h1>
-  <%= form_for @country do |f| %>
-    <p><%= f.label :alpha2 %> <%= f.text_field :alpha2 %></p>
-    <p><%= f.label :name %> <%= f.text_field :name %></p>
-    <p><%= f.label :dbpedia_uri %> <%= f.text_field :dbpedia_uri %></p>
-    <p><%= f.submit t('buttons.update'), :class => :button %></p>
-  <% end %>
-</div>
+<%= form_for @country do |f| %>
+  <fieldset class="form-group row">
+    <%= f.label :name, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.text_field :name, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :alpha2, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.text_field :alpha2, :maxlength => 2, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :dbpedia_uri, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.text_field :dbpedia_uri, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <%= f.submit t('buttons.update'), :class => 'btn btn-primary' %>
+<% end %>

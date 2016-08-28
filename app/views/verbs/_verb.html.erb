@@ -1,3 +1,14 @@
-<div class="inside_panel">
-  <%= link_to(verb.name, verb_path(verb))%>
+<div typeof="foaf:Organization" class="card vcard">
+  <div class="card-block">
+    <h4 class="card-title">
+      <% if controller.controller_name.eql?('verbs') && controller.action_name.eql?('show')%>
+        <%= verb.name %>
+      <% else %>
+        <%= link_to verb.name, verb %>
+      <% end %>
+    </h4>
+    <span class="label label-default label-pill pull-right">
+      <%= verb.personal_connections_count %>
+    </span>
+  </div>
 </div>

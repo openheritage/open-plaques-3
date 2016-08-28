@@ -1,13 +1,15 @@
 ﻿<% content_for :page_title, "To do: colours from photos" %>
+<% content_for :title, "Plaques with photos but no colour identified" %>
+<% content_for(:admin_menu) {navbar_link_to("All to-do lists", "/todo")} %>
 
-<div class="panel">
-  <h1>Plaques with photos but no colour identified</h1>
-  <section class="admin_panel"><%= link_to("All to-do lists", "/todo") %></section>
-  <% if @plaques.size > 0 %>
+<% if @plaques.size > 0 %>
+  <div class="container-fluid">
     <%= will_paginate @plaques %>
-    <%= render @plaques %>
+    <div class="card-columns">
+      <%= render @plaques %>
+    </div>
     <%= will_paginate @plaques %>
-  <% else %>
-    <p>Every plaque with a photo has a colour attribute assigned. Bravo!</p>
-  <% end %>
-</div>
+  </div>
+<% else %>
+  <p>Every plaque with a photo has a colour attribute assigned. Bravo!</p>
+<% end %>

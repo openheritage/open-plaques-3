@@ -1,112 +1,173 @@
-
 <% content_for :page_title, @plaque %>
-
+<% content_for :title do %>
+  <%= linked_inscription @plaque %>
+<% end %>
+<% content_for :page_subhead do %>
+  <span id="facebook_like_button"><iframe src="https://www.facebook.com/plugins/like.php?href=<%= plaque_path(@plaque, :only_path => false) %>&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action=like&amp;font&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:75px; height:20px; text-align:right;" allowTransparency="true"></iframe></span>
+  <% if @plaque.foreign? %>
+    <div class="row">
+      <% if !@plaque.inscription_in_english.blank? %>
+        <h7><%= t '.english_translation' %>: "<%= @plaque.inscription_in_english %>"</h7>
+      <% else %>
+        <div class="goog-trans-control"></div>
+        <h6 class="goog-trans-section" lang=""><%= @plaque.inscription_preferably_in_english %></h6>
+        <script>
+          function googleSectionalElementInit() {
+            new google.translate.SectionalElement({
+              sectionalNodeClassName: 'goog-trans-section',
+              controlNodeClassName: 'goog-trans-control',
+              background: '#f4fa58'
+            }, 'google_sectional_element');
+          }
+        </script>
+        <script src="https://translate.google.com/translate_a/element.js?cb=googleSectionalElementInit&ug=section&hl=en"></script>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
 <%= render 'plaques/edit_bar', :plaque => @plaque %>
 
-<div class="panel clearfix">
-  <% if @plaque.foreign? && !@plaque.inscription_in_english %><div class="goog-trans-section" lang=""><% end %>
-  <%= plaque_class = @plaque.inscription.length > 250 ? "large_inscription" : "inscription"
-    content_tag("h1", new_linked_inscription(@plaque), {:class => plaque_class, :property => "op:inscription"})%>
-  <% if @plaque.inscription_in_english %>
-    <%= plaque_class = @plaque.inscription_in_english.length > 250 ? "large_inscription" : "inscription"
-      content_tag("h1", @plaque.inscription_in_english, {:class => plaque_class, :property => "op:inscription"})%>
-  <% end %>
-  <% if @plaque.foreign? && !@plaque.inscription_in_english %>
-    <div class="goog-trans-control"></div>
-    </div>
-    <script>
-    function googleSectionalElementInit() {
-      new google.translate.SectionalElement({
-        sectionalNodeClassName: 'goog-trans-section',
-        controlNodeClassName: 'goog-trans-control',
-        background: '#f4fa58'
-      }, 'google_sectional_element');
-    }
-    </script>
-    <script src="http://translate.google.com/translate_a/element.js?cb=googleSectionalElementInit&ug=section&hl=en"></script>
-  <% end %>
-</div>
-
-<div class="panel clearfix">
-  <% if !@plaque.main_photo %>
-    <section id="plaque_no_photos">
-      <div class="no_photo">
-        <h2>Your photo</h2>
-        <% if @plaque.is_current %>
-          <p>There is no photo linked to this plaque record. It needs someone to hunt it down. Maybe that someone could be you?</p>
-        <% else %>
-          <p>There is no photo linked to this plaque record. We don't think that it currently exists so we need someone to hunt down an old photo. Maybe that someone could be you?</p>
-        <% end %>
-        <p><%= link_to 'How to add it', plaque_photos_path(@plaque), {:class => :show, :title => 'Show photos'} %></p>
+<div class="row">
+  <div class="col-xs-12 col-md-8">
+    <div class="container">
+      <div class="col-xs-12">
+        <%= render @plaque.main_photo, large: true if @plaque.main_photo %>
       </div>
-      <% if @plaque.geolocated? %>
-        <div class="no_photo_geo">
-          <div id="plaque-map" data-latitude="<%= @plaque.latitude %>" data-longitude="<%= @plaque.longitude %>" class="mini" data-view="one"></div>
+    </div>
+    <div class="card-columns">
+      <%= link_to plaque_photos_path(@plaque) do %>
+        <div class="card">
+          <%= image_tag("NoPhotoSqr.png", :class => 'card-img img-rounded w-100') %>
+          <p class="card-text"><%= t '.how_to_add_yours' %></p>
         </div>
+      <% end %>
+      <%= render @plaque.other_photos %>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <%= content_tag(:p, t('.does_not_exist'), :class => 'bg-danger') unless @plaque.is_current %>
+    <%= content_tag(:p, t('.not_erected'), :class => 'bg-warning') unless @plaque.erected? %>
+    <% if @plaque.is_current && @plaque.geolocated? %>
+      <div id="plaque-map" data-latitude="<%= @plaque.latitude %>" data-longitude="<%= @plaque.longitude %>" class="mini" data-zoom="17" data-view="one"></div>
+      <%= content_tag(:div, t('.approximate_position'), :class => 'bg-danger') unless @plaque.is_accurate_geolocation %>
+    <% end %>
+    <p>
+      <%= @plaque.address %>, <%= link_to(@plaque.area.name, @plaque.area)  if @plaque.area %>
+      <% if @plaque.roughly_geolocated? %>
+       <br/>[<%= link_to "geolocate this address", edit_plaque_geolocation_path(@plaque), {:class => :edit, :title => "Geolocate"} %>]
+     <% end %>
+    </p>
+    <p>
+      <%= erected_information @plaque %>
+      <% if @plaque.series %>
+        <% if @plaque.series_ref? %>#<%= content_tag(:span, @plaque.series_ref )%><% else %>Part<% end %> of the <%= link_to @plaque.series.name, @plaque.series %> series
+      <% end %>
+    </p>
+    <p>
+      Colour:
+      <% if @plaque.colour %>
+        <%= @plaque.colour.name %>
       <% else %>
-        <div class="no_location">
-          <h2>Map location unknown</h2>
-          <p>We haven&apos;t located this plaque on a map yet. <!--a href="#">Locate this plaque</a--></p>
-        </div>
-      <% end %>
-    </section>
-
-    <section id="plaque_identifier" class="plaque_info_panel">
-      <div class="header clearfix">
-         <h1>Plaque <abbr title="number">№</abbr> <%= @plaque.id %></h1>
-         <div class="like_button">
-           <iframe src="http://www.facebook.com/plugins/like.php?href=<%= plaque_path(@plaque, :only_path => false) %>&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action=like&amp;font&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:75px; height:20px; text-align:right;" allowTransparency="true"></iframe>
-         </div>
-      </div>
-      <%= render 'details', :plaque => @plaque %>
-    </section>
-
-  <% else %>
-
-    <div class="plaque_image plaque_multiple_images">
-      <% first_photo = @plaque.main_photo %>
-      <%= link_to(image_tag(first_photo.file_url, {:id => "primary_image", :alt => "Photo of plaque", :rel => "foaf:depiction"}), first_photo.url) %>
-      <div id="photo_information" >
-        <p class="photo_credit">Photographed by <% if first_photo.photographer_url %><%= link_to(first_photo.photographer, first_photo.photographer_url) %><% else %><%= first_photo.photographer %>.<% end %></p>
-        <p class="photo_licence"><%= link_to(first_photo.licence.name, first_photo.licence.url) if first_photo.licence %></p>
-      </div>
-      <div id="secondary_images">
-        <% @plaque.photos.detail_order.each do |image| %>
-          <%= link_to(image_tag(image.file_url, {:alt => "Photo of plaque", :rel => "foaf:depiction"}), image.url) unless image == first_photo %>
+        <% @colours = Colour.all %>
+        <%= form_for @plaque do |f| %>
+          <%= f.label :colour_id, "This plaque is" %>
+          <%= f.collection_select :colour_id, @colours, :id, :name, {:include_blank => true} %>
+          <%= f.submit "Save", :class => :button %>
         <% end %>
-        <div class="no_photo">
-          <h2>Your photo</h2>
-          <p><%= link_to 'How to add it', plaque_photos_path(@plaque), {:class => :show, :title => 'Show photos'} %></p>
+      <% end %>
+    </p>
+    <p>Wikimedia: <i><%= @plaque.wikimedia_tag %></i> <%= button_tag icon("clipboard"), id: 'copy-wikimedia-tag', type: 'button', :class => :button %></p>
+    <p>Flickr: <i><%= @plaque.machine_tag %></i> <%= button_tag icon("clipboard"), id: 'copy-flickr-tag', type: 'button', :class => :button %></p>
+    <h7><%= pluralize_word(@plaque.people.size, 'Subject') %></h7>
+    <% if @plaque.people.size == 0 %>
+      <p>None identified yet</p>
+    <% else %>
+      <style media="screen" type="text/css">
+        @media (min-width: 34em) {
+            .subjects .card-columns {
+                -webkit-column-count: 2;
+                -moz-column-count: 2;
+                column-count: 2;
+            }
+        }
+        @media (min-width: 48em) {
+            .subjects .card-columns {
+                -webkit-column-count: 2;
+                -moz-column-count: 2;
+                column-count: 2;
+            }
+        }
+        @media (min-width: 62em) {
+            .subjects .card-columns {
+                -webkit-column-count: 2;
+                -moz-column-count: 2;
+                column-count: 2;
+            }
+        }
+        @media (min-width: 75em) {
+            .subjects .card-columns {
+                -webkit-column-count: 2;
+                -moz-column-count: 2;
+                column-count: 2;
+            }
+        }
+      </style>
+      <div class="subjects">
+        <div class="card-columns">
+          <%= render @plaque.people %>
         </div>
       </div>
-    </div>
-    <section id="plaque_identifier" class="plaque_info_panel">
-      <div class="header clearfix">
-        <h1>Plaque <abbr title="number">№</abbr> <%= @plaque.id %></h1>
-        <div class="like_button">
-          <iframe src="http://www.facebook.com/plugins/like.php?href=<%= plaque_path(@plaque, :only_path => false) %>&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action=like&amp;font&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:75px; height:20px; text-align:right;" allowTransparency="true"></iframe>
-         </div>
-      </div>
-      <% if @plaque.geolocated? %>
-        <div id="plaque-map" data-latitude="<%= @plaque.latitude %>" data-longitude="<%= @plaque.longitude %>" class="mini" data-zoom="18" data-view="one"></div>
-      <% end %>
-      <%= render 'details', :plaque => @plaque %>
-    </section>
-
-  <% end %>
-
+    <% end %>
 </div>
 
 <% unless @plaque.description.blank? %>
-  <div class="panel clearfix info">
-    <div class="description" id="description">
-      <%= markdown(@plaque.description) %>
-    </div>
+  <div class="row">
+    <%= markdown(@plaque.description) %>
   </div>
 <% end %>
 
-<div id="plaques_nearby"></div>
+<% unless @plaque.see_also.empty? %>
+  <h7>See also...</h7>
+  <div class="card-columns">
+    <%= render partial: 'plaques/tile', collection: @plaque.see_also, as: :plaque %>
+  </div>
+<% end %>
 
-<div<%= " class=\"" + @plaque.colour.name + "plaque\"" if @plaque.colour %> about="#this" typeof="op:Plaque"></div>
+<div<%= ' class=\"' + @plaque.colour.name + 'plaque\"' if @plaque.colour %> about="#this" typeof="op:Plaque"></div>
 
-<p class="alternate_formats">Data is available about this plaque as .json and .geojson</p>
+<script>
+  function copyTextToClipboard(text) {
+    var textArea = document.createElement("textarea");
+    textArea.style.position = 'fixed';
+    textArea.style.top = 0;
+    textArea.style.left = 0;
+    textArea.style.width = '2em';
+    textArea.style.height = '2em';
+    textArea.style.padding = 0;
+    textArea.style.border = 'none';
+    textArea.style.outline = 'none';
+    textArea.style.boxShadow = 'none';
+    textArea.style.background = 'transparent';
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
+    try {
+      var successful = document.execCommand('copy');
+      var msg = successful ? 'successful' : 'unsuccessful';
+      console.log('Copying text command was ' + msg);
+    } catch (err) {
+      console.log('Oops, unable to copy');
+    }
+    document.body.removeChild(textArea);
+  }
+
+  var copyFlickrTagBtn = document.querySelector('#copy-flickr-tag');
+  copyFlickrTagBtn.addEventListener('click', function(event) {
+    copyTextToClipboard('<%= @plaque.machine_tag %>');
+  });
+
+  var copyWikimediaTagBtn = document.querySelector('#copy-wikimedia-tag');
+  copyWikimediaTagBtn.addEventListener('click', function(event) {
+    copyTextToClipboard('<%= @plaque.wikimedia_tag %>');
+  });
+</script>

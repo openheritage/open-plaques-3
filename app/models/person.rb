@@ -91,7 +91,6 @@ class Person < ActiveRecord::Base
     return "man" if person? && male?
     return "woman" if person? && female?
     return "person" if person?
-    return "person" if person?
     return "animal" if animal?
     return "thing" if thing?
     return "group" if group?
@@ -107,6 +106,22 @@ class Person < ActiveRecord::Base
     died_on.year if died_on
   end
 
+  def dates
+    dates = ""
+    if born_in
+      dates = "("
+      dates += born_in.to_s
+      if died_in
+        dates += "-" + died_in.to_s if (born_in != died_in)
+      else
+        dates += alive? ? "-present" : "-?"
+      end
+      dates += ")"
+    elsif died_in
+      dates = '(d.' + died_in.to_s + ')'
+    end
+  end
+
   def born_at
     birth_connection.location if birth_connection
   end
@@ -116,9 +131,7 @@ class Person < ActiveRecord::Base
   end
 
   def dead?
-    return true if died_in
-    return true if (person? || animal?) && born_in && born_in < 1900
-    false
+    died_in || (person? || animal?) && born_in && born_in < 1910
   end
 
   def alive?
@@ -126,19 +139,19 @@ class Person < ActiveRecord::Base
   end
 
   def existence_word
-    return "is" if alive?
-    "was"
+    alive? ? "is" : "was"
   end
 
   def age
-    return died_in - born_in if died_in && born_in
-    return Time.now.year - born_in if born_in && thing?
-    return Time.now.year - born_in if born_in && born_in > 1900
+    circa = died_on && born_on && born_on.month == 1 && born_on.day == 1 && died_on.month == 1 && died_on.day == 1 ? 'c.' : ''
+    return circa + (died_in - born_in).to_s if died_on && born_on
+    return Time.now.year - born_in if born_in && inanimate_object?
+    return Time.now.year - born_in if born_in && born_in > 1910
     "unknown"
-   end
+  end
 
   def age_in(year)
-    return year - born_in if born_in
+    year - born_in if born_in
   end
 
   # note that the Wikipedia url is constructed from the person's name
@@ -147,12 +160,12 @@ class Person < ActiveRecord::Base
   # is no Wikipedia record
   def default_wikipedia_url
     return wikipedia_url.gsub("http:","https:") if wikipedia_url && wikipedia_url > ""
-    untitled_name = name.gsub("Canon ","").gsub("Captain ","").gsub("Cardinal ","").gsub("Dame ","").gsub("Dr ","").gsub("Lord ","").gsub("Sir ","").strip.gsub(/ /,"_")
+    untitled_name = name.gsub("Canon ","").gsub("Captain ","").gsub("Cardinal ","").gsub("Dame ","").gsub("Dr ","").gsub('Lord ','').gsub('Sir ','').strip.tr(' ','_')
     "https://en.wikipedia.org/wiki/"+untitled_name
   end
 
   def default_dbpedia_uri
-    return default_wikipedia_url.gsub("en.wikipedia.org/wiki","dbpedia.org/resource").gsub("https","http")
+    default_wikipedia_url.gsub("en.wikipedia.org/wiki","dbpedia.org/resource").gsub("https","http")
   end
 
   def dbpedia_ntriples_uri
@@ -160,33 +173,7 @@ class Person < ActiveRecord::Base
   end
 
   def name_and_dates
-    name + " " + dates
-  end
-
-  def name_and_raw_dates
-    name + " " + raw_dates
-  end
-
-  def dates
-    r = ""
-    r += "(" if born_on || died_on
-    r += creation_word + " " if born_on && !died_on
-    r += born_on.year.to_s if born_on
-    r += "-" if born_on && died_on
-    r += destruction_word + " " if !born_on && died_on
-    r += died_on.year.to_s if died_on
-    r += ")" if born_on || died_on
-    return r
-  end
-
-  def raw_dates
-    r = ""
-    r += "(" if born_on || died_on
-    r += born_on.year.to_s if born_on
-    r += "-" if born_on && died_on
-    r += died_on.year.to_s if died_on
-    r += ")" if born_on || died_on
-    return r
+    name + " " + dates.to_s
   end
 
   def surname
@@ -194,7 +181,7 @@ class Person < ActiveRecord::Base
   end
 
   def default_thumbnail_url
-    return "/assets/NoPersonSqr.png"
+    "/assets/NoPersonSqr.png"
   end
 
   def populate_from_dbpedia
@@ -296,17 +283,23 @@ class Person < ActiveRecord::Base
     names << firstinitial + " " + lastname  if nameparts.length > 1 # J. Hansom
     names << title + " " + lastname if titled? # Lord Carlisle
     names << title + " " + firstname if titled? # Sir William
-    names << lastname if nameparts.length > 1 # Kitchener
     names << firstname if nameparts.length > 1 # Charles
+    names << lastname if nameparts.length > 1 # Kitchener
     names.uniq
   end
 
-  def parents
-    parents = []
+  def father
     relationships.each do |relationship|
-      parents << relationship.related_person if (relationship.role.name=="son" or relationship.role.name=="daughter") && relationship.related_person!=nil
+      return relationship.related_person if (relationship.role.name=="son" or relationship.role.name=="daughter") && relationship.related_person!=nil && relationship.related_person.male?
     end
-    parents.sort! { |a,b| a.born_on ? a.born_on : 0 <=> b.born_on ? b.born_on : 0 }
+    nil
+  end
+
+  def mother
+    relationships.each do |relationship|
+      return relationship.related_person if (relationship.role.name=="son" or relationship.role.name=="daughter") && relationship.related_person!=nil && relationship.related_person.female?
+    end
+    nil
   end
 
   def children
@@ -317,20 +310,39 @@ class Person < ActiveRecord::Base
     issue.sort! { |a,b| a.born_on ? a.born_on : 0 <=> b.born_on ? b.born_on : 0 }
   end
 
+  def has_children?
+    children.size > 0
+  end
+
   def siblings
     siblings = []
-    relationships.each do |relationship|
-      siblings << relationship.related_person if relationship.role.name=="brother" or relationship.role.name=="sister" or relationship.role.name=="half-brother" or relationship.role.name=="half-sister"
+    if father != nil
+      father.children.each do |child|
+        siblings << child if child != self
+      end
     end
-    siblings.sort! { |a,b| a.born_on ? a.born_on : 0 <=> b.born_on ? b.born_on : 0 }
+    if mother != nil
+      mother.children.each do |child|
+        siblings << child if child != self
+      end
+    end
+    siblings.uniq.sort! { |a,b| a.born_on ? a.born_on : 0 <=> b.born_on ? b.born_on : 0 }
+  end
+
+  def spouses
+    people = []
+    relationships.each do |relationship|
+      people << relationship.related_person if relationship.role.name=="wife" or relationship.role.name=="husband"
+    end
+    people #.sort! { |a,b| a.born_on ? a.born_on : 0 <=> b.born_on ? b.born_on : 0 }
   end
 
   def spousal_relationships
-    spouses = []
+    spousal_relationships = []
     relationships.each do |relationship|
-      spouses << relationship if relationship.role.name=="wife" or relationship.role.name=="husband"
+      spousal_relationships << relationship if relationship.role.name=="wife" or relationship.role.name=="husband"
     end
-    spouses
+    spousal_relationships
   end
 
   def non_family_relationships
@@ -342,23 +354,27 @@ class Person < ActiveRecord::Base
   end
 
   def creation_word
-    return "from" if (self.thing?)
-    return "formed in" if (self.group?)
-    return "built in" if (self.place?)
+    return "from" if thing?
+    return "formed in" if group?
+    return "built in" if place?
     "born in"
   end
 
   def destruction_word
-    return "until" if self.thing?
-    return "ended in" if self.group?
-    return "closed in" if self.place?
+    return "until" if thing?
+    return "ended in" if group?
+    return "closed in" if place?
     "died in"
   end
 
+  def inanimate_object?
+    thing? || group? || place?
+  end
+
   def personal_pronoun
-    return "it" if (self.thing? || self.group? || self.place?)
-    return "he" if self.male?
-    return "she" if self.female?
+    return "it" if inanimate_object?
+    return "he" if male?
+    return "she" if female?
     "he/she"
   end
 
@@ -373,11 +389,11 @@ class Person < ActiveRecord::Base
       "Abigail","Adelaide","Adele","Ada","Agnes","Alice","Alison","Amalie","Amelia","Anastasia","Anna","Anne","Annie","Antoinette",
       "Beatriz","Bertha","Betty",
       "Caroline","Cäcilie","Charlotte","Clara","Constance",
-      "Deborah","Diana","Dolly","Doris","Dorothea",
+      "Daisy","Deborah","Diana","Dolly","Doris","Dorothea",
       "Edith","Elfriede","Elisabeth","Elise","Elizabeth","Ella","Ellen","Elly","Elsbeth","Elsa","Else","Emilie","Emma","Erika","Erna","Ernestine","Eva",
       "Fanny","Flora","Florence","Franziska","Frida","Frieda",
       "Georgia","Georgina","Gerda","Gertrud","Gladys","Greta","Grete",
-      "Hanna","Hattie","Helen","Helene","Henrietta","Henriette","Herta","Hertha","Hilde","Hildegard",
+      "Hanna","Hattie","Hazel","Helen","Helene","Henrietta","Henriette","Herta","Hertha","Hilde","Hildegard",
       "Ida","Ilse","Irene","Irma",
       "Jane","Janet","Jacqueline","Jeanne","Jenny","Johanna","Josephine","Julia","Julie",
       "Kate","Käte","Käthe","Kathleen","Klara",
@@ -393,24 +409,23 @@ class Person < ActiveRecord::Base
       "Vera","Victoria","Violet","Virginia",
       "Wilhelmina","Winifred")
     end
-    return true if self.gender == 'f'
-    false
+    self.gender == 'f'
   end
 
   def sex
     return "female" if female?
-    return "object" if (self.thing? || self.group? || self.place?)
+    return "object" if inanimate_object?
     "male"
   end
 
   def possessive
-    return "its" if (self.thing? || self.group? || self.place?)
+    return "its" if inanimate_object?
     return "her" if self.female?
     return "his" if self.male?
     "his/her"
   end
 
-  def related_to(person)
+  def is_related_to?(person)
     relationships.each do |r|
       return true if r.related_person == person
     end
@@ -418,11 +433,11 @@ class Person < ActiveRecord::Base
   end
 
   def find_a_grave_url
-    return self.find_a_grave_id ? "http://www.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=" + self.find_a_grave_id : null
+    self.find_a_grave_id ? "http://www.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=" + self.find_a_grave_id : null
   end
 
   def ancestry_url
-    return self.ancestry_id ? "http://www.ancestry.co.uk/genealogy/records/" + self.ancestry_id : null
+    self.ancestry_id ? "http://www.ancestry.co.uk/genealogy/records/" + self.ancestry_id : null
   end
 
   def uri

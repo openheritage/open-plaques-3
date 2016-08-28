@@ -1,3 +1,11 @@
-<div>
-  <%= link_to page.name, {:action => :show, :id => page.slug} %>. Last updated <%= page.updated_at.to_s(:long) %> <%= link_to "[Edit]", edit_page_path(page.slug) %>
+<div class="card page">
+  <div class="card-block">
+    <div class="card-title">
+      /<%= page.slug %> - <%= link_to page.name, {:action => :show, :id => page.slug} %>
+    </div>
+    <small class="text-muted">Last updated <%= page.updated_at.to_s(:long) %></small>
+  </div>
+  <div class="card-block">
+    <%= link_to t('buttons.edit'), edit_page_path(page.slug), :class => 'card-link btn btn-primary' %>
+  </div>
 </div>

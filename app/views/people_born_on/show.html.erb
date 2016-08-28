@@ -1,11 +1,7 @@
 <% content_for(:page_title) {t '.page_title', :year => @year.year.to_s } %>
+<% content_for(:title) {t '.page_heading', :year => @year.year.to_s } %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_person_path} %>
 
-<div class="panel clearfix">
-  <% if current_user && current_user.is_admin? %>
-    <section class="admin_panel">
-      <%= link_to t('buttons.add'), new_person_path, {:class => :edit, :title => t('buttons.add')} %>
-    </section>
-  <% end %>
-  <h1><%= t '.page_heading', :year => @year.year.to_s %></h1>
+<div class="card-columns">
   <%= render @people %>
 </div>

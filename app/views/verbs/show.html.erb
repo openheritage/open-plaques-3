@@ -1,14 +1,28 @@
 <% content_for(:page_title) {t '.page_title', :verb => @verb.name } %>
+<% content_for(:title) { @verb.name } %>
+<% content_for(:page_subhead) do %>
+  Each subject is connected to a plaque by what they did there
+  <span class="label label-default label-pill pull-right">
+    <%= @verb.personal_connections_count %>
+  </span>
+<% end %>
 
-<div class="panel clearfix">
-  <% if current_user && current_user.is_admin? %>
-    <section class="admin_panel">
-      &nbsp;
-    </section>
-  <% end %>
-  <h1><%= pluralize @verb.personal_connections.count, 'person' %> '<%= @verb.name %>'</h1>
-  <%= render @verb.personal_connections %>
-  <%= button_to(t('buttons.delete'), verb_path(@verb.id), {:method => :delete, :class => :button}) if current_user.try(:is_admin?) && @verb.personal_connections.count == 0 %>
-</div>
-
-<p class="alternate_formats"><%= t 'data_about_thing_as' %> <%= alternate_link_to "JSON", verb_path(@verb, :format => :json), :json %></p>
+<% if @verb.personal_connections.count < 3 %>
+  <div class="row">
+    <% @verb.personal_connections.each do |personal_connection| %>
+      <div class="col-xs-6 col-sm-4 col-md-3"><%= render personal_connection %></div>
+    <% end %>
+  </div>
+<% elsif @verb.personal_connections.count < 11 %>
+  <div class="row">
+    <% cols = (12 / @verb.personal_connections.count).ceil %>
+    <% cols = [cols,2].max %>
+    <% @verb.personal_connections.each do |personal_connection| %>
+      <div class="col-xs-6 col-sm-<%= cols %>"><%= render personal_connection %></div>
+    <% end %>
+  </div>
+<% else %>
+  <div class="card-columns">
+    <%= render @verb.personal_connections %>
+  </div>
+<% end %>

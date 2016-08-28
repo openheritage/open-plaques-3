@@ -1,15 +1,14 @@
 <% content_for(:page_title) {t '.page_title', :series => @series.name } %>
+<% content_for(:title) {@series.name} %>
+<% content_for(:page_subhead) do %>
+  <p><%= @series.description %></p>
+  <span class="label label-default label-pill pull-right"><%= @series.plaques_count %></span>
+<% end %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_series_path(@series)} %>
 
-<div class="panel">
-  <% if current_user && current_user.is_admin? %>
-    <section class="admin_panel">
-      <%= link_to t('buttons.edit'), edit_series_path(@series), {:class => :edit, :title => t('buttons.edit')} %>
-    </section>
-  <% end %>
-  <h1 property="dc:title rdfs:label foaf:name" about="#this"><%= t '.page_heading', :series => @series.name %></h1>
-  <%= render @series %>
-  <div id="plaque-map" data-latitude="<%= @series.latitude %>" data-longitude="<%= @series.longitude %>" data-view="all" context="<%= request.path %>"></div>
-  <%= will_paginate @plaques %>
-  <%= render @plaques %>
-  <%= will_paginate @plaques %>
-</div>
+<% if @series.geolocated? %>
+  <div class="row" id="plaque-map" data-latitude="<%= @series.latitude %>" data-longitude="<%= @series.longitude %>" data-view="all" context="<%= request.path %>"></div>
+<% end %>
+<%= will_paginate @plaques %>
+<%= render partial: 'plaques/plaque_row', :collection => @plaques, as: :plaque %>
+<%= will_paginate @plaques %>

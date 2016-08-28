@@ -1,6 +1,4 @@
-<% content_for :page_title, "Historical plaques - recently added" %>
+<% content_for(:page_title) {t '.page_title'} %>
+<% content_for(:title) {t '.page_heading'} %>
 
-<div class="panel">
-  <h1>Recently added plaques</h1>
-  <%= render @plaques %>
-</div>
+<%= render partial: 'plaques/plaque_row', :collection => @plaques, as: :plaque %>

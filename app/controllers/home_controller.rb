@@ -1,7 +1,7 @@
 class HomeController < ApplicationController
   def index
     @plaques_count = Plaque.count
-    @recent_plaques = Plaque.photographed.order("random()").limit(2)
+    @recent_plaques = Plaque.photographed.order("random()").limit(10)
     @todays = Pick.todays
     begin
       set_meta_tags :open_graph => {
@@ -23,7 +23,7 @@ class HomeController < ApplicationController
     heap_live_slots_after = GC.stat(:heap_live_slots)
     difference = heap_live_slots_before - heap_live_slots_after
     puts '*** ended garbage collection'
-    render :json => { 
+    render :json => {
       'reply' => 'thank you',
       'heap_live_slots before' => heap_live_slots_before.to_s,
       'heap_live_slots after' => heap_live_slots_after.to_s,

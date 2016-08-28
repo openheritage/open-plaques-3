@@ -1,3 +1,40 @@
+<% content_for(:page_title) {'Edit role: ' + @personal_role.person.full_name + ' was a ' + @personal_role.role.name} %>
+<% content_for(:title) do %>
+  <%= link_to @personal_role.person.full_name, @personal_role.person %> was a <%= @personal_role.role.name %>
+<% end %>
+
+<%= form_for @personal_role do |f| %>
+  <% if @personal_role.role.relationship? %>
+    <fieldset class="form-group row">
+      <span class="form-control-label col-sm-2">of</span>
+      <div class="col-sm-10">
+        <%= f.text_field :related_person, :class => 'form-control' %>
+        <%= f.hidden_field :related_person_id %>
+        <%= link_to(icon('user') + t('.new_person'), "/people/new") %>
+      </div>
+    </fieldset>
+  <% end %>
+  <fieldset class="form-group row">
+    <%= f.label :started_at, :class => 'form-control-label col-sm-2'%>
+    <div class="col-sm-10">
+      <%= f.text_field :started_at, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :ended_at, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.text_field :ended_at, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :ordinal, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.text_field :ordinal, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <%= f.submit t('buttons.update'), :class => 'btn btn-primary' %>
+<% end %>
+
 <script type="text/javascript">
   $(function() {
     $( "#personal_role_related_person" ).autocomplete({
@@ -26,20 +63,3 @@
     });
   });
 </script>
-
-<div class="panel clearfix">
-  <%= form_for @personal_role do |f| %>
-    <p>
-      <%= render @personal_role.person %> was a <%= render @personal_role.role %>
-      <% if @personal_role.role.relationship? %>of 
-        <%= f.text_field :related_person %>
-        <%= f.hidden_field :related_person_id %>
-        <%= link_to(t('.new_person'), "/people/new") %>
-      <% end %>
-    </p>
-    <p><%= f.label :started_at %> <%= f.text_field :started_at %></p>
-    <p><%= f.label :ended_at %> <%= f.text_field :ended_at %></p>
-    <p><%= f.label :ordinal %> <%= f.text_field :ordinal %></p>
-    <p><%= f.submit t('buttons.save'), :class => :button %></p>
-  <% end %>
-</div>

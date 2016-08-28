@@ -1,6 +1,22 @@
-<div>
-  <a href="<%= url_for(organisation) %>">
-    <p class="result"><%= organisation.name %></p>
-    <p class="count"><%= pluralize(organisation.sponsorships.size, "plaque") if organisation.sponsorships.size > 0 %><%= t('.no_plaques') if organisation.sponsorships.size == 0 %></p>
-  </a>
-</div
+<div class="card vcard organisation" typeof="foaf:Organization">
+  <div class="card-block">
+    <h4 class="card-title">
+      <% if controller.controller_name.eql?('organisations') && controller.action_name.eql?('show')%>
+        <%= organisation.name %>
+      <% else %>
+        <%= link_to(organisation.name, organisation) %>
+      <% end %>
+    </h4>
+    <span class="label label-default label-pill pull-right"><%= organisation.sponsorships.size %></span>
+    <% if controller.controller_name.eql?('organisations') && controller.action_name.eql?('show')%>
+      <% if !organisation.website.blank? %>
+        <p class="card-text" rel="foaf:homepage vcard:url">
+          <small class="text-muted"><%= link_to(h(organisation.website),organisation.website) %></small>
+        </p>
+      <% end %>
+      <p class="card-text">
+        <small class="text-muted"><%= simple_format(organisation.description) %></small>
+      </p>
+    <% end %>
+  </div>
+</div>

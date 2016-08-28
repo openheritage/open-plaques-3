@@ -43,6 +43,7 @@ class SearchController < ApplicationController
     respond_to do |format|
       format.html
       format.json { render :json => @search_results.uniq }
+      format.geojson { render :geojson => @search_results.uniq }
     end
   end
 

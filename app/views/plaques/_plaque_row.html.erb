@@ -1,0 +1,58 @@
+<% if plaque %>
+  <% begin %>
+    <% if plaque.inscription %><% end %>
+  <% rescue %>
+    <% plaque = plaque.plaque %>
+  <% end %>
+  <% photo = plaque.main_photo %>
+<div class="row card">
+  <%= link_to plaque_path(plaque) do %>
+    <div class="col-xs-3">
+      <%= image_tag(photo != nil ? photo.thumbnail_url : "NoPhotoSqr.png", {:class => 'card-img-top img-thumbnail w-100'}) %>
+    </div>
+  <% end %>
+  <div class="col-xs-9">
+    <h7 class="card-title"><%= plaque.inscription %></h7>
+    <% if plaque.foreign? && plaque.inscription_in_english %>
+      <p id="inscription-in-english" class="card-text"><small><%= plaque.inscription_in_english %></small></p>
+    <% end %>
+    <p class="card-text">
+      <small>
+        <%= plaque.address %>, <%= link_to(plaque.area.name, area_path(plaque.area)) if plaque.area %>, <%= plaque.area.country.name if plaque.area %>
+        <% if @person %> where <%= @person.personal_pronoun %> <%= verbs(@person,plaque).to_sentence.html_safe %><% end %>
+        <% '. As far as we know, it is not currently on display.' if !plaque.is_current %>
+      </small>
+    </p>
+    <% if !controller.controller_name.eql?('people') && plaque.people.count > 0 %>
+      <style media="screen" type="text/css">
+        .subjects .card-columns .card-info .card-title {
+          font-size: 12px;
+        }
+      </style>
+      <h5>Subjects</h5>
+      <div class="subjects">
+        <% if plaque.people.count < 3 %>
+          <div class="row">
+            <% plaque.people.each do |person| %>
+              <div class="col-xs-6 col-sm-4 col-md-3"><%= render person %></div>
+            <% end %>
+          </div>
+        <% elsif plaque.people.count < 11 %>
+          <div class="row">
+            <% cols = (12 / plaque.people.count).ceil %>
+            <% cols = [cols,2].max %>
+            <% plaque.people.each do |person| %>
+              <div class="col-xs-6 col-sm-<%= cols %>"><%= render person %></div>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="card-columns">
+            <%= render plaque.people %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<% end %>

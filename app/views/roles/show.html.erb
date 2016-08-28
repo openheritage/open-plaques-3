@@ -1,63 +1,64 @@
-<% content_for(:page_title) {t '.page_title', :role => @role.name.pluralize } %>
-
-<div class="panel clearfix">
-  <% if current_user && current_user.is_admin? %>
-    <section class="admin_panel">
-      <%= link_to t('buttons.edit'), edit_role_path(@role), {:class => :edit, :title => t('buttons.edit')} %>
-    </section>
+<% content_for(:page_title) {t '.page_title', :role => @pluralized_role} %>
+<% content_for(:title) do %>
+  <%= icon('user') if @role.person? %>
+  <%= icon('paw') if @role.animal? %>
+  <%= icon('users') if @role.group? %>
+  <%= icon('building') if @role.place? %>
+  <%= icon('map-marker') if @role.thing? %>
+  <%= @role.name.pluralize %>
+<% end %>
+<% content_for(:page_subhead) do %>
+  <% if !@role.prefix.blank? %>
+    <p>Prefixes the name with <strong><%= @role.prefix %></strong>.</p>
   <% end %>
-  <h1>
-    <% if @role.full_name.include? " of " %>
-      <%= @role.name.split(/#| of /).first.pluralize + @role.name.sub(/.*? of /, ' of ') %>
-    <% else %>
-      <%= @role.name.pluralize %>
-    <% end %>
-  </h1>
   <% if @role.used_as_a_suffix? %>
-    <p>
-      <% if @role.military_medal? %>
-        A military medal that confers
-      <% else %>
-        Confers
-      <% end %>
-      the letters <strong><%= @role.letters %></strong> after the name.
-    </p>
+    <p><%= @role.military_medal? ? 'A military medal that confers' : 'Confers' %> the letters <strong><%= @role.letters %></strong> after the name.</p>
   <% end %>
-  <p><%= t '.read_more_html', :link => link_to(a_or_an(@role.name, true), @role.wikipedia_url) %></p>
-</div>
+  <% unless @role.wikipedia_stub.blank? %>
+    <%= icon('external-link') %><%= link_to('Wikipedia', @role.wikipedia_url, :target => "_blank") %>
+  <% end %>
+  <span class="label label-default label-pill pull-right"><%= @role.personal_roles_count %></span>
+<% end %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_role_path(@role)} %>
 
-<ol class="results" id="people_results">
-  <% for personal_role in @role.personal_roles %>
-    <li>
-      <p class="result"><b><%= personal_role.ordinal.ordinalize + " " + @role.name if personal_role.ordinal %></b><%= render personal_role.person %> <%= personal_role.date_range %></b></p>
-      <p><% personal_role.person.relationships.each do |relationship| %>
-        <p><%= relationship.role.name %> of <%= render relationship.related_person %></p>
-      <% end %>
-    </li>	
-  <% end %>
-  
-  <% if @role.people.size == 0 %>
-    <li>
-      <p class="result">None</p>
-      <p class="count">There are no plaques mentioning this role.</p>
-    </li>
-  <% end %>
-</ol>
-
-<% if @role.related_roles.size > 0 %>
-  <div class="panel clearfix">
-    <h2><%= t '.related_roles'%></h2>
-  </div>
-  <ol class="results" id="people_results">
-    <% for related_role in @role.related_roles %>
-      <li class="role">
-        <p class="result"><%= render related_role %></p>
-        <p class="count">
-          <%= render related_role.people %>
-        </p>
-      </li>
+<% if @role.personal_roles.count < 3 %>
+  <div class="row">
+    <% @role.personal_roles.each do |personal_role| %>
+      <div class="col-xs-6 col-sm-4 col-md-3">
+        <%= render personal_role %>
+      </div>
     <% end %>
-  </ol>
+  </div>
+<% elsif @role.personal_roles.count < 11 %>
+  <div class="row">
+    <% cols = (12 / @role.personal_roles.count).ceil %>
+    <% cols = [cols,2].max %>
+    <% @role.personal_roles.each do |personal_role| %>
+      <div class="col-xs-6 col-sm-<%= cols %>">
+        <%= render personal_role %>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div class="card-columns">
+    <%= render @role.personal_roles %>
+  </div>
 <% end %>
 
-<p class="alternate_formats"><%= t 'data_about_thing_as' %> <%= alternate_link_to "JSON", role_path(@role, :format => :json), :json %></p>
+<% if @role.related_roles.size > 0 %>
+  <div class="row">
+    <h2><%= t '.related_roles'%></h2>
+  </div>
+  <% @role.related_roles.each do |related_role| %>
+    <div class="row">
+      <%= link_to related_role do %>
+        <%= render related_role %>
+      <% end %>
+    </div>
+    <div class="container-fluid">
+      <div class="card-columns">
+        <%= render related_role.personal_roles %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

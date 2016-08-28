@@ -1,14 +1,33 @@
 <% content_for(:page_title) {t '.page_title'} %>
+<% content_for(:title) {t '.page_heading'} %>
 
-<div class="panel">
-  <h1><%= t '.page_heading' %></h1>
-  <%= form_for @organisation do |f| %>
-    <h2><%= t '.required' %></h2>
-    <p><%= f.label :name %> <%= f.text_field :name %> <%= t '.note_about_name' %></p>
-    <h2><%= t '.optional' %></h2>
-    <p><%= f.label :website %> <%= f.text_field :website %></p>
-    <p><%= f.label :description %><%= f.text_area :description, {:rows => "5", :cols => "80"} %> <%= t '.note_about_description' %></p>
-    <p><%= f.label :notes %> <%= f.text_area :notes, {:rows => "5", :cols => "80"} %> <%= t '.note_about_notes' %></p>
-    <p><%= f.submit t('buttons.save'), :class => :button %></p>
-  <% end %>
-</div>
+<%= form_for @organisation do |f| %>
+  <fieldset class="form-group row">
+    <%= f.label :name, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.text_field :name, :class => 'form-control' %>
+      <small class="text-muted"><%= t '.note_about_name' %></small>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :website, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.text_field :website, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :description, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.text_area :description, {:rows => "5", :cols => "80", :class => 'form-control'} %>
+      <small class="text-muted"><%= t '.note_about_description' %></small>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :notes, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.text_area :notes, {:rows => "5", :cols => "80", :class => 'form-control'} %>
+      <small class="text-muted"><%= t '.note_about_notes' %></small>
+    </div>
+  </fieldset>
+  <%= f.submit t('buttons.save'), :class => 'btn btn-primary' %>
+<% end %>

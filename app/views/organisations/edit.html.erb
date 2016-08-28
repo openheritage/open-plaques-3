@@ -1,74 +1,106 @@
 <% content_for(:page_title) {t '.page_title', :organisation => @organisation.name} %>
+<% content_for(:title) {t '.page_heading', :organisation => @organisation.name } %>
 
-<div class="panel clearfix">
-  <h1><%= t '.page_heading', :organisation => @organisation.name %></h1>
-  <%= form_for(@organisation) do |f| %>
-    <p><%= f.label :name %> <%= f.text_field :name %></p>
-    <p><%= f.label :slug %> <%= f.text_field :slug %></p>
-    <p>
+<%= form_for(@organisation) do |f| %>
+  <fieldset class="form-group row">
+    <%= f.label :name, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.text_field :name, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :slug, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.text_field :slug, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= label_tag(nil, t('.geolocation'), :class => 'form-control-label col-sm-2') %>
+    <div class="col-sm-10">
       <%= f.label :latitude %> <%= f.text_field :latitude %>
       <%= f.label :longitude %> <%= f.text_field :longitude %>
-    </p>
-    <p><%= f.label :website %> <%= f.text_field :website %></p>
-    <p><%= f.label :description %> <%= f.text_area :description %></p>
-    <p><%= f.label :notes %> <%= f.text_area :notes %></p>
-    <p><%= f.submit t('buttons.save') , :class => :button %></p>
-  <% end %>
-</div>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= label_tag(:streetview_url, t('.google_streetview_url'), :class => 'form-control-label col-sm-2') %>
+    <div class="col-sm-10">
+      <%= text_field_tag(:streetview_url, nil, :class => 'form-control') %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :website, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.text_field :website, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :description, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.text_area :description, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :notes, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.text_area :notes, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <%= f.submit t('buttons.save') , :class => 'btn btn-primary' %>
+<% end %>
 
-  <div id="map" style="height: 400px; width: 100%; margin-top: 15px;"></div>
+<div id="map" style="height: 400px; width: 100%; margin-top: 15px;"></div>
 
-  <script>
-    var map = null;
-    var lat_element = null;
-    var lon_element = null;
-    var geolocation = new L.LatLng(52, 0);  
-    var view = 5;
+<script>
+  var map = null;
+  var lat_element = null;
+  var lon_element = null;
+  var geolocation = new L.LatLng(52, 0);
+  var view = 5;
 
-    document.addEventListener("DOMContentLoaded", function()
+  document.addEventListener("DOMContentLoaded", function()
+  {
+    lat_element = document.getElementById('organisation_latitude');
+    lon_element = document.getElementById('organisation_longitude');
+
+    lat_element.addEventListener('blur', update_map);
+    lon_element.addEventListener('blur', update_map);
+
+    update_geolocation_from_text_fields();
+
+    var plaque_icon = new L.DivIcon({ className: 'plaque-marker', html: '', iconSize : 16 });
+
+    map = L.map('map').setView(geolocation, view);
+
+    L.tileLayer('https://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      subdomains: ['otile1','otile2','otile3','otile4']
+    }).addTo(map);
+
+    marker = L.marker(geolocation, {draggable: true, icon: plaque_icon});
+    marker.on('dragend', update_text_fields_from_marker);
+    marker.addTo(map);
+
+    function update_geolocation_from_text_fields()
     {
-      lat_element = document.getElementById('organisation_latitude');
-      lon_element = document.getElementById('organisation_longitude');
+      if (lat_element && lat_element.value != '' && lon_element && lon_element.value != '')
+      {
+        geolocation.lat = lat_element.value;
+        geolocation.lng = lon_element.value;
+        view = 18;
+      }
+    }
 
-      lat_element.addEventListener('blur', update_map);
-      lon_element.addEventListener('blur', update_map);
-
+    function update_map()
+    {
       update_geolocation_from_text_fields();
+      marker.setLatLng(geolocation);
+      map.setView(geolocation, view);
+    }
 
-      var plaque_icon = new L.DivIcon({ className: 'plaque-marker', html: '', iconSize : 16 });
-
-      map = L.map('map').setView(geolocation, view);
-
-      L.tileLayer('http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {
-        maxZoom: 18,
-        subdomains: ['otile1','otile2','otile3','otile4']
-      }).addTo(map);
-
-      marker = L.marker(geolocation, {draggable: true, icon: plaque_icon});
-      marker.on('dragend', update_text_fields_from_marker);
-      marker.addTo(map);
-
-      function update_geolocation_from_text_fields()
-      {
-        if (lat_element && lat_element.value != '' && lon_element && lon_element.value != '')
-        {
-          geolocation.lat = lat_element.value;
-          geolocation.lng = lon_element.value;
-          view = 18;
-        } 
-      }
-
-      function update_map()
-      {
-        update_geolocation_from_text_fields();
-        marker.setLatLng(geolocation);
-        map.setView(geolocation, view);
-      }
-      
-      function update_text_fields_from_marker()
-      {
-        lat_element.value = marker.getLatLng().lat;
-        lon_element.value = marker.getLatLng().lng;
-      }
-    });
-  </script>
+    function update_text_fields_from_marker()
+    {
+      lat_element.value = marker.getLatLng().lat;
+      lon_element.value = marker.getLatLng().lng;
+    }
+  });
+</script>

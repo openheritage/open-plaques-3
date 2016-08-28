@@ -1,17 +1,10 @@
 <% content_for(:page_title) {t '.page_title'} %>
+<% content_for(:title) {t '.page_heading'} %>
+<% content_for(:page_subhead) {t '.explanation_html'} %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_photo_path} %>
 
-<div class="panel clearfix">
-  <% if current_user && current_user.is_admin? %>
-    <section class="admin_panel">
-      <%= link_to(t('buttons.add'), new_photo_path, {:class => :edit, :title => t('buttons.add')})%>
-    </section>
-  <% end %>
-  <h1><%= t '.page_heading' %></h1>
-  <p><%= t '.explanation_html' %></p>
-  <%= will_paginate @photos %>
-  <%= render partial: 'photos/tile', :collection => @photos, as: :photo %>
-  <br style="clear: left;"/>
-  <%= will_paginate @photos %>
+<%= will_paginate @photos %>
+<div class="card-columns">
+  <%= render @photos %>
 </div>
-
-<p class="alternate_formats"><%= t 'data_about_things_as' %> <%= alternate_link_to "JSON", photos_path(:json), :json %></p>
+<%= will_paginate @photos %>

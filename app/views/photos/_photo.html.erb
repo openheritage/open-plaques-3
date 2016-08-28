@@ -1,12 +1,11 @@
-<div id="photo-<%= photo.id %>" class="col-md-<% if photo.plaque && photo == photo.plaque.main_photo %>12<%else%>3<%end%> col-xs-<% if photo.plaque && photo == photo.plaque.main_photo %>12<%else%>6<%end%>">
-  
-  <% if photo.plaque %>
-      <%= content_tag(:span, link_to(image_tag(photo.file_url, {:class => "img-thumbnail", :alt => "Photo of " + photo.plaque.to_s, :rel => "foaf:depiction"}), photo.url)) if photo.file_url %>
-  <% elsif photo.person %>
-    <%= content_tag(:span, link_to(image_tag(photo.file_url, {:class => "img-thumbnail", :alt => "Photo of " + photo.person.to_s, :rel => "foaf:depiction"}), photo.url)) if photo.file_url %>
-  <% else %>
-    <%= content_tag(:span, link_to(image_tag(photo.file_url, {:class => "img-thumbnail", :alt => "Photo"}), photo.url)) if photo.file_url %>
-  <% end %>
-  <span class="photo_credit"><%= link_to(photo.source, photo.file_url) %> photographed by <%= link_to photo.photographer, photographer_url(photo.photographer.gsub(".","_").gsub("/","_")) if photo.photographer rescue photo.photographer %></span>
-  <span class="photo_licence"><%= link_to photo.licence.name, photo.licence if photo.licence %></span>
+<% url = local_assigns[:large] ? photo.file_url : photo.thumbnail_url %>
+<% if url %>
+<div class="card photo">
+  <% alt = photo.plaque ? 'Photo of ' + photo.plaque.title : photo.person ? 'Photo of ' + photo.person.name : 'Photo' %>
+  <%= image_tag(url, {:class => "card-img img-rounded w-100", :alt => alt, :rel => "foaf:depiction"}) %>
+  <div class="card-info">
+    <%= photo.licence.creative_commons? ? icon('creative-commons') : icon('copyright') if photo.licence %> <%= photo.photographer if photo.photographer %> on <%= photo.source %>
+    <%= photo.licence.abbreviation ? photo.licence.abbreviation : photo.licence.name if photo.licence && !photo.licence.creative_commons? %>
+  </div>
 </div>
+<% end %>

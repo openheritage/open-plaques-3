@@ -4,13 +4,10 @@ class PersonalRolesController < ApplicationController
   before_filter :authenticate_user!
   before_filter :find, :only => [:destroy, :update, :edit]
 
-  # POST /personal_roles
-  # POST /personal_roles.xml
   def create
     @personal_role = PersonalRole.new
     @personal_role.role = Role.find(params[:personal_role][:role])
     @personal_role.person = Person.find(params[:personal_role][:person_id])
-    # TODO: need better validation on the date format here.
     if params[:personal_role][:started_at] > ""
       started_at = params[:personal_role][:started_at]
       started_at = started_at + "-01-01" if started_at =~/\d{4}/
@@ -32,8 +29,6 @@ class PersonalRolesController < ApplicationController
     end
   end
 
-  # PUT /personal_roles/1
-  # PUT /personal_roles/1.xml
   def update
     related_person = nil
     if (params[:personal_role][:related_person_id])
@@ -58,21 +53,21 @@ class PersonalRolesController < ApplicationController
       end
     end
     if @personal_role.update_attributes(:started_at => started_at, :ended_at => ended_at, :related_person => related_person, :ordinal => params[:personal_role][:ordinal])
-      if @personal_role.role.name == 'husband' && @personal_role.related_person && !@personal_role.related_person.related_to(@personal_role.person)
+      if @personal_role.role.name == 'husband' && @personal_role.related_person && !@personal_role.related_person.is_related_to?(@personal_role.person)
         @vice_versa = PersonalRole.new
         @vice_versa.person = @personal_role.related_person
         @vice_versa.role = Role.find_by_name 'wife'
         @vice_versa.related_person = @personal_role.person
         @vice_versa.save
       end
-      if @personal_role.role.name == 'wife' && @personal_role.related_person && !@personal_role.related_person.related_to(@personal_role.person)
+      if @personal_role.role.name == 'wife' && @personal_role.related_person && !@personal_role.related_person.is_related_to?(@personal_role.person)
         @vice_versa = PersonalRole.new
         @vice_versa.person = @personal_role.related_person
         @vice_versa.role = Role.find_by_name 'husband'
         @vice_versa.related_person = @personal_role.person
         @vice_versa.save
       end
-      if @personal_role.role.name == 'son' && @personal_role.related_person && !@personal_role.related_person.related_to(@personal_role.person)
+      if @personal_role.role.name == 'son' && @personal_role.related_person && !@personal_role.related_person.is_related_to?(@personal_role.person)
         @vice_versa = PersonalRole.new
         @vice_versa.person = @personal_role.related_person
         @vice_versa.role = Role.find_by_name 'father' if @vice_versa.person.male?
@@ -80,7 +75,7 @@ class PersonalRolesController < ApplicationController
         @vice_versa.related_person = @personal_role.person
         @vice_versa.save
       end
-      if @personal_role.role.name == 'daughter' && @personal_role.related_person && !@personal_role.related_person.related_to(@personal_role.person)
+      if @personal_role.role.name == 'daughter' && @personal_role.related_person && !@personal_role.related_person.is_related_to?(@personal_role.person)
         @vice_versa = PersonalRole.new
         @vice_versa.person = @personal_role.related_person
         @vice_versa.role = Role.find_by_name 'father' if @vice_versa.person.male?
@@ -88,7 +83,7 @@ class PersonalRolesController < ApplicationController
         @vice_versa.related_person = @personal_role.person
         @vice_versa.save
       end
-      if @personal_role.role.name == 'father' && @personal_role.related_person && !@personal_role.related_person.related_to(@personal_role.person)
+      if @personal_role.role.name == 'father' && @personal_role.related_person && !@personal_role.related_person.is_related_to?(@personal_role.person)
         @vice_versa = PersonalRole.new
         @vice_versa.person = @personal_role.related_person
         @vice_versa.role = Role.find_by_name 'son' if @vice_versa.person.male?
@@ -96,11 +91,53 @@ class PersonalRolesController < ApplicationController
         @vice_versa.related_person = @personal_role.person
         @vice_versa.save
       end
-      if @personal_role.role.name == 'mother' && @personal_role.related_person && !@personal_role.related_person.related_to(@personal_role.person)
+      if @personal_role.role.name == 'mother' && @personal_role.related_person && !@personal_role.related_person.is_related_to?(@personal_role.person)
         @vice_versa = PersonalRole.new
         @vice_versa.person = @personal_role.related_person
         @vice_versa.role = Role.find_by_name 'son' if @vice_versa.person.male?
         @vice_versa.role = Role.find_by_name 'daughter' if @vice_versa.person.female?
+        @vice_versa.related_person = @personal_role.person
+        @vice_versa.save
+      end
+      if @personal_role.role.name == 'band' && @personal_role.related_person && !@personal_role.related_person.is_related_to?(@personal_role.person)
+        @vice_versa = PersonalRole.new
+        @vice_versa.person = @personal_role.related_person
+        @vice_versa.role = Role.find_by_name 'band member'
+        @vice_versa.related_person = @personal_role.person
+        @vice_versa.save
+      end
+      if @personal_role.role.name == 'band member' && @personal_role.related_person && !@personal_role.related_person.is_related_to?(@personal_role.person)
+        @vice_versa = PersonalRole.new
+        @vice_versa.person = @personal_role.related_person
+        @vice_versa.role = Role.find_by_name 'band'
+        @vice_versa.related_person = @personal_role.person
+        @vice_versa.save
+      end
+      if @personal_role.role.name == 'footballer' && @personal_role.related_person && !@personal_role.related_person.is_related_to?(@personal_role.person)
+        @vice_versa = PersonalRole.new
+        @vice_versa.person = @personal_role.related_person
+        @vice_versa.role = Role.find_by_name 'association football club'
+        @vice_versa.related_person = @personal_role.person
+        @vice_versa.save
+      end
+      if @personal_role.role.name == 'association football club' && @personal_role.related_person && !@personal_role.related_person.is_related_to?(@personal_role.person)
+        @vice_versa = PersonalRole.new
+        @vice_versa.person = @personal_role.related_person
+        @vice_versa.role = Role.find_by_name 'footballer'
+        @vice_versa.related_person = @personal_role.person
+        @vice_versa.save
+      end
+      if @personal_role.role.name == 'cricketer' && @personal_role.related_person && !@personal_role.related_person.is_related_to?(@personal_role.person)
+        @vice_versa = PersonalRole.new
+        @vice_versa.person = @personal_role.related_person
+        @vice_versa.role = Role.find_by_name 'cricket club'
+        @vice_versa.related_person = @personal_role.person
+        @vice_versa.save
+      end
+      if @personal_role.role.name == 'cricket club' && @personal_role.related_person && !@personal_role.related_person.is_related_to?(@personal_role.person)
+        @vice_versa = PersonalRole.new
+        @vice_versa.person = @personal_role.related_person
+        @vice_versa.role = Role.find_by_name 'cricketer'
         @vice_versa.related_person = @personal_role.person
         @vice_versa.save
       end
@@ -110,8 +147,6 @@ class PersonalRolesController < ApplicationController
     end
   end
 
-  # DELETE /personal_roles/1
-  # DELETE /personal_roles/1.xml
   def destroy
     @person = @personal_role.person
     @personal_role.destroy

@@ -1,32 +1,19 @@
 <% content_for(:page_title) {t '.page_title'} %>
+<% content_for(:title) {t '.page_heading'} %>
+<% content_for(:page_subhead) {pluralize(@organisations.length, "organisation")} %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_organisation_path} %>
 
-<div class="panel clearfix">
-  <% if current_user && current_user.is_admin? %>
-    <section class="admin_panel">
-      <%= link_to(t('buttons.add'), new_organisation_path, {:class => :edit, :title => t('buttons.add')})%>
-    </section>
-  <% end %>
-  <h1><%= t '.page_heading' %></h1>
-  <p><%= pluralize(@organisations.length, "organisation") %></p>
-</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.9.1/holder.js"></script>
 
-<div class="panel clearfix">
-  <h2>Top 10</h2>
+<h2>Top 10</h2>
+<div class="row">
   <canvas id="myCanvas" width="800" height="400"></canvas>
-  <h2>In alphabetical order</h2>
-  <ul id="organisations_results" class="results one_destination_results">
-    <% @organisations.each do |organisation| %>
-      <li>
-        <a href="<%= url_for(organisation) %>">
-          <p class="result"><%= organisation.name %></p>
-          <p class="count"><%= pluralize(organisation.sponsorships.size, "plaque") if organisation.sponsorships.size > 0 %><%= t('.no_plaques') if organisation.sponsorships.size == 0 %></p>
-        </a>
-      </li>
-    <% end %>
-  </ul>
 </div>
 
-<div class="alternate_formats"><%= t 'data_about_thing_as' %> .json and .geojson</div>
+<h2>In alphabetical order</h2>
+<div class="card-columns">
+  <%= render @organisations %>
+</div>
 
 <script>
   window.onload = function ()
@@ -36,7 +23,6 @@
     hbar.Set('chart.labels', [<% @top_10.each do |organisation| %>'<%= organisation %>',<% end %>]);
     hbar.Set('chart.colors', ['blue','red','green','orange']);
     hbar.Set('chart.strokestyle', 'rgba(0,0,0,0)');
-    hbar.Set('chart.labels.above', true);
     hbar.Set('chart.labels.above', true);
     hbar.Set('chart.vmargin', 15);
     hbar.Set('chart.background.grid', false);

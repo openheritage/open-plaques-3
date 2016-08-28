@@ -1,23 +1,12 @@
-<% content_for(:page_title) {t '.page_title', :organisation => @organisation.name } %>
+<% content_for(:page_title) {t '.page_title', :organisation => @organisation.name} %>
+<% content_for(:title) {@organisation.name} %>
+<% content_for(:page_subhead) {@organisation.description} %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_organisation_path(@organisation)} %>
 
-<div class="panel clearfix">
-  <% if current_user && current_user.is_admin? %>
-    <section class="admin_panel">
-      <%= link_to t('buttons.edit'), edit_organisation_path(@organisation), {:class => :edit, :title => t('buttons.edit')} %>
-    </section>
-  <% end %>
-  <h1 property="dc:title rdfs:label foaf:name" about="#this"><%= t '.page_heading', :organisation => @organisation.name %></h1>
-</div>
+<% if @organisation.geolocated? %>
+  <div id="plaque-map" data-latitude="<%= @organisation.latitude %>" data-longitude="<%= @organisation.longitude %>" data-view="all" context="<%= request.path %>"></div>
+<% end %>
 
-<div id="organisation_info" typeof="foaf:Organization">
-  <%= content_tag("p", link_to(h(@organisation.website),@organisation.website), {:rel => "foaf:homepage vcard:url"}) unless @organisation.website.blank? %>
-  <%= simple_format(@organisation.description) if @organisation.description %>
-  <% if @organisation.geolocated? %>
-    <div id="plaque-map" data-latitude="<%= @organisation.latitude %>" data-longitude="<%= @organisation.longitude %>" data-view="all" context="<%= request.path %>"></div>
-  <% end %>
-  <%= will_paginate @sponsorships %>
-  <%= render partial: 'plaques/plaque', collection: @sponsorships, as: :plaque %>
-  <%= will_paginate @sponsorships %>
-</div>
-
-<div class="alternate_formats"><%= t 'data_about_thing_as' %> .json and .geojson</div>
+<%= will_paginate @sponsorships %>
+<%= render @sponsorships %>
+<%= will_paginate @sponsorships %>

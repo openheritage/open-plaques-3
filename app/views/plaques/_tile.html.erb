@@ -1,0 +1,22 @@
+<% if plaque %>
+  <% begin %>
+    <% if plaque.inscription %><% end %>
+  <% rescue %>
+    <% plaque = plaque.plaque %>
+  <% end %>
+  <% photo = plaque.main_photo %>
+  <%= link_to plaque_path(plaque) do %>
+
+<div class="card plaque">
+  <% if photo && photo.thumbnail_url %>
+    <%= render photo %>
+  <% else %>
+    <%= image_tag('NoPhotoSqr.png', {:class => 'card-img-top img-responsive w-100'}) %>
+    <div class="card-block">
+      <h7 class="card-title"><%= plaque.inscription %></h7>
+    </div>
+  <% end %>
+</div>
+
+  <% end %>
+<% end %>

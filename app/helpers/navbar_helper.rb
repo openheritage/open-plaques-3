@@ -15,9 +15,10 @@ module NavbarHelper
     active = active_when.all? do |key, value|
       params[key].to_s == value.to_s
     end
-
-    content_tag(:li, :class => ("active" if active)) do
-      link_to(label, path)
+    active_class = ""
+    active_class = " active" if active
+    content_tag(:li, :class => ("nav-item" + active_class)) do
+      link_to(label, path, :class => "nav-link")
     end
   end
 end

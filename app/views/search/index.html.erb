@@ -1,26 +1,62 @@
 <% content_for(:page_title) {t '.page_title', :phrase => @phrase} %>
 <% content_for(:title) {t '.page_heading', :phrase => @phrase} %>
 
-<h2>People matching '<%= @phrase %>'</h2>
-<div class="card-columns">
-  <%= render @people %>
-</div>
+<% if @places.count > 0 %>
+  <h2><%= pluralize @places.count,'place' %> matching '<%= @phrase %>'</h2>
+  <% if @places.count < 3 %>
+    <div class="row">
+      <% @places.each do |place| %>
+        <div class="col-xs-6 col-sm-4 col-md-3"><%= render place %></div>
+      <% end %>
+    </div>
+  <% elsif @places.count < 11 %>
+    <div class="row">
+      <% cols = (12 / @places.count).ceil %>
+      <% cols = [cols,2].max %>
+      <% @places.each do |place| %>
+        <div class="col-xs-6 col-sm-<%= cols %>"><%= render place %></div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="card-columns">
+      <%= render @places %>
+    </div>
+  <% end %>
+<% end %>
 
-<h2>Places matching '<%= @phrase %>'</h2>
-<div class="card-columns">
-  <%= render @places %>
-</div>
+<% if @people.count > 0 %>
+  <h2><%= pluralize @people.count,'subject' %> matching '<%= @phrase %>'</h2>
+  <% if @people.count < 3 %>
+    <div class="row">
+      <% @people.each do |person| %>
+        <div class="col-xs-6 col-sm-4 col-md-3"><%= render person %></div>
+      <% end %>
+    </div>
+  <% elsif @people.count < 8 %>
+    <div class="row">
+      <% cols = (12 / @people.count).ceil %>
+      <% cols = [cols,2].max %>
+      <% @people.each do |person| %>
+        <div class="col-xs-6 col-sm-<%= cols %>"><%= render person %></div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="card-columns">
+      <%= render @people %>
+    </div>
+  <% end %>
+<% end %>
 
-<h2>Plaques matching '<%= @phrase %>'</h2>
-<div class="card-columns">
-  <%= render @plaques %>
-</div>
+<% if @plaques.count > 0 %>
+  <h2><%= pluralize @plaques.count,'plaque' %>  matching '<%= @phrase %>'</h2>
+  <%= render partial: 'plaques/plaque_row', :collection => @plaques, as: :plaque %>
+<% end %>
 
 <% if params[:from] && params[:from] == "submission" %>
   <div class="row"><%= t '.not_found' %> <%= link_to t('.add_it'), new_plaque_path(:checked => true) %>.</div>
 <% else %>
-  <div class="row" id="search_results_footer">
-    <h2><%= t '.try_again' %> <%= link_to t('.add_it'), new_plaque_path(:checked => true,  :phrase => @phrase) %></h2>
+  <h2><%= t '.try_again' %> <%= link_to t('.add_it'), new_plaque_path(:checked => true, :phrase => @phrase) %></h2>
+  <div class="row">
     <%= render :partial => "search_form", :locals => { :phrase => @phrase } %>
   </div>
 <% end %>

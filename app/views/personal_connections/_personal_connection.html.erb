@@ -1,6 +1,15 @@
- <div class="inside_panel">
-   <%= render personal_connection.person %>
-   <%= personal_connection.verb.name %>
-   <%= "at " + personal_connection.full_address if personal_connection.full_address %> 
-   <%= "from " + personal_connection.from if personal_connection.from != '' %><%= " to " + personal_connection.to  if personal_connection.to != ''%>
+ <div class="card">
+  <div class="card-block">
+    <%= render personal_connection.person %>
+    <p class="card-text">
+      <%= personal_connection.verb.name %>
+      <%= "at " unless personal_connection.verb.name.ends_with?(' near') %>
+      <%= personal_connection.full_address if personal_connection.full_address %>
+      <% if personal_connection.single_year? %>
+        <%= "in " + personal_connection.from if personal_connection.from != '' %>
+      <% else %>
+        <%= "from " + personal_connection.from if personal_connection.from != '' %><%= " to " + personal_connection.to  if personal_connection.to != ''%>
+      <% end %>
+    </p>
+  </div>
  </div>

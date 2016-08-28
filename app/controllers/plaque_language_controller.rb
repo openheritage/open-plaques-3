@@ -1,8 +1,9 @@
-class PlaqueLanguageController < ApplicationController
+class PlaqueLanguageController < PlaqueDetailsController
+
+  layout 'plaque_edit', :only => :edit
 
   def edit
-    @plaque = Plaque.find(params[:plaque_id])
-    @languages = Language.all(:order => :name)
+    @languages = Language.order(name: :desc)
     render "plaques/language/edit"
   end
 

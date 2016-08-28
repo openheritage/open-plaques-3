@@ -1,28 +1,13 @@
 <% content_for(:page_title) {t '.page_title', :letter => @index.upcase} %>
+<% content_for(:title) {t '.page_heading', :letter => @index.upcase} %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_person_path} %>
 
-<div class="panel clearfix">
-  <% if current_user && current_user.is_admin? %>
-    <section class="admin_panel">
-      <%= link_to t('buttons.add'), new_person_path, {:class => :edit, :title => t('buttons.add')} %>
-    </section>
+<ul class="nav">
+  <% for letter in "A".."Z" %>
+    <%= content_tag("li", navigation_link_to(letter, people_by_index_path(letter.downcase)), :class => "nav-link") %>
   <% end %>
-  <h1><%= t '.page_heading', :letter => @index.upcase %></h1>
-  <nav class="alphabet">
-    <%= content_tag("ol") do %>
-      <% for letter in "A".."Z" %>
-        <%= content_tag("li", navigation_link_to(letter, people_by_index_path(letter.downcase))) %>
-      <% end %>
-    <% end %>
-  </nav>
+</ul>
+
+<div class="card-columns">
+  <%= render @people %>
 </div>
-
-<%= content_tag("ol", :class => "results", :id => "people_results") do %>
-  <% @people.each do |person| %>
-    <li>
-      <p class="result"><%= render person %></p>
-      <p class="count"><%= pluralize(person.personal_connections.size, "plaque") %></p>
-    </li>
-  <% end %>
-<% end %>
-
-<p class="alternate_formats"><%= t 'data_about_thing_as' %> <%= alternate_link_to "JSON", people_by_index_path(@index.downcase, :json), :json %></p>

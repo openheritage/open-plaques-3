@@ -24,7 +24,7 @@ class SponsorshipsController < ApplicationController
   end
 
   def index
-    new 
+    new
   end
 
   private
@@ -38,7 +38,7 @@ class SponsorshipsController < ApplicationController
         @sponsorship = Sponsorship.find(params[:id])
       end
     end
-    
+
     def list_organisations
       @organisations = Organisation.select(:id, :name).order('name')
     end
