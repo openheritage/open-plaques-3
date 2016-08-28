@@ -175,7 +175,7 @@
   <div class="row">
     <span class="col-sm-8">
       <%= @person.personal_pronoun %> <%= @person.existence_word %> a <%= dated_role(personal_role).html_safe %>
-      <%= t('.conferring_the_letters') + ' ' + personal_role.role.abbreviation if personal_role.role.used_as_a_suffix? %><%= t('.conferring_the_title') + ' ' + personal_role.role.abbreviation if personal_role.role.used_as_a_prefix? %>
+      <%= t('.conferring_the_letters') + ' ' + personal_role.role.suffix if personal_role.role.used_as_a_suffix? %><%= t('.conferring_the_title') + ' ' + personal_role.role.prefix if personal_role.role.used_as_a_prefix? %>
       <%= link_to t('buttons.edit'), edit_personal_role_path(personal_role), :class => 'btn btn-primary' %>
     </span>
     <span class="col-sm-4">
