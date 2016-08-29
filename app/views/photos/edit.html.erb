@@ -48,7 +48,7 @@
     </div>
   </fieldset>
 
-  <% if @plaques %>
+  <% if @plaques.size > 0 %>
     <%= f.submit t('buttons.save'), :class => 'btn btn-primary'%>
     <fieldset class="form-group row">
       <div class="col-sm-2">
