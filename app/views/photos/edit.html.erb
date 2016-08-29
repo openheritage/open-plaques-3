@@ -7,44 +7,56 @@
 
 <%= form_for @photo do |f| %>
   <fieldset class="form-group row">
-    <%= f.label :url, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-2">
+      <%= f.label :url, :class => 'form-control-label' %>
+      <%= link_to(icon('external-link'), @photo.url, :target => '_blank') %>
+    </div>
     <div class="col-sm-10">
-       <%= link_to(icon('external-link'), @photo.url, :target => '_blank') %>
        <%= f.text_field :url, :maxlength => "100", :class => 'form-control' %>
     </div>
   </fieldset>
   <fieldset class="form-group row">
-    <%= f.label :file_url, :class => 'form-control-label col-sm-2' %>
-    <div class="col-sm-10">
+    <div class="col-sm-2">
+      <%= f.label :file_url, :class => 'form-control-label' %>
       <%= link_to(icon('external-link'), @photo.file_url, :target => '_blank') %>
+    </div>
+    <div class="col-sm-10">
       <%= f.text_field :file_url, :maxlength => "100", :class => 'form-control' %>
     </div>
   </fieldset>
   <fieldset class="form-group row">
-    <%= f.label :thumbnail, :class => 'form-control-label col-sm-2' %>
-    <div class="col-sm-10">
+    <div class="col-sm-2">
+      <%= f.label :thumbnail, :class => 'form-control-label' %>
       <%= link_to(icon('external-link'), @photo.thumbnail, :target => '_blank') %>
+    </div>
+    <div class="col-sm-10">
       <%= f.text_field :thumbnail, :maxlength => "100", :class => 'form-control' %>
     </div>
   </fieldset>
   <fieldset class="form-group row">
-    <%= f.label :thumbnail_url, :class => 'form-control-label col-sm-2' %>
-    <div class="col-sm-10">
+    <div class="col-sm-2">
+      <%= f.label :thumbnail_url, :class => 'form-control-label' %>
       <%= link_to(icon('external-link'), @photo.thumbnail_url, :target => '_blank') %>
-      <span class="form-control"><%= @photo.thumbnail_url %></span>
+    </div>
+    <div class="col-sm-10">
+      <span class="form-control-static"><%= @photo.thumbnail_url %></span>
     </div>
   </fieldset>
   <fieldset class="form-group row">
-    <%= f.label :photographer, :class => 'form-control-label col-sm-2' %>
-    <div class="col-sm-10">
+    <div class="col-sm-2">
+      <%= f.label :photographer, :class => 'form-control-label' %>
       <%= link_to(icon('external-link'), photographer_url(@photo.photographer.gsub(".","_").gsub("/","_"))) if @photo.photographer && @photo.photographer != '' %>
+    </div>
+    <div class="col-sm-10">
       <%= f.text_field :photographer, :class => 'form-control' %>
     </div>
   </fieldset>
   <fieldset class="form-group row">
-    <%= f.label :photographer_url, :class => 'form-control-label col-sm-2' %>
-    <div class="col-sm-10">
+    <div class="col-sm-2">
+      <%= f.label :photographer_url, :class => 'form-control-label' %>
       <%= link_to(icon('external-link'), @photo.photographer_url, :target => '_blank') %>
+    </div>
+    <div class="col-sm-10">
       <%= f.text_field :photographer_url, :size => 80, :class => 'form-control' %>
     </div>
   </fieldset>
@@ -61,35 +73,54 @@
     </div>
   </fieldset>
 
-  <!-- TODO show or hide this section depending on of_a_plaque checkbox -->
-  <div name="plaque-info">
-    <fieldset class="form-group row">
-      <%= f.label :plaque_id, :class => 'form-control-label col-sm-2' %>
+  <fieldset class="form-group row">
+    <%= f.label :plaque_id, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-2">
+      <%= f.text_field :plaque_id, :maxlength => "5", :class => 'form-control' %>
+    </div>
+    <% if @photo.plaque %>
       <div class="col-sm-2">
-        <%= f.text_field :plaque_id, :maxlength => "5", :class => 'form-control' %>
-        <%= link_to(@photo.plaque, @photo.plaque) if @photo.plaque %>
+        <%= render partial: 'plaques/tile', object: @photo.plaque, as: :plaque %>
       </div>
-    </fieldset>
-    <% if @plaques %>
-      <% @plaques.each do |plaque| %>
-        <fieldset class="form-group row">
-        <div class="col-sm-2">
-          #<%= plaque.id %> ?
-        </div>
-        <div class="col-sm-10">
-        <%= plaque.inscription %>
-        </div>
-        </fieldset>
-      <% end %>
     <% end %>
-  </div>
-
-   <fieldset class="form-group row">
+  </fieldset>
+  <fieldset class="form-group row">
     <%= label_tag(nil, t('.geolocation'), :class => 'form-control-label col-sm-2') %>
     <div class="col-sm-10">
       POINT(<%= @photo.longitude %>, <%= @photo.latitude %>)
     </div>
   </fieldset>
+  <fieldset class="form-group row">
+    <%= f.label :subject, :class => 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.text_field :subject, :class => 'form-control' %>
+    </div>
+  </fieldset>
+  <% if @plaques %>
+    <%= f.submit t('buttons.save'), :class => 'btn btn-primary'%>
+    <fieldset class="form-group row">
+      <div class="col-sm-2">
+      </div>
+      <div class="col-sm-10">
+        <%= f.radio_button :plaque_id, nil %>
+        None of these
+      </div>
+    </fieldset>
+    <% @plaques.each do |plaque| %>
+      <fieldset class="form-group row">
+        <div class="col-sm-2">
+          <%= render partial: 'plaques/tile', object: plaque, as: :plaque %>
+        </div>
+        <div class="col-sm-10">
+          <%= f.radio_button :plaque_id, plaque.id %>
+          plaque #<%= plaque.id %> at <%= plaque.distance_to(@photo) %> metres
+          <br/><br/>
+          "<%= plaque.inscription %>"
+        </div>
+      </fieldset>
+    <% end %>
+  <% end %>
+
   <fieldset class="form-group row">
     <%= label_tag(:streetview_url, t('.google_streetview_url'), :class => 'form-control-label col-sm-2') %>
     <div class="col-sm-10">
@@ -102,12 +133,6 @@
     <div class="col-sm-2">
       <%= f.text_field :person_id, :maxlength => "5", :class => 'form-control' %>
       <%= link_to(@photo.person, @photo.person) if @photo.person %>
-    </div>
-  </fieldset>
-  <fieldset class="form-group row">
-    <%= f.label :subject, :class => 'form-control-label col-sm-2' %>
-    <div class="col-sm-10">
-      <%= f.text_field :subject, :class => 'form-control' %>
     </div>
   </fieldset>
   <fieldset class="form-group row">

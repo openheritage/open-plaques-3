@@ -6,10 +6,10 @@
     <%= t '.page_heading' %> <%= link_to(@photo.person.full_name, @photo.person) %>
   <% else %>
     <% if @photo.of_a_plaque? %>
-      <p>This photo has been flagged as not being of a plaque.</p>
-    <% else %>
       <p>This photo has not been linked to a plaque yet.</p>
-    <% end %>.</p>
+    <% else %>
+      <p>This photo has been flagged as not being of a plaque.</p>
+    <% end %>
   <% end %>
 <% end %>
 <% content_for(:page_subhead) do %>

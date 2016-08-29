@@ -5,7 +5,11 @@
 <% if @photos.size > 0 %>
   <%= will_paginate @photos %>
   <div class="card-columns">
-    <%= render @photos %>
+    <% @photos.each do |photo| %>
+      <%= link_to edit_photo_path(photo) do %>
+        <%= render photo %>
+      <% end %>
+    <% end %>
   </div>
   <%= will_paginate @photos %>
 <% else %>

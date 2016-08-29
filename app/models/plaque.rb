@@ -340,6 +340,20 @@ class Plaque < ActiveRecord::Base
 #    end
   end
 
+  def distance_to(thing)
+    distance_between(self.latitude, self.longitude, thing.latitude, thing.longitude)
+  end
+
+  def distance_between(lat1, lon1, lat2, lon2)
+    rad_per_deg = Math::PI / 180
+    rm = 6371000 # Earth radius in meters
+    lat1_rad, lat2_rad = lat1.to_f * rad_per_deg, lat2.to_f * rad_per_deg
+    lon1_rad, lon2_rad = lon1.to_f * rad_per_deg, lon2.to_f * rad_per_deg
+    a = Math.sin((lat2_rad - lat1_rad) / 2) ** 2 + Math.cos(lat1_rad) * Math.cos(lat2_rad) * Math.sin((lon2_rad - lon1_rad) / 2) ** 2
+    c = 2 * Math::atan2(Math::sqrt(a), Math::sqrt(1 - a))
+    (rm * c).round # Delta in meters
+  end
+
   def uri
     "http://openplaques.org" + Rails.application.routes.url_helpers.plaque_path(self) if id
   end

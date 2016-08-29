@@ -64,8 +64,11 @@ class PhotosController < ApplicationController
   def edit
     if (!@photo.linked? && @photo.geolocated?)
       distance = 0.01
-      @plaques = Plaque.where(longitude: (@photo.longitude.to_f - distance)..(@photo.longitude.to_f + distance),
-      latitude: (@photo.latitude.to_f - distance)..(@photo.latitude.to_f + distance) )
+      @plaques = Plaque.where(
+        longitude: (@photo.longitude.to_f - distance)..(@photo.longitude.to_f + distance),
+        latitude: (@photo.latitude.to_f - distance)..(@photo.latitude.to_f + distance)
+      )
+      @plaques.to_a.sort! { |a,b| a.distance_to(@photo) <=> b.distance_to(@photo) }
     end
   end
 
