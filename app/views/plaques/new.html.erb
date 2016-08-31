@@ -79,46 +79,45 @@
 
 <% if params[:checked] && params[:checked] == "true" %>
   <% if @plaque.errors.size > 0 %>
-    <div class="error_alert"><p><%= t '.error' %></p></div>
+    <div class="error_alert"><%= t '.error' %></div>
   <% end %>
 
   <%= form_for @plaque do |f| %>
     <div class="row form-group">
-      <%= f.label :inscription, t('.inscription_heading') %>
-      <br/>
-      <%= f.text_area :inscription, {:value => params[:phrase], :placeholder => "Joe Bloggs lived here", :autofocus => 'true',  :rows => "6", :cols => "50"} %>
-      <p class="help-block"><%= t('.inscription_advice') %></p>
+      <%= f.label :inscription, t('.inscription_heading'), :class => 'form-control-label' %>
+      <%= f.text_area :inscription, {:value => params[:phrase], :placeholder => "Joe Bloggs lived here", :autofocus => 'true', :rows => "6", :cols => "50", :class => 'form-control'} %>
+      <%= t('.inscription_advice') %>
     </div>
 
     <div class="row form-group">
-      <%= f.label :inscription_is_stub, t('.inscription_partial') %><%= f.check_box :inscription_is_stub %>
+      <%= f.label :inscription_is_stub, t('.inscription_partial'), :class => 'form-control-label' %><%= f.check_box :inscription_is_stub, :class => 'form-control' %>
     </div>
 
     <div class="row form-group">
-      <%= f.label :language_id, t('.language_heading') %>
-      <%= f.collection_select :language_id, @languages, :id, :name %>
+      <%= f.label :language_id, t('.language_heading'), :class => 'form-control-label' %>
+      <%= f.collection_select :language_id, @languages, :id, :name, :class => 'form-control' %>
     </div>
 
     <div class="row form-group">
-      <%= f.label :country %>
-      <%= f.collection_select :country, @countries, :id, :name, :include_blank => true, :selected => 1 %>
+      <%= f.label :country, :class => 'form-control-label' %>
+      <%= f.collection_select :country, @countries, :id, :name, :include_blank => true, :selected => 1, :class => 'form-control' %>
     </div>
 
     <div class="row ui-widget">
-      <label for="area">City/Town (just the town name please, no area or post code)</label>
-      <%= text_field_tag :area, "", :placeholder => "London" %>
+      <%= f.label :area, 'City/Town (just the town name please, no area or post code)', :class => 'form-control-label' %>
+      <%= text_field_tag :area, "", :placeholder => "London", :class => 'form-control' %>
       <%= hidden_field_tag :area_id %>
     </div>
 
     <div class="row">
-      <%= f.label :address, "Street and number" %>
-      <%= f.text_field :address, {:placeholder => "221B Baker Street"} %>
+      <%= f.label :address, "Street and number", :class => 'form-control-label' %>
+      <%= f.text_field :address, {:placeholder => "221B Baker Street", :class => 'form-control'} %>
     </div>
 
     <%= f.fields_for :organisation do |g| %>
       <div class="row">
-        <%= label_tag :organisation_name, "Who put the plaque up?" %>
-        <%= text_field_tag :organisation_name, "", {:placeholder => "English Heritage"} %>
+        <%= f.label :organisation_name, "Who put the plaque up?", :class => 'form-control-labal' %>
+        <%= text_field_tag :organisation_name, "", {:placeholder => "English Heritage", :class => 'form-control'} %>
         <%= hidden_field_tag(:organisation_id) %>
       </div>
       <div class="row">
@@ -128,7 +127,7 @@
           <%= f.label :erected_at_3i, "Day" %>
           <%= f.label :erected_at, "Month" %>
         </div>
-        <%= f.date_select :erected_at, :include_blank => true, :start_year => Time.now.year, :end_year => 1800, :field_name => :plaque_erected_at_year, :order => [:year, :day, :month] %>
+        <%= f.date_select :erected_at, :include_blank => true, :start_year => Time.now.year, :end_year => 1800, :field_name => :plaque_erected_at_year, :order => [:year, :day, :month], :class => 'form-control' %>
       </div>
     <% end %>
 
