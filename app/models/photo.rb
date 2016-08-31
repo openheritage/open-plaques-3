@@ -44,6 +44,7 @@ class Photo < ActiveRecord::Base
   scope :flickr, -> { where("url like 'http://www.flickr.com%'") }
   scope :geograph, -> { where("url like 'http://www.geograph.org.uk/%'") }
   scope :geolocated, ->  { where(["latitude IS NOT NULL"]) }
+  scope :ungeolocated, ->  { where(["latitude IS NULL"]) }
 
   def assign_from_photo_url
     if @photo_url

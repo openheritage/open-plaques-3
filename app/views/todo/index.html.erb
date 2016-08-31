@@ -17,6 +17,8 @@
 <h2>All todos</h2>
 <div class="row">
   <ul>
+    <li><%= link_to(pluralize(@unassigned_photo_count, "geolocated photos") +  " aren't linked to a plaque", todo_path('unassigned_photo')) %></li>
+    <li><%= link_to(pluralize(@unassigned_ungeolocated_photo_count, "ungeolocated photos") +  " aren't linked to a plaque", todo_path('unassigned_ungeolocated_photo')) %></li>
     <li><%= link_to(pluralize(@lists_to_datacapture, "list") +  " with plaques to be datacaptured", todo_path('lists_to_datacapture')) %></li>
     <li><%= link_to(pluralize(@photographed_not_coloured_plaques_count, "plaque") +  " with photos but no colour identified", todo_path('colours_from_photos')) %></li>
     <li><%= link_to(pluralize(@geo_no_location_plaques_count, "geolocated plaque") +  " with no location name assigned", todo_path('locations_from_geolocations')) %></li>
@@ -29,7 +31,6 @@
     <li><%= link_to(pluralize(@no_roles_count, "people") +  " needing roles" , todo_path('no_roles')) %></li>
     <li><%= link_to(pluralize(@needs_geolocating_count, "plaque") +  " need geolocating", todo_path('needs_geolocating')) %></li>
     <% # <li><%= link_to(pluralize(@no_description_count, "plaque") +  " have no description", todo_path('needs_description')) </li> %>
-    <li><%= link_to(pluralize(@unassigned_photo_count, "photos") +  " aren't linked to a plaque", todo_path('unassigned_photo')) %></li>
     <li><%= link_to(pluralize(@unphotographed_plaque_count, "plaques") +  " don't have a photo", todo_path('unphotographed')) %></li>
   </ul>
 </div>

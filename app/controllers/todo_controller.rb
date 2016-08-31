@@ -5,6 +5,8 @@ class TodoController < ApplicationController
   before_filter :authenticate_user!, :except => [:index]
 
   def index
+    @unassigned_photo_count = Photo.unassigned.geolocated.count
+    @unassigned_ungeolocated_photo_count = Photo.unassigned.ungeolocated.count
     @photographed_not_coloured_plaques_count = Plaque.photographed_not_coloured.count
     @geo_no_location_plaques_count = Plaque.geo_no_location.count
     @plaques_to_add_count = TodoItem.to_add.count
@@ -16,7 +18,6 @@ class TodoController < ApplicationController
     @no_roles_count = Person.no_role.count
     @needs_geolocating_count = Plaque.ungeolocated.count
     @no_description_count = Plaque.no_description.count
-    @unassigned_photo_count = Photo.unassigned.count
   end
 
   def destroy
@@ -80,7 +81,11 @@ class TodoController < ApplicationController
         render :needs_description
 
       when 'unassigned_photo'
-        @photos = Photo.unassigned.paginate(:page => params[:page], :per_page => 100)
+        @photos = Photo.unassigned.geolocated.paginate(:page => params[:page], :per_page => 100)
+        render :unassigned_photo
+
+      when 'unassigned_ungeolocated_photo'
+        @photos = Photo.unassigned.ungeolocated.paginate(:page => params[:page], :per_page => 100)
         render :unassigned_photo
 
       when 'microtask'
