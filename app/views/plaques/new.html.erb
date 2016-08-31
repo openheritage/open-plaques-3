@@ -83,70 +83,79 @@
   <% end %>
 
   <%= form_for @plaque do |f| %>
-    <div class="row form-group">
+    <fieldset class="form-group row">
       <%= f.label :inscription, t('.inscription_heading'), :class => 'form-control-label' %>
       <%= f.text_area :inscription, {:value => params[:phrase], :placeholder => "Joe Bloggs lived here", :autofocus => 'true', :rows => "6", :cols => "50", :class => 'form-control'} %>
       <%= t('.inscription_advice') %>
-    </div>
-
-    <div class="row form-group">
-      <%= f.label :inscription_is_stub, t('.inscription_partial'), :class => 'form-control-label' %><%= f.check_box :inscription_is_stub, :class => 'form-control' %>
-    </div>
-
-    <div class="row form-group">
-      <%= f.label :language_id, t('.language_heading'), :class => 'form-control-label' %>
-      <%= f.collection_select :language_id, @languages, :id, :name, :class => 'form-control' %>
-    </div>
-
-    <div class="row form-group">
-      <%= f.label :country, :class => 'form-control-label' %>
-      <%= f.collection_select :country, @countries, :id, :name, :include_blank => true, :selected => 1, :class => 'form-control' %>
-    </div>
-
-    <div class="row ui-widget">
-      <%= f.label :area, 'City/Town (just the town name please, no area or post code)', :class => 'form-control-label' %>
-      <%= text_field_tag :area, "", :placeholder => "London", :class => 'form-control' %>
-      <%= hidden_field_tag :area_id %>
-    </div>
-
-    <div class="row">
-      <%= f.label :address, "Street and number", :class => 'form-control-label' %>
-      <%= f.text_field :address, {:placeholder => "221B Baker Street", :class => 'form-control'} %>
-    </div>
-
-    <%= f.fields_for :organisation do |g| %>
-      <div class="row">
-        <%= f.label :organisation_name, "Who put the plaque up?", :class => 'form-control-labal' %>
-        <%= text_field_tag :organisation_name, "", {:placeholder => "English Heritage", :class => 'form-control'} %>
-        <%= hidden_field_tag(:organisation_id) %>
+    </fieldset>
+    <fieldset class="form-group row">
+      <%= f.label :inscription_is_stub, t('.inscription_partial'), :class => 'form-control-label col-sm-2' %>
+      <div class="col-sm-10">
+        <%= f.check_box :inscription_is_stub, :class => 'form-control' %>
       </div>
-      <div class="row">
-        <p>and when?</p>
-        <div class="date_labels">
+    </fieldset>
+    <fieldset class="form-group row">
+      <%= f.label :language_id, t('.language_heading'), :class => 'form-control-label col-sm-2' %>
+      <div class="col-sm-10">
+        <%= f.collection_select :language_id, @languages, :id, :name, :class => 'form-control' %>
+      </div>
+    </fieldset>
+    <fieldset class="form-group row">
+      <%= f.label :country, :class => 'form-control-label col-sm-2' %>
+      <div class="col-sm-10">
+        <%= f.collection_select :country, @countries, :id, :name, :include_blank => true, :selected => 1, :class => 'form-control' %>
+      </div>
+    </fieldset>
+    <fieldset class="form-group row">
+      <%= f.label :area, 'City/Town (just the town name please, no area or post code)', :class => 'form-control-label col-sm-2' %>
+      <div class="col-sm-10">
+        <%= text_field_tag :area, "", :placeholder => "London", :class => 'form-control' %>
+        <%= hidden_field_tag :area_id %>
+      </div>
+    </fieldset>
+    <div class="form-group row">
+      <%= f.label :address, "Street and number", :class => 'form-control-label col-sm-2' %>
+      <div class="col-sm-10">
+        <%= f.text_field :address, {:placeholder => "221B Baker Street", :class => 'form-control'} %>
+      </div>
+    </div>
+    <%= f.fields_for :organisation do |g| %>
+      <div class="form-group row">
+        <%= f.label :organisation_name, "Who put the plaque up?", :class => 'form-control-label col-sm-2' %>
+        <div class="col-sm-10">
+          <%= text_field_tag :organisation_name, "", {:placeholder => "English Heritage", :class => 'form-control'} %>
+          <%= hidden_field_tag(:organisation_id) %>
+        </div>
+      </div>
+      <div class="form-group row">
+        <p class="col-sm-2">and when?</p>
+        <div class="col-sm-10">
           <%= f.label :erected_at_1i, "Year" %>
           <%= f.label :erected_at_3i, "Day" %>
           <%= f.label :erected_at, "Month" %>
+          <br/>
+          <%= f.date_select :erected_at, :include_blank => true, :start_year => Time.now.year, :end_year => 1800, :field_name => :plaque_erected_at_year, :order => [:year, :day, :month], :class => 'form-control' %>
         </div>
-        <%= f.date_select :erected_at, :include_blank => true, :start_year => Time.now.year, :end_year => 1800, :field_name => :plaque_erected_at_year, :order => [:year, :day, :month], :class => 'form-control' %>
       </div>
     <% end %>
-
-    <div class="container">
-      <p><%= t '.what_colour' %></p>
-      <% @common_colours.each do |colour| %>
-        <div class="row radio">
-          <%= f.radio_button :colour_id, colour.id %>
-          <%= f.label "colour_id_" + colour.id.to_s, colour.name, :class => colour.name.downcase %>
+    <div class="form-group row">
+      <label class=",form-control-label col-sm-2"><%= t '.what_colour' %></label>
+      <div class="col-sm-10">
+        <% @common_colours.each do |colour| %>
+          <div class="row radio">
+            <%= f.radio_button :colour_id, colour.id %>
+            <%= f.label "colour_id_" + colour.id.to_s, colour.name, :class => colour.name.downcase %>
+          </div>
+        <% end %>
+        <div class="row radio other">
+          <%= f.radio_button :colour_id, "other" %>
+          <%= f.label :colour_id_other, "other:" %>
+          <%= f.collection_select :other_colour_id, @other_colours, :id, :name, :include_blank => true %>
         </div>
-      <% end %>
-      <div class="row radio other">
-        <%= f.radio_button :colour_id, "other" %>
-        <%= f.label :colour_id_other, "other:" %>
-        <%= f.collection_select :other_colour_id, @other_colours, :id, :name, :include_blank => true %>
-      </div>
-      <div class="row radio unknown">
-        <%= f.radio_button :colour_id, "nil", :checked => true %>
-        <%= f.label :colour_id_nil, "unknown" %>
+        <div class="row radio unknown">
+          <%= f.radio_button :colour_id, "nil", :checked => true %>
+          <%= f.label :colour_id_nil, "unknown" %>
+        </div>
       </div>
     </div>
     <%= f.submit t('buttons.save'), :class => 'btn btn-primary' %>
