@@ -10,17 +10,17 @@
 <% end %>
 <%= render 'plaques/edit_bar', :plaque => @plaque %>
 
-<div class="card-columns">
+<div class="row">
   <% @plaque.photos.detail_order.each do |photo| %>
-    <div class="card">
+    <div class="card col-xs-6 col-sm-4 col-md-3">
       <%= link_to photo_url(photo) do %>
         <% render photo %>
       <% end %>
       <span>By <%= link_to photo.photographer, photographer_url(photo.photographer.gsub(".","_").gsub("/","_")) if photo.photographer rescue photo.photographer %></span><br/>
       <%= form_for photo do |f| %>
         <p>This is a <%= f.collection_select :shot, Photo.shots, :to_s, :to_s, :include_blank => true %></p>
-        <%= f.submit t('buttons.save'), :class => 'btn btn-primary' %>
-        <%= link_to(t('buttons.edit'), edit_photo_path(photo), {:class => 'btn btn-secondary', :title => "edit photo"}) if current_user && current_user.is_admin? %>
+        <%= f.submit t('buttons.save'), :class => 'btn btn-primary pull-left' %>
+        <%= link_to(t('buttons.edit'), edit_photo_path(photo), {:class => 'btn btn-secondary pull-right', :title => "edit photo"}) if current_user && current_user.is_admin? %>
       <% end %>
     </div>
   <% end %>
