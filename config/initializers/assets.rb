@@ -5,5 +5,7 @@ Rails.application.config.assets.precompile += %w( worcester_serial-regular-webfo
 Rails.application.config.assets.precompile += %w( worcester_serial-regular-webfont.woff )
 Rails.application.config.assets.precompile += %w( worcester_serial-regular-webfont.woff2 )
 Rails.application.config.assets.precompile += %w( people.css )
+Rails.application.config.assets.precompile += %w( plaques.css )
 Rails.application.config.assets.precompile += %w( more_columns.css )
 Rails.application.config.assets.precompile += %w( person.css )
+Rails.application.config.assets.precompile += %w( photo.css )
