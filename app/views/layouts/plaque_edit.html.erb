@@ -2,14 +2,13 @@
 <div class="container-fluid">
   <%= render 'shared/alerts' %>
   <%= render 'shared/page_header' %>
-
   <div class="row">
     <div class="col-xs-12<% if @plaque.main_photo %> col-sm-6<% end %>">
       <%= yield %>
     </div>
     <% if @plaque.main_photo %>
       <div class="col-xs-12 col-sm-6">
-        <%= render @plaque.main_photo, :large => true %>
+        <%= render @plaque.main_photo, large: true %>
       </div>
     <% end %>
   </div>
