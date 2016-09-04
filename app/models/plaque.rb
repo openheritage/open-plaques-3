@@ -314,6 +314,8 @@ class Plaque < ActiveRecord::Base
       in_english = in_english.gsub('geb.','nee')
       in_english = in_english.gsub('geb.','nee')
       in_english = in_english.gsub('geb.','nee')
+      in_english = in_english.gsub('flucht','escaped')
+      in_english = in_english.gsub('interniert','interned')
       self.inscription_in_english = in_english
     end
   end
