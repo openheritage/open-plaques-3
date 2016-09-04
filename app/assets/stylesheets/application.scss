@@ -8,30 +8,20 @@
 //= require plaque-map
 
 // Core
-@import "variables";
-@import "bootstrap";
-@import "more_columns";
-@import "icons_social";
-@import "worcester_serial";
-@import "footer";
+@import 'variables';
+@import 'bootstrap';
+@import 'more_columns';
+@import 'footer';
 
 // Model objects
-@import "person";
-@import "photo";
+@import 'person';
+@import 'photo';
 
-// Plugins
-//@import 'nprogress';
-//@import 'nprogress-bootstrap';
-
-// Flag-icon
-@import "flag-icon/variables.scss";
-@import "flag-icon/flag-icon-base.scss";
-@import "flag-icon/flag-icon-list.scss";
-@import "flag-icon/flag-icon.scss";
-
-// Font Awesome
-@import "font-awesome-sprockets";
-@import "font-awesome";
+// Fonts and Icons
+@import 'font-awesome-sprockets';
+@import 'font-awesome';
+@import 'worcester_serial';
+@import 'flag-icon';
 
 //
 // Minor Tweaks
