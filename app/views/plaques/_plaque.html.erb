@@ -6,7 +6,17 @@
 <% if plaque %>
   <% photo = plaque.main_photo %>
 <div class="card">
-  <%= link_to image_tag(photo.thumbnail_url, {:class => 'card-img-top img-thumbnail w-100'}) , plaque_path(plaque) if photo != nil %>
+  <% if photo != nil %>
+    <% if local_assigns[:action] == 'edit' %>
+      <%= link_to plaque_edit_path(plaque) do %>
+        <%= render photo %>
+      <% end %>
+    <% else %>
+      <%= link_to plaque_path(plaque) do %>
+        <%= render photo %>
+      <% end %>
+    <% end %>
+  <% end %>
   <div class="card-block">
     <h7 class="card-title"><%= linked_inscription(plaque) %></h7>
     <% if plaque.foreign? && plaque.inscription_in_english %>

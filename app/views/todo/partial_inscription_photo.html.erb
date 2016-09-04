@@ -6,7 +6,9 @@
   <div class="container-fluid">
     <%= will_paginate @plaques %>
     <div class="card-columns">
-      <%= render @plaques %>
+      <% @plaques.each do |plaque| %>
+        <%= render plaque, action: 'edit' %>
+      <% end %>
     </div>
     <%= will_paginate @plaques %>
   </div>

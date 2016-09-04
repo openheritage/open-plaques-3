@@ -30,12 +30,10 @@
 
 <div class="row">
   <div class="col-xs-12 col-md-8">
-    <div class="container">
-      <div class="col-xs-12">
-        <%= render @plaque.main_photo, large: true if @plaque.main_photo %>
-      </div>
+    <div class="col-xs-12">
+      <%= render @plaque.main_photo, large: true if @plaque.main_photo %>
     </div>
-    <div class="card-columns">
+    <div class="col-xs-12 card-columns">
       <%= link_to plaque_photos_path(@plaque) do %>
         <div class="card">
           <%= image_tag("NoPhotoSqr.png", :class => 'card-img img-rounded w-100') %>
