@@ -5,7 +5,7 @@
  * Fully installable fonts can be purchased at http://www.fontspring.com
  *
  * The fonts included in this stylesheet are subject to the End User License you purchased
- * from Fontspring. The fonts are protected under domestic and international trademark and 
+ * from Fontspring. The fonts are protected under domestic and international trademark and
  * copyright law. You are prohibited from modifying, reverse engineering, duplicating, or
  * distributing this font software.
  *
@@ -24,14 +24,12 @@
 
 @font-face {
     font-family: 'worcester_serialregular';
-    src: url('worcester_serial-regular-webfont.eot');
-    src: url('worcester_serial-regular-webfont.eot?#iefix') format('embedded-opentype'),
-         url('worcester_serial-regular-webfont.woff2') format('woff2'),
-         url('worcester_serial-regular-webfont.woff') format('woff'),
-         url('worcester_serial-regular-webfont.ttf') format('truetype'),
-         url('worcester_serial-regular-webfont.svg#worcester_serialregular') format('svg');
+    src: asset-url('worcester_serial-regular-webfont.eot');
+    src: asset-url('worcester_serial-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         asset-url('worcester_serial-regular-webfont.woff2') format('woff2'),
+         asset-url('worcester_serial-regular-webfont.woff') format('woff'),
+         asset-url('worcester_serial-regular-webfont.ttf') format('truetype'),
+         asset-url('worcester_serial-regular-webfont.svg#worcester_serialregular') format('svg');
     font-weight: normal;
     font-style: normal;
-
 }
-
