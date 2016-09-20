@@ -73,8 +73,39 @@
   });
 </script>
 
+<style>
+  .ui-autocomplete {
+    list-style-type: none;
+    width: 300px;
+  }
+
+  .ui-autocomplete .ui-menu-item {
+    background: rgba(255,255,255,.95);
+    border-bottom: dotted 1px #CCC;
+  }
+
+  html.no-rgba .ui-autocomplete .ui-menu-item {background: #FFF;}
+
+  .ui-autocomplete .ui-menu-item a {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    padding: 8px;
+  }
+
+  .ui-autocomplete .ui-menu-item a.ui-state-hover {
+    color: #FFF;
+    cursor: pointer;
+  }
+
+  .ui-autocomplete .ui-menu-item a#ui-active-menuitem {
+    background: #4F7CBF;
+    text-shadow: 1px 1px #333;
+  }
+</style>
+
 <div class="row">
-  <p class="col-xs-12"><%= t '.you_agree_to_open_licence' %></p>
+  <p class="col-xs-12 alert alert-warning"><%= t '.you_agree_to_open_licence' %></p>
 </div>
 
 <% if params[:checked] && params[:checked] == "true" %>
