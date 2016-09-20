@@ -117,13 +117,24 @@
     <fieldset class="form-group row">
       <%= f.label :inscription, t('.inscription_heading'), :class => 'form-control-label' %>
       <%= f.text_area :inscription, {:value => params[:phrase], :placeholder => "Joe Bloggs lived here", :autofocus => 'true', :rows => "6", :cols => "50", :class => 'form-control'} %>
-      <%= t('.inscription_advice') %>
+      <small id="inscriptionHelp" class="form-text text-muted"><%= t('.inscription_advice') %></small>
     </fieldset>
     <fieldset class="form-group row">
-      <%= f.label :inscription_is_stub, t('.inscription_partial'), :class => 'form-control-label col-sm-2' %>
+      <%= f.label :inscription_is_stub, t('.inscription_is_stub'), :class => 'form-control-label col-sm-2' %>
       <div class="col-sm-10">
-        <%= f.check_box :inscription_is_stub, :class => 'form-control' %>
-      </div>
+         <div class="form-check">
+           <label class="form-check-label">
+             <%= f.radio_button :inscription_is_stub, false, :class => 'form-check-input' %>
+             <%= t('.inscription_full') %>
+           </label>
+         </div>
+         <div class="form-check">
+           <label class="form-check-label">
+             <%= f.radio_button :inscription_is_stub, true, :class => 'form-check-input' %>
+             <%= t('.inscription_partial') %>
+           </label>
+         </div>
+       </div>
     </fieldset>
     <fieldset class="form-group row">
       <%= f.label :language_id, t('.language_heading'), :class => 'form-control-label col-sm-2' %>
@@ -138,9 +149,10 @@
       </div>
     </fieldset>
     <fieldset class="form-group row">
-      <%= f.label :area, 'City/Town (just the town name please, no area or post code)', :class => 'form-control-label col-sm-2' %>
+      <%= f.label :area, 'City/Town', :class => 'form-control-label col-sm-2' %>
       <div class="col-sm-10">
         <%= text_field_tag :area, "", :placeholder => "London", :class => 'form-control' %>
+        <small id="areaHelp" class="form-text text-muted">just the town name please, no area or postal code</small>
         <%= hidden_field_tag :area_id %>
       </div>
     </fieldset>
@@ -161,10 +173,6 @@
       <div class="form-group row">
         <p class="col-sm-2">and when?</p>
         <div class="col-sm-10">
-          <%= f.label :erected_at_1i, "Year" %>
-          <%= f.label :erected_at_3i, "Day" %>
-          <%= f.label :erected_at, "Month" %>
-          <br/>
           <%= f.date_select :erected_at, :include_blank => true, :start_year => Time.now.year, :end_year => 1800, :field_name => :plaque_erected_at_year, :order => [:year, :day, :month], :class => 'form-control' %>
         </div>
       </div>

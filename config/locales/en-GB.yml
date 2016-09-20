@@ -464,8 +464,10 @@ en-GB:
       page_heading: Tell us about the plaque
       inscription_heading: What does the plaque say?
       inscription_advice: Type in the words on the plaque, in sentence case, excluding the organisation. e.g. 'John Smith 1900-1980 lived here'.
+      inscription_is_stub: Completeness
+      inscription_full: This is the full inscription
       inscription_partial: I don't know the full, exact wording yet
-      language_heading: What language is it in?
+      language_heading: Language
       thanks: Thanks for identifying a plaque that is not already on this website. Fill in as much as you can and anything you don't know can be left blank.
       you_agree_to_open_licence: All of the data on Open Plaques is released into the public domain completely licence-free. By providing us with information you are agreeing that it will be public domain also.
       error: There was an error adding your plaque. Please correct it below.
