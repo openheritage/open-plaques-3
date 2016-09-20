@@ -28,6 +28,7 @@
 <% end %>
 <%= render 'plaques/edit_bar', :plaque => @plaque %>
 
+<div class="plaque">
 <div class="row">
   <div class="col-xs-12 col-md-8">
     <div class="col-xs-12">
@@ -131,6 +132,8 @@
     <%= render partial: 'plaques/tile', collection: @plaque.see_also, as: :plaque %>
   </div>
 <% end %>
+
+</div>
 
 <div<%= ' class=\"' + @plaque.colour.name + 'plaque\"' if @plaque.colour %> about="#this" typeof="op:Plaque"></div>
 
