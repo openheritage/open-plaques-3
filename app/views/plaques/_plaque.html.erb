@@ -5,7 +5,7 @@
 <% end %>
 <% if plaque %>
   <% photo = plaque.main_photo %>
-<div class="card">
+<div class="card plaque">
   <% if photo != nil %>
     <% if local_assigns[:action] == 'edit' %>
       <%= link_to plaque_edit_path(plaque) do %>
