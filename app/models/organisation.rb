@@ -1,6 +1,5 @@
-# This class represents an organisation entity which has been responsible for erecting
-# commemorative plaques. Famous examples include 'English Heritage' - other examples may be
-# civic societies or local councils.
+# An organisation involved in erecting commemorative plaques.
+# Famous examples include 'English Heritage' - other examples may be civic societies or local councils.
 # === Attributes
 # * +name+ - The official name of the organisation
 # * +website+ - official web site
@@ -10,21 +9,14 @@
 # * +latitude+ - Mean location of plaques
 # * +longitude+ - Mean location of plaques
 # * +sponsorships_count+ - The equivalent of number of plaques
-#
-# === Associations
-# * Sponsorships - plaques erected by this organisation.
-#
-# === Indirect Associations
-# * Plaques - plaques through a sponsorship
 class Organisation < ActiveRecord::Base
-
-  before_validation :make_slug_not_war, :find_centre
-  validates_presence_of :name, :slug
-  validates_uniqueness_of :slug
 
   has_many :sponsorships
   has_many :plaques, through: :sponsorships
 
+  before_validation :make_slug_not_war, :find_centre
+  validates_presence_of :name, :slug
+  validates_uniqueness_of :slug
   scope :name_starts_with, lambda {|term| where(["lower(name) LIKE ?", term.downcase + "%"]) }
   scope :name_contains, lambda {|term| where(["lower(name) LIKE ?", "%" + term.downcase + "%"]) }
 

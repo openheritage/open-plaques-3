@@ -1,8 +1,7 @@
-# This class represents 'areas', which are the largest commonly identified region of
-# residence  below a country level. By this, we mean the place that people would normally
-# name in answer to the question of 'where do you live?' In most cases, this will be either
-# a city (eg 'London'), town (eg 'Margate'), or village. It should not normally be either a
-# state, county, district or other administrative region.
+# The largest commonly identified region of residence below a country level.
+# By this, we mean the place that people would normally name in answer to the question of 'where do you live?'.
+# In most cases, this will be either a city (eg 'London'), town (eg 'Margate'), or village.
+# It should not normally be either a state, county, district or other administrative region.
 #
 # === Attributes
 # * +name+ - the area's common name (not neccessarily 'official')
@@ -10,22 +9,16 @@
 # * +latitude+ - Mean location of plaques
 # * +longitude+ - Mean location of plaques
 # * +plaques_count+ - cached count of plaques
-#
-# === Associations
-# * Country - country in which the area falls geographically or administratively.
-# * Locations - places that are in this are
-# * Plaques - plaques located in this area (via locations).
-
 class Area < ActiveRecord::Base
+
+  belongs_to :country, counter_cache: true
+  has_many :plaques
+
+  delegate :alpha2, to: :country, prefix: true
 
   before_validation :make_slug_not_war, :find_centre
   validates_presence_of :name, :slug, :country_id
   validates_uniqueness_of :slug, scope: :country_id
-
-  belongs_to :country, counter_cache: true
-  delegate :alpha2, to: :country, prefix: true
-  has_many :plaques
-
   default_scope { order('name ASC') }
   scope :name_starts_with, lambda {|term| where(["lower(name) LIKE ?", term.downcase + "%"]) }
   scope :name_contains, lambda {|term| where(["lower(name) LIKE ?", "%" + term.downcase + "%"]) }

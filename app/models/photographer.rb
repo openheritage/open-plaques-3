@@ -1,8 +1,6 @@
 class Photographer
-  attr_accessor :id
-  attr_accessor :photos_count
-  attr_accessor :photos
-  attr_accessor :url
+
+  attr_accessor :id, :photos_count, :photos, :url
 
   def photos
     return Photo.where(photographer: self.id)

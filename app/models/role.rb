@@ -1,4 +1,5 @@
-# This class represents a role ascribed to a person. These can be professions (eg 'doctor'), occupations ('artist'), or activities ('inventor').
+# A role ascribed to a subject.
+# These can be professions (eg 'doctor'), occupations ('artist'), or activities ('inventor').
 #
 # === Attributes
 # * +name+ - The name of the role.
@@ -8,22 +9,15 @@
 # * +abbreviation+ - acronym etc. when a role is commonly abbreviated, especially awards, e.g. Victoria Cross == VC
 # * +prefix+ - word(s) to display as part of a title in a name
 # * +suffix+ - word(s) to display as part of letters after a name
-#
-# === Associations
-# * +personal_roles+ - how people are connected to this role
-#
-# === Indirect Associations
-# * +people+ - The people who have been ascribed this role.
 class Role < ActiveRecord::Base
+
+  has_many :personal_roles, -> { order('started_at') }
+  has_many :people, -> { order("name") }, through: :personal_roles
 
   before_validation :make_slug_not_war
   before_save :update_index, :filter_name
   validates_presence_of :name, :slug
   validates_uniqueness_of :name, :slug
-
-  has_many :personal_roles, -> { order('started_at') }
-  has_many :people, -> { order("name") }, through: :personal_roles
-
   scope :by_popularity, -> { order("personal_roles_count DESC nulls last") }
   scope :alphabetically, -> { order("name ASC nulls last") }
   scope :name_starts_with, lambda {|term| where(["lower(name) LIKE ?", term.downcase + "%"]) }

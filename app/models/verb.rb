@@ -1,21 +1,15 @@
-# A verb that connects a person with a location, eg 'lived', 'worked' or 'played'.
+# A verb connecting a subject with a location, eg 'lived', 'worked' or 'played'.
 #
 # === Attributes
 # * +name+ - The name of the verb, in past tense, eg 'lived'.
 # * +personal_connections_count+ - cached count of people connected to this verb
-#
-# === Associations
-# * +personal_connections+ - The personal connections (joining model) which connect with this verb.
-#
-# === Indirect Associations
-# * +people+ - The people associated with this verb.
 class Verb < ActiveRecord::Base
-
-  validates_presence_of :name
-  validates_uniqueness_of :name
 
   has_many :personal_connections
   has_many :people, through: :personal_connections
+
+  validates_presence_of :name
+  validates_uniqueness_of :name
   scope :name_starts_with, lambda {|term| where(["lower(name) LIKE ?", term.downcase + "%"]) }
   scope :name_contains, lambda {|term| where(["lower(name) LIKE ?", "%" + term.downcase + "%"]) }
 

@@ -1,4 +1,4 @@
-# This class represents featured plaques, e.g. 'plaque of the day'
+# A featured plaque, e.g. 'plaque of the day'
 # It should hold enough information to be able to rotate the plaque featured
 # on the home page to something topical and/or interesting
 # === Attributes
@@ -7,20 +7,16 @@
 # * +last_featured+ - when the plaque was last featured
 # * +featured_count+ - number of times the plaque has been featured
 # * +proposer+ - who to say proposed it
-#
-# === Associations
-# * Plaque - the plaque to feature
 class Pick < ActiveRecord::Base
 
   belongs_to :plaque
 
+  validates_presence_of :plaque_id
+  validates_uniqueness_of :plaque_id
   scope :current, -> { where(["last_featured > ? and last_featured < ?", (Date.today - 1.day).strftime + " 23:59:59 UTC" , (Date.today + 1.day).strftime + " 00:00:00 UTC"]).order("last_featured DESC") }
   scope :never_been_featured, -> { where(["last_featured is null or featured_count = 0 or featured_count is null"]) }
   scope :preferably_today, -> { where(["feature_on > ? and feature_on < ?", (Date.today - 1.day).strftime + " 23:59:59 UTC" , (Date.today + 1.day).strftime + " 00:00:00 UTC"]).order("featured_count ASC") }
   scope :least_featured, -> { where(["last_featured < ?", Date.today - 1.week]).order("featured_count ASC") }
-
-  validates_presence_of :plaque_id
-  validates_uniqueness_of :plaque_id
 
   def self.todays
     @todays = Pick.current.first

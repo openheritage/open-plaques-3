@@ -1,5 +1,4 @@
-# This class represents content licences, such as those produced by the Creative Commons
-# organisation.
+# A content licence, such as those produced by the Creative Commons organisation
 # === Attributes
 # * +name+ - the full name
 # * +abbreviation+ - short name, e.g. CC BY-NC-SA 2.0
@@ -11,10 +10,10 @@
 # * Photos - photographed which are published under this licence
 class Licence < ActiveRecord::Base
 
+  has_many :photos
+
   validates_presence_of :name, :url
   validates_uniqueness_of :url
-
-  has_many :photos
 
   def self.find_by_flickr_licence_id(flickr_licence_id)
     case flickr_licence_id

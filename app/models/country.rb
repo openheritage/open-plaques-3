@@ -1,29 +1,24 @@
-# This class represents 'countries', as defined by the ISO country codes specification.
+# A top-level region definition as defined by the ISO country codes specification.
 # === Attributes
 # * +name+ - the country's common name (not necessarily its official one).
-# * +alpha2+ - 2-letter code as defined by the ISO standard. Used in URLs.
+# * +alpha2+ - 2-letter ISO standard code. Used in URLs.
+# * +description+ - commentary on how this region commemorates subjects
 # * +dbpedia_uri+ - uri to link to DBPedia record
 # * +areas_count+ - cached count of areas
 # * +plaques_count+ - cached count of plaques
-#
-# === Associations
-# * Areas - areas located in this country.
-#
-# === Indirect Associations
-# * Plaques - plaques which are located in this country.
-
+# * +created_at+
+# * +updated_at+
 class Country < ActiveRecord::Base
-
-  validates_presence_of :name, :alpha2
-  validates_uniqueness_of :name, :alpha2
 
   has_many :areas
   has_many :plaques, through: :areas
 
   @@latitude = nil
   @@longitude = nil
-
   @@p_count = 0
+
+  validates_presence_of :name, :alpha2
+  validates_uniqueness_of :name, :alpha2
 
   include PlaquesHelper
 
@@ -64,7 +59,6 @@ class Country < ActiveRecord::Base
     super options
   end
 
-  # Construct paths using the alpha2 code
   def to_param
     alpha2
   end

@@ -1,8 +1,4 @@
-require 'rubygems'
-require 'open-uri'
-#require 'rdf/ntriples'
-
-# This class represents a human who has been commemorated on a plaque.
+# A subject commemorated on a plaque
 # === Attributes
 # * +name+ - The common full name of the person.
 # * +wikipedia_url+ - An override link to the person's Wikipedia page (if they have one and it isn't linked to via their name).
@@ -15,19 +11,11 @@ require 'open-uri'
 # * +personal_roles_count+ - cached count of roles
 # * +aka+ - Array of names that person is also known as
 # * +gender+ - (u)nkown, (n)ot applicable, (m)ale, (f)emale
-#
-# === Associations
-# * PersonalRoles - link to a role and potentially another person (e.g. by being their husband)
-# * PersonalConnections - link to a time and place via a mention on a plaque
-# * MainPhoto - image showing the person (via photos)
-#
-# === Indirect Associations
-# * Plaques - plaques on which this person is commemorated.
-# * Roles - roles associated with this person (eg 'carpenter').
+require 'rubygems'
+require 'open-uri'
+#require 'rdf/ntriples'
 
 class Person < ActiveRecord::Base
-
-  validates_presence_of :name
 
   has_many :personal_roles
   has_many :personal_connections
@@ -39,8 +27,8 @@ class Person < ActiveRecord::Base
 
   attr_accessor :abstract, :comment # dbpedia fields
 
+  validates_presence_of :name
   before_save :update_index
-
   scope :no_role, -> { where(personal_roles_count: [nil,0]) }
   scope :no_dates, -> { where('born_on IS NULL and died_on IS NULL') }
   scope :name_starts_with, lambda {|term| where(["lower(name) LIKE ?", term.downcase + "%"]) }

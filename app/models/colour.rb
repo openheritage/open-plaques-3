@@ -1,5 +1,4 @@
-# This class represents 'colours', as commonly identified as the main colour on commemorative
-# plaques.
+# The main colour (or physical attribute) of a plaque
 # === Attributes
 # * +name+ - the colour's common name (eg 'blue').
 # * +slug+ - An textual identifier for the colour, usually equivalent to its name in lower case, with spaces replaced by underscores. Used in URLs.
@@ -10,12 +9,11 @@
 # * Plaques - plaques which use this colour.
 class Colour < ActiveRecord::Base
 
+  has_many :plaques
+
   before_validation :make_slug_not_war
   validates_presence_of :name, :slug
   validates_uniqueness_of :name, :slug
-
-  has_many :plaques
-
   scope :common, -> { where(common: true) }
   scope :uncommon, ->  { where(common: false) }
   scope :most_plaques_order, -> { order("plaques_count DESC nulls last") }

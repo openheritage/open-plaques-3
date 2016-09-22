@@ -1,5 +1,5 @@
 # -*- encoding : utf-8 -*-
-# This class represents a physical commemorative plaque, which is either currently installed, or
+# A physical commemorative plaque, which is either currently installed, or
 # was once installed on a building, site or monument. Our definition of plaques is quite wide,
 # encompassing 'traditional' blue plaques that commemorate a historic person's connection to a
 # place, as well as plaques that commemorate buildings, events, and so on.
@@ -15,33 +15,24 @@
 # * +is_current+ - Whether the plaque is currently on display (or has it been stolen!)
 # * +inscription_in_english+ - Manual translation
 # * +address+ - the physical street address
-#
-# === Associations
-# * Area - The area in which the plaque is (or was) installed. Optional.
-# * Colour - The colour of the plaque. Optional.
-# * Language - The primary language of the inscripton on the plaque. Optional.
-# * Series - A series that this plaque is part of. Optional.
-# * Pick - When this plaque is a system favourite. Optional.
-# * Personal Connections - Links to subjects with how and when. Optional.
-# * Photos - Images of the plaque.. Optional.
-# * Sponsorships - Links to the organisations that put the plaque up. Optional.
-# * Organisations - The organisation responsible for the plaque. Optional.
 class Plaque < ActiveRecord::Base
 
   belongs_to :area, counter_cache: true
   belongs_to :colour, counter_cache: true
   belongs_to :language, counter_cache: true
   belongs_to :series, counter_cache: true
-
-  has_one :pick
-
   has_many :personal_connections
   has_many :photos, -> { where(of_a_plaque: true).order('shot ASC')}, inverse_of: :plaque
   has_many :sponsorships
   has_many :organisations, through: :sponsorships
+  has_one :pick
+
+  attr_accessor :country, :other_colour_id
+  delegate :name, to: :colour, prefix: true, allow_nil: true
+  delegate :name, :alpha2, to: :language, prefix: true, allow_nil: true
 
   before_save :use_other_colour_id
-
+  accepts_nested_attributes_for :photos, reject_if: proc { |attributes| attributes['photo_url'].blank? }
   scope :current, -> { where(is_current: true).order('id desc') }
   scope :geolocated, ->  { where(["plaques.latitude IS NOT NULL"]) }
   scope :ungeolocated, -> { where(latitude: nil).order("id DESC") }
@@ -56,13 +47,6 @@ class Plaque < ActiveRecord::Base
   scope :partial_inscription, -> { where(inscription_is_stub: true).order("id DESC") }
   scope :partial_inscription_photo, -> { where(photos_count: 1..99999, inscription_is_stub: true).order("id DESC") }
   scope :no_english_version, -> { where("language_id > 1").where(inscription_is_stub: false, inscription_in_english: nil) }
-
-  attr_accessor :country, :other_colour_id
-
-  delegate :name, to: :colour, prefix: true, allow_nil: true
-  delegate :name, :alpha2, to: :language, prefix: true, allow_nil: true
-
-  accepts_nested_attributes_for :photos, reject_if: proc { |attributes| attributes['photo_url'].blank? }
 
   include ApplicationHelper, ActionView::Helpers::TextHelper
 

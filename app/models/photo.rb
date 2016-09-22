@@ -1,5 +1,5 @@
 # -*- encoding : utf-8 -*-
-# This class represents a photograph of a Plaque.
+# A photograph of a plaque or a subject.
 #
 # === Attributes
 # * +url+ - The primary stable webpage for the photo
@@ -13,29 +13,22 @@
 # * +description+ - extra information about what this is a photo of (used if not linked to a plaque)
 # * +longitude+
 # * +latitude+
-#
-# === Associations
-# * Licence - The content licence under which the photo is made available.
-# * Plaque - the featured in the photo. (optional)
-# * Person - the person in the photo. (optional)
 require 'wikimedia/commoner'
 
 class Photo < ActiveRecord::Base
 
   belongs_to :plaque, counter_cache: true
-  belongs_to :licence, counter_cache: true
   belongs_to :person
-
-  validates_presence_of :file_url
-  validates_uniqueness_of :file_url, message: "of photo already exists in Open Plaques"
+  belongs_to :licence, counter_cache: true
 
   attr_accessor :photo_url, :accept_cc_by_licence
 
+  validates_presence_of :file_url
+  validates_uniqueness_of :file_url, message: "of photo already exists in Open Plaques"
   after_initialize :assign_from_photo_url
   before_validation :assign_licence_if_cc_by_accepted
   after_update :reset_plaque_photo_count
   after_save :geolocate_plaque
-
   scope :reverse_detail_order, -> { order('shot DESC') }
   scope :detail_order, -> { order('shot ASC') }
   scope :unassigned, -> { where(plaque_id: nil, of_a_plaque: true) }
@@ -123,7 +116,7 @@ class Photo < ActiveRecord::Base
 
   def wikimedia_filename
     puts '*** ' + url
-    
+
     begin
     return url[url.index('File:')+5..-1] if wikimedia?
   rescue
