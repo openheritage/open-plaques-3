@@ -1,5 +1,5 @@
-<% content_for(:page_title) {t '.page_title', :phrase => @phrase} %>
-<% content_for(:title) {t '.page_heading', :phrase => @phrase} %>
+<% content_for(:page_title) {t '.page_title', phrase: @phrase} %>
+<% content_for(:title) {t '.page_heading', phrase: @phrase} %>
 
 <% if @places.count > 0 %>
   <h2><%= pluralize @places.count,'place' %> matching '<%= @phrase %>'</h2>
@@ -49,14 +49,14 @@
 
 <% if @plaques.count > 0 %>
   <h2><%= pluralize @plaques.count,'plaque' %>  matching '<%= @phrase %>'</h2>
-  <%= render partial: 'plaques/plaque_row', :collection => @plaques, as: :plaque %>
+  <%= render partial: 'plaques/plaque_row', collection: @plaques, as: :plaque %>
 <% end %>
 
 <% if params[:from] && params[:from] == "submission" %>
-  <div class="row"><%= t '.not_found' %> <%= link_to t('.add_it'), new_plaque_path(:checked => true) %>.</div>
+  <div class="row"><%= t '.not_found' %> <%= link_to t('.add_it'), new_plaque_path(checked: true) %>.</div>
 <% else %>
-  <h2><%= t '.try_again' %> <%= link_to t('.add_it'), new_plaque_path(:checked => true, :phrase => @phrase) %></h2>
+  <h2><%= t '.try_again' %> <%= link_to t('.add_it'), new_plaque_path(checked: true, phrase: @phrase) %></h2>
   <div class="row">
-    <%= render :partial => "search_form", :locals => { :phrase => @phrase } %>
+    <%= render partial: "search_form", locals: { phrase: @phrase } %>
   </div>
 <% end %>

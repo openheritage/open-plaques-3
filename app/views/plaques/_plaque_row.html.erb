@@ -8,7 +8,7 @@
 <div class="row card plaque">
   <%= link_to plaque_path(plaque) do %>
     <div class="col-xs-3">
-      <%= image_tag(photo != nil ? photo.thumbnail_url : "NoPhotoSqr.png", {:class => 'card-img-top img-thumbnail w-100'}) %>
+      <%= image_tag(photo != nil ? photo.thumbnail_url : "NoPhotoSqr.png", {class: 'card-img-top img-thumbnail w-100'}) %>
     </div>
   <% end %>
   <div class="col-xs-9">

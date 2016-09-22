@@ -11,9 +11,9 @@ class PersonalConnection < ActiveRecord::Base
 
   validates_presence_of :verb_id, :person_id, :plaque_id
 
-  belongs_to :verb, :counter_cache => true
-  belongs_to :person, :counter_cache => true
-  belongs_to :plaque, :counter_cache => true
+  belongs_to :verb, counter_cache: true
+  belongs_to :person, counter_cache: true
+  belongs_to :plaque, counter_cache: true
 
   attr_accessor :other_verb_id
 

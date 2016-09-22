@@ -2,11 +2,11 @@
 module ApplicationHelper
 
   def button_delete(path)
-    button_to(t('buttons.delete'), path, {:method => :delete, :class => 'btn btn-danger'})
+    button_to(t('buttons.delete'), path, {method: :delete, class: 'btn btn-danger'})
   end
 
   def alternate_link_to(text, path, format)
-    link_to text, path, :type => Mime::Type.lookup_by_extension(format.to_s).to_s, :rel => [:alternate,:nofollow]
+    link_to text, path, type: Mime::Type.lookup_by_extension(format.to_s).to_s, rel: [:alternate,:nofollow]
   end
 
   def fieldset(options = {}, &block)
@@ -31,7 +31,7 @@ module ApplicationHelper
   end
 
   def unknown(text = "unknown")
-    content_tag("span", text, :class => :unknown)
+    content_tag("span", text, class: :unknown)
   end
 
   def user_menu
@@ -41,9 +41,9 @@ module ApplicationHelper
 #        link_to(current_user.email, edit_user_registration_path) +
         ". " +
         link_to("Logout", destroy_user_session_path, method: :delete)
-      ), {:class => "user_info"})
+      ), {class: "user_info"})
     else
-      content_tag("p", link_to("Login", new_user_session_path), {:class => "user_info"})
+      content_tag("p", link_to("Login", new_user_session_path), {class: "user_info"})
     end
   end
 
@@ -52,7 +52,7 @@ module ApplicationHelper
   # ==== Example output:
   #   <abbr title="circa">c</abbr>
   def circa_tag
-    return content_tag("abbr", "c", {:title => "circa"})
+    return content_tag("abbr", "c", {title: "circa"})
   end
 
   # Produces a link wrapped in a list item element (<li>).

@@ -1,30 +1,30 @@
 class CountryPlaquesController < ApplicationController
 
-  before_filter :find, :only => [:show]
+  before_filter :find, only: [:show]
 
   def show
     @display = 'all'
     if (params[:id] && params[:id]=='unphotographed')
-      request.format == 'html' ? @plaques = @country.plaques.unphotographed.paginate(:page => params[:page], :per_page => 50) : @plaques = @country.plaques.unphotographed
+      request.format == 'html' ? @plaques = @country.plaques.unphotographed.paginate(page: params[:page], per_page: 50) : @plaques = @country.plaques.unphotographed
       @display = 'unphotographed'
     elsif (params[:id] && params[:id]=='current')
-      request.format == 'html' ? @plaques = @country.plaques.current.paginate(:page => params[:page], :per_page => 50) : @plaques = @country.plaques.current
+      request.format == 'html' ? @plaques = @country.plaques.current.paginate(page: params[:page], per_page: 50) : @plaques = @country.plaques.current
     elsif (params[:id] && params[:id]=='ungeolocated')
-      request.format == 'html' ? @plaques = @country.plaques.ungeolocated.paginate(:page => params[:page], :per_page => 50) : @plaques = @country.plaques.ungeolocated
+      request.format == 'html' ? @plaques = @country.plaques.ungeolocated.paginate(page: params[:page], per_page: 50) : @plaques = @country.plaques.ungeolocated
       @display = 'ungeolocated'
     else
-      request.format == 'html' ? @plaques = @country.plaques.paginate(:page => params[:page], :per_page => 50) : @plaques = @country.plaques
+      request.format == 'html' ? @plaques = @country.plaques.paginate(page: params[:page], per_page: 50) : @plaques = @country.plaques
     end
     respond_to do |format|
       format.html
-      format.json { render :json => @plaques }
-      format.geojson { render :geojson => @plaques, :parent => @country }
+      format.json { render json: @plaques }
+      format.geojson { render geojson: @plaques, parent: @country }
       format.csv {
         send_data(
           PlaqueCsv.new(@plaques).build,
-          :type => 'text/csv',
-          :filename => 'open-plaques-' + @country.name + '-' + Date.today.to_s + '.csv',
-          :disposition => 'attachment'
+          type: 'text/csv',
+          filename: 'open-plaques-' + @country.name + '-' + Date.today.to_s + '.csv',
+          disposition: 'attachment'
         )
       }
     end

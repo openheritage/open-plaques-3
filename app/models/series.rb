@@ -36,8 +36,8 @@ class Series < ActiveRecord::Base
   def as_json(options={})
     options =
     {
-      :only => [:name, :description, :plaques_count],
-      :methods => :uri
+      only: [:name, :description, :plaques_count],
+      methods: :uri
     } if !options[:only]
     super(options)
   end

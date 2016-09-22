@@ -1,14 +1,14 @@
 class ColoursController < ApplicationController
 
-  before_filter :authenticate_admin!, :only => :destroy
-  before_filter :authenticate_user!, :except => [:index]
-  before_filter :find, :only => [:update]
+  before_filter :authenticate_admin!, only: :destroy
+  before_filter :authenticate_user!, except: [:index]
+  before_filter :find, only: [:update]
 
   def index
     @colours = Colour.all.most_plaques_order
     respond_to do |format|
       format.html
-      format.json { render :json => @colours }
+      format.json { render json: @colours }
     end
   end
 

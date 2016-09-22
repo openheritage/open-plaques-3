@@ -1,16 +1,16 @@
 class AreasController < ApplicationController
 
-  before_filter :authenticate_admin!, :only => :destroy
-  before_filter :authenticate_user!, :except => [:autocomplete, :index, :show, :update]
-  before_filter :find_country, :only => [:index, :new, :show, :create, :edit, :update, :destroy]
-  before_filter :find, :only => [:show, :edit, :update, :destroy]
+  before_filter :authenticate_admin!, only: :destroy
+  before_filter :authenticate_user!, except: [:autocomplete, :index, :show, :update]
+  before_filter :find_country, only: [:index, :new, :show, :create, :edit, :update, :destroy]
+  before_filter :find, only: [:show, :edit, :update, :destroy]
 
   def index
     @areas = @country.areas.all
     respond_to do |format|
       format.html
-      format.json { render :json => @areas }
-      format.geojson { render :geojson => @areas }
+      format.json { render json: @areas }
+      format.geojson { render geojson: @areas }
     end
   end
 
@@ -23,16 +23,16 @@ class AreasController < ApplicationController
       if country_id == nil
         @areas = Area.select(:id,:name,:country_id).name_starts_with(params[:starts_with]).includes(:country).limit(limit)
       else
-        @areas = Area.select(:id,:name,:country_id).where(:country_id => country_id).name_starts_with(params[:starts_with]).includes(:country).limit(limit)
+        @areas = Area.select(:id,:name,:country_id).where(country_id: country_id).name_starts_with(params[:starts_with]).includes(:country).limit(limit)
       end
     else
       @areas = "{}"
     end
-    render :json => @areas.as_json(
-      :only => [:id,:name,:country_id],
-      :include => {
-        :country => {
-          :only => [:name]
+    render json: @areas.as_json(
+      only: [:id,:name,:country_id],
+      include: {
+        country: {
+          only: [:name]
         }
       }
     )
@@ -45,8 +45,8 @@ class AreasController < ApplicationController
   def show
     respond_to do |format|
       format.html
-      format.json { render :json => @area }
-      format.geojson { render :geojson => @area }
+      format.json { render json: @area }
+      format.geojson { render geojson: @area }
     end
   end
 

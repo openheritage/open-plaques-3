@@ -4,7 +4,7 @@ class PhotographersController < ApplicationController
     @photographers = Photographer.all
     respond_to do |format|
       format.html
-      format.json { render :json => @photographers }
+      format.json { render json: @photographers }
     end
   end
 
@@ -13,7 +13,7 @@ class PhotographersController < ApplicationController
     @photographer.id = params[:id].gsub(/\_/,'.')
     respond_to do |format|
       format.html
-      format.json { render :json => @photographer }
+      format.json { render json: @photographer }
     end
   end
 

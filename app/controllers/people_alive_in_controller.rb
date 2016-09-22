@@ -4,7 +4,7 @@ class PeopleAliveInController < ApplicationController
     @counts = Person.count(:born_on)
     respond_to do |format|
       format.html
-      format.json { render :json => @counts }
+      format.json { render json: @counts }
     end
   end
 
@@ -22,7 +22,7 @@ class PeopleAliveInController < ApplicationController
     @people.reject! {|subject| !subject.person? }
     respond_to do |format|
       format.html
-      format.json { render :json => @people }
+      format.json { render json: @people }
     end
   end
 

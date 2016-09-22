@@ -1,4 +1,4 @@
-<% content_for(:page_title) {t '.page_title', :role => @pluralized_role} %>
+<% content_for(:page_title) {t '.page_title', role: @pluralized_role} %>
 <% content_for(:title) do %>
   <%= icon('user') if @role.person? %>
   <%= icon('paw') if @role.animal? %>
@@ -15,7 +15,7 @@
     <p><%= @role.military_medal? ? 'A military medal that confers' : 'Confers' %> the letters <strong><%= @role.letters %></strong> after the name.</p>
   <% end %>
   <% unless @role.wikipedia_stub.blank? %>
-    <%= icon('external-link') %><%= link_to('Wikipedia', @role.wikipedia_url, :target => "_blank") %>
+    <%= icon('external-link') %><%= link_to('Wikipedia', @role.wikipedia_url, target: "_blank") %>
   <% end %>
   <span class="label label-default label-pill pull-right"><%= @role.personal_roles_count %></span>
 <% end %>

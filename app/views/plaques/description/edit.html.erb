@@ -6,11 +6,11 @@
   <p>Enter any additional interesting information about the plaque and links to articles about it to be displayed on the plaque detail page.</p>
   <p>Articles can be linked using the format [name of link](https://....)</p>
 <% end %>
-<%= render 'plaques/edit_bar', :plaque => @plaque %>
+<%= render 'plaques/edit_bar', plaque: @plaque %>
 
 <%= form_for @plaque do |f| %>
   <fieldset class="form-group">
-    <%= f.text_area :description, {:class => 'form-control', :rows => 6, :autofocus => true} %>
+    <%= f.text_area :description, {class: 'form-control', rows: 6, autofocus: true} %>
   </fieldset>
-  <%= f.submit t('buttons.save'), :class => 'btn btn-primary' %>
+  <%= f.submit t('buttons.save'), class: 'btn btn-primary' %>
 <% end %>

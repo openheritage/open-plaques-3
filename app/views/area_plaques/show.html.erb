@@ -1,7 +1,7 @@
 <% if @display!='unphotographed' %>
-  <% content_for(:page_title) {t '.page_title', :area => @area.name + ", " + @area.country.name } %>
+  <% content_for(:page_title) {t '.page_title', area: @area.name + ", " + @area.country.name } %>
 <% else %>
-  <% content_for(:page_title) {t '.page_title_unphotographed', :area => @area.name + ", " + @area.country.name } %>
+  <% content_for(:page_title) {t '.page_title_unphotographed', area: @area.name + ", " + @area.country.name } %>
 <% end %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_area_path(@area)} %>
 
@@ -32,12 +32,12 @@
         <p>Just find '<%= @area.full_name %>' <a href="https://maps.google.com/maps?q=<%= @area.full_name %>&z=18" target="_new">on Google Maps</a> and tell us the <%= label_tag(:streetview_url, "web url:") %> <%= text_field_tag(:streetview_url, ' ', size: 100) %>.</p>
         <p>We will extract the geolocation. Probably.</p>
         <%= f.hidden_field :name %>
-        <p><%= f.submit t('buttons.update'), :class => 'btn btn-primary' %></p>
+        <p><%= f.submit t('buttons.update'), class: 'btn btn-primary' %></p>
       </div>
     <% end %>
   <% end %>
 <% end %>
 
 <%= will_paginate @plaques %>
-<%= render partial: 'plaques/plaque_row', :collection => @plaques, as: :plaque %>
+<%= render partial: 'plaques/plaque_row', collection: @plaques, as: :plaque %>
 <%= will_paginate @plaques %>

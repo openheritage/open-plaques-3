@@ -1,5 +1,5 @@
-<% content_for(:page_title) {t '.page_title', :page => @page.name} %>
-<% content_for(:title) {t '.page_heading', :page => @page.name} %>
+<% content_for(:page_title) {t '.page_title', page: @page.name} %>
+<% content_for(:title) {t '.page_heading', page: @page.name} %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_page_path(@page.slug)} %>
 
 <div class="row">

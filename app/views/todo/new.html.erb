@@ -3,7 +3,7 @@
 <div class="panel">
   <h1>Add a todo</h1>
 
-  <%= form_for :todo, :url => url_for(:controller => "todo", :action => :create) do |f| -%>
+  <%= form_for :todo, url: url_for(controller: "todo", action: :create) do |f| -%>
     <p><%= f.label :action %><br/>
     <%= f.text_field :action %></p>
     <p><%= f.label :description %><br/>

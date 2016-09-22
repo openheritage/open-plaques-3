@@ -1,13 +1,13 @@
 <% content_for(:page_title) {t '.page_title'} %>
 <% content_for(:title) {t '.page_heading'} %>
 
-<%= form_for @picks, :url => picks_path do |f| %>
+<%= form_for @picks, url: picks_path do |f| %>
   <fieldset class="form-group row">
     <span class="form-control-label col-sm-2">
       <%= t '.plaque_id' %>
     </span>
     <div class="col-sm-2">
-      <%= f.text_field :plaque_id, :maxlength => "5", :class => 'form-control' %>
+      <%= f.text_field :plaque_id, maxlength: "5", class: 'form-control' %>
     </div>
     <div class="col-sm-4">
       <!-- display plaque tile -->
@@ -18,7 +18,7 @@
       <%= t '.description' %>
     </span>
     <div class="col-sm-10">
-      <%= f.text_area :description, :rows=>5, :cols=>80, :class => 'form-control' %>
+      <%= f.text_area :description, :rows=>5, :cols=>80, class: 'form-control' %>
     </div>
   </fieldset>
   <fieldset class="form-group row">
@@ -26,8 +26,8 @@
     <%= t '.proposer' %>
     </span>
     <div class="col-sm-10">
-      <%= f.text_field :proposer, :maxlength => "40", :class => 'form-control' %>
+      <%= f.text_field :proposer, maxlength: "40", class: 'form-control' %>
     </div>
   </fieldset>
-  <%= f.submit t('buttons.save'), :class => 'btn btn-primary' %>
+  <%= f.submit t('buttons.save'), class: 'btn btn-primary' %>
 <% end %>

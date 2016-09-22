@@ -169,8 +169,8 @@ module PlaquesHelper
 #            32.76696, -94.348526
 #            32.766955, -94.348472
             # Plaque.find_or_create_by_???
-            @plaque = Plaque.new(:inscription => inscription, :user => jez, :inscription_is_stub => inscription_is_stub, :colour => black, :language => english)
-            @plaque.location = Location.new(:name => 'somewhere in Texas')
+            @plaque = Plaque.new(inscription: inscription, user: jez, inscription_is_stub: inscription_is_stub, colour: black, language: english)
+            @plaque.location = Location.new(name: 'somewhere in Texas')
             # the Flickr woeids appear to be at town level, so can only create an area from them
             woeid = photo.attributes["woeid"]
             if woeid != nil

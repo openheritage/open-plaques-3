@@ -56,7 +56,7 @@ class Licence < ActiveRecord::Base
 
   def as_json(options={})
     options = {
-      :only => [:name, :abbreviation, :url, :allows_commercial_reuse, :photos_count]
+      only: [:name, :abbreviation, :url, :allows_commercial_reuse, :photos_count]
     } if !options || !options[:only]
     super options
   end

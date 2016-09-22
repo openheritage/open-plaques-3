@@ -1,6 +1,6 @@
 class AddCommonToColours < ActiveRecord::Migration
   def self.up
-    add_column :colours, :common, :boolean, :default => false, :null => false
+    add_column :colours, :common, :boolean, default: false, null: false
   end
 
   def self.down

@@ -26,9 +26,9 @@ class Language < ActiveRecord::Base
 
   def as_json(options={})
     options = {
-      :only => [:name, :alpha2, :plaques_count],
-      :include => { },
-      :methods => []
+      only: [:name, :alpha2, :plaques_count],
+      include: { },
+      methods: []
     } if !options[:prefixes].blank?
     super(options)
   end

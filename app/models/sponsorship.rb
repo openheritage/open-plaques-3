@@ -5,5 +5,5 @@
 # * Organisation - the organisation that provided funds or permission
 class Sponsorship < ActiveRecord::Base
   belongs_to :plaque
-  belongs_to :organisation, :counter_cache => true
+  belongs_to :organisation, counter_cache: true
 end

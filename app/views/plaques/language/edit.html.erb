@@ -3,16 +3,16 @@
   Which language is the <%= link_to @plaque.title, @plaque %> written in?
 <% end %>
 <% content_for :page_subhead do %>
-  <% if url_for(:only_path => false).include?('microtask') %>
-    <%= button_to "Not sure. Give me another one", todo_path('microtask'), :method => :get, :class => :button %>
+  <% if url_for(only_path: false).include?('microtask') %>
+    <%= button_to "Not sure. Give me another one", todo_path('microtask'), method: :get, class: :button %>
   <% end %>
 <% end %>
-<%= render 'plaques/edit_bar', :plaque => @plaque %>
+<%= render 'plaques/edit_bar', plaque: @plaque %>
 
 <%= form_for @plaque do |f| %>
   <fieldset class="form-group">
     <%= f.label :language_id, t('.language_label') %>
-    <%= f.collection_select :language_id, @languages, :id, :name, {:class => 'form-control'} %>
+    <%= f.collection_select :language_id, @languages, :id, :name, {class: 'form-control'} %>
   </fieldset>
-  <%= f.submit t('buttons.save'), :class => 'btn btn-primary' %>
+  <%= f.submit t('buttons.save'), class: 'btn btn-primary' %>
 <% end %>

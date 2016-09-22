@@ -23,7 +23,7 @@ class Organisation < ActiveRecord::Base
   validates_uniqueness_of :slug
 
   has_many :sponsorships
-  has_many :plaques, :through => :sponsorships
+  has_many :plaques, through: :sponsorships
 
   scope :name_starts_with, lambda {|term| where(["lower(name) LIKE ?", term.downcase + "%"]) }
   scope :name_contains, lambda {|term| where(["lower(name) LIKE ?", "%" + term.downcase + "%"]) }
@@ -62,13 +62,13 @@ class Organisation < ActiveRecord::Base
   end
 
   def plaques_uri
-    "http://openplaques.org" + Rails.application.routes.url_helpers.organisation_plaques_path(self.slug, :format => :geojson) if id
+    "http://openplaques.org" + Rails.application.routes.url_helpers.organisation_plaques_path(self.slug, format: :geojson) if id
   end
 
   def as_json(options=nil)
     options = {
-      :only => [:name],
-      :methods => [:uri, :plaques_count, :plaques_uri]
+      only: [:name],
+      methods: [:uri, :plaques_count, :plaques_uri]
     } if !options || !options[:only]
     super options
   end

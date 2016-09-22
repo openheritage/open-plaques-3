@@ -16,9 +16,9 @@ class User < ActiveRecord::Base
 #  attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :name, :opted_in
 # see http://stackoverflow.com/questions/17371334/how-is-attr-accessible-used-in-rails-4
 
-  validates_presence_of     :username
-  validates_length_of       :username,    :within => 3..40
-  validates_uniqueness_of   :username
+  validates_presence_of :username
+  validates_length_of :username, within: 3..40
+  validates_uniqueness_of :username
 
   belongs_to :todo_item
 

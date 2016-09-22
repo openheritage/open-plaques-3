@@ -5,7 +5,7 @@
 
 namespace :assets do
   desc "Create .gz versions of static assets"
-  task :gzip_static => :environment do
+  task gzip_static: :environment do
     zip_types = /\.(?:css|html|js|otf|svg|txt|xml)$/
 
     public_assets = File.join(

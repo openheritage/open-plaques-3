@@ -1,4 +1,4 @@
-<% content_for(:page_title) {t '.page_title', :series => @series.name } %>
+<% content_for(:page_title) {t '.page_title', series: @series.name } %>
 <% content_for(:title) {@series.name} %>
 <% content_for(:page_subhead) do %>
   <p><%= @series.description %></p>
@@ -10,5 +10,5 @@
   <div class="row" id="plaque-map" data-latitude="<%= @series.latitude %>" data-longitude="<%= @series.longitude %>" data-view="all" context="<%= request.path %>"></div>
 <% end %>
 <%= will_paginate @plaques %>
-<%= render partial: 'plaques/plaque_row', :collection => @plaques, as: :plaque %>
+<%= render partial: 'plaques/plaque_row', collection: @plaques, as: :plaque %>
 <%= will_paginate @plaques %>

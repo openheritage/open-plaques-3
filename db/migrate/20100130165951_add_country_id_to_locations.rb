@@ -5,7 +5,7 @@ class AddCountryIdToLocations < ActiveRecord::Migration
     say_with_time("Assigning country ids to locations") do
       Location.find_each do |location|
         if location.area && location.area.country
-          location.update_attributes(:country_id => location.area.country_id)
+          location.update_attributes(country_id: location.area.country_id)
         end
       end
     end

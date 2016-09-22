@@ -4,7 +4,7 @@ class AddCounterCacheToOrganisation < ActiveRecord::Migration
 
     say_with_time("Setting plaques_count conter on organisations") do
       Organisation.find_each do |organisation|
-        Organisation.update_counters(organisation.id, :plaques_count => Organisation.find(organisation.id).plaques.size)
+        Organisation.update_counters(organisation.id, plaques_count: Organisation.find(organisation.id).plaques.size)
       end
     end
   end

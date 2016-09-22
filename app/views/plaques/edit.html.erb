@@ -5,28 +5,28 @@
 <% content_for :page_subhead do %>
   Created <%= @plaque.created_at.to_s(:long) %> and last updated <%= @plaque.updated_at.to_s(:long) %></p>
 <% end %>
-<%= render 'plaques/edit_bar', :plaque => @plaque %>
+<%= render 'plaques/edit_bar', plaque: @plaque %>
 
 <%= form_for(@plaque) do |f| %>
   <fieldset class="form-group">
     <%= f.label :erected_at_string, t('.erected_in') %>
-    <%= f.text_field :erected_at_string, {:class => 'form-control', :include_blank => true} %>
-    <%= content_tag(:p, t('.not_erected'), :class => 'bg-warning' ) unless @plaque.erected? %>
+    <%= f.text_field :erected_at_string, {class: 'form-control', include_blank: true} %>
+    <%= content_tag(:p, t('.not_erected'), class: 'bg-warning' ) unless @plaque.erected? %>
   </fieldset>
   <fieldset class="form-group">
     <label class="form-check-label">
-      <%= f.check_box :is_current, :class => 'form-check-input' %>
+      <%= f.check_box :is_current, class: 'form-check-input' %>
       <%= t('.exists') %>
     </label>
   </fieldset>
   <fieldset class="form-group">
     <%= f.label :notes %>
-    <%= f.text_area :notes, {:class => 'form-control', :rows => 6} %>
+    <%= f.text_area :notes, {class: 'form-control', rows: 6} %>
   </fieldset>
-  <%= f.submit t('buttons.save'), :class => 'btn btn-primary' %>
+  <%= f.submit t('buttons.save'), class: 'btn btn-primary' %>
 <% end %>
 
 <br/>
 <div class="row">
-  <%= button_to('Delete plaque', plaque_path(@plaque.id), {:method => :delete, :class => 'btn btn-danger'}) if current_user.try(:is_admin?) %>
+  <%= button_to('Delete plaque', plaque_path(@plaque.id), {method: :delete, class: 'btn btn-danger'}) if current_user.try(:is_admin?) %>
 </div>

@@ -1,10 +1,10 @@
 class PersonalConnectionsController < ApplicationController
 
-  before_filter :authenticate_admin!, :only => :destroy
-  before_filter :find, :only => [:destroy]
-  before_filter :find_plaque, :only => [:new, :create]
-  before_filter :list_people_and_verbs, :only => [:new]
-  layout 'plaque_edit', :only => :new
+  before_filter :authenticate_admin!, only: :destroy
+  before_filter :find, only: [:destroy]
+  before_filter :find_plaque, only: [:new, :create]
+  before_filter :list_people_and_verbs, only: [:new]
+  layout 'plaque_edit', only: :new
 
   def destroy
     @personal_connection.destroy

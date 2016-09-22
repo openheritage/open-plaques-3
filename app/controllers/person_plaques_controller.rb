@@ -5,12 +5,12 @@ class PersonPlaquesController < ApplicationController
     @plaques = person.plaques
     respond_to do |format|
       format.html { render @plaques }
-      format.json { render :json => @plaques.as_json(
-        :only => [:id, :inscription, :latitude, :longitude, :is_accurate_geolocation],
-        :methods => [:title, :uri, :colour_name]
+      format.json { render json: @plaques.as_json(
+        only: [:id, :inscription, :latitude, :longitude, :is_accurate_geolocation],
+        methods: [:title, :uri, :colour_name]
         )
       }
-      format.geojson { render :geojson => @plaques }
+      format.geojson { render geojson: @plaques }
     end
   end
 

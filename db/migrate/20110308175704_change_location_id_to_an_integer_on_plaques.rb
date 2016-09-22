@@ -13,7 +13,7 @@ class ChangeLocationIdToAnIntegerOnPlaques < ActiveRecord::Migration
     say_with_time "Copying values from old column to new column" do
       Plaque.find_each do |plaque|
         unless plaque.location_id_old.blank?
-          plaque.update_attributes(:location_id => plaque.location_id_old.to_i)
+          plaque.update_attributes(location_id: plaque.location_id_old.to_i)
         end
       end
     end

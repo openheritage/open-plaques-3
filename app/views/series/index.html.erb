@@ -6,4 +6,4 @@
 <% end %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_series_path} %>
 
-<%= render partial: 'series/series_row', :collection => @series, as: :series %>
+<%= render partial: 'series/series_row', collection: @series, as: :series %>

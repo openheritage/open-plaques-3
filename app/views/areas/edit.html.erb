@@ -1,42 +1,42 @@
-<% content_for(:page_title) {t '.page_title', :area => @area.name + ", " + @area.country.name} %>
+<% content_for(:page_title) {t '.page_title', area: @area.name + ", " + @area.country.name} %>
 <% content_for(:title) {@area.name} %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_area_path(@area)} %>
 
-<%= form_for @area, :url => { :action => "update" } do |f| %>
+<%= form_for @area, url: { action: "update" } do |f| %>
   <fieldset class="form-group row">
-    <%= f.label :name, :class => 'form-control-label col-sm-2' %>
+    <%= f.label :name, class: 'form-control-label col-sm-2' %>
     <div class="col-sm-10">
-      <%= f.text_field :name, :class => 'form-control' %>
+      <%= f.text_field :name, class: 'form-control' %>
     </div>
   </fieldset>
   <fieldset class="form-group row">
-    <%= f.label :slug, :class => 'form-control-label col-sm-2' %>
+    <%= f.label :slug, class: 'form-control-label col-sm-2' %>
     <div class="col-sm-10">
-      <%= f.text_field :slug, :class => 'form-control' %>
+      <%= f.text_field :slug, class: 'form-control' %>
       <small class="text-muted"><%= t '.must_be_underscored' %></small>
     </div>
   </fieldset>
   <fieldset class="form-group row">
-    <%= f.label :country_id, :class => 'form-control-label col-sm-2' %>
+    <%= f.label :country_id, class: 'form-control-label col-sm-2' %>
     <div class="col-sm-10">
-      <%= f.collection_select :country_id, @countries, :id, :name, :class => 'form-control' %>
+      <%= f.collection_select :country_id, @countries, :id, :name, class: 'form-control' %>
     </div>
   </fieldset>
-  <p><%= t '.find_on_google_maps_html', :area => @area.name + ', ' + @area.country.name %></p>
+  <p><%= t '.find_on_google_maps_html', area: @area.name + ', ' + @area.country.name %></p>
   <fieldset class="form-group row">
-    <%= label_tag(nil, t('.geolocation'), :class => 'form-control-label col-sm-2') %>
+    <%= label_tag(nil, t('.geolocation'), class: 'form-control-label col-sm-2') %>
     <div class="col-sm-10">
       <%= f.label :latitude %> <%= f.text_field :latitude %>
       <%= f.label :longitude %> <%= f.text_field :longitude %>
     </div>
   </fieldset>
   <fieldset class="form-group row">
-    <%= label_tag(:streetview_url, t('.google_streetview_url'), :class => 'form-control-label col-sm-2') %>
+    <%= label_tag(:streetview_url, t('.google_streetview_url'), class: 'form-control-label col-sm-2') %>
     <div class="col-sm-10">
-      <%= text_field_tag(:streetview_url, nil, :class => 'form-control') %>
+      <%= text_field_tag(:streetview_url, nil, class: 'form-control') %>
     </div>
   </fieldset>
-  <%= f.submit t('buttons.update'), :class => 'btn btn-primary' %>
+  <%= f.submit t('buttons.update'), class: 'btn btn-primary' %>
 <% end %>
 
 <div id="map" style="height: 400px; width: 100%; margin-top: 15px;"></div>

@@ -22,7 +22,7 @@ class Role < ActiveRecord::Base
   validates_uniqueness_of :name, :slug
 
   has_many :personal_roles, -> { order('started_at') }
-  has_many :people, -> { order("name") }, :through => :personal_roles
+  has_many :people, -> { order("name") }, through: :personal_roles
 
   scope :by_popularity, -> { order("personal_roles_count DESC nulls last") }
   scope :alphabetically, -> { order("name ASC nulls last") }
@@ -173,7 +173,7 @@ class Role < ActiveRecord::Base
   end
 
   def uri
-    "http://openplaques.org" + Rails.application.routes.url_helpers.role_path(self.slug, :format => :json)
+    "http://openplaques.org" + Rails.application.routes.url_helpers.role_path(self.slug, format: :json)
   end
 
   def to_s
@@ -182,8 +182,8 @@ class Role < ActiveRecord::Base
 
   def as_json(options={})
     options = {
-      :only => [:name, :personal_roles_count, :role_type, :abbreviation],
-      :methods => [:type, :full_name, :male?, :relationship?, :confers_honourific_title?]
+      only: [:name, :personal_roles_count, :role_type, :abbreviation],
+      methods: [:type, :full_name, :male?, :relationship?, :confers_honourific_title?]
     } if !options || !options[:only]
     super options
   end

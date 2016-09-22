@@ -5,7 +5,7 @@ class LicencesController < ApplicationController
     @licences = @licences.sort_by { |p| 1 - p.photos.count }
     respond_to do |format|
       format.html
-      format.json { render :json => @licences }
+      format.json { render json: @licences }
     end
   end
 

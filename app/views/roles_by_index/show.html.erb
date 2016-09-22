@@ -1,10 +1,10 @@
-<% content_for(:page_title) {t '.page_title', :letter => @index.upcase } %>
-<% content_for(:title) {t '.page_heading', :letter => @index.upcase } %>
+<% content_for(:page_title) {t '.page_title', letter: @index.upcase } %>
+<% content_for(:title) {t '.page_heading', letter: @index.upcase } %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_role_path} %>
 
 <ul class="nav">
   <% for letter in "A".."Z" %>
-    <%= content_tag("li", navigation_link_to(letter, roles_by_index_path(letter.downcase)), :class => "nav-link") %>
+    <%= content_tag("li", navigation_link_to(letter, roles_by_index_path(letter.downcase)), class: "nav-link") %>
   <% end %>
 </ul>
 

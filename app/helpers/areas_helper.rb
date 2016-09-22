@@ -17,15 +17,15 @@ module AreasHelper
   end
 
   def edit_area_path(area, options = {})
-    url_for(options.merge(:controller => :areas, :action => :edit, :id => area.slug, :country_id => area.country.alpha2))
+    url_for(options.merge(controller: :areas, action: :edit, id: area.slug, country_id: area.country.alpha2))
   end
 
   def area_unphotographed_path(area, options = {})
-    url_for(options.merge(:controller => :area_plaques, :action => :show, :country_id => area.country.alpha2, :area_id => area.slug, :id => :unphotographed))
+    url_for(options.merge(controller: :area_plaques, action: :show, country_id: area.country.alpha2, area_id: area.slug, id: :unphotographed))
   end
 
   def area_ungeolocated_path(area, options = {})
-    url_for(options.merge(:controller => :area_plaques, :action => :show, :country_id => area.country.alpha2, :area_id => area.slug, :id => :ungeolocated))
+    url_for(options.merge(controller: :area_plaques, action: :show, country_id: area.country.alpha2, area_id: area.slug, id: :ungeolocated))
   end
 
 end

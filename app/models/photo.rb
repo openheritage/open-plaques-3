@@ -22,12 +22,12 @@ require 'wikimedia/commoner'
 
 class Photo < ActiveRecord::Base
 
-  belongs_to :plaque, :counter_cache => true
-  belongs_to :licence, :counter_cache => true
+  belongs_to :plaque, counter_cache: true
+  belongs_to :licence, counter_cache: true
   belongs_to :person
 
   validates_presence_of :file_url
-  validates_uniqueness_of :file_url, :message => "of photo already exists in Open Plaques"
+  validates_uniqueness_of :file_url, message: "of photo already exists in Open Plaques"
 
   attr_accessor :photo_url, :accept_cc_by_licence
 
@@ -122,7 +122,12 @@ class Photo < ActiveRecord::Base
   end
 
   def wikimedia_filename
+    puts '*** ' + url
+    
+    begin
     return url[url.index('File:')+5..-1] if wikimedia?
+  rescue
+  end
     return ''
   end
 
@@ -159,7 +164,7 @@ class Photo < ActiveRecord::Base
             wikimedia[:licence_url] += "/" if !wikimedia[:licence_url].ends_with? '/'
             licence = Licence.find_by_url wikimedia[:licence_url]
             if (licence==nil)
-              licence = Licence.new(:name => wikimedia[:licence], :url => wikimedia[:licence_url])
+              licence = Licence.new(name: wikimedia[:licence], url: wikimedia[:licence_url])
               licence.save
             end
           end
@@ -202,12 +207,12 @@ class Photo < ActiveRecord::Base
   def as_json(options={})
     options =
     {
-      :only => [:file_url, :photographer, :photographer_url, :shot, :url, :longitude, :latitude],
-      :include => {
-        :licence => {:only => [:name], :methods => [:url]},
-        :plaque => {:only => [], :methods => [:uri]}
+      only: [:file_url, :photographer, :photographer_url, :shot, :url, :longitude, :latitude],
+      include: {
+        licence: {only: [:name], methods: [:url]},
+        plaque: {only: [], methods: [:uri]}
       },
-      :methods => [:title, :uri, :thumbnail_url, :shot_name, :source]
+      methods: [:title, :uri, :thumbnail_url, :shot_name, :source]
     } if !options || !options[:only]
     super options
   end
@@ -215,8 +220,8 @@ class Photo < ActiveRecord::Base
   def as_geojson(options={})
     options =
     {
-      :only => [:photographer, :photographer_url, :url],
-      :methods => [:thumbnail_url, :shot_name, :source]
+      only: [:photographer, :photographer_url, :url],
+      methods: [:thumbnail_url, :shot_name, :source]
     } if !options || !options[:only]
     {
       type: 'Feature',
@@ -230,7 +235,7 @@ class Photo < ActiveRecord::Base
   end
 
   def uri
-    "http://openplaques.org" + Rails.application.routes.url_helpers.photo_path(self, :format => :json)
+    "http://openplaques.org" + Rails.application.routes.url_helpers.photo_path(self, format: :json)
   end
 
   def to_s

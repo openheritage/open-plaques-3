@@ -20,10 +20,10 @@ class Area < ActiveRecord::Base
 
   before_validation :make_slug_not_war, :find_centre
   validates_presence_of :name, :slug, :country_id
-  validates_uniqueness_of :slug, :scope => :country_id
+  validates_uniqueness_of :slug, scope: :country_id
 
-  belongs_to :country, :counter_cache => true
-  delegate :alpha2, :to => :country, :prefix => true
+  belongs_to :country, counter_cache: true
+  delegate :alpha2, to: :country, prefix: true
   has_many :plaques
 
   default_scope { order('name ASC') }
@@ -63,14 +63,14 @@ class Area < ActiveRecord::Base
 
   def as_json(options=nil)
     options = {
-      :only => [:name, :plaques_count],
-      :include => {
-        :country => {
-          :only => [:name],
-          :methods => :uri
+      only: [:name, :plaques_count],
+      include: {
+        country: {
+          only: [:name],
+          methods: :uri
         }
       },
-      :methods => [:uri, :plaques_uri]
+      methods: [:uri, :plaques_uri]
     } if !options || !options[:only]
     super options
   end
@@ -84,11 +84,11 @@ class Area < ActiveRecord::Base
   end
 
   def uri
-    "http://openplaques.org" + Rails.application.routes.url_helpers.country_area_path(self.country, self, :format => :json) if id && country
+    "http://openplaques.org" + Rails.application.routes.url_helpers.country_area_path(self.country, self, format: :json) if id && country
   end
 
   def plaques_uri
-    "http://openplaques.org" + Rails.application.routes.url_helpers.country_area_plaques_path(self.country, self, :format => :json) if id && country
+    "http://openplaques.org" + Rails.application.routes.url_helpers.country_area_plaques_path(self.country, self, format: :json) if id && country
   end
 
 end

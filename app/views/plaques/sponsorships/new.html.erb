@@ -1,7 +1,7 @@
 <% content_for(:page_title) {t '.page_title'} %>
 <% content_for(:title) {t '.page_heading'} %>
 <% content_for(:page_subhead) {'Open Plaques credit every organisation listed on the plaque as well as monetary sponsors.'} %>
-<%= render 'plaques/edit_bar', :plaque => @plaque %>
+<%= render 'plaques/edit_bar', plaque: @plaque %>
 
 <script>
   $(function() {
@@ -38,22 +38,22 @@
       <% if sponsorship.organisation %>
         <div class="row">
           <div class="col-xs-10"><%= render sponsorship.organisation %></div>
-          <%= button_to t('buttons.unlink'), plaque_sponsorship_path(@plaque, sponsorship.id), :method => :delete, :class => 'btn btn-danger col-xs-2' %>
+          <%= button_to t('buttons.unlink'), plaque_sponsorship_path(@plaque, sponsorship.id), method: :delete, class: 'btn btn-danger col-xs-2' %>
         </div>
       <% end %>
     <% end %>
 
-    <%= form_for @sponsorship, :url => plaque_sponsorships_path(@plaque) do |f| %>
-      <%= f.hidden_field :plaque_id, :value => @plaque.id %>
+    <%= form_for @sponsorship, url: plaque_sponsorships_path(@plaque) do |f| %>
+      <%= f.hidden_field :plaque_id, value: @plaque.id %>
       <fieldset class="form-group">
-        <%= text_field_tag :organisation_name, "", {:class => 'form-control', :placeholder => "English Heritage"} %>
-        <%= f.collection_select :organisation_id, @organisations, :id, :name, {:class => 'form-control', :include_blank => true} %>
+        <%= text_field_tag :organisation_name, "", {class: 'form-control', placeholder: "English Heritage"} %>
+        <%= f.collection_select :organisation_id, @organisations, :id, :name, {class: 'form-control', include_blank: true} %>
         <%= content_tag("p", link_to("Add new organisation", new_organisation_path)) if current_user %>
       </fieldset>
-      <%= f.submit t('buttons.add'), :class => 'btn btn-primary col-xs-2' %>
+      <%= f.submit t('buttons.add'), class: 'btn btn-primary col-xs-2' %>
     <% end %>
   </div>
   <div class="col-xs-12 col-sm-6">
-    <%= render @plaque.main_photo, :large => true if @plaque.main_photo %>
+    <%= render @plaque.main_photo, large: true if @plaque.main_photo %>
   </div>
 </div>

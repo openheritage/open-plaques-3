@@ -11,8 +11,8 @@ class ChangeLatLongToFloats < ActiveRecord::Migration
       add_column :plaques, :longitude, :float
 
     else
-      change_column :plaques, :latitude, :float, :null => true
-      change_column :plaques, :longitude, :float, :null => true
+      change_column :plaques, :latitude, :float, null: true
+      change_column :plaques, :longitude, :float, null: true
     end
   end
 

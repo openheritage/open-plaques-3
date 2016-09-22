@@ -16,11 +16,11 @@ class SearchController < ApplicationController
       @places = Area.where(["lower(name) LIKE ?", "%" + @phrase.tr(" ","%").tr(".","%") + "%"])
       @places.uniq!
 
-      @plaques = Plaque.where(["lower(inscription) LIKE ?", "%" + @phrase + "%"]).includes([[:personal_connections => [:person]], [:area => :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
-      @plaques += Plaque.where(["lower(inscription_in_english) LIKE ?", "%" + @phrase + "%"]).includes([[:personal_connections => [:person]], [:area => :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
+      @plaques = Plaque.where(["lower(inscription) LIKE ?", "%" + @phrase + "%"]).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
+      @plaques += Plaque.where(["lower(inscription_in_english) LIKE ?", "%" + @phrase + "%"]).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
       if @phrase.match(/[À-ž]/)
-        @plaques += Plaque.where(["lower(inscription) LIKE ?", "%" + @unaccented_phrase + "%"]).includes([[:personal_connections => [:person]], [:area => :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
-        @plaques += Plaque.where(["lower(inscription_in_english) LIKE ?", "%" + @unaccented_phrase + "%"]).includes([[:personal_connections => [:person]], [:area => :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
+        @plaques += Plaque.where(["lower(inscription) LIKE ?", "%" + @unaccented_phrase + "%"]).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
+        @plaques += Plaque.where(["lower(inscription_in_english) LIKE ?", "%" + @unaccented_phrase + "%"]).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
       end
       # include all that person's plaques
       @people.each do |person|
@@ -29,7 +29,7 @@ class SearchController < ApplicationController
       # Look for their akas in the inscription
       @people.each do |person|
         person.aka.each do |aka|
-          @plaques += Plaque.where(["lower(inscription) LIKE ?", "%" + aka.downcase + "%"]).includes([[:personal_connections => [:person]], [:area => :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
+          @plaques += Plaque.where(["lower(inscription) LIKE ?", "%" + aka.downcase + "%"]).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
         end
       end
 
@@ -42,8 +42,8 @@ class SearchController < ApplicationController
     @search_results += @plaques
     respond_to do |format|
       format.html
-      format.json { render :json => @search_results.uniq }
-      format.geojson { render :geojson => @search_results.uniq }
+      format.json { render json: @search_results.uniq }
+      format.geojson { render geojson: @search_results.uniq }
     end
   end
 

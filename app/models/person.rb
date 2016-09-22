@@ -30,12 +30,12 @@ class Person < ActiveRecord::Base
   validates_presence_of :name
 
   has_many :personal_roles
-  has_many :personal_connections #, -> { order('started_at asc') }
-  has_many :roles, :through => :personal_roles
-  has_many :plaques, :through => :personal_connections #, :uniq => true
-  has_one :birth_connection, -> { where('verb_id in (8,504)') }, :class_name => "PersonalConnection"
-  has_one :death_connection, -> { where('verb_id in (3,49,161,1108)') }, :class_name => "PersonalConnection"
-  has_one :main_photo, :class_name => "Photo"
+  has_many :personal_connections
+  has_many :roles, through: :personal_roles
+  has_many :plaques, through: :personal_connections
+  has_one :birth_connection, -> { where('verb_id in (8,504)') }, class_name: "PersonalConnection"
+  has_one :death_connection, -> { where('verb_id in (3,49,161,1108)') }, class_name: "PersonalConnection"
+  has_one :main_photo, class_name: "Photo"
 
   attr_accessor :abstract, :comment # dbpedia fields
 
@@ -188,7 +188,7 @@ class Person < ActiveRecord::Base
     begin
       graph = RDF::Graph.load(self.dbpedia_ntriples_uri)
       query = RDF::Query.new({
-        :person => {
+        person: {
           RDF::URI("http://dbpedia.org/ontology/birthDate") => :birthDate,
           RDF::URI("http://dbpedia.org/ontology/deathDate") => :deathDate,
           RDF::URI("http://xmlns.com/foaf/0.1/depiction") => :depiction,
@@ -441,7 +441,7 @@ class Person < ActiveRecord::Base
   end
 
   def uri
-    "http://openplaques.org" + Rails.application.routes.url_helpers.person_path(self, :format => :json)
+    "http://openplaques.org" + Rails.application.routes.url_helpers.person_path(self, format: :json)
   end
 
   def to_s
@@ -452,20 +452,20 @@ class Person < ActiveRecord::Base
     if options && options[:only]
     else
       options = {
-        :only => [],
-        :include => {
-          :personal_roles => {
-            :only => [],
-            :include => {
-              :role => {:only => :name},
-              :related_person => {
-                :only => [], :methods => [:uri, :full_name]
+        only: [],
+        include: {
+          personal_roles: {
+            only: [],
+            include: {
+              role: {only: :name},
+              related_person: {
+                only: [], methods: [:uri, :full_name]
               }
             },
-            :methods => [:uri]
+            methods: [:uri]
           }
         },
-        :methods => [
+        methods: [
           :uri,
           :name_and_dates,
           :full_name,

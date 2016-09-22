@@ -1,11 +1,11 @@
 class PeopleController < ApplicationController
 
-  before_filter :authenticate_admin!, :only => :destroy
-  before_filter :authenticate_user!, :except => [:autocomplete, :index, :show, :update]
-  before_filter :find, :only => [:show, :edit, :update, :destroy]
+  before_filter :authenticate_admin!, only: :destroy
+  before_filter :authenticate_user!, except: [:autocomplete, :index, :show, :update]
+  before_filter :find, only: [:show, :edit, :update, :destroy]
 
   def index
-    redirect_to(:controller => :people_by_index, :action => "show", :id => "a")
+    redirect_to(controller: :people_by_index, action: "show", id: "a")
   end
 
   def autocomplete
@@ -15,17 +15,17 @@ class PeopleController < ApplicationController
       .includes(:roles)
       .name_contains(params[:contains])
       .limit(limit) if params[:contains]
-    render :json => @people.as_json(
-      :only => [:id, :name],
-      :methods => [:name_and_dates]
+    render json: @people.as_json(
+      only: [:id, :name],
+      methods: [:name_and_dates]
     )
   end
 
   def show
     respond_to do |format|
       format.html
-      format.json { render :json => @person }
-      format.geojson { render :geojson => @person }
+      format.json { render json: @person }
+      format.geojson { render geojson: @person }
     end
   end
 
@@ -33,7 +33,7 @@ class PeopleController < ApplicationController
     @person = Person.new
     respond_to do |format|
       format.html
-      format.xml  { render :xml => @person }
+      format.xml  { render xml: @person }
     end
   end
 
@@ -56,10 +56,10 @@ class PeopleController < ApplicationController
         end
         flash[:notice] = 'Person was successfully created.'
         format.html { redirect_to(@person) }
-        format.xml  { render :xml => @person, :status => :created, :location => @person }
+        format.xml  { render xml: @person, status: :created, location: @person }
       else
         format.html { render "new" }
-        format.xml  { render :xml => @person.errors, :status => :unprocessable_entity }
+        format.xml  { render xml: @person.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -74,7 +74,7 @@ class PeopleController < ApplicationController
         format.xml  { head :ok }
       else
         format.html { render "edit" }
-        format.xml  { render :xml => @person.errors, :status => :unprocessable_entity }
+        format.xml  { render xml: @person.errors, status: :unprocessable_entity }
       end
     end
   end

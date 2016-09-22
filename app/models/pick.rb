@@ -63,11 +63,11 @@ class Pick < ActiveRecord::Base
   def as_json(options={})
     options =
     {
-      :only => [:description, :featured_count, :proposer, :last_featured],
-      :include => {
-        :plaque => {:only => [], :methods => [:uri]}
+      only: [:description, :featured_count, :proposer, :last_featured],
+      include: {
+        plaque: {only: [], methods: [:uri]}
       },
-      :methods => [:title]
+      methods: [:title]
     } if !options || !options[:only]
     super options
   end

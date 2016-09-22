@@ -1,5 +1,5 @@
 <%= stylesheet_link_tag params[:controller] %>
-<% content_for(:page_title) {t '.page_title', :person => @person.name } %>
+<% content_for(:page_title) {t '.page_title', person: @person.name } %>
 <% content_for(:title) { } %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_person_path(@person)} %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_person_path} %>
@@ -8,10 +8,10 @@
   <div class="card hovercard">
     <% if @person.main_photo %>
       <div class="card-background">
-        <%= image_tag(@person.main_photo.thumbnail_url != nil ? @person.main_photo.thumbnail_url : @person.main_photo.file_url, :class => 'card-bkimg') %>
+        <%= image_tag(@person.main_photo.thumbnail_url != nil ? @person.main_photo.thumbnail_url : @person.main_photo.file_url, class: 'card-bkimg') %>
       </div>
       <div class="useravatar">
-        <%= image_tag(@person.main_photo.thumbnail_url, :class => 'card-bkimg') %>
+        <%= image_tag(@person.main_photo.thumbnail_url, class: 'card-bkimg') %>
       </div>
     <% else %>
       <div class="card-background-no-photo">
@@ -40,7 +40,7 @@
         <%= link_to("Find A Grave", @person.find_a_grave_url) unless @person.find_a_grave_id.blank? %>
       </p>
       <%= markdown(@person.introduction) if @person.introduction %>
-      <%= content_tag("p", link_to(icon('external-link') + "Wikipedia", @person.default_wikipedia_url, :target => '_blank')) unless @person.default_wikipedia_url.blank? %>
+      <%= content_tag("p", link_to(icon('external-link') + "Wikipedia", @person.default_wikipedia_url, target: '_blank')) unless @person.default_wikipedia_url.blank? %>
     </div>
   </div>
 
@@ -117,6 +117,6 @@
   </div>
 <% else %>
   <div class="card-columns">
-    <%= render partial: 'plaques/tile', :collection => @person.plaques.uniq, as: :plaque %>
+    <%= render partial: 'plaques/tile', collection: @person.plaques.uniq, as: :plaque %>
   </div>
 <% end %>

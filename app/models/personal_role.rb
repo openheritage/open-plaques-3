@@ -11,9 +11,9 @@ class PersonalRole < ActiveRecord::Base
 
   validates_presence_of :person_id, :role_id
 
-  belongs_to :person, :counter_cache => true
-  belongs_to :role, :counter_cache => true
-  belongs_to :related_person, :class_name => "Person"
+  belongs_to :person, counter_cache: true
+  belongs_to :role, counter_cache: true
+  belongs_to :related_person, class_name: "Person"
 
   def date_range
     dates = ""

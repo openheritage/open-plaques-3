@@ -8,7 +8,7 @@
   <% end %>
   <p>We display multiple photos of each plaque. We like close-ups as well as long-shots that set the scene. The closest shot will be used as the main image so that people can read the words.</p>
 <% end %>
-<%= render 'plaques/edit_bar', :plaque => @plaque %>
+<%= render 'plaques/edit_bar', plaque: @plaque %>
 
 <div class="row">
   <% @plaque.photos.detail_order.each do |photo| %>
@@ -18,9 +18,9 @@
       <% end %>
       <span>By <%= link_to photo.photographer, photographer_url(photo.photographer.gsub(".","_").gsub("/","_")) if photo.photographer rescue photo.photographer %></span><br/>
       <%= form_for photo do |f| %>
-        <p>This is a <%= f.collection_select :shot, Photo.shots, :to_s, :to_s, :include_blank => true %></p>
-        <%= f.submit t('buttons.save'), :class => 'btn btn-primary pull-left' %>
-        <%= link_to(t('buttons.edit'), edit_photo_path(photo), {:class => 'btn btn-secondary pull-right', :title => "edit photo"}) if current_user && current_user.is_admin? %>
+        <p>This is a <%= f.collection_select :shot, Photo.shots, :to_s, :to_s, include_blank: true %></p>
+        <%= f.submit t('buttons.save'), class: 'btn btn-primary pull-left' %>
+        <%= link_to(t('buttons.edit'), edit_photo_path(photo), {class: 'btn btn-secondary pull-right', title: "edit photo"}) if current_user && current_user.is_admin? %>
       <% end %>
     </div>
   <% end %>
@@ -43,7 +43,7 @@ When you are done, paste the url of the Wikimedia page in here and Open Plaques 
   <% @photo = Photo.new %>
   <%= form_for @photo do |f| %>
     <%= f.label(:url, "The Wikimedia photo page url is") %> <%= f.text_field :url %>
-    <%= f.hidden_field :plaque_id, :value => @plaque.id %>
+    <%= f.hidden_field :plaque_id, value: @plaque.id %>
     <%= submit_tag("Add it", :class=>'button secondary_button') %>
   <% end %>
   </p>
@@ -61,7 +61,7 @@ When you are done, paste the url of the Wikimedia page in here and Open Plaques 
   </ol>
   <br/>
   <h2>I did that, but my photo hasn&apos;t appeared!</h2>
-  <p>Paste the url of the photo here and we will try to sort it out <%= form_tag("/photographers", :method => "create") do %>
+  <p>Paste the url of the photo here and we will try to sort it out <%= form_tag("/photographers", method: "create") do %>
     <%= label_tag(:flickr_url, "Flickr photo url:") %>
     <%= text_field_tag(:flickr_url) %>
     <%= submit_tag("Search", :class=>'button secondary_button') %>
@@ -73,7 +73,7 @@ When you are done, paste the url of the Wikimedia page in here and Open Plaques 
   <li>if not, check that the licence is Creative Commons, i.e. it shouldn&apos;t say "All Rights Reserved"</li>
   <li>also, ensure that you haven&apos;t ticked the &apos;hidden from search&apos; setting. (On Flickr, go to your profile by clicking your username in top right hand corner, do you have "Hide your stuff from public searches" set to "no"?)</li>
   <li>a brand new Flickr account might not be included in their search immediately. Sometimes it waits until you have posted 5+ images. Enter your photo&apos;s url into the box below and we'll see what we can do...</li>
-  <li>you can try <%= button_to "giving the automatic search a kick", :controller => :plaques, :action => :flickr_search, :id => @plaque, :class => "button secondary_button" %></li></ol>
+  <li>you can try <%= button_to "giving the automatic search a kick", controller: :plaques, action: :flickr_search, id: @plaque, class: "button secondary_button" %></li></ol>
 </div>
 
 <div class="row">
@@ -83,7 +83,7 @@ When you are done, paste the url of the Wikimedia page in here and Open Plaques 
   <% @photo = Photo.new %>
   <%= form_for @photo do |f| %>
     <%= f.label(:url, "The photo page url is") %> <%= f.text_field :url %>
-    <%= f.hidden_field :plaque_id, :value => @plaque.id %> Please
+    <%= f.hidden_field :plaque_id, value: @plaque.id %> Please
     <%= submit_tag("Add it", :class=>'button secondary_button') %> to Open Plaques
   <% end %>
   </p>

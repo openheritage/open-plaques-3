@@ -1,4 +1,4 @@
-<% content_for(:page_title) {t '.page_title', :photo => @photo.title} %>
+<% content_for(:page_title) {t '.page_title', photo: @photo.title} %>
 <% content_for(:title) do %>
   <% if @photo.plaque %>
     <%= t '.page_heading' %> <%= link_to(@photo.plaque.title, @photo.plaque) %>

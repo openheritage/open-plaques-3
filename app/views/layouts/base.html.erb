@@ -13,7 +13,7 @@
     <%= stylesheet_link_tag "application" %>
     <%= javascript_include_tag 'application' %>
     <%= javascript_include_tag 'https://openlayers.org/dev/OpenLayers.js' if @map %>
-    <%= tag("link", :rel => "shortcut icon", :href => image_path("openplaques-icon.png"))%>
+    <%= tag("link", rel: "shortcut icon", href: image_path("openplaques-icon.png"))%>
     <%= csrf_meta_tags %>
     <% if content_for?(:page_title) %>
       <title>
@@ -21,7 +21,7 @@
         - Open Plaques
       </title>
     <% end %>
-    <%= display_meta_tags :site => 'Open Plaques' %>
+    <%= display_meta_tags site: 'Open Plaques' %>
   </head>
   <body>
     <%= render 'home/development_message' if Rails.env == 'development' %>

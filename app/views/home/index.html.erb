@@ -1,7 +1,7 @@
 <% content_for(:page_title) {t '.page_title'} %>
 <% content_for(:title) {t '.strapline_html'} %>
 <% content_for(:page_subhead) {} %>
-<% content_for(:admin_menu) {navbar_link_to(t('.pages'), pages_path, {:class => :edit, :title => t('.pages')})} %>
+<% content_for(:admin_menu) {navbar_link_to(t('.pages'), pages_path, {class: :edit, title: t('.pages')})} %>
 
 <div class="row">
   <div class="col-md-4">
@@ -16,7 +16,7 @@
       <li><%=t '.take_a_photo' %></li>
       <li><%=t '.spot_an_innaccuracy' %></li>
       <% if current_user && current_user.is_admin? %>
-        <li><%=t '.find_something' %> <%= link_to(t('.to_do'), "/todo", {:class => :edit, :title => t('.to_do')})%></li>
+        <li><%=t '.find_something' %> <%= link_to(t('.to_do'), "/todo", {class: :edit, title: t('.to_do')})%></li>
       <% end %>
     </ul>
   </div>
@@ -35,13 +35,13 @@
 <% if @todays %>
   <div class="card plaque-of-the-day">
     <div class="card-title"><h2><%= t '.plaque_of_the_day' %></h2></div>
-    <%= render 'picks/plaque_of_the_day', :pick => @todays %>
+    <%= render 'picks/plaque_of_the_day', pick: @todays %>
   </div>
 <% end %>
 
 <% if @recent_plaques %>
   <h2><%= t '.recently_photographed' %></h2>
   <div class="card-columns">
-    <%= render partial: 'plaques/tile', :collection => @recent_plaques, as: :plaque %>
+    <%= render partial: 'plaques/tile', collection: @recent_plaques, as: :plaque %>
   </div>
 <% end %>

@@ -18,7 +18,7 @@ class Country < ActiveRecord::Base
   validates_uniqueness_of :name, :alpha2
 
   has_many :areas
-  has_many :plaques, :through => :areas
+  has_many :plaques, through: :areas
 
   @@latitude = nil
   @@longitude = nil
@@ -58,8 +58,8 @@ class Country < ActiveRecord::Base
 
   def as_json(options={})
     options = {
-      :only => [:name],
-      :methods => [:uri, :plaques_count, :areas_count]
+      only: [:name],
+      methods: [:uri, :plaques_count, :areas_count]
     } if !options || !options[:only]
     super options
   end
@@ -70,7 +70,7 @@ class Country < ActiveRecord::Base
   end
 
   def uri
-    "http://openplaques.org" + Rails.application.routes.url_helpers.country_path(self, :format => :json) if id
+    "http://openplaques.org" + Rails.application.routes.url_helpers.country_path(self, format: :json) if id
   end
 
   def to_s

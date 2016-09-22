@@ -12,7 +12,7 @@
     <% for count in @counts %>
       <% if count[0] != nil %>
         <tr>
-    	    <td><%= link_to(count[0].to_s[0,4], people_died_in_path(count[0].to_s[0,4]), {:class => "bday"}) %></td>
+    	    <td><%= link_to(count[0].to_s[0,4], people_died_in_path(count[0].to_s[0,4]), {class: "bday"}) %></td>
     	    <td class="value"><%= image_tag("bullet-blue.gif", :alt=>"", :width=>count[1]*10, :height=>"16") %><%= pluralize(count[1], "person") %></td>
         </tr>
       <% end %>

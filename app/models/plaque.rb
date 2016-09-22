@@ -28,17 +28,17 @@
 # * Organisations - The organisation responsible for the plaque. Optional.
 class Plaque < ActiveRecord::Base
 
-  belongs_to :area, :counter_cache => true
-  belongs_to :colour, :counter_cache => true
-  belongs_to :language, :counter_cache => true
-  belongs_to :series, :counter_cache => true
+  belongs_to :area, counter_cache: true
+  belongs_to :colour, counter_cache: true
+  belongs_to :language, counter_cache: true
+  belongs_to :series, counter_cache: true
 
   has_one :pick
 
   has_many :personal_connections
-  has_many :photos, -> { where(of_a_plaque: true).order('shot ASC')}, :inverse_of => :plaque
+  has_many :photos, -> { where(of_a_plaque: true).order('shot ASC')}, inverse_of: :plaque
   has_many :sponsorships
-  has_many :organisations, :through => :sponsorships
+  has_many :organisations, through: :sponsorships
 
   before_save :use_other_colour_id
 
@@ -46,7 +46,7 @@ class Plaque < ActiveRecord::Base
   scope :geolocated, ->  { where(["plaques.latitude IS NOT NULL"]) }
   scope :ungeolocated, -> { where(latitude: nil).order("id DESC") }
   scope :photographed, -> { where("photos_count > 0") }
-  scope :unphotographed, -> { where(:photos_count => 0, :is_current => true).order("id DESC") }
+  scope :unphotographed, -> { where(photos_count: 0, is_current: true).order("id DESC") }
   scope :coloured, -> { where("colour_id IS NOT NULL") }
   scope :photographed_not_coloured, -> { where(["photos_count > 0 AND colour_id IS NULL"]) }
   scope :geo_no_location, -> { where(["latitude IS NOT NULL AND address IS NULL"]) }
@@ -59,10 +59,10 @@ class Plaque < ActiveRecord::Base
 
   attr_accessor :country, :other_colour_id
 
-  delegate :name, :to => :colour, :prefix => true, :allow_nil => true
-  delegate :name, :alpha2, :to => :language, :prefix => true, :allow_nil => true
+  delegate :name, to: :colour, prefix: true, allow_nil: true
+  delegate :name, :alpha2, to: :language, prefix: true, allow_nil: true
 
-  accepts_nested_attributes_for :photos, :reject_if => proc { |attributes| attributes['photo_url'].blank? }
+  accepts_nested_attributes_for :photos, reject_if: proc { |attributes| attributes['photo_url'].blank? }
 
   include ApplicationHelper, ActionView::Helpers::TextHelper
 
@@ -142,48 +142,48 @@ class Plaque < ActiveRecord::Base
   def as_json(options={})
     options =
     {
-      :only => [:id, :inscription, :erected_at, :is_current, :updated_at, :latitude, :longitude],
-      :include =>
+      only: [:id, :inscription, :erected_at, :is_current, :updated_at, :latitude, :longitude],
+      include:
       {
-        :photos =>
+        photos:
         {
-          :only => [],
-          :methods => [:uri, :thumbnail_url, :shot_name, :attribution]
+          only: [],
+          methods: [:uri, :thumbnail_url, :shot_name, :attribution]
         },
-        :organisations =>
+        organisations:
         {
-          :only => [:name],
-          :methods => [:uri]
+          only: [:name],
+          methods: [:uri]
         },
-        :language =>
+        language:
         {
-          :only => [:name, :alpha2]
+          only: [:name, :alpha2]
         },
-        :area =>
+        area:
         {
-          :only => :name,
-          :include =>
+          only: :name,
+          include:
           {
-            :country =>
+            country:
             {
-              :only => [:name, :alpha2],
-              :methods => :uri
+              only: [:name, :alpha2],
+              methods: :uri
             }
           },
-          :methods => :uri
+          methods: :uri
         },
-        :people =>
+        people:
         {
-          :only => [],
-          :methods => [:uri, :full_name]
+          only: [],
+          methods: [:uri, :full_name]
         },
-        :see_also =>
+        see_also:
         {
-          :only => [],
-          :methods => [:uri]
+          only: [],
+          methods: [:uri]
         }
       },
-      :methods => [:uri, :title, :address, :subjects, :colour_name, :machine_tag, :geolocated?, :photographed?, :photo_url, :thumbnail_url]
+      methods: [:uri, :title, :address, :subjects, :colour_name, :machine_tag, :geolocated?, :photographed?, :photo_url, :thumbnail_url]
     } if !options || !options[:only]
     super options
   end
@@ -191,7 +191,7 @@ class Plaque < ActiveRecord::Base
   def as_geojson(options={})
     options =
     {
-      :only => [:id, :uri, :inscription]
+      only: [:id, :uri, :inscription]
     } if !options || !options[:only]
     {
       type: 'Feature',
@@ -333,11 +333,11 @@ class Plaque < ActiveRecord::Base
     tile+= options + "/" if options != 'all'
     tile+= "tiles" + "/" + zoom.to_s + "/" + xtile.to_s + "/" + ytile.to_s
     puts "Rails query " + tile
-#    Rails.cache.fetch(tile, :expires_in => 5.minutes) do
+#    Rails.cache.fetch(tile, expires_in: 5.minutes) do
       if options == "unphotographed"
-        Plaque.unphotographed.select(:id, :inscription, :latitude, :longitude, :is_accurate_geolocation).where(:latitude => latitude, :longitude => longitude)
+        Plaque.unphotographed.select(:id, :inscription, :latitude, :longitude, :is_accurate_geolocation).where(latitude: latitude, longitude: longitude)
       else
-        Plaque.select(:id, :inscription, :latitude, :longitude, :is_accurate_geolocation).where(:latitude => latitude, :longitude => longitude)
+        Plaque.select(:id, :inscription, :latitude, :longitude, :is_accurate_geolocation).where(latitude: latitude, longitude: longitude)
       end
 #    end
   end
@@ -378,7 +378,7 @@ class Plaque < ActiveRecord::Base
       lon_deg = xtile / n * 360.0 - 180.0
       lat_rad = Math::atan(Math::sinh(Math::PI * (1 - 2 * ytile / n)))
       lat_deg = 180.0 * (lat_rad / Math::PI)
-      {:lat_deg => lat_deg, :lng_deg => lon_deg}
+      {lat_deg: lat_deg, lng_deg: lon_deg}
     end
 
     # from OpenStreetMap documentation
@@ -387,7 +387,7 @@ class Plaque < ActiveRecord::Base
       n = 2.0 ** zoom
       x = ((lng_deg + 180.0) / 360.0 * n).to_i
       y = ((1.0 - Math::log(Math::tan(lat_rad) + (1 / Math::cos(lat_rad))) / Math::PI) / 2.0 * n).to_i
-      {:x => x, :y =>y}
+      {x: x, y: y}
     end
 
 end

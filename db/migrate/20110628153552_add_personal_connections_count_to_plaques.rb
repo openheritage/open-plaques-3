@@ -5,12 +5,12 @@ class AddPersonalConnectionsCountToPlaques < ActiveRecord::Migration
   end
 
   def self.up
-    add_column :plaques, :personal_connections_count, :integer, :default => 0
+    add_column :plaques, :personal_connections_count, :integer, default: 0
     add_index :plaques, :personal_connections_count
 
     say_with_time("Setting counter caches for existing plaques") do
       Plaque.find_each do |plaque|
-        plaque.update_attribute(:personal_connections_count, PersonalConnection.where(:plaque_id => plaque.id).count)
+        plaque.update_attribute(:personal_connections_count, PersonalConnection.where(plaque_id: plaque.id).count)
       end
     end
   end

@@ -3,16 +3,16 @@
   <%= t '.title' %> <%= link_to @plaque.title, @plaque %>?
 <% end %>
 <% content_for :page_subhead do %>
-  <% if url_for(:only_path => false).include?('microtask') %>
-    <%= button_to t('.not_sure'), todo_path('microtask'), :method => :get, :class => :button %>
+  <% if url_for(only_path: false).include?('microtask') %>
+    <%= button_to t('.not_sure'), todo_path('microtask'), method: :get, class: :button %>
   <% end %>
 <% end %>
-<%= render 'plaques/edit_bar', :plaque => @plaque %>
+<%= render 'plaques/edit_bar', plaque: @plaque %>
 
 <%= form_for @plaque do |f| %>
   <fieldset class="form-group">
     <%= f.label :colour_id, t('.colour_label') %>
-    <%= f.collection_select :colour_id, @colours, :id, :name, {:class => 'form-control', :include_blank => true} %>
+    <%= f.collection_select :colour_id, @colours, :id, :name, {class: 'form-control', include_blank: true} %>
   </fieldset>
-  <%= f.submit t('buttons.save'), :class => 'btn btn-primary' %>
+  <%= f.submit t('buttons.save'), class: 'btn btn-primary' %>
 <% end %>

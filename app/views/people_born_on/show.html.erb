@@ -1,5 +1,5 @@
-<% content_for(:page_title) {t '.page_title', :year => @year.year.to_s } %>
-<% content_for(:title) {t '.page_heading', :year => @year.year.to_s } %>
+<% content_for(:page_title) {t '.page_title', year: @year.year.to_s } %>
+<% content_for(:title) {t '.page_heading', year: @year.year.to_s } %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_person_path} %>
 
 <div class="card-columns">

@@ -1,8 +1,8 @@
 class SponsorshipsController < ApplicationController
 
-  before_filter :authenticate_admin!, :only => :destroy
-  before_filter :find, :only => [:destroy]
-  before_filter :list_organisations, :only => [:new, :index]
+  before_filter :authenticate_admin!, only: :destroy
+  before_filter :find, only: [:destroy]
+  before_filter :list_organisations, only: [:new, :index]
 
   def destroy
     plaque = @sponsorship.plaque

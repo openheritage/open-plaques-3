@@ -1,7 +1,7 @@
 <% content_for(:page_title) {t '.page_title'} %>
 <% content_for(:title) {t '.page_heading'} %>
 <% content_for(:page_subhead) do %>
-  <%= t '.how_many', :count =>  @photographers.size %><br/>
+  <%= t '.how_many', count: @photographers.size %><br/>
   <%= t '.where' %>
   <%= t '.how_they_are_licenced_html' %>
 <% end %>

@@ -23,7 +23,7 @@
       <% end %>
       <% unless role.wikipedia_stub.blank? %>
         <p class="card-text">
-          <%= icon('external-link') %><%= link_to('Wikipedia', role.wikipedia_url, :target => "_blank") %>
+          <%= icon('external-link') %><%= link_to('Wikipedia', role.wikipedia_url, target: "_blank") %>
         </p>
       <% end %>
     </div>

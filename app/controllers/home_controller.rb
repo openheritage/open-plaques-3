@@ -4,12 +4,12 @@ class HomeController < ApplicationController
     @recent_plaques = Plaque.photographed.order("random()").limit(10)
     @todays = Pick.todays
     begin
-      set_meta_tags :open_graph => {
-        :type  => :website,
-        :url   => url_for(:only_path=>false),
-        :image => view_context.root_url[0...-1] + view_context.image_path("openplaques-icon.png"),
-        :title => "Open Plaques",
-        :description => "Documenting the historical links between people and places, as recorded by commemorative plaques",
+      set_meta_tags open_graph: {
+        type: :website,
+        url: url_for(only_path: false),
+        image: view_context.root_url[0...-1] + view_context.image_path("openplaques-icon.png"),
+        title: "Open Plaques",
+        description: "Documenting the historical links between people and places, as recorded by commemorative plaques",
       }
     rescue
     end
@@ -23,13 +23,13 @@ class HomeController < ApplicationController
     heap_live_slots_after = GC.stat(:heap_live_slots)
     difference = heap_live_slots_before - heap_live_slots_after
     puts '*** ended garbage collection'
-    render :json => {
+    render json: {
       'reply' => 'thank you',
       'heap_live_slots before' => heap_live_slots_before.to_s,
       'heap_live_slots after' => heap_live_slots_after.to_s,
       'difference' => difference.to_s,
       'total_allocated_object before' => total_allocated_object_before.to_s,
       'total_allocated_object after' => GC.stat(:total_allocated_object).to_s
-    }, :status => :ok
+    }, status: :ok
   end
 end

@@ -1,8 +1,8 @@
 class PagesController < ApplicationController
 
-  before_filter :authenticate_admin!, :only => :destroy
-  before_filter :authenticate_user!, :except => [:show]
-  before_filter :find, :only => [:show, :edit, :update]
+  before_filter :authenticate_admin!, only: :destroy
+  before_filter :authenticate_user!, except: [:show]
+  before_filter :find, only: [:show, :edit, :update]
   respond_to :html, :json
 
   def about
@@ -30,7 +30,7 @@ class PagesController < ApplicationController
 
   def update
     if @page.update_attributes(page_params)
-      redirect_to :action => :show, :id => @page.slug
+      redirect_to action: :show, id: @page.slug
     end
   end
 

@@ -1,11 +1,11 @@
-<% content_for(:page_title) {t '.page_title', :plaque => @plaque.id.to_s } %>
+<% content_for(:page_title) {t '.page_title', plaque: @plaque.id.to_s } %>
 <% content_for(:title) do %>
   <%= linked_inscription @plaque %>
   <% if !@plaque.inscription_in_english.blank? %>
     <br/><br/><%= t '.english_translation' %>: "<%= @plaque.inscription_in_english %>"
   <% end %>
 <% end %>
-<%= render 'plaques/edit_bar', :plaque => @plaque %>
+<%= render 'plaques/edit_bar', plaque: @plaque %>
 
 <style>
 // CardColumns
@@ -57,7 +57,7 @@
             <%= "from " + connection.from if connection.from != '' %><%= " to " + connection.to  if connection.to != ''%>
           <% end %>
         </p>
-        <%= button_to(t('buttons.unlink'), plaque_connection_path(@plaque, connection), :method => :delete, :class => 'btn btn-danger') %>
+        <%= button_to(t('buttons.unlink'), plaque_connection_path(@plaque, connection), method: :delete, class: 'btn btn-danger') %>
       </div>
     <% end %>
   </div>
@@ -75,17 +75,17 @@
             <%= "from " + connection.from if connection.from != '' %><%= " to " + connection.to  if connection.to != ''%>
           <% end %>
         </p>
-        <%= button_to(t('buttons.unlink'), plaque_connection_path(@plaque, connection), :method => :delete, :class => 'btn btn-danger') %>
+        <%= button_to(t('buttons.unlink'), plaque_connection_path(@plaque, connection), method: :delete, class: 'btn btn-danger') %>
       </div>
     <% end %>
   </div>
 <% end %>
 
 <h2>New connection</h2>
-<%= form_for @personal_connection, :url => plaque_connections_path(@plaque) do |f| %>
+<%= form_for @personal_connection, url: plaque_connections_path(@plaque) do |f| %>
   <p><%= t '.from_which_we_can_establish' %></p>
   <fieldset class="form-group">
-    <%= text_field_tag :person_name, "", {:class => 'form-control', :placeholder => "John Smith"} %>
+    <%= text_field_tag :person_name, "", {class: 'form-control', placeholder: "John Smith"} %>
     <%= f.hidden_field :person_id %>
     <%= link_to(icon('user') + t('.new_person'), "/people/new") %>
   </fieldset>
@@ -94,34 +94,34 @@
       <% @common_verbs.each do |verb| %>
         <div class="row radio">
           <%= f.radio_button :verb_id, verb.id %>
-          <%= f.label "verb_id_" + verb.id.to_s, verb.name, :class => verb.name.downcase %>
+          <%= f.label "verb_id_" + verb.id.to_s, verb.name, class: verb.name.downcase %>
         </div>
       <% end %>
     </fieldset>
   <% end %>
   <fieldset class="form-group">
-    <%= f.collection_select :verb_id, @verbs, :id, :name, {:selected => "222"}, {:class => 'form-control', "style" => "width:400px" } %>
+    <%= f.collection_select :verb_id, @verbs, :id, :name, {selected: "222"}, {class: 'form-control', style: "width:400px" } %>
     <%= link_to(t('.new_verb'), "/verbs/new") %>
   </fieldset>
   <fieldset class="form-group">
     <%= t('.at') + ' ' + @personal_connection.full_address if @personal_connection.full_address %>
   </fieldset>
   <fieldset class="form-group row">
-    <%= f.label :started_at, :class => 'col-form-label col-sm-2' %>
+    <%= f.label :started_at, class: 'col-form-label col-sm-2' %>
     <div class="col-sm-10">
-      <%= f.text_field :started_at, :class => 'form-control' %>
+      <%= f.text_field :started_at, class: 'form-control' %>
     </div>
   </fieldset>
   <fieldset class="form-group row">
-    <%= f.label :ended_at, :class => 'col-form-label col-sm-2' %>
+    <%= f.label :ended_at, class: 'col-form-label col-sm-2' %>
     <div class="col-sm-10">
-      <%= f.text_field :ended_at, :class => 'form-control' %>
+      <%= f.text_field :ended_at, class: 'form-control' %>
     </div>
   </fieldset>
   <div class="form-group">
     <%= t '.reminder' %>
   </div>
-  <%= f.submit t('buttons.add'), :class => 'btn btn-primary' %>
+  <%= f.submit t('buttons.add'), class: 'btn btn-primary' %>
 <% end %>
 
 <script type="text/javascript">

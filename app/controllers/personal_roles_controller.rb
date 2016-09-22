@@ -1,8 +1,8 @@
 class PersonalRolesController < ApplicationController
 
-  before_filter :authenticate_admin!, :only => :destroy
+  before_filter :authenticate_admin!, only: :destroy
   before_filter :authenticate_user!
-  before_filter :find, :only => [:destroy, :update, :edit]
+  before_filter :find, only: [:destroy, :update, :edit]
 
   def create
     @personal_role = PersonalRole.new
@@ -52,7 +52,7 @@ class PersonalRolesController < ApplicationController
         ended_at = Date.parse(ended_at)
       end
     end
-    if @personal_role.update_attributes(:started_at => started_at, :ended_at => ended_at, :related_person => related_person, :ordinal => params[:personal_role][:ordinal])
+    if @personal_role.update_attributes(started_at: started_at, ended_at: ended_at, related_person: related_person, ordinal: params[:personal_role][:ordinal])
       if @personal_role.role.name == 'husband' && @personal_role.related_person && !@personal_role.related_person.is_related_to?(@personal_role.person)
         @vice_versa = PersonalRole.new
         @vice_versa.person = @personal_role.related_person
@@ -150,10 +150,7 @@ class PersonalRolesController < ApplicationController
   def destroy
     @person = @personal_role.person
     @personal_role.destroy
-    respond_to do |format|
-      format.html { redirect_to(edit_person_url(@person)) }
-      format.xml  { head :ok }
-    end
+    redirect_to(edit_person_url(@person))
   end
 
   protected

@@ -1,7 +1,7 @@
 <% content_for(:page_title) {t '.page_title'} %>
 <% content_for(:title) {t '.page_heading' } %>
 
-<%= form_tag("/photographers", :method => "create") do %>
+<%= form_tag("/photographers", method: "create") do %>
   <%= label_tag(:flickr_url, t('.flickr_url')) %> <%= text_field_tag(:flickr_url) %>
-  <%= submit_tag(t('buttons.add'), :class => 'btn btn-primary') %>
+  <%= submit_tag(t('buttons.add'), class: 'btn btn-primary') %>
 <% end %>

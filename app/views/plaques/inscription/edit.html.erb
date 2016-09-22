@@ -4,30 +4,30 @@
 <% end %>
 <% content_for :page_subhead do %>
   <%= t '.page_subhead' %>
-  <% if url_for(:only_path => false).include?('microtask') %>
-    <%= button_to "Not sure. Give me another one", todo_path('microtask'), :method => :get, :class => :button %>
+  <% if url_for(only_path: false).include?('microtask') %>
+    <%= button_to "Not sure. Give me another one", todo_path('microtask'), method: :get, class: :button %>
   <% end %>
 <% end %>
-<%= render 'plaques/edit_bar', :plaque => @plaque %>
+<%= render 'plaques/edit_bar', plaque: @plaque %>
 
 <%= form_for @plaque do |f| %>
   <fieldset class="form-group">
     <%= f.label :inscription, t('.the_words') %>
-    <%= f.text_area :inscription, {:class => 'form-control', :rows => 6, :placeholder => t('.placeholder'), :autofocus => true} %>
+    <%= f.text_area :inscription, {class: 'form-control', rows: 6, placeholder: t('.placeholder'), autofocus: true} %>
   </fieldset>
   <fieldset class="form-group">
     <label class="form-check-label">
-      <%= f.check_box :inscription_is_stub, :class => 'form-check-input' %>
+      <%= f.check_box :inscription_is_stub, class: 'form-check-input' %>
       <%= t('.exact_wording') %>
     </label>
   </fieldset>
   <fieldset class="form-group">
     <%= f.label :language_id, t('.language') %>
-    <%= f.collection_select :language_id, @languages, :id, :name, {:class => 'form-control'} %>
+    <%= f.collection_select :language_id, @languages, :id, :name, {class: 'form-control'} %>
   </fieldset>
   <fieldset class="form-group">
     <%= f.label :inscription_in_english, t('.inscription_in_english') %>
-    <%= f.text_area :inscription_in_english, {:class => 'form-control', :rows => 6} %>
+    <%= f.text_area :inscription_in_english, {class: 'form-control', rows: 6} %>
   </fieldset>
-  <%= f.submit t('buttons.save'), :class => 'btn btn-primary' %>
+  <%= f.submit t('buttons.save'), class: 'btn btn-primary' %>
 <% end %>

@@ -4,7 +4,7 @@ class AddCounterCacheToVerb < ActiveRecord::Migration
 
     say_with_time("Setting personal_connections_count counter on verbs") do
       Verb.find_each do |verb|
-        Verb.update_counters(verb.id, :personal_connections_count => Verb.find(verb.id).personal_connections.size)
+        Verb.update_counters(verb.id, personal_connections_count: Verb.find(verb.id).personal_connections.size)
       end
     end
   end

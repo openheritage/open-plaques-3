@@ -2,12 +2,12 @@ require 'julia'
 
 class PlaquesController < ApplicationController
 
-  before_filter :authenticate_user!, :only => [:edit]
-  before_filter :authenticate_admin!, :only => :destroy
-  before_filter :find, :only => [:show, :flickr_search, :flickr_search_all, :update, :destroy, :edit]
-#	 before_filter :set_cache_header, :only => :index
-#  after_filter :set_access_control_headers, :only => :index
-  layout 'plaque_edit', :only => :edit
+  before_filter :authenticate_user!, only: [:edit]
+  before_filter :authenticate_admin!, only: :destroy
+  before_filter :find, only: [:show, :flickr_search, :flickr_search_all, :update, :destroy, :edit]
+#	 before_filter :set_cache_header, only: :index
+#  after_filter :set_access_control_headers, only: :index
+  layout 'plaque_edit', only: :edit
 
   def index
     conditions = {}
@@ -44,34 +44,34 @@ class PlaquesController < ApplicationController
       y = params[:y].to_i
       @plaques = Plaque.tile(zoom, x, y, select)
     elsif params[:data] && params[:data] == "simple"
-      @plaques = Plaque.all(:conditions => conditions, :order => "created_at DESC", :limit => limit)
+      @plaques = Plaque.all(conditions: conditions, order: "created_at DESC", limit: limit)
     elsif params[:data] && params[:data] == "basic"
-      @plaques = Plaque.all(:select => [:id, :latitude, :longitude, :inscription])
+      @plaques = Plaque.all(select: [:id, :latitude, :longitude, :inscription])
     else
 #      limit = 1000000000000
-      @plaques = Plaque.where(conditions).order("created_at DESC").limit(limit).preload(:language, :organisations, :colour, [:area => :country])
+      @plaques = Plaque.where(conditions).order("created_at DESC").limit(limit).preload(:language, :organisations, :colour, [area: :country])
     end
 
     respond_to do |format|
       format.html
       format.json {
         if params[:data] && params[:data] == "simple"
-          render :json => @plaques.as_json(:only => [:id, :latitude, :longitude, :inscription],
-            :methods => [:title, :colour_name, :machine_tag, :thumbnail_url])
+          render json: @plaques.as_json(only: [:id, :latitude, :longitude, :inscription],
+            methods: [:title, :colour_name, :machine_tag, :thumbnail_url])
         elsif params[:data] && params[:data] == "basic"
-          render :json => @plaques.as_json(:only => [:id, :latitude, :longitude, :inscription])
+          render json: @plaques.as_json(only: [:id, :latitude, :longitude, :inscription])
         else
-          render :json => @plaques.as_json(:only => [:id, :latitude, :longitude, :inscription])
+          render json: @plaques.as_json(only: [:id, :latitude, :longitude, :inscription])
         end
       }
-      format.geojson { render :geojson => @plaques }
+      format.geojson { render geojson: @plaques }
       format.rss
       format.csv {
         send_data(
           PlaqueCsv.new(@plaques).build,
-          :type => 'text/csv',
-          :filename => 'open-plaques-all-' + Date.today.to_s + '.csv',
-          :disposition => 'attachment'
+          type: 'text/csv',
+          filename: 'open-plaques-all-' + Date.today.to_s + '.csv',
+          disposition: 'attachment'
         )
       }
     end
@@ -79,45 +79,45 @@ class PlaquesController < ApplicationController
 
   def show
     @plaques = [@plaque]
-    set_meta_tags :open_graph => {
-      :type  => :website,
-      :url   => url_for(:only_path=>false),
-      :image => @plaque.main_photo ? @plaque.main_photo.file_url : view_context.root_url[0...-1] + view_context.image_path("openplaques-icon.png"),
-      :title => @plaque.title,
-      :description => @plaque.inscription,
+    set_meta_tags open_graph: {
+      type: :website,
+      url: url_for(:only_path=>false),
+      image: @plaque.main_photo ? @plaque.main_photo.file_url : view_context.root_url[0...-1] + view_context.image_path("openplaques-icon.png"),
+      title: @plaque.title,
+      description: @plaque.inscription,
     }
-    set_meta_tags :twitter => {
-      :card  => "summary_large_image",
-      :site  => "@openplaques",
-      :title => @plaque.title,
-      :image => {
-        :_      => @plaque.main_photo ? @plaque.main_photo.file_url : view_context.root_url[0...-1] + view_context.image_path("openplaques-icon.png"),
-        :width  => 100,
-        :height => 100,
+    set_meta_tags twitter: {
+      card: "summary_large_image",
+      site: "@openplaques",
+      title: @plaque.title,
+      image: {
+        _: @plaque.main_photo ? @plaque.main_photo.file_url : view_context.root_url[0...-1] + view_context.image_path("openplaques-icon.png"),
+        width: 100,
+        height: 100,
       }
     }
 
     respond_to do |format|
       format.html
       format.xml { render "plaques/index" }
-      format.kml { render :json => {:error => "format unsupported"}.to_json, :status => 406 }
-      format.json { render :json => @plaque }
-      format.geojson { render :geojson => @plaque }
+      format.kml { render json: {error: "format unsupported"}.to_json, status: 406 }
+      format.json { render json: @plaque }
+      format.geojson { render geojson: @plaque }
       format.csv {
         @plaques = []
         @plaques << @plaque
         send_data(
           PlaqueCsv.new(@plaques).build,
-          :type => 'text/csv',
-          :filename => 'open-plaque-' + @plaque.id.to_s + '.csv',
-          :disposition => 'attachment'
+          type: 'text/csv',
+          filename: 'open-plaque-' + @plaque.id.to_s + '.csv',
+          disposition: 'attachment'
         )
       }
     end
   end
 
   def new
-    @plaque = Plaque.new(:language_id => 1)
+    @plaque = Plaque.new(language_id: 1)
     @plaque.photos.build
     @countries = Country.order(:name)
     @languages = Language.order("plaques_count DESC nulls last")
@@ -153,13 +153,13 @@ class PlaquesController < ApplicationController
         area = country.areas.find_by_slug(params[:area].rstrip.lstrip.downcase.tr(" ", "_"))
       end
       unless area
-        area = country.areas.create!(:name => params[:area])
+        area = country.areas.create!(name: params[:area])
       end
     end
     @plaque.area = area
 
     unless params[:organisation_name].empty?
-      organisation = Organisation.where(:name => params[:organisation_name]).first_or_create
+      organisation = Organisation.where(name: params[:organisation_name]).first_or_create
       @plaque.organisations << organisation if organisation.valid?
     end
 
@@ -199,7 +199,7 @@ class PlaquesController < ApplicationController
         format.xml  { head :ok }
       else
         format.html { render "edit" }
-        format.xml  { render :xml => @plaque.errors, :status => :unprocessable_entity }
+        format.xml  { render xml: @plaque.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -230,10 +230,14 @@ class PlaquesController < ApplicationController
   	def plaque_params
         params.require(:plaque).permit(
           # for new plaque form
-          :inscription,:inscription_is_stub,
+          :inscription,
+          :inscription_is_stub,
           :language_id,
-          :address, :area, :country,
-          :organisation_name,:organisation_id,
+          :address,
+          :area,
+          :country,
+          :organisation_name,
+          :organisation_id,
           'erected_at(1i)', 'erected_at(3i)', 'erected_at(2i)',
           :colour_id,
           :other_colour_id,
@@ -241,10 +245,13 @@ class PlaquesController < ApplicationController
           :inscription_in_english,
           :description,
           :area_id,
-          :latitude, :longitude, :is_accurate_geolocation,
+          :latitude,
+          :longitude,
+          :is_accurate_geolocation,
           :erected_at_string,
           :is_current,
-          :series_id, :series_ref
+          :series_id,
+          :series_ref,
         )
   	end
 end

@@ -32,9 +32,9 @@ class Colour < ActiveRecord::Base
 
   def as_json(options={})
     options = {
-      :only => [:name, :plaques_count, :common],
-      :include => { },
-      :methods => []
+      only: [:name, :plaques_count, :common],
+      include: { },
+      methods: []
     } if !options[:prefixes].blank?
     super options
   end

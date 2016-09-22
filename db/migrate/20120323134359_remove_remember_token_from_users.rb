@@ -4,6 +4,6 @@ class RemoveRememberTokenFromUsers < ActiveRecord::Migration
   end
 
   def down
-    add_column :users, :remember_token, :string, :limit => 40
+    add_column :users, :remember_token, :string, limit: 40
   end
 end

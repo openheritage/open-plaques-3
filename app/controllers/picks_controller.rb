@@ -1,20 +1,20 @@
 class PicksController < ApplicationController
 
-  before_filter :find, :only => [:edit, :update, :show, :destroy]
+  before_filter :find, only: [:edit, :update, :show, :destroy]
 
   def index
     @picks = Pick.all
     respond_to do |format|
       format.html
-      format.json { render :json => @picks }
-      format.geojson { render :geojson => @picks }
+      format.json { render json: @picks }
+      format.geojson { render geojson: @picks }
     end
   end
 
   def show
     respond_to do |format|
-      format.json { render :json => @pick }
-      format.geojson { render :geojson => @pick }
+      format.json { render json: @pick }
+      format.geojson { render geojson: @pick }
     end
   end
 

@@ -4,7 +4,7 @@ class PlaqueTalkController < PlaqueDetailsController
 
   def create
     puts params[:message] + ' from ' + params[:from]
-    render :json => { 'reply' => 'thank you' }, :status => :ok
+    render json: { 'reply' => 'thank you' }, status: :ok
   end
 
 end

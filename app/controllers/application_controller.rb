@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
     puts "USERAGENT: #{request.path} #{request.headers['HTTP_USER_AGENT']}"
   	if request.format == :json || request.format == :xml || request.format == :kml || request.path.end_with?("/new") || request.path.end_with?("/edit")
       if request.env["HTTP_USER_AGENT"] && (request.env["HTTP_USER_AGENT"].include?("bot") || request.env["HTTP_USER_AGENT"].include?("spider") || request.env["HTTP_USER_AGENT"].include?("BingPreview") || request.env["HTTP_USER_AGENT"].include?("slurp"))
-        render :json => {:error => "no-bots"}.to_json, :status => 406 and return
+        render json: {error: "no-bots"}.to_json, status: 406 and return
       end
     end
     begin

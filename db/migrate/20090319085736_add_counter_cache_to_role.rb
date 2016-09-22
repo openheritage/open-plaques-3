@@ -4,7 +4,7 @@ class AddCounterCacheToRole < ActiveRecord::Migration
 
     say_with_time("Setting personal_roles_count counter on roles") do
       Role.find_each do |role|
-        Role.update_counters(role.id, :personal_roles_count => Role.find(role.id).personal_roles.size)
+        Role.update_counters(role.id, personal_roles_count: Role.find(role.id).personal_roles.size)
       end
     end
   end

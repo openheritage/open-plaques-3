@@ -4,14 +4,14 @@
 	<h1>Change your password</h1>
 </div>
 
-<%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put }) do |f| %>
+<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
   <%= devise_error_messages! %>
   <%= f.hidden_field :reset_password_token %>
 
 	<fieldset>
 		<div class="row">
 			<%= f.label :password %>
-			<%= f.password_field :password, :autofocus => true %>
+			<%= f.password_field :password, autofocus: true %>
 		</div>
 		<div class="row">
 			<%= f.label :password_confirmation %>
@@ -19,9 +19,9 @@
 		</div>
 	</fieldset>
 	
-	<%= f.submit "Change my password", :class => "button" %>
+	<%= f.submit "Change my password", class: "button" %>
 <% end %>
 
 <div class="panel">
-	<%= render :partial => "devise/shared/links" %>
+	<%= render partial: "devise/shared/links" %>
 </div>

@@ -1,6 +1,6 @@
 class SeriesPlaquesController < ApplicationController
 
-  before_filter :find, :only => [:show]
+  before_filter :find, only: [:show]
 
   def show
     zoom = params[:zoom].to_i
@@ -12,8 +12,8 @@ class SeriesPlaquesController < ApplicationController
       @plaques = @series.plaques
     end
     respond_to do |format|
-      format.json { render :json => @plaques }
-      format.geojson { render :geojson => @plaques.geolocated, :parent => @series }
+      format.json { render json: @plaques }
+      format.geojson { render geojson: @plaques.geolocated, parent: @series }
     end
   end
 

@@ -1,5 +1,5 @@
-<% content_for(:page_title) {t '.page_title', :year => @year.year.to_s } %>
-<% content_for(:title) {t '.page_heading', :year => @year.year.to_s } %>
+<% content_for(:page_title) {t '.page_title', year: @year.year.to_s } %>
+<% content_for(:title) {t '.page_heading', year: @year.year.to_s } %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_person_path} %>
 
 <div class="row">
@@ -19,7 +19,7 @@
   <%= @people.each do |person| %>
     <div class="card vcard" typeof="<%= if (person.person?) then "foaf:Person" else "foaf:Agent" end %> vcard:VCard" about="#person" style="min-height: 5rem; background-color: #999;">
       <div class="col-sm-2">
-        <%= link_to(person.full_name, person, {:class => "fn url", :property => "rdfs:label foaf:name vcard:fn", :rel => "foaf:homepage vcard:url"}) %><br/><small><%= person.dates %></small>
+        <%= link_to(person.full_name, person, {class: "fn url", property: "rdfs:label foaf:name vcard:fn", rel: "foaf:homepage vcard:url"}) %><br/><small><%= person.dates %></small>
       </div>
       <%= datespan(@year.year).html_safe %>
     </div>

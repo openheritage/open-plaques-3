@@ -1,24 +1,24 @@
 class PhotosController < ApplicationController
 
-  before_filter :authenticate_user!, :except => [:index, :show, :update, :create]
-  before_filter :authenticate_admin!, :only => :destroy
-  before_filter :find, :only => [:destroy, :edit, :show, :update]
-  before_filter :get_licences, :only => [:new, :create, :edit]
+  before_filter :authenticate_user!, except: [:index, :show, :update, :create]
+  before_filter :authenticate_admin!, only: :destroy
+  before_filter :find, only: [:destroy, :edit, :show, :update]
+  before_filter :get_licences, only: [:new, :create, :edit]
 
   def index
-    @photos = Photo.order(id: :desc).paginate(:page => params[:page], :per_page => 200)
+    @photos = Photo.order(id: :desc).paginate(page: params[:page], per_page: 200)
     respond_to do |format|
       format.html
-      format.json { render :json => @photos }
-      format.geojson { render :geojson => @photos.geolocated }
+      format.json { render json: @photos }
+      format.geojson { render geojson: @photos.geolocated }
     end
   end
 
   def show
     respond_to do |format|
       format.html
-      format.json { render :json => @photo }
-      format.geojson { render :geojson => @photo }
+      format.json { render json: @photo }
+      format.geojson { render geojson: @photo }
     end
   end
 

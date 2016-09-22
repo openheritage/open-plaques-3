@@ -1,14 +1,14 @@
 class RolesController < ApplicationController
 
-  before_filter :authenticate_admin!, :only => :destroy
-  before_filter :authenticate_user!, :except => [:index, :show]
-  before_filter :find, :only => [:edit, :update]
+  before_filter :authenticate_admin!, only: :destroy
+  before_filter :authenticate_user!, except: [:index, :show]
+  before_filter :find, only: [:edit, :update]
 
   def index
     respond_to do |format|
       format.html { redirect_to(roles_by_index_path('a')) }
       @roles = Role.all
-      format.json { render :json => @roles }
+      format.json { render json: @roles }
     end
   end
 
@@ -21,19 +21,19 @@ class RolesController < ApplicationController
     @roles = Role.select(:id,:name)
       .name_starts_with(params[:starts_with])
       .limit(limit) if params[:starts_with]
-    render :json => @roles.as_json(
-      :only => [:id, :name]
+    render json: @roles.as_json(
+      only: [:id, :name]
     )
   end
 
   def show
-    @role = Role.includes(:personal_roles => :person).find_by_slug!(params[:id])
+    @role = Role.includes(personal_roles: :person).find_by_slug!(params[:id])
     @pluralized_role = @role.full_name.include?(" of ") ?
       @role.name.split(/#| of /).first.pluralize + @role.name.sub(/.*? of /, ' of ')
       : @role.name.pluralize
     respond_to do |format|
       format.html
-      format.json { render :json => @role }
+      format.json { render json: @role }
     end
   end
 

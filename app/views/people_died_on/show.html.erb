@@ -1,5 +1,5 @@
-<% content_for(:page_title) {t '.page_title', :year => @year.year.to_s} %>
-<% content_for(:title) {t '.page_heading', :year => @year.year.to_s} %>
+<% content_for(:page_title) {t '.page_title', year: @year.year.to_s} %>
+<% content_for(:title) {t '.page_heading', year: @year.year.to_s} %>
 
 <div class="card-columns">
   <%= render @people %>

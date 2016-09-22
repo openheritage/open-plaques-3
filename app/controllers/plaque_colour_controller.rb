@@ -1,6 +1,6 @@
 class PlaqueColourController < PlaqueDetailsController
 
-  layout 'plaque_edit', :only => :edit
+  layout 'plaque_edit', only: :edit
 
   def edit
     @colours = Colour.order(:name)

@@ -26,7 +26,7 @@ gem 'devise'
 gem 'meta-tags'
 gem 'will_paginate'
 gem 'redcarpet'
-gem 'wikimedia-commoner', :github => 'jnicho02/wikimedia-commoner'
+gem 'wikimedia-commoner', github: 'jnicho02/wikimedia-commoner'
 gem 'rollbar'
 # gem 'rack-timeout'
 gem 'puma'
@@ -45,9 +45,9 @@ end
 
 group :test do
   gem 'rspec', '~> 2.14.0'
-  gem 'rspec-rails',        :group => :development
+  gem 'rspec-rails',        group: :development
   gem 'database_cleaner'
 end
 
 gem 'tzinfo-data'
-gem 'dotenv-rails', :groups => [:development, :test]
+gem 'dotenv-rails', groups: [:development, :test]

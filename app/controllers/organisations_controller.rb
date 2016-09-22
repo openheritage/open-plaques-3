@@ -1,16 +1,16 @@
 class OrganisationsController < ApplicationController
 
-  before_filter :authenticate_admin!, :only => :destroy
-  before_filter :authenticate_user!, :except => [:autocomplete, :index, :show]
-  before_filter :find, :only => [:edit, :update]
+  before_filter :authenticate_admin!, only: :destroy
+  before_filter :authenticate_user!, except: [:autocomplete, :index, :show]
+  before_filter :find, only: [:edit, :update]
 
   def index
     @organisations = Organisation.all.select(:name,:slug,:sponsorships_count).order("name ASC")
     @top_10 = Organisation.all.select(:name,:slug,:sponsorships_count).order("sponsorships_count DESC").limit(10)
     respond_to do |format|
       format.html
-      format.json { render :json => @organisations }
-      format.geojson { render :geojson => @organisations }
+      format.json { render json: @organisations }
+      format.geojson { render geojson: @organisations }
     end
   end
 
@@ -23,7 +23,7 @@ class OrganisationsController < ApplicationController
     else
       @organisations = "{}"
     end
-    render :json => @organisations.as_json(:only => [:id,:name])
+    render json: @organisations.as_json(only: [:id,:name])
   end
 
   def show
@@ -35,15 +35,15 @@ class OrganisationsController < ApplicationController
       @organisation = Organisation.find_by_slug!(params[:id])
     rescue
       @organisation = Organisation.find(params[:id])
-      redirect_to(organisation_path(@organisation.slug), :status => :moved_permanently) and return
+      redirect_to(organisation_path(@organisation.slug), status: :moved_permanently) and return
     end
-    @sponsorships = @organisation.sponsorships.paginate(:page => params[:page], :per_page => 50)
+    @sponsorships = @organisation.sponsorships.paginate(page: params[:page], per_page: 50)
     @mean = @organisation
     @zoom = @organisation.zoom
     respond_to do |format|
       format.html
-      format.json { render :json => @organisation }
-      format.geojson { render :geojson => @organisation }
+      format.json { render json: @organisation }
+      format.geojson { render geojson: @organisation }
     end
   end
 

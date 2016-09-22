@@ -15,7 +15,7 @@ class Verb < ActiveRecord::Base
   validates_uniqueness_of :name
 
   has_many :personal_connections
-  has_many :people, :through => :personal_connections
+  has_many :people, through: :personal_connections
   scope :name_starts_with, lambda {|term| where(["lower(name) LIKE ?", term.downcase + "%"]) }
   scope :name_contains, lambda {|term| where(["lower(name) LIKE ?", "%" + term.downcase + "%"]) }
 
@@ -32,18 +32,18 @@ class Verb < ActiveRecord::Base
   end
 
   def uri
-    "http://openplaques.org" + Rails.application.routes.url_helpers.verb_path(self, :format => :json)
+    "http://openplaques.org" + Rails.application.routes.url_helpers.verb_path(self, format: :json)
   end
 
   def as_json(options=nil)
     if options && options[:only]
     else
       options = {
-        :only => [:name],
-        :include => {
-          :people => {:only => [:name], :methods => [:uri]}
+        only: [:name],
+        include: {
+          people: {only: [:name], methods: [:uri]}
         },
-        :methods => [:uri]
+        methods: [:uri]
       }
     end
     super(options)

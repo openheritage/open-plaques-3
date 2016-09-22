@@ -11,7 +11,7 @@ class MatchController < ApplicationController
     @open_plaques_column = 2
     @address_column = 6
     @area = "London"
-    
+
     session = GoogleSpreadsheet.login(@username, @password)
     ws = session.spreadsheet_by_key(@key).worksheets[0]
 
@@ -21,7 +21,7 @@ class MatchController < ApplicationController
       @street = ws[row,@address_column][/([a-zA-Z][a-z A-Z]+)/]
       if @phrase != nil && @street != nil
         puts @phrase + " " + @street
-        @search_results = Plaque.find(:all, :joins => :location, :conditions => ["lower(inscription) LIKE ? and lower(locations.name) LIKE ? and areas.name = 'London'", "%" + @phrase.downcase + "%", "%" + @street.downcase + "%"], :include => [[:personal_connections => [:person]], [:location => [:area => :country]]])
+        @search_results = Plaque.find(:all, joins: :location, conditions: ["lower(inscription) LIKE ? and lower(locations.name) LIKE ? and areas.name = 'London'", "%" + @phrase.downcase + "%", "%" + @street.downcase + "%"], include: [[personal_connections: [:person]], [location: [area: :country]]])
         if @search_results != nil && @search_results.size == 1
           puts @search_results[0].id
           if ws[row,@open_plaques_column] == ""
