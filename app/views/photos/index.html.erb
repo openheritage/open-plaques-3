@@ -5,6 +5,10 @@
 
 <%= will_paginate @photos %>
 <div class="card-columns">
-  <%= render @photos %>
+  <% @photos.each do |photo| %>
+    <%= link_to photo do %>
+      <%= render photo %>
+    <% end %>
+  <% end %>
 </div>
 <%= will_paginate @photos %>

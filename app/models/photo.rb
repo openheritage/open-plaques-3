@@ -33,9 +33,9 @@ class Photo < ActiveRecord::Base
   scope :detail_order, -> { order('shot ASC') }
   scope :unassigned, -> { where(plaque_id: nil, of_a_plaque: true) }
   scope :undecided, -> { where(plaque_id: nil, of_a_plaque: nil) }
-  scope :wikimedia, -> { where("file_url like 'https://commons%'") }
-  scope :flickr, -> { where("url like 'http://www.flickr.com%'") }
-  scope :geograph, -> { where("url like 'http://www.geograph.org.uk/%'") }
+  scope :wikimedia, -> { where("file_url like '%commons%'") }
+  scope :flickr, -> { where("url like '%flickr.com%'") }
+  scope :geograph, -> { where("url like '%geograph.org%'") }
   scope :geolocated, ->  { where(["latitude IS NOT NULL"]) }
   scope :ungeolocated, ->  { where(["latitude IS NULL"]) }
 
@@ -57,19 +57,10 @@ class Photo < ActiveRecord::Base
   end
 
   def title
-    return "a photo of a " + self.plaque.to_s if self.plaque
-    return "a photo of " + self.person.to_s if self.person
     title = "photo № #{id}"
-    if plaque
-      title = ""
-      if shot_name
-        title += shot_name
-      else
-        title += "photo"
-      end
-      title += " of " + plaque.title.indefinitize
-    end
-    return title
+    title = "a photo of a " + self.plaque.to_s if self.plaque
+    title = "a photo of " + self.person.to_s if self.person
+    title
   end
 
   def attribution
@@ -96,15 +87,15 @@ class Photo < ActiveRecord::Base
   end
 
   def flickr?
-    url && url.include?("//www.flickr.com")
+    url && url.include?("flickr.com")
   end
 
   def wikimedia?
-    url && url.include?("edia.org/")
+    url && url.include?("edia.org")
   end
 
   def geograph?
-    url && url.include?("//www.geograph.org.uk")
+    url && url.include?("geograph.org")
   end
 
   def source
