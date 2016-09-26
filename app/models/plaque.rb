@@ -225,8 +225,10 @@ class Plaque < ActiveRecord::Base
         t + " plaque"
       elsif colour_name && "unknown"!=colour_name
         colour_name.to_s.capitalize + " plaque № #{id}"
-      else
+      elsif id != nil
         "plaque № #{id}"
+      else
+        "plaque"
       end # << " in " + area.name if area
     rescue Exception => e
       "plaque № #{id}"

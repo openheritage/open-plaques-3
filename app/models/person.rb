@@ -207,9 +207,9 @@ class Person < ActiveRecord::Base
     current_roles.each do |role|
       if !role.prefix.blank?
         # NB a clergyman or Commonwealth citizen does not get called 'Sir'
-        title += role.prefix + " " if !title.include?(role.prefix) && !(role.prefix == "Sir" && clergy?)
+        title += "#{role.prefix} " if !title.include?(role.prefix) && !(role.prefix == "Sir" && clergy?)
       elsif role.used_as_a_prefix? and !title.include?(role.display_name)
-        title += role.display_name + " "
+        title += "#{role.display_name} "
       end
     end
     title.strip

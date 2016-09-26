@@ -25,8 +25,6 @@ class Photo < ActiveRecord::Base
 
   validates_presence_of :file_url
   validates_uniqueness_of :file_url, message: "of photo already exists in Open Plaques"
-  after_initialize :assign_from_photo_url
-  before_validation :assign_licence_if_cc_by_accepted
   after_update :reset_plaque_photo_count
   after_save :geolocate_plaque
   scope :reverse_detail_order, -> { order('shot DESC') }
@@ -39,36 +37,20 @@ class Photo < ActiveRecord::Base
   scope :geolocated, ->  { where(["latitude IS NOT NULL"]) }
   scope :ungeolocated, ->  { where(["latitude IS NULL"]) }
 
-  def assign_from_photo_url
-    if @photo_url
-      if @photo_url =~ /http\:\/\/www\.flickr\.com\/photos\/.+\/\d+\//
-        self.url = @photo_url
-      else
-        self.file_url = @photo_url
-      end
-    end
-  end
-
-  def assign_licence_if_cc_by_accepted
-    if @accept_cc_by_licence && @licence_id.blank?
-      self.licence = Licence.find_or_create_by_name_and_url("Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)", "http://creativecommons.org/licenses/by-sa/4.0/")
-      self.photographer = self.plaque.user.name
-    end
-  end
-
   def title
-    title = "photo № #{id}"
-    title = "a photo of a " + self.plaque.to_s if self.plaque
-    title = "a photo of " + self.person.to_s if self.person
+    title = "a photo"
+    title = "photo № #{id}" if id != nil
+    title = "a photo of a #{plaque.title}" if plaque
+    title = "a photo of #{person.name}" if person
     title
   end
 
   def attribution
     attrib = '&copy; '
     attrib += photographer.tr("./","__") if photographer
-    attrib += ' on ' + source
-    attrib += ' ' + licence.abbreviation if licence && licence.abbreviation != nil
-    attrib += ' ' + licence.name if licence && licence.abbreviation == nil
+    attrib += " on #{source}"
+    attrib += " #{licence.abbreviation}" if licence && licence.abbreviation != nil
+    attrib += " #{licence.name}" if licence && licence.abbreviation == nil
     attrib
   end
 
@@ -106,13 +88,9 @@ class Photo < ActiveRecord::Base
   end
 
   def wikimedia_filename
-    puts '*** ' + url
-
-    begin
-    return url[url.index('File:')+5..-1] if wikimedia?
-  rescue
-  end
-    return ''
+    name = ''
+    name = url[url.index('File:')+5..-1] if wikimedia?
+    name
   end
 
   def wikimedia_special
@@ -155,6 +133,7 @@ class Photo < ActiveRecord::Base
           self.licence = licence if licence != nil
         end
       rescue
+        errors.add :file_url, 'Commoner errored'
       end
     end
     if geograph?
