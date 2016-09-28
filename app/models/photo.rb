@@ -160,7 +160,7 @@ class Photo < ActiveRecord::Base
   end
 
   def linked?
-    !(plaque.nil?) && !(person.nil?)
+    !(plaque.nil?) || !(person.nil?)
   end
 
   def geolocated?
