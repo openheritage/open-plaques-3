@@ -1,60 +1,71 @@
 <% content_for(:page_title) {t '.page_title', photo: @photo.title } %>
+
+<% if @plaques && @plaques.size > 0 %>
+  <% content_for(:page_subhead) {"This image is unlinked. Nearest plaque is #{@plaques.first.distance_to(@photo)} metres away"} %>
+<% elsif !@photo.linked? %>
+  <% content_for(:page_subhead) {"This image is unlinked. There are no plaques nearby. Set the subject and shot."} %>
+<% end %>
+
 <% content_for(:title) {t '.page_heading', photo: @photo.title} %>
 
 <%= form_for @photo do |f| %>
-<div class="row">
-  <div class="col-xs-12 col-sm-6">
-    <fieldset class="form-group row">
-      <%= f.label :of_a_plaque, class: 'form-control-label col-sm-4' %>
-      <div class="col-sm-8">
-        <%= f.check_box :of_a_plaque, class: 'form-control' %>
-      </div>
-    </fieldset>
-    <fieldset class="form-group row">
-      <%= f.label :plaque_id, class: 'form-control-label col-sm-4' %>
-      <div class="col-sm-2">
-        <%= f.text_field :plaque_id, maxlength: "5", class: 'form-control' %>
-      </div>
-      <% if @photo.plaque %>
-        <div class="col-sm-2">
-          <%= render partial: 'plaques/tile', object: @photo.plaque, as: :plaque %>
+  <div class="row">
+    <div class="col-xs-12 col-sm-6">
+      <fieldset class="form-group row">
+        <%= f.label :of_a_plaque, class: 'form-control-label col-sm-4' %>
+        <div class="col-sm-8">
+          <%= f.check_box :of_a_plaque, class: 'form-control' %>
         </div>
+      </fieldset>
+      <fieldset class="form-group row">
+        <%= f.label :plaque_id, class: 'form-control-label col-sm-4' %>
+        <div class="col-sm-3">
+          <%= f.text_field :plaque_id, maxlength: "5", class: 'form-control' %>
+        </div>
+        <% if @photo.plaque %>
+          <div class="col-sm-2">
+            <%= render partial: 'plaques/tile', object: @photo.plaque, as: :plaque %>
+          </div>
+        <% end %>
+      </fieldset>
+      <fieldset class="form-group row">
+        <div class="col-sm-4">
+          <%= label_tag(nil, t('.geolocation'), class: 'form-control-label') %>
+          <%= link_to(icon('external-link'), "https://www.google.co.uk/maps/?q=#{@photo.latitude},#{@photo.longitude}", target: '_blank') %>
+        </div>
+        <div class="col-sm-8">
+          POINT(<%= @photo.longitude %>, <%= @photo.latitude %>)
+        </div>
+      </fieldset>
+      <fieldset class="form-group row">
+        <%= f.label :subject, class: 'form-control-label col-sm-4' %>
+        <div class="col-sm-8">
+          <%= f.text_field :subject, class: 'form-control' %>
+        </div>
+      </fieldset>
+      <fieldset class="form-group row">
+        <%= f.label :description, class: 'form-control-label col-sm-4' %>
+        <div class="col-sm-8">
+          <%= f.text_area :description, class: 'form-control', rows: 12 %>
+        </div>
+      </fieldset>
+      <fieldset class="form-group row">
+        <%= f.label :shot, class: 'form-control-label col-sm-4' %>
+        <div class="col-sm-8">
+          <%= f.collection_select :shot, Photo.shots, :to_s, :to_s, {include_blank: true, class: 'form-control'} %> shot
+        </div>
+      </fieldset>
+    </div>
+    <div class="col-xs-12 col-sm-6">
+      <%= link_to(@photo.file_url) do %>
+        <%= render @photo, large: true %>
       <% end %>
-    </fieldset>
-    <fieldset class="form-group row">
-      <%= label_tag(nil, t('.geolocation'), class: 'form-control-label col-sm-4') %>
-      <div class="col-sm-8">
-        POINT(<%= @photo.longitude %>, <%= @photo.latitude %>)
-      </div>
-    </fieldset>
-    <fieldset class="form-group row">
-      <%= f.label :subject, class: 'form-control-label col-sm-4' %>
-      <div class="col-sm-8">
-        <%= f.text_field :subject, class: 'form-control' %>
-      </div>
-    </fieldset>
-    <fieldset class="form-group row">
-      <%= f.label :description, class: 'form-control-label col-sm-4' %>
-      <div class="col-sm-8">
-        <%= f.text_area :description, class: 'form-control', rows: 12 %>
-      </div>
-    </fieldset>
-    <fieldset class="form-group row">
-      <%= f.label :shot, class: 'form-control-label col-sm-4' %>
-      <div class="col-sm-8">
-        <%= f.collection_select :shot, Photo.shots, :to_s, :to_s, {include_blank: true, class: 'form-control'} %> shot
-      </div>
-    </fieldset>
+    </div>
   </div>
-  <div class="col-xs-12 col-sm-6">
-    <%= link_to(@photo.file_url) do %>
-      <%= render @photo, large: true %>
-    <% end %>
-  </div>
-</div>
 
   <% if @plaques && @plaques.size > 0 %>
     <%= f.submit t('buttons.save'), class: 'btn btn-primary'%>
+    <h2>Nearby plaques</h2>
     <fieldset class="form-group row">
       <div class="col-xs-6 col-sm-2">
       </div>
