@@ -20,7 +20,7 @@
       <fieldset class="form-group row">
         <%= f.label :plaque_id, class: 'form-control-label col-sm-4' %>
         <div class="col-sm-3">
-          <%= f.text_field :plaque_id, maxlength: "5", class: 'form-control' %>
+          <%= f.number_field :plaque_id, maxlength: "5", class: 'form-control' %>
         </div>
         <% if @photo.plaque %>
           <div class="col-sm-2">
@@ -43,6 +43,15 @@
           <%= f.text_field :subject, class: 'form-control' %>
         </div>
       </fieldset>
+      <% if /\[\[/ =~ @photo.description %>
+      <div class='row'>
+        <div class="col-sm-4">
+        </div>
+        <div class="col-sm-8">
+          <%= link_to(icon('external-link') + 'Geograph image mentioned', "http://www.geograph.org.uk/photo/#{@photo.description.match(/\[\[(\d*)]]/i).try(:captures)[0]}", target: '_blank') %>
+        </div>
+      </div>
+      <% end %>
       <fieldset class="form-group row">
         <%= f.label :description, class: 'form-control-label col-sm-4' %>
         <div class="col-sm-8">

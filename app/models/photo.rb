@@ -209,8 +209,8 @@ class Photo < ActiveRecord::Base
 
     def reset_plaque_photo_count
       if plaque_id_changed?
-        Plaque.reset_counters(plaque_id_was, :photos) unless plaque_id_was == nil
-        Plaque.reset_counters(plaque.id, :photos) unless plaque == nil
+        Plaque.reset_counters(plaque_id_was, :photos) unless plaque_id_was == nil || plaque_id_was == 0
+        Plaque.reset_counters(plaque.id, :photos) unless plaque == nil || plaque_id_was == 0
       end
     end
 
