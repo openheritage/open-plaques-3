@@ -4,14 +4,14 @@
 <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
   <%= devise_error_messages! %>
   <%= f.hidden_field :reset_password_token %>
-  <fieldset class="form-group">
+  <div class="form-group">
     <%= f.label :password, t('.new_password', default: "New password") %>
     <%= f.password_field :password, autofocus: true, class: 'form-control' %>
-  </fieldset>
-  <fieldset class="form-group">
+  </div>
+  <div class="form-group">
     <%= f.label :password_confirmation, t('.confirm_new_password', default: "Confirm new password") %>
     <%= f.password_field :password_confirmation, class: 'form-control'  %>
-  </fieldset>
+  </div>
   <%= f.submit t('.change_my_password', default: "Change my password"), class: 'btn btn-primary' %>
 <% end %>
 <%= render partial: 'devise/shared/links' %>

@@ -1,8 +1,7 @@
-<nav class="navbar navbar-light bg-faded">
-  <div class="container">
+<banner class="navbar navbar-light bg-faded container">
+  <nav>
     <div class="navbar-header">
       <%= link_to(image_tag("openplaques.png"), root_path, class: "navbar-brand") %>
-      <div class="navbar-brand">Open Plaques</div>
       <div class="pull-right"><%= user_menu %></div>
     </div>
     <ul class="nav navbar-nav pull-left">
@@ -19,13 +18,13 @@
       <% end %>
       <%= navbar_link_to(t('menu.contribute'), contribute_path, active_when: { controller: :pages }) %>
     </ul>
-    <%= render 'shared/search' %>
-  </div>
-</nav>
-<% if current_user && current_user.is_admin? %>
-  <nav class="navbar navbar-light bg-faded">
-    <ul class="nav navbar-nav">
-      <%= yield :admin_menu %>
-    </ul>
   </nav>
-<% end %>
+  <%= render 'shared/search' %>
+  <% if current_user && current_user.is_admin? %>
+    <nav class="navbar navbar-light bg-faded" id="admin-menu">
+      <ul class="nav navbar-nav">
+        <%= yield :admin_menu %>
+      </ul>
+    </nav>
+  <% end %>
+</banner>
