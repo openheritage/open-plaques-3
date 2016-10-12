@@ -1,27 +1,17 @@
-<% content_for :page_title, "Change your password" %>
-
-<div class="panel clearfix">
-	<h1>Change your password</h1>
-</div>
+<% content_for :page_title, t('.change_your_password', default: "Change your password") %>
+<% content_for :title, t('.change_your_password', default: "Change your password") %>
 
 <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
   <%= devise_error_messages! %>
   <%= f.hidden_field :reset_password_token %>
-
-	<fieldset>
-		<div class="row">
-			<%= f.label :password %>
-			<%= f.password_field :password, autofocus: true %>
-		</div>
-		<div class="row">
-			<%= f.label :password_confirmation %>
-			<%= f.password_field :password_confirmation %>
-		</div>
-	</fieldset>
-	
-	<%= f.submit "Change my password", class: "button" %>
+  <fieldset class="form-group">
+    <%= f.label :password, t('.new_password', default: "New password") %>
+    <%= f.password_field :password, autofocus: true, class: 'form-control' %>
+  </fieldset>
+  <fieldset class="form-group">
+    <%= f.label :password_confirmation, t('.confirm_new_password', default: "Confirm new password") %>
+    <%= f.password_field :password_confirmation, class: 'form-control'  %>
+  </fieldset>
+  <%= f.submit t('.change_my_password', default: "Change my password"), class: 'btn btn-primary' %>
 <% end %>
-
-<div class="panel">
-	<%= render partial: "devise/shared/links" %>
-</div>
+<%= render partial: 'devise/shared/links' %>
