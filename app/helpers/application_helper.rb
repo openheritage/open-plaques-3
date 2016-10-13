@@ -9,8 +9,8 @@ module ApplicationHelper
     link_to text, path, type: Mime::Type.lookup_by_extension(format.to_s).to_s, rel: [:alternate,:nofollow]
   end
 
-  def fieldset(options = {}, &block)
-    content_tag("fieldset", options, &block)
+  def div(options = {}, &block)
+    content_tag("div", options, &block)
   end
 
   def csv_escape(string)

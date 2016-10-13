@@ -3,16 +3,19 @@
 # === Attributes
 # * +name+ - The official name of the organisation
 # * +website+ - official web site
-# * +slug+ - An identifier for the organisation, usually equivalent to its name in lower case, with spaces replaced by underscores. Used in URLs.
-# * +description+ - A textual description
-# * +notes+ - A textual set of notes
-# * +latitude+ - Mean location of plaques
-# * +longitude+ - Mean location of plaques
-# * +sponsorships_count+ - The equivalent of number of plaques
+# * +created_at+
+# * +updated_at+
+# * +notes+ - textual set of notes
+# * +slug+ - an identifier for the organisation, usually equivalent to its name in lower case, with spaces replaced by underscores. Used in URLs.
+# * +description+ - a textual description
+# * +sponsorships_count+ - equivalent of number of plaques
+# * +latitude+ - mean location of plaques
+# * +longitude+ - mean location of plaques
 class Organisation < ActiveRecord::Base
 
   has_many :sponsorships
   has_many :plaques, through: :sponsorships
+  belongs_to :language
 
   before_validation :make_slug_not_war, :find_centre
   validates_presence_of :name, :slug

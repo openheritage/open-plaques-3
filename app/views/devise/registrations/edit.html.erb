@@ -3,24 +3,24 @@
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
   <%= devise_error_messages! %>
-  <fieldset class="form-group">
+  <div class="form-group">
     <%= f.label :email %>
     <%= f.email_field :email, autofocus: true, class: "form-control" %>
-  </fieldset>
-  <fieldset class="form-group">
+  </div>
+  <div class="form-group">
     <%= f.label :password %>
     <%= f.password_field :password, autocomplete: 'off', {class: 'form-control', aria-describedby: 'emailHelp'} %>
     <small id="passwordHelp" class="form-text text-muted"><%= t('.leave_blank_if_you_don_t_want_to_change_it', default: "leave blank if you don't want to change it") %></small>
-  </fieldset>
-  <fieldset class="form-group">
+  </div>
+  <div class="form-group">
     <%= f.label :password_confirmation %>
     <%= f.password_field :password_confirmation, class: 'form-control' %>
-  </fieldset>
-  <fieldset class="form-group">
+  </div>
+  <div class="form-group">
     <%= f.label :current_password %>
     <%= f.password_field :current_password, {class: 'form-control', aria-describedby: 'currentPasswordHelp'}  %>
     <small id="currentPasswordHelp" class="form-text text-muted"><%= t('.we_need_your_current_password_to_confirm_your_changes', default: "we need your current password to confirm your changes") %></small>
-  </fieldset>
+  </div>
   <%= f.submit t('.update', default: "Update"), class: 'btn btn-primary' %>
 <% end %>
 

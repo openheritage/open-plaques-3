@@ -1,7 +1,21 @@
-<% content_for(:page_title) {t '.page_title', organisation: @organisation.name} %>
-<% content_for(:title) {@organisation.name} %>
-<% content_for(:page_subhead) {@organisation.description} %>
-<% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_organisation_path(@organisation)} %>
+<% content_for(:page_title) { t '.page_title', organisation: @organisation.name } %>
+<% content_for(:title) do %>
+  <% if @organisation.language == nil || @organisation.language.alpha2 == 'en-GB' || @organisation.language.alpha2 == 'en' %>
+    <%= link_to(@organisation.name, @organisation) %>
+  <% else %>
+    <%= link_to(content_tag('span', @organisation.name, lang: @organisation.language.alpha2), @organisation) %>
+  <% end %>
+<% end %>
+<% content_for(:page_subhead) { markdown(@organisation.description) } %>
+<% content_for(:admin_menu) { navbar_link_to t('buttons.edit'), edit_organisation_path(@organisation) } %>
+
+<% if !@organisation.website.blank? %>
+  <p rel="foaf:homepage vcard:url">
+    <small class="text-muted"><%= link_to(h(@organisation.website),@organisation.website) %></small>
+  </p>
+<% end %>
+
+<%= render @organisation %>
 
 <% if @organisation.geolocated? %>
   <div id="plaque-map" data-latitude="<%= @organisation.latitude %>" data-longitude="<%= @organisation.longitude %>" data-view="all" context="<%= request.path %>"></div>

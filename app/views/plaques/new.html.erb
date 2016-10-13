@@ -75,17 +75,17 @@
 
 <% if params[:checked] && params[:checked] == "true" %>
   <% if @plaque.errors.size > 0 %>
-    <div class="error_alert"><%= t '.error' %></div>
+    <div class="error_alert"><%= t('.error') %></div>
   <% end %>
-  <div class="alert alert-warning"><%= t '.you_agree_to_open_licence' %></div>
+  <div class="alert alert-warning"><%= t('.you_agree_to_open_licence') %></div>
 
   <%= form_for @plaque do |f| %>
-    <fieldset class="form-group row">
+    <div class="form-group row">
       <%= f.label :inscription, t('.inscription_heading'), class: 'form-control-label' %>
       <%= f.text_area :inscription, {value: params[:phrase], placeholder: "Joe Bloggs lived here", autofocus: true, rows: 6, cols: 50, class: 'form-control'} %>
       <small id="inscriptionHelp" class="form-text text-muted"><%= t('.inscription_advice') %></small>
-    </fieldset>
-    <fieldset class="form-group row">
+    </div>
+    <div class="form-group row">
       <%= f.label :inscription_is_stub, t('.inscription_is_stub'), class: 'form-control-label col-sm-2' %>
       <div class="col-sm-10">
          <div class="form-check">
@@ -101,38 +101,38 @@
            </label>
          </div>
        </div>
-    </fieldset>
-    <fieldset class="form-group row">
+    </div>
+    <div class="form-group row">
       <%= f.label :language_id, t('.language_heading'), class: 'form-control-label col-sm-2' %>
       <div class="col-sm-10">
         <%= f.collection_select :language_id, @languages, :id, :name, class: 'form-control' %>
       </div>
-    </fieldset>
-    <fieldset class="form-group row">
+    </div>
+    <div class="form-group row">
       <%= f.label :country, class: 'form-control-label col-sm-2' %>
       <div class="col-sm-10">
         <%= f.collection_select :country, @countries, :id, :name, include_blank: true, selected: 1, class: 'form-control' %>
       </div>
-    </fieldset>
-    <fieldset class="form-group row">
+    </div>
+    <div class="form-group row">
       <%= f.label :area, 'City/Town', class: 'form-control-label col-sm-2' %>
       <div class="col-sm-10">
         <%= text_field_tag :area, "", placeholder: "London", class: 'form-control' %>
         <small id="areaHelp" class="form-text text-muted">just the town name please, no area or postal code</small>
         <%= hidden_field_tag :area_id %>
       </div>
-    </fieldset>
+    </div>
     <div class="form-group row">
       <%= f.label :address, "Street and number", class: 'form-control-label col-sm-2' %>
       <div class="col-sm-10">
-        <%= f.text_field :address, {placeholder: "221B Baker Street", class: 'form-control'} %>
+        <%= f.text_field :address, { placeholder: "221B Baker Street", class: 'form-control' } %>
       </div>
     </div>
     <%= f.fields_for :organisation do |g| %>
       <div class="form-group row">
         <%= f.label :organisation_name, "Who put the plaque up?", class: 'form-control-label col-sm-2' %>
         <div class="col-sm-10">
-          <%= text_field_tag :organisation_name, "", {placeholder: "English Heritage", class: 'form-control'} %>
+          <%= text_field_tag :organisation_name, "", { placeholder: "English Heritage", class: 'form-control' } %>
           <%= hidden_field_tag(:organisation_id) %>
         </div>
       </div>
@@ -144,21 +144,21 @@
       </div>
     <% end %>
     <div class="form-group row">
-      <label class="form-control-label col-sm-2"><%= t '.what_colour' %></label>
+      <label class="form-control-label col-sm-2"><%= t('.what_colour') %></label>
       <div class="col-sm-10">
         <% @common_colours.each do |colour| %>
           <div class="row radio">
             <%= f.radio_button :colour_id, colour.id %>
-            <%= f.label "colour_id_" + colour.id.to_s, colour.name, class: colour.name.downcase %>
+            <%= f.label "colour_id_#{colour.id.to_s}", colour.name, class: colour.name.downcase %>
           </div>
         <% end %>
         <div class="row radio other">
-          <%= f.radio_button :colour_id, "other" %>
+          <%= f.radio_button :colour_id, 'other' %>
           <%= f.label :colour_id_other, "other:" %>
           <%= f.collection_select :other_colour_id, @other_colours, :id, :name, include_blank: true %>
         </div>
         <div class="row radio unknown">
-          <%= f.radio_button :colour_id, "nil", checked: true %>
+          <%= f.radio_button :colour_id, 'nil', checked: true %>
           <%= f.label :colour_id_nil, "unknown" %>
         </div>
       </div>
@@ -167,9 +167,9 @@
   <% end %>
 <% else %>
   <div class="row">
-    <p><%= t '.lets_check' %></p>
+    <p><%= t('.lets_check') %></p>
   </div>
   <div class="row">
-    <%= render partial: "search/search_form", locals: { phrase: @phrase } %>
+    <%= render partial: 'search/search_form', locals: { phrase: @phrase } %>
   </div>
 <% end %>

@@ -40,7 +40,7 @@
 <% end %>
 
 <% if @recent_plaques %>
-  <h2><%= t '.recently_photographed' %></h2>
+  <h2><%= @recent_plaques.count %> <%= t '.recently_photographed' %></h2>
   <div class="card-columns">
     <%= render partial: 'plaques/tile', collection: @recent_plaques, as: :plaque %>
   </div>

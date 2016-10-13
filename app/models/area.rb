@@ -5,9 +5,12 @@
 #
 # === Attributes
 # * +name+ - the area's common name (not neccessarily 'official')
-# * +slug+ - an identifier used in URLs. Normally a lower-cased version of name, with spaces replaced by underscores
-# * +latitude+ - Mean location of plaques
-# * +longitude+ - Mean location of plaques
+# * +created_at+
+# * +updated_at+
+# * +dbpedia_uri+ - uri to link to DBPedia record
+# * +slug+ - a textual identifier, usually equivalent to its name in lower case, with spaces replaced by underscores. Used in URLs.
+# * +latitude+ - mean location of plaques
+# * +longitude+ - mean location of plaques
 # * +plaques_count+ - cached count of plaques
 class Area < ActiveRecord::Base
 

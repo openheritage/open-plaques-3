@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160303075534) do
+ActiveRecord::Schema.define(version: 20161013092623) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -94,6 +94,7 @@ ActiveRecord::Schema.define(version: 20160303075534) do
     t.integer  "sponsorships_count", default: 0
     t.float    "latitude"
     t.float    "longitude"
+    t.integer  "language_id"
   end
 
   add_index "organisations", ["name"], name: "index_organisations_on_name", using: :btree
@@ -184,6 +185,7 @@ ActiveRecord::Schema.define(version: 20160303075534) do
   end
 
   add_index "photos", ["licence_id"], name: "index_photos_on_licence_id", using: :btree
+  add_index "photos", ["person_id"], name: "index_photos_on_person_id", using: :btree
   add_index "photos", ["photographer"], name: "index_photos_on_photographer", using: :btree
   add_index "photos", ["plaque_id"], name: "index_photos_on_plaque_id", using: :btree
 

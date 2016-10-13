@@ -4,10 +4,14 @@
 # an optional url for more details (e.g. a news article about an unveiling)
 # and optional image url to show in the to do lists
 # === Attributes
-# * +description+ - Details of what needs doing.
-# * +action+ - The type of action required (adding a plaque, geo-tagging, transcribing etc.)
-# * +url+ - A url with more information. Optional
-# * +image_url+ - A picture to show with the todo item. Optional.
+# * +description+ - details of what needs doing.
+# * +action+ - type of action required (adding a plaque, geo-tagging, transcribing etc.)
+# * +url+ - url with more information. Optional
+# * +image_url+ - picture to show with the todo item. Optional.
+# * +plaque_id+ - plaque referred to. Optional.
+# * +user_id+ - [not used]
+# * +created_at+
+# * +updated_at+
 class TodoItem < ActiveRecord::Base
 
   validates_presence_of :action, :description

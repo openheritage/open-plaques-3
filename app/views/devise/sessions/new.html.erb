@@ -2,19 +2,19 @@
 <% content_for :title, t('.sign_in', default: "Sign in") %>
 
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-	<fieldset class="form-group">
+	<div class="form-group">
 		<%= f.label :email %>
 		<%= f.email_field :email, autofocus: true, class: 'form-control'  %>
-	</fieldset>
-	<fieldset class="form-group">
+	</div>
+	<div class="form-group">
 		<%= f.label :password %>
 		<%= f.password_field :password, class: 'form-control'  %>
-	</fieldset>
+	</div>
 	<% if devise_mapping.rememberable? -%>
-  	<fieldset class="form-group">
+  	<div class="form-group">
 		  <%= f.label :remember_me %>
 			<%= f.check_box :remember_me, class: 'form-control' %>
-		</fieldset>
+		</div>
 	<% end %>
 	<%= f.submit t('.sign_in', default: "Sign in"), class: 'btn btn-primary' %>
 <% end %>

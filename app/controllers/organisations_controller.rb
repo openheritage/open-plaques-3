@@ -3,10 +3,11 @@ class OrganisationsController < ApplicationController
   before_filter :authenticate_admin!, only: :destroy
   before_filter :authenticate_user!, except: [:autocomplete, :index, :show]
   before_filter :find, only: [:edit, :update]
+  before_filter :find_languages, only: [:edit, :create]
 
   def index
-    @organisations = Organisation.all.select(:name,:slug,:sponsorships_count).order("name ASC")
-    @top_10 = Organisation.all.select(:name,:slug,:sponsorships_count).order("sponsorships_count DESC").limit(10)
+    @organisations = Organisation.all.select(:name, :slug, :sponsorships_count, :language_id).order("name ASC")
+    @top_10 = Organisation.all.select(:name, :slug, :sponsorships_count).order("sponsorships_count DESC").limit(10)
     respond_to do |format|
       format.html
       format.json { render json: @organisations }
@@ -87,6 +88,10 @@ class OrganisationsController < ApplicationController
       end
     end
 
+    def find_languages
+      @languages = Language.order(name: :desc)
+    end
+
   private
 
     def help
@@ -107,6 +112,8 @@ class OrganisationsController < ApplicationController
         :streetview_url,
         :website,
         :description,
-        :notes)
+        :notes,
+        :language_id,
+        )
     end
 end

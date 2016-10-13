@@ -1,7 +1,10 @@
 # A commemoration of a subject on a plaque. This acts as a 'join' between the two.
 # === Attributes
+# * +created_at+
+# * +updated_at+
 # * +started_at+ - when the person started doing what they did at the place
 # * +ended_at+ - when the person stopped doing what they did at the place
+# * +plaque_connections_count+ - Cached count of plaques
 class PersonalConnection < ActiveRecord::Base
 
   belongs_to :person, counter_cache: true
