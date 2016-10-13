@@ -2,22 +2,22 @@
 <% content_for(:title) {t '.page_heading'} %>
 
 <%= form_for @page do |f| %>
-  <fieldset class="form-group row">
+  <div class="form-group row">
     <%= f.label :name, class: 'form-control-label col-sm-2' %>
     <div class="col-sm-10">
     <%= f.text_field :name, class: 'form-control' %>
     </div>
-  </fieldset>
-  <fieldset class="form-group row">
+  </div>
+  <div class="form-group row">
     <%= f.label :slug, class: 'form-control-label col-sm-2' %>
     <div class="col-sm-10">
     <%= f.text_field :slug, class: 'form-control' %>
     </div>
-  </fieldset>
-  <fieldset class="form-group row">
+  </div>
+  <div class="form-group row">
     <div class="col-sm-12">
     <%= f.text_area :body, {rows: "40", cols: "80", class: 'form-control'} %>
     </div>
-  </fieldset>
+  </div>
   <%= f.submit t('buttons.save'), class: 'btn btn-primary' %>
 <% end %>

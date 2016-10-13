@@ -6,7 +6,9 @@
 # * +feature_on+ - (optional) a specific date to show this plaque, e.g. someone's birthday
 # * +last_featured+ - when the plaque was last featured
 # * +featured_count+ - number of times the plaque has been featured
-# * +proposer+ - who to say proposed it
+# * +created_at+
+# * +updated_at+
+# * +proposer+ - person who proposed it
 class Pick < ActiveRecord::Base
 
   belongs_to :plaque
@@ -41,7 +43,7 @@ class Pick < ActiveRecord::Base
   end
 
   def title
-    "Pick #" + self.id.to_s + " " + self.plaque.title
+    "Pick ##{self.id.to_s} #{self.plaque.title}" 
   end
 
   def longitude

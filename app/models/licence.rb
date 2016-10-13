@@ -5,9 +5,6 @@
 # * +url+ - a permanent URL at which the licence.
 # * +allows_commercial_reuse+ - commercial usage rights
 # * +photos_count+ - cached count of photos
-#
-# === Associations
-# * Photos - photographed which are published under this licence
 class Licence < ActiveRecord::Base
 
   has_many :photos

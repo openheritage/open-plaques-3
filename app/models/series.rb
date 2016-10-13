@@ -1,9 +1,13 @@
 # A series of commemorative plaques
-# A series name is often marked on the plaque itself
-#
+# This is often marked on the plaque itself
 # === Attributes
 # * +name+ - The name of the series (as it appears on the plaques).
 # * +description+ - A description of when amd why a series was erected.
+# * +created_at+
+# * +updated_at+
+# * +plaques_count+
+# * +latitude+
+# * +longitude+
 class Series < ActiveRecord::Base
 
   has_many :plaques

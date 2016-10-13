@@ -1,5 +1,7 @@
 # A connection between a subject and a role.
 # === Attributes
+# * +created_at+
+# * +updated_at+
 # * +started_at+ - when the person started doing what they did at the place
 # * +ended_at+ - when the person stopped doing what they did at the place
 # * +ordinal+ - whether they were the first, second, third, or not stated
@@ -37,5 +39,5 @@ class PersonalRole < ActiveRecord::Base
     end
     n
   end
-  
+
 end

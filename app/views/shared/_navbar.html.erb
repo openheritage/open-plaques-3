@@ -1,30 +1,28 @@
-<banner class="navbar navbar-light bg-faded container">
-  <nav>
+<banner class="bg-faded container">
+  <nav class="navbar navbar-light">
     <div class="navbar-header">
-      <%= link_to(image_tag("openplaques.png"), root_path, class: "navbar-brand") %>
+      <%= link_to image_tag("openplaques.png"), root_path, class: 'navbar-brand' %>
       <div class="pull-right"><%= user_menu %></div>
     </div>
     <ul class="nav navbar-nav pull-left">
-      <%= navbar_link_to("Home", root_path, active_when: { controller: :home }) %>
-      <%= navbar_link_to(t('menu.about'), about_path, active_when: { controller: :pages }) %>
-      <%= navbar_link_to(t('menu.people'), people_path, active_when: { controller: :people_by_index }) %>
-      <%= navbar_link_to(t('menu.places'), countries_path, active_when: { controller: :people }) %>
-      <%= navbar_link_to(t('menu.organisations'), organisations_path, active_when: { controller: :organisations }) %>
-      <%= navbar_link_to(t('menu.photographers'), photographers_path, active_when: { controller: :photographers }) %>
+      <%= navbar_link_to t('menu.home'), root_path, active_when: { controller: :home } %>
+      <%= navbar_link_to t('menu.about'), about_path, active_when: { controller: :pages } %>
+      <%= navbar_link_to t('menu.people'), people_path, active_when: { controller: :people_by_index } %>
+      <%= navbar_link_to t('menu.places'), countries_path, active_when: { controller: :people } %>
+      <%= navbar_link_to t('menu.organisations'), organisations_path, active_when: { controller: :organisations } %>
+      <%= navbar_link_to t('menu.photographers'), photographers_path, active_when: { controller: :photographers } %>
       <% if current_user && current_user.is_admin? %>
-      <%= navbar_link_to(t('menu.roles'), roles_path, active_when: { controller: :roles }) %>
-      <%= navbar_link_to(t('menu.verbs'), verbs_path, active_when: { controller: :verbs }) %>
-      <%= navbar_link_to(t('menu.todo_lists'), "/todo", active_when: { controller: :todo }) %>
+        <%= navbar_link_to t('menu.roles'), roles_path, active_when: { controller: :roles } %>
+        <%= navbar_link_to t('menu.verbs'), verbs_path, active_when: { controller: :verbs } %>
+        <%= navbar_link_to t('menu.todo_lists'), "/todo", active_when: { controller: :todo } %>
       <% end %>
-      <%= navbar_link_to(t('menu.contribute'), contribute_path, active_when: { controller: :pages }) %>
+      <%= navbar_link_to t('menu.contribute'), contribute_path, active_when: { controller: :pages } %>
     </ul>
-  </nav>
-  <%= render 'shared/search' %>
-  <% if current_user && current_user.is_admin? %>
-    <nav class="navbar navbar-light bg-faded" id="admin-menu">
-      <ul class="nav navbar-nav">
+    <% if current_user && current_user.is_admin? %>
+      <ul class="nav navbar-nav pull-left">
         <%= yield :admin_menu %>
       </ul>
-    </nav>
-  <% end %>
+    <% end %>
+  </nav>
+  <%= render 'shared/search' %>
 </banner>

@@ -1,16 +1,25 @@
 # A subject commemorated on a plaque
 # === Attributes
-# * +name+ - The common full name of the person.
-# * +wikipedia_url+ - An override link to the person's Wikipedia page (if they have one and it isn't linked to via their name).
-# * +dbpedia_uri+ - A link to the DBpedia resource representing the person (if one exists).
-# * +born_on+ - The date on which the person was born. Optional.
-# * +died_on+ - The date on which the person died. Optional.
-# * +born_on_is_circa+ - True or False. Whether the +born_on+ date is 'circa' or not. Optional.
-# * +died_on_is_circa+ - True or False. Whether the +died_on+ date is 'circa' or not. Optional.
+# * +name+ - common full name of the person
+# * +born_on+ - date on which the person was born [Optional]
+# * +died_on+ - The date on which the person died [Optional]
+# * +plaques_count+ - cached count of plaques
+# * +created_at+
+# * +updated_at+
 # * +personal_connections_count+ - cached count of associations with plaques, i.e. places and times
 # * +personal_roles_count+ - cached count of roles
-# * +aka+ - Array of names that person is also known as
+# * +index+
+# * +born_on_is_circa+ - true or false. Whether the +born_on+ date is 'circa' or not [Optional]
+# * +died_on_is_circa+ - true or false. Whether the +died_on+ date is 'circa' or not [Optional]
+# * +wikipedia_url+ - override link to the person's Wikipedia page (if they have one and it isn't linked to via their name).
+# * +dbpedia_uri+ - link to the DBpedia resource representing the person (if one exists).
+# * +wikipedia_paras+ - which paragraphs in Wikipedia to use as description
+# * +surname_starts_with+ - letter to index this person on
+# * +introduction+ -
 # * +gender+ - (u)nkown, (n)ot applicable, (m)ale, (f)emale
+# * +aka+ - array of names that person is also known as
+# * +find_a_grave_id+ - link to Find A Grave web site
+# * +ancestry_id+ - link to Ancestry.com web site
 require 'rubygems'
 require 'open-uri'
 #require 'rdf/ntriples'

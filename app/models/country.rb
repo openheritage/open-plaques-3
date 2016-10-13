@@ -1,13 +1,13 @@
 # A top-level region definition as defined by the ISO country codes specification.
 # === Attributes
 # * +name+ - the country's common name (not necessarily its official one).
-# * +alpha2+ - 2-letter ISO standard code. Used in URLs.
-# * +description+ - commentary on how this region commemorates subjects
-# * +dbpedia_uri+ - uri to link to DBPedia record
 # * +areas_count+ - cached count of areas
 # * +plaques_count+ - cached count of plaques
+# * +dbpedia_uri+ - uri to link to DBPedia record
+# * +alpha2+ - 2-letter ISO standard code. Used in URLs.
 # * +created_at+
 # * +updated_at+
+# * +description+ - commentary on how this region commemorates subjects
 class Country < ActiveRecord::Base
 
   has_many :areas

@@ -1,12 +1,12 @@
 # The main colour (or physical attribute) of a plaque
 # === Attributes
 # * +name+ - the colour's common name (eg 'blue').
-# * +slug+ - An textual identifier for the colour, usually equivalent to its name in lower case, with spaces replaced by underscores. Used in URLs.
-# * +common+ - whether this is a commonly used colour
 # * +plaques_count+ - cached count of plaques
-#
-# === Associations
-# * Plaques - plaques which use this colour.
+# * +created_at+
+# * +updated_at+
+# * +dbpedia_uri+ - uri to link to DBPedia record
+# * +common+ - whether this is a commonly used colour
+# * +slug+ - textual identifier, usually equivalent to its name in lower case, with spaces replaced by underscores. Used in URLs.
 class Colour < ActiveRecord::Base
 
   has_many :plaques

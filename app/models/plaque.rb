@@ -5,15 +5,23 @@
 # place, as well as plaques that commemorate buildings, events, and so on.
 #
 # === Attributes
-# * +inscription+ - The text inscription on the plaque.
-# * +inscription_is_stub+ - The inscription is incomplete and needs entering.
 # * +erected_at+ - The date on which the plaque was erected. Optional.
+# * +latitude+ - location (as a decimal in WSG-84 projection). Optional.
+# * +longitude+ - location (as a decimal in WSG-84 projection). Optional.
+# * +created_at+
+# * +updated_at+
+# * +inscription+ - The text inscription on the plaque.
 # * +reference+ - An official reference number or identifier for the plaque. Sometimes marked on the actual plaque itself, sometimes only in promotional material. Optional.
-# * +latitude+ - The latitude of the plaque's location (as a decimal in WSG-84 projection). Optional.
-# * +longitude+ - The longitude of the plaque's location (as a decimal in WSG-84 projection). Optional.
 # * +notes+ - A general purpose notes field for internal admin and data-collection purposes.
+# * +parsed_inscription+ - (not used?)
+# * +photos_count+ -
+# * +description+ -
+# * +inscription_is_stub+ - The inscription is incomplete and needs entering.
+# * +personal_connections_count+ -
+# * +is_accurate_geolocation+ -
 # * +is_current+ - Whether the plaque is currently on display (or has it been stolen!)
 # * +inscription_in_english+ - Manual translation
+# * +series_ref+ - if part of a series does it have a reference number/id?
 # * +address+ - the physical street address
 class Plaque < ActiveRecord::Base
 

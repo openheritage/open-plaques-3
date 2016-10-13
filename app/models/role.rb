@@ -1,14 +1,18 @@
 # A role ascribed to a subject.
 # These can be professions (eg 'doctor'), occupations ('artist'), or activities ('inventor').
-#
 # === Attributes
-# * +name+ - The name of the role.
-# * +role_type+ - The classification of the role (see self.types for choice)
-# * +wikipedia_stub+ - url of a relevant Wikipedia page
+# * +name+ - what the role is called
+# * +created_at+
+# * +updated_at+
+# * +personal_roles_count+ - number of people with this role
 # * +index+ - letter indexed on
+# * +slug+ -
+# * +wikipedia_stub+ - url of a relevant Wikipedia page
+# * +role_type+ - The classification of the role (see self.types for choice)
 # * +abbreviation+ - acronym etc. when a role is commonly abbreviated, especially awards, e.g. Victoria Cross == VC
 # * +prefix+ - word(s) to display as part of a title in a name
 # * +suffix+ - word(s) to display as part of letters after a name
+# * +description+
 class Role < ActiveRecord::Base
 
   has_many :personal_roles, -> { order('started_at') }

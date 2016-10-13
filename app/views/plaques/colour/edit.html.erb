@@ -10,9 +10,9 @@
 <%= render 'plaques/edit_bar', plaque: @plaque %>
 
 <%= form_for @plaque do |f| %>
-  <fieldset class="form-group">
+  <div class="form-group">
     <%= f.label :colour_id, t('.colour_label') %>
     <%= f.collection_select :colour_id, @colours, :id, :name, {class: 'form-control', include_blank: true} %>
-  </fieldset>
+  </div>
   <%= f.submit t('buttons.save'), class: 'btn btn-primary' %>
 <% end %>

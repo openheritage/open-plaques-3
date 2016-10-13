@@ -1,7 +1,8 @@
 # A verb connecting a subject with a location, eg 'lived', 'worked' or 'played'.
-#
 # === Attributes
 # * +name+ - The name of the verb, in past tense, eg 'lived'.
+# * +created_at+
+# * +updated_at+
 # * +personal_connections_count+ - cached count of people connected to this verb
 class Verb < ActiveRecord::Base
 
@@ -26,7 +27,7 @@ class Verb < ActiveRecord::Base
   end
 
   def uri
-    "http://openplaques.org" + Rails.application.routes.url_helpers.verb_path(self, format: :json)
+    "https://openplaques.org" + Rails.application.routes.url_helpers.verb_path(self, format: :json)
   end
 
   def as_json(options=nil)
