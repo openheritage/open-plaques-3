@@ -15,8 +15,6 @@
   </p>
 <% end %>
 
-<%= render @organisation %>
-
 <% if @organisation.geolocated? %>
   <div id="plaque-map" data-latitude="<%= @organisation.latitude %>" data-longitude="<%= @organisation.longitude %>" data-view="all" context="<%= request.path %>"></div>
 <% end %>
