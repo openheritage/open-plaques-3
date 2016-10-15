@@ -13,6 +13,12 @@ class Language < ActiveRecord::Base
   validates_uniqueness_of :name
   scope :most_plaques_order, -> { order("plaques_count DESC nulls last") }
 
+  def flag_icon
+    fi = "flag-icon-#{alpha2}"
+    fi = "flag-icon-ie" if alpha2 == 'ga'
+    fi
+  end
+
   def to_param
     alpha2
   end

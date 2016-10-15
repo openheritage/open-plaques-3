@@ -4,7 +4,7 @@
       <% if organisation.language_id == nil || organisation.language.alpha2 == 'en-GB' || organisation.language.alpha2 == 'en' %>
         <%= link_to(organisation.name, organisation) %>
       <% else %>
-        <span class="flag-icon flag-icon-<%= organisation.language.alpha2 %>"></span>
+        <span class="flag-icon <%= organisation.language.flag_icon %>"></span>
         <%= link_to(content_tag('span', organisation.name, lang: organisation.language.alpha2), organisation) %>
       <% end %>
     </h4>
