@@ -12,7 +12,11 @@
     </div>
   <% end %>
   <div class="col-xs-9">
-    <h7 class="card-title"><%= plaque.inscription %></h7>
+    <h7 class="card-title">
+      <% if controller.controller_name.eql?('series') && !plaque.series_ref.to_s.empty? %>
+        <span class="tag tag-success">#<%= plaque.series_ref %> </span>
+      <% end %>
+      <%= plaque.inscription %></h7>
     <% if plaque.foreign? && plaque.inscription_in_english %>
       <p id="inscription-in-english" class="card-text"><small><%= plaque.inscription_in_english %></small></p>
     <% end %>
