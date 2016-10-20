@@ -41,8 +41,7 @@ Rails.application.routes.draw do
     resource :plaques, controller: :country_plaques, only: :show
     resources :areas do
       resource :plaques, controller: :area_plaques, only: :show
-      resource :unphotographed, controller: :area_plaques, id: 'unphotographed', only: :show
-#      resource :ungeolocated, controller: :area_plaques, id: 'ungeolocated', only: :show
+      match 'plaques/:filter' => 'area_plaques#show', via: [:get]
     end
   end
 
@@ -56,6 +55,7 @@ Rails.application.routes.draw do
     end
     resource :plaques, controller: :organisation_plaques, only: :show
     match 'plaques/tiles/:zoom/:x/:y' => 'organisation_plaques#show', constraints: { zoom: /\d{2}/, x: /\d+/, y: /\d+/ }, via: [:get]
+    match 'plaques/:filter' => 'organisation_plaques#show', via: [:get]
   end
 
   scope '/unveilings' do
