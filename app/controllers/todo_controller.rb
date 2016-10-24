@@ -12,7 +12,7 @@ class TodoController < ApplicationController
     @plaques_to_add_count = TodoItem.to_add.count
     @lists_to_datacapture = TodoItem.to_datacapture.count
 #   @detailed_address_no_geo_count = Plaque.detailed_address_no_geo.count
-    @no_connection_count = Plaque.no_connection.count
+    @no_connection_count = Plaque.unconnected.count
     @partial_inscription_count = Plaque.partial_inscription.count
     @partial_inscription_photo_count = Plaque.partial_inscription_photo.count
     @no_roles_count = Person.no_role.count
@@ -49,7 +49,7 @@ class TodoController < ApplicationController
         render :lists_to_datacapture
 
       when 'no_connection'
-        @plaques = Plaque.no_connection.paginate(page: params[:page], per_page: 100)
+        @plaques = Plaque.unconnected.paginate(page: params[:page], per_page: 100)
         render :no_connection
 
       when 'partial_inscription'

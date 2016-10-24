@@ -43,14 +43,16 @@ class Plaque < ActiveRecord::Base
   accepts_nested_attributes_for :photos, reject_if: proc { |attributes| attributes['photo_url'].blank? }
   scope :current, -> { where(is_current: true).order('id desc') }
   scope :geolocated, ->  { where(["plaques.latitude IS NOT NULL"]) }
-  scope :ungeolocated, -> { where(latitude: nil).order("id DESC") }
+  scope :ungeolocated, -> { where(latitude: nil).order('id DESC') }
   scope :photographed, -> { where("photos_count > 0") }
   scope :unphotographed, -> { where(photos_count: 0, is_current: true).order("id DESC") }
   scope :coloured, -> { where("colour_id IS NOT NULL") }
+  scope :uncoloured, -> { where(colour_id: nil) }
   scope :photographed_not_coloured, -> { where(["photos_count > 0 AND colour_id IS NULL"]) }
   scope :geo_no_location, -> { where(["latitude IS NOT NULL AND address IS NULL"]) }
   scope :detailed_address_no_geo, -> { where(latitude: nil).where("address is not null") }  # TODO fix this
-  scope :no_connection, -> { where(personal_connections_count: 0).order("id DESC") }
+  scope :unconnected, -> { where(personal_connections_count: 0).order("id DESC") }
+  scope :connected, -> { where("personal_connections_count > 0").order("id DESC") }
   scope :no_description, -> { where("description = '' OR description IS NULL") }
   scope :partial_inscription, -> { where(inscription_is_stub: true).order("id DESC") }
   scope :partial_inscription_photo, -> { where(photos_count: 1..99999, inscription_is_stub: true).order("id DESC") }
