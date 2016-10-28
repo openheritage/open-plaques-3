@@ -6,6 +6,7 @@ class PlaqueCsv < Julia::Builder
   column :longitude
   column 'country' do |plaque| plaque.area ? plaque.area.country.name : '' end
   column 'area' do |plaque| plaque.area ? plaque.area.name : '' end
+  column :address
   column 'erected' do |plaque| plaque.erected_at ? plaque.erected_at.year.to_s : '' end
   column 'main_photo' do |plaque| plaque.main_photo ? plaque.main_photo.file_url : '' end
   column 'colour' do |plaque| plaque.colour ? plaque.colour.name : '' end
