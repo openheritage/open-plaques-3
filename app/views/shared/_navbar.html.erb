@@ -17,6 +17,7 @@
         <%= navbar_link_to t('menu.todo_lists'), "/todo", active_when: { controller: :todo } %>
       <% end %>
       <%= navbar_link_to t('menu.contribute'), contribute_path, active_when: { controller: :pages } %>
+      <%= navbar_link_to t('menu.data'), about_the_data_path, active_when: { controller: :pages } %>
     </ul>
     <% if current_user && current_user.is_admin? %>
       <ul class="nav navbar-nav pull-left">
