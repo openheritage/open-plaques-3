@@ -447,8 +447,8 @@ en-GB:
         page_heading: Which organisations were involved in erecting this plaque?
     show:
       english_translation: English translation
-      does_not_exist: We believe that this plaque no longer exists
-      not_erected: This plaque has not been erected yet
+      does_not_exist: Plaque is missing
+      not_erected: Has not been erected yet
       approximate_position: This is an approximate position
       how_to_add_yours: How to add yours
     create:
