@@ -20,8 +20,9 @@ class Organisation < ActiveRecord::Base
   before_validation :make_slug_not_war, :find_centre
   validates_presence_of :name, :slug
   validates_uniqueness_of :slug
-  scope :name_starts_with, lambda {|term| where(["lower(name) LIKE ?", term.downcase + "%"]) }
-  scope :name_contains, lambda {|term| where(["lower(name) LIKE ?", "%" + term.downcase + "%"]) }
+  validates :name, exclusion: { in: %w(unknown unkown Unknown Unknown), message: "just leave it blank" }
+  scope :name_starts_with, lambda { |term| where(["lower(name) LIKE ?", term.downcase + "%"]) }
+  scope :name_contains, lambda { |term| where(["lower(name) LIKE ?", "%" + term.downcase + "%"]) }
 
   include ApplicationHelper
   include PlaquesHelper
@@ -32,12 +33,12 @@ class Organisation < ActiveRecord::Base
 
   def most_prevelant_colour
     @plaques = self.plaques
-    most_prevelant_colour = @plaques.map {|i| (i.colour.nil? || i.colour.name) || "" }.group_by {|col| col }.max_by(&:size)
+    most_prevelant_colour = @plaques.map { |i| (i.colour.nil? || i.colour.name) || "" }.group_by {|col| col }.max_by(&:size)
     @colour = most_prevelant_colour ? most_prevelant_colour.first : ""
   end
 
   def find_centre
-    if !geolocated?
+    unless geolocated?
       @mean = find_mean(self.plaques)
       self.latitude = @mean.latitude
       self.longitude = @mean.longitude
