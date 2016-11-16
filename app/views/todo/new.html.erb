@@ -1,16 +1,13 @@
 <% content_for :page_title, "Add a list to be datacaptured" %>
+<% content_for :title, "Add a list to be datacaptured" %>
+<% content_for(:admin_menu) {navbar_link_to("All to-do lists", "/todo")} %>
 
-<div class="panel">
-  <h1>Add a todo</h1>
-
-  <%= form_for :todo, url: url_for(controller: "todo", action: :create) do |f| -%>
-    <p><%= f.label :action %><br/>
-    <%= f.text_field :action %></p>
-    <p><%= f.label :description %><br/>
-    <%= f.text_field :description %></p>
-    <p><%= f.label :url %><br/>
-    <%= f.text_field :url %></p>
-    <p><%= f.submit "Add" %></p>
-  <% end %>
-
-</div>
+<%= form_for :todo, url: url_for(controller: "todo", action: :create) do |f| -%>
+  <p><%= f.label :action %><br/>
+  <%= f.text_field :action %></p>
+  <p><%= f.label :description %><br/>
+  <%= f.text_field :description %></p>
+  <p><%= f.label :url %><br/>
+  <%= f.text_field :url %></p>
+  <p><%= f.submit "Add" %></p>
+<% end %>

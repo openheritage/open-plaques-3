@@ -38,8 +38,14 @@ class Person < ActiveRecord::Base
 
   validates_presence_of :name
   before_save :update_index
-  scope :no_role, -> { where(personal_roles_count: [nil,0]) }
-  scope :no_dates, -> { where('born_on IS NULL and died_on IS NULL') }
+  scope :roled, -> { where("personal_roles_count > 0").order("id DESC") }
+  scope :unroled, -> { where(personal_roles_count: [nil,0]) }
+  scope :dated, -> { where("born_on IS NOT NULL or died_on IS NOT NULL") }
+  scope :undated, -> { where("born_on IS NULL and died_on IS NULL") }
+  scope :photographed, joins(:main_photo)
+  scope :unphotographed, -> { where("id not in (select person_id from photos)").order("id DESC") }
+  scope :connected, -> { where("personal_connections_count > 0").order("id DESC") }
+  scope :unconnected, -> { where(personal_connections_count: [nil,0]).order("id DESC") }
   scope :name_starts_with, lambda {|term| where(["lower(name) LIKE ?", term.downcase + "%"]) }
   scope :name_contains, lambda {|term| where(["lower(name) LIKE ?", "%" + term.downcase + "%"]) }
 

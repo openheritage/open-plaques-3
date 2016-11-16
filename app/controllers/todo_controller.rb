@@ -15,7 +15,7 @@ class TodoController < ApplicationController
     @no_connection_count = Plaque.unconnected.count
     @partial_inscription_count = Plaque.partial_inscription.count
     @partial_inscription_photo_count = Plaque.partial_inscription_photo.count
-    @no_roles_count = Person.no_role.count
+    @no_roles_count = Person.unroled.count
     @needs_geolocating_count = Plaque.ungeolocated.count
     @no_description_count = Plaque.no_description.count
   end
@@ -69,7 +69,7 @@ class TodoController < ApplicationController
         redirect_to "/todo/plaques_to_add"
 
       when 'no_roles'
-        @people = Person.no_role.paginate(page: params[:page], per_page: 100)
+        @people = Person.unroled.paginate(page: params[:page], per_page: 100)
         render :no_roles
 
       when 'needs_geolocating'
@@ -108,7 +108,7 @@ class TodoController < ApplicationController
             end
           when 2
             puts 'no_role'
-            @people = Person.no_role
+            @people = Person.unroled
             @person = @people[rand @people.length]
             if (@person)
               @roles = Role.all.order(:name)

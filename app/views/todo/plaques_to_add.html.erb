@@ -1,26 +1,22 @@
 ﻿<% content_for :page_title, "To do: plaques to be added" %>
+<% content_for :title, "Plaques to be added" %>
+<% content_for(:admin_menu) {navbar_link_to("All to-do lists", "/todo")} %>
 
-<div class="panel">
-  <h1>Plaques to be added</h1>
-  <section class="admin_panel"><%= link_to("All to-do lists", "/todo") %></section>
-  <p>These plaques have been found on the internet, <%= link_to("and need adding to the site", new_plaque_path) %>
-  <ul class="todo_add">
-    <% @plaques_to_add.each do |item| %>
-    <li>
-      <% if item.image_url == nil %>
-        <%= link_to(item.description, item.url) %>
-        <% else %>
-        <%= link_to(image_tag(item.image_url, {alt: item.description}), item.url) %>
-      <% end  %>
-
-      <%= button_to("Delete", todo_path(item), {method: :delete, class: :delete}) if current_user %>
-
-    </li>
-    <% end %>
-  </ul>
-  </p>
-  <p>
-    <%= link_to("Add new plaque", new_plaque_path) %>
-    <%= link_to("Fetch more from Flickr", "/todo/fetch_from_flickr") %>
-  </p>
-</div>
+<p>These plaques have been found on the internet, <%= link_to("and need adding to the site", new_plaque_path) %>
+<ul class="todo_add">
+  <% @plaques_to_add.each do |item| %>
+  <li>
+    <% if item.image_url == nil %>
+      <%= link_to(item.description, item.url) %>
+      <% else %>
+      <%= link_to(image_tag(item.image_url, {alt: item.description}), item.url) %>
+    <% end  %>
+    <%= button_to("Delete", todo_path(item), {method: :delete, class: :delete}) if current_user %>
+  </li>
+  <% end %>
+</ul>
+</p>
+<p>
+  <%= link_to("Add new plaque", new_plaque_path) %>
+  <%= link_to("Fetch more from Flickr", "/todo/fetch_from_flickr") %>
+</p>
