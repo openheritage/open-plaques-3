@@ -3,13 +3,11 @@
 <% content_for(:admin_menu) {navbar_link_to("All to-do lists", "/todo")} %>
 
 <% if @people.size > 0 %>
-  <div class="container-fluid">
-    <%= will_paginate @people %>
-    <div class="card-columns">
-      <%= render @people %>
-    </div>
-    <%= will_paginate @people %>
+  <%= will_paginate @people %>
+  <div class="card-columns">
+    <%= render @people %>
   </div>
+  <%= will_paginate @people %>
 <% else %>
   <p>Every person has a role. Bravo!</p>
 <% end %>

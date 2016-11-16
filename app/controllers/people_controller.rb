@@ -2,10 +2,19 @@ class PeopleController < ApplicationController
 
   before_filter :authenticate_admin!, only: :destroy
   before_filter :authenticate_user!, except: [:autocomplete, :index, :show, :update]
-  before_filter :find, only: [:show, :edit, :update, :destroy]
+  before_filter :find, only: [:edit, :update, :destroy]
 
   def index
-    redirect_to(controller: :people_by_index, action: "show", id: "a")
+    if (params[:filter] && params[:filter]!='')
+      begin
+        @people = Person.send(params[:filter].to_s).paginate(page: params[:page], per_page: 50)
+        @display = params[:filter].to_s
+      rescue # an unrecognised filter method
+        redirect_to(controller: :people_by_index, action: "show", id: "a")
+      end
+    else
+      redirect_to(controller: :people_by_index, action: "show", id: "a")
+    end
   end
 
   def autocomplete
@@ -22,6 +31,11 @@ class PeopleController < ApplicationController
   end
 
   def show
+    if params[:id] =~ /\A\d+\Z/
+      @person = Person.find(params[:id])
+    else
+      redirect_to(controller: :people, action: "index", filter: params[:id]) and return
+    end
     respond_to do |format|
       format.html
       format.json { render json: @person }

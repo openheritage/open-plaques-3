@@ -1,13 +1,11 @@
-﻿<% content_for :page_title, "To do: areas from geolocations" %>
+﻿<% content_for :page_title, "To do: has geolocations but not area" %>
+<% content_for :title, "Plaques with no area" %>
+<% content_for(:admin_menu) {navbar_link_to("All to-do lists", "/todo")} %>
 
-<div class="panel">
-  <h1>Plaques with geolocations but no areas defined</h1>
-  <section class="admin_panel"><%= link_to("All to-do lists", "/todo") %></section>
-  <% if @plaques.size > 0 %>
-    <%= will_paginate @plaques %>
-    <%= render @plaques %>
-    <%= will_paginate @plaques %>
-  <% else %>
-    <p>Every plaque with a location has a geolocation. Bravo!</p>
-  <% end %>
-</div>
+<% if @plaques.size > 0 %>
+  <%= will_paginate @plaques %>
+  <%= render @plaques %>
+  <%= will_paginate @plaques %>
+<% else %>
+  <p>Every plaque with a location has a geolocation. Bravo!</p>
+<% end %>

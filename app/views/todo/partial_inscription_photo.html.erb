@@ -3,15 +3,13 @@
 <% content_for(:admin_menu) {navbar_link_to("All to-do lists", "/todo")} %>
 
 <% if @plaques.size > 0 %>
-  <div class="container-fluid">
-    <%= will_paginate @plaques %>
-    <div class="card-columns">
-      <% @plaques.each do |plaque| %>
-        <%= render plaque, action: 'edit' %>
-      <% end %>
-    </div>
-    <%= will_paginate @plaques %>
+  <%= will_paginate @plaques %>
+  <div class="card-columns">
+    <% @plaques.each do |plaque| %>
+      <%= render plaque, action: 'edit' %>
+    <% end %>
   </div>
+  <%= will_paginate @plaques %>
 <% else %>
   <p>Every plaque has an inscription. Bravo!</p>
 <% end %>
