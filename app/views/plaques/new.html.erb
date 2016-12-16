@@ -139,7 +139,7 @@
       <div class="form-group row">
         <p class="col-sm-2">and when?</p>
         <div class="col-sm-10">
-          <%= f.date_select :erected_at, include_blank: true, start_year: Time.now.year, end_year: 1800, field_name: :plaque_erected_at_year, order: [:year, :day, :month], class: 'form-control' %>
+          <%= f.date_select :erected_at, include_blank: true, start_year: Time.now.year + 1, end_year: 1800, field_name: :plaque_erected_at_year, order: [:year, :day, :month], class: 'form-control' %>
         </div>
       </div>
     <% end %>
