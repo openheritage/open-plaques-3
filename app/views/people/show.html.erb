@@ -75,12 +75,32 @@
     </div>
   <% end %>
 
-  <% if @person.group? && @person.non_family_relationships.size > 0 %>
-    <div class="card-columns">
-      <% @person.non_family_relationships.each do |relationship| %>
-        <%= render relationship.related_person %>
-      <% end %>
-    </div>
+  <% if @person.group? && @person.non_family_relationships.count > 0 %>
+    <% if @person.non_family_relationships.count < 3 %>
+      <div class="row">
+        <% @person.non_family_relationships.each do |relationship| %>
+          <div class="col-xs-6 col-sm-4 col-md-3">
+            <%= render relationship.related_person %>
+          </div>
+        <% end %>
+      </div>
+    <% elsif @person.non_family_relationships.count < 11 %>
+      <div class="row">
+        <% cols = (12 / @person.non_family_relationships.count).ceil %>
+        <% cols = [cols,2].max %>
+        <% @person.non_family_relationships.each do |relationship| %>
+          <div class="col-xs-6 col-sm-<%= cols %>">
+            <%= render relationship.related_person %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="card-columns">
+        <% @person.non_family_relationships.each do |relationship| %>
+          <%= render relationship.related_person %>
+        <% end %>
+      </div>
+    <% end %>
   <% end %>
 
   <% if @person.person? && @person.non_family_relationships.size > 0 %>
