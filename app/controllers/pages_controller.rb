@@ -46,6 +46,7 @@ class PagesController < ApplicationController
       params.require(:page).permit(
         :name,
         :slug,
+        :strapline,
         :body)
     end
 
