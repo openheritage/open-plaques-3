@@ -388,25 +388,25 @@ class Person < ActiveRecord::Base
   def female?
     if self.gender == 'u'
       self.gender = 'f' if roles.any?{|role| role.female?}
-      self.gender = 'f' if  self.name.start_with?(
+      self.gender = 'f' if self.name.start_with?(
       "Abigail","Adelaide","Adele","Ada","Agnes","Alice","Alison","Amalie","Amelia","Anastasia","Anna","Anne","Annie","Antoinette",
       "Beatriz","Bertha","Betty",
       "Caroline","Cäcilie","Charlotte","Clara","Constance",
       "Daisy","Deborah","Diana","Dolly","Doris","Dorothea",
-      "Edith","Elfriede","Elisabeth","Elise","Elizabeth","Ella","Ellen","Elly","Elsbeth","Elsa","Else","Emilie","Emma","Erika","Erna","Ernestine","Eva",
+      "Edith","Elfriede","Elisabeth","Elise","Elizabeth","Ella","Ellen","Elly","Elsbeth","Elsa","Else","Emilie","Emily","Emma","Erika","Erna","Ernestine","Eva",
       "Fanny","Flora","Florence","Franziska","Frida","Frieda",
       "Georgia","Georgina","Gerda","Gertrud","Gladys","Greta","Grete",
       "Hanna","Hattie","Hazel","Helen","Helene","Henrietta","Henriette","Herta","Hertha","Hilde","Hildegard",
       "Ida","Ilse","Irene","Irma",
-      "Jane","Janet","Jacqueline","Jeanne","Jenny","Johanna","Josephine","Julia","Julie",
+      "Jane","Janet","Jacqueline","Jeanne","Jenny","Jennifer","Johanna","Josephine","Julia","Julie",
       "Kate","Käte","Käthe","Kathleen","Klara",
-      "Letitia","Lidia","Lina","Lotte","Louisa","Lucie","Lucy","Luise",
-      "Mabel","Margaret","Margery","Margot","Marianne","Marie","Martha","Mary","Mathilde","May","Mercy","Meta","Minna",
+      "Laura","Letitia","Lidia","Lina","Liz","Lotte","Louisa","Lucie","Lucy","Luise",
+      "Mabel","Mala","Margaret","Margery","Margot","Marianne","Marie","Martha","Mary","Mathilde","May","Mercy","Meta","Minna","Monica","Monika",
       "Nancy, Nelly",
       "Olga",
       "Paloma","Paula","Pauline","Priscilla",
       "Rachel","Regina","Roberta","Rosa","Rose","Ruth",
-      "Sally","Sarah","Sara","Selma","Sophie","Susanna",
+      "Sally","Sarah","Sara","Selma","Shelley","Sophie","Susan","Susanna",
       "Toni","Therese",
       "Ursula",
       "Vera","Victoria","Violet","Virginia",
