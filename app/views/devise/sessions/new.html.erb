@@ -14,12 +14,13 @@
 			<%= f.password_field :password, class: 'form-control'  %>
 		</div>
 		<% if devise_mapping.rememberable? -%>
-	  	<div class="form-group">
-			  <%= f.label :remember_me %>
-				<%= f.check_box :remember_me, class: 'form-control' %>
+	  	<div class="checkbox">
+			  <label>
+					<%= f.check_box :remember_me %> <%= t('.remember_me', default: "Remember me") %>
+				</label>
 			</div>
 		<% end %>
-		<%= f.submit t('.sign_in', default: "Sign in"), class: 'btn btn-primary' %>
+		<%= f.submit t('.sign_in', default: "Sign in"), class: 'btn btn-primary btn-block' %>
 	<% end %>
 	<%= render partial: 'devise/shared/links' %>
 	</div>
