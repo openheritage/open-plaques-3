@@ -3,7 +3,7 @@
   Edit <%= link_to @plaque.title, plaque_path(@plaque) %>
 <% end %>
 <% content_for :page_subhead do %>
-  Created <%= @plaque.created_at.to_s(:long) %> and last updated <%= @plaque.updated_at.to_s(:long) %></p>
+  Created <%= @plaque.created_at %> and last updated <%= @plaque.updated_at %></p>
 <% end %>
 <%= render 'plaques/edit_bar', plaque: @plaque %>
 
