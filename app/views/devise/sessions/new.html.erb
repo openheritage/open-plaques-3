@@ -1,21 +1,27 @@
 <% content_for :page_title, t('.sign_in', default: "Sign in") %>
-<% content_for :title, t('.sign_in', default: "Sign in") %>
+<% content_for :title, nil %>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-	<div class="form-group">
-		<%= f.label :email %>
-		<%= f.email_field :email, autofocus: true, class: 'form-control'  %>
-	</div>
-	<div class="form-group">
-		<%= f.label :password %>
-		<%= f.password_field :password, class: 'form-control'  %>
-	</div>
-	<% if devise_mapping.rememberable? -%>
-  	<div class="form-group">
-		  <%= f.label :remember_me %>
-			<%= f.check_box :remember_me, class: 'form-control' %>
+<div class="row">
+	<div class="col-xs-0 col-sm-2 col-md-4"></div>
+	<div class="col-xs-12 col-sm-8 col-md-4">
+	<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+		<div class="form-group">
+			<%= f.label :email %>
+			<%= f.email_field :email, autofocus: true, class: 'form-control'  %>
 		</div>
+		<div class="form-group">
+			<%= f.label :password %>
+			<%= f.password_field :password, class: 'form-control'  %>
+		</div>
+		<% if devise_mapping.rememberable? -%>
+	  	<div class="form-group">
+			  <%= f.label :remember_me %>
+				<%= f.check_box :remember_me, class: 'form-control' %>
+			</div>
+		<% end %>
+		<%= f.submit t('.sign_in', default: "Sign in"), class: 'btn btn-primary' %>
 	<% end %>
-	<%= f.submit t('.sign_in', default: "Sign in"), class: 'btn btn-primary' %>
-<% end %>
-<%= render partial: 'devise/shared/links' %>
+	<%= render partial: 'devise/shared/links' %>
+	</div>
+	<div class="col-xs-0 col-sm-2 col-md-4"></div>
+</div>
