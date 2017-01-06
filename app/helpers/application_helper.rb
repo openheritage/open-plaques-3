@@ -152,8 +152,8 @@ end
 class CustomRender < Redcarpet::Render::HTML
   def paragraph(text)
     text.gsub!(/plaque ([0-9]+)/) { |match|
-      %(<a href="/plaques/#{match[7..-1]}">#{match}</a>)
+      %(<div class="col-xs-6 col-sm-4 col-md-3"><%= render Plaque.find(#{match[7..-1]}) %></div>)
     }
-    %(<p>#{text}</p>)
+    %(<div class="row">#{text}</div>)
   end
 end

@@ -1,7 +1,20 @@
 <% content_for(:page_title) {t '.page_title', page: @page.name} %>
-<% content_for(:title) {t '.page_heading', page: @page.name} %>
+<% content_for(:title) {nil} %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_page_path(@page.slug)} %>
 
 <div class="row">
-  <%= markdown(@page.body) %>
+	<div class="col-xs-0 col-sm-2 col-md-2"></div>
+	<div class="col-xs-12 col-sm-8 col-md-8">
+    <h1 class="blog-title"><%= @page.name %></h1>
+    <p class="lead blog-description"><%= @page.strapline %></p>
+  </div>
+  <div class="col-xs-0 col-sm-2 col-md-2"></div>
+</div>
+
+<div class="row">
+	<div class="col-xs-0 col-sm-2 col-md-2"></div>
+	<div class="col-xs-12 col-sm-8 col-md-8">
+    <%= ERB.new(markdown(@page.body)).result(binding).html_safe %>
+  </div>
+  <div class="col-xs-0 col-sm-2 col-md-2"></div>
 </div>
