@@ -166,7 +166,7 @@ L.TileLayer.GeoJSON = L.TileLayer.Ajax.extend({
     },
 
     _tileLoaded: function (tile) {
-        L.TileLayer.Ajax.prototype._tileLoaded.apply(this, arguments);
+  //      L.TileLayer.Ajax.prototype._tileLoaded.apply(this, arguments);
         if (tile.datum === null) { return null; }
         this.addTileData(tile.datum);
     }
