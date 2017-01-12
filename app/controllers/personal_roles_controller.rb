@@ -53,92 +53,28 @@ class PersonalRolesController < ApplicationController
       end
     end
     if @personal_role.update_attributes(started_at: started_at, ended_at: ended_at, related_person: related_person, ordinal: params[:personal_role][:ordinal])
-      if @personal_role.role.name == 'husband' && @personal_role.related_person && !@personal_role.related_person.is_related_to?(@personal_role.person)
-        @vice_versa = PersonalRole.new
-        @vice_versa.person = @personal_role.related_person
-        @vice_versa.role = Role.find_by_name 'wife'
-        @vice_versa.related_person = @personal_role.person
-        @vice_versa.save
+      opposite = nil
+      if @personal_role.related_person && !@personal_role.related_person.is_related_to?(@personal_role.person)
+        opposite = Role.find_by_name 'wife' if @personal_role.role.name == 'husband'
+        opposite = Role.find_by_name 'husband' if @personal_role.role.name == 'wife'
+        opposite = Role.find_by_name 'father' if @personal_role.role.role_type == 'child' && @personal_role.related_person.male?
+        opposite = Role.find_by_name 'mother' if @personal_role.role.role_type == 'child' && @personal_role.related_person.female?
+        opposite = Role.find_by_name 'son' if @personal_role.role.role_type == 'parent' && @personal_role.related_person.male?
+        opposite = Role.find_by_name 'daughter' if @personal_role.role.role_type == 'parent' && @personal_role.related_person.female?
+        opposite = Role.find_by_name 'band_member' if @personal_role.role.name == 'band'
+        opposite = Role.find_by_name 'band' if @personal_role.role.name == 'band member'
+        opposite = Role.find_by_name 'footballer' if @personal_role.role.name == 'association football club'
+        opposite = Role.find_by_name 'association football club' if @personal_role.role.name == 'footballer'
+        opposite = Role.find_by_name 'cricketer' if @personal_role.role.name == 'cricket club'
+        opposite = Role.find_by_name 'cricket club' if @personal_role.role.name == 'cricketer'
       end
-      if @personal_role.role.name == 'wife' && @personal_role.related_person && !@personal_role.related_person.is_related_to?(@personal_role.person)
+      if opposite != nil
         @vice_versa = PersonalRole.new
         @vice_versa.person = @personal_role.related_person
-        @vice_versa.role = Role.find_by_name 'husband'
+        @vice_versa.role = opposite
         @vice_versa.related_person = @personal_role.person
-        @vice_versa.save
-      end
-      if @personal_role.role.name == 'son' && @personal_role.related_person && !@personal_role.related_person.is_related_to?(@personal_role.person)
-        @vice_versa = PersonalRole.new
-        @vice_versa.person = @personal_role.related_person
-        @vice_versa.role = Role.find_by_name 'father' if @vice_versa.person.male?
-        @vice_versa.role = Role.find_by_name 'mother' if @vice_versa.person.female?
-        @vice_versa.related_person = @personal_role.person
-        @vice_versa.save
-      end
-      if @personal_role.role.name == 'daughter' && @personal_role.related_person && !@personal_role.related_person.is_related_to?(@personal_role.person)
-        @vice_versa = PersonalRole.new
-        @vice_versa.person = @personal_role.related_person
-        @vice_versa.role = Role.find_by_name 'father' if @vice_versa.person.male?
-        @vice_versa.role = Role.find_by_name 'mother' if @vice_versa.person.female?
-        @vice_versa.related_person = @personal_role.person
-        @vice_versa.save
-      end
-      if @personal_role.role.name == 'father' && @personal_role.related_person && !@personal_role.related_person.is_related_to?(@personal_role.person)
-        @vice_versa = PersonalRole.new
-        @vice_versa.person = @personal_role.related_person
-        @vice_versa.role = Role.find_by_name 'son' if @vice_versa.person.male?
-        @vice_versa.role = Role.find_by_name 'daughter' if @vice_versa.person.female?
-        @vice_versa.related_person = @personal_role.person
-        @vice_versa.save
-      end
-      if @personal_role.role.name == 'mother' && @personal_role.related_person && !@personal_role.related_person.is_related_to?(@personal_role.person)
-        @vice_versa = PersonalRole.new
-        @vice_versa.person = @personal_role.related_person
-        @vice_versa.role = Role.find_by_name 'son' if @vice_versa.person.male?
-        @vice_versa.role = Role.find_by_name 'daughter' if @vice_versa.person.female?
-        @vice_versa.related_person = @personal_role.person
-        @vice_versa.save
-      end
-      if @personal_role.role.name == 'band' && @personal_role.related_person && !@personal_role.related_person.is_related_to?(@personal_role.person)
-        @vice_versa = PersonalRole.new
-        @vice_versa.person = @personal_role.related_person
-        @vice_versa.role = Role.find_by_name 'band member'
-        @vice_versa.related_person = @personal_role.person
-        @vice_versa.save
-      end
-      if @personal_role.role.name == 'band member' && @personal_role.related_person && !@personal_role.related_person.is_related_to?(@personal_role.person)
-        @vice_versa = PersonalRole.new
-        @vice_versa.person = @personal_role.related_person
-        @vice_versa.role = Role.find_by_name 'band'
-        @vice_versa.related_person = @personal_role.person
-        @vice_versa.save
-      end
-      if @personal_role.role.name == 'footballer' && @personal_role.related_person && !@personal_role.related_person.is_related_to?(@personal_role.person)
-        @vice_versa = PersonalRole.new
-        @vice_versa.person = @personal_role.related_person
-        @vice_versa.role = Role.find_by_name 'association football club'
-        @vice_versa.related_person = @personal_role.person
-        @vice_versa.save
-      end
-      if @personal_role.role.name == 'association football club' && @personal_role.related_person && !@personal_role.related_person.is_related_to?(@personal_role.person)
-        @vice_versa = PersonalRole.new
-        @vice_versa.person = @personal_role.related_person
-        @vice_versa.role = Role.find_by_name 'footballer'
-        @vice_versa.related_person = @personal_role.person
-        @vice_versa.save
-      end
-      if @personal_role.role.name == 'cricketer' && @personal_role.related_person && !@personal_role.related_person.is_related_to?(@personal_role.person)
-        @vice_versa = PersonalRole.new
-        @vice_versa.person = @personal_role.related_person
-        @vice_versa.role = Role.find_by_name 'cricket club'
-        @vice_versa.related_person = @personal_role.person
-        @vice_versa.save
-      end
-      if @personal_role.role.name == 'cricket club' && @personal_role.related_person && !@personal_role.related_person.is_related_to?(@personal_role.person)
-        @vice_versa = PersonalRole.new
-        @vice_versa.person = @personal_role.related_person
-        @vice_versa.role = Role.find_by_name 'cricketer'
-        @vice_versa.related_person = @personal_role.person
+        @vice_versa.started_at = @personal_role.started_at if @personal_role.started_at
+        @vice_versa.ended_at = @personal_role.ended_at if @personal_role.ended_at
         @vice_versa.save
       end
       redirect_to(edit_person_path(@personal_role.person))

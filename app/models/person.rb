@@ -293,14 +293,14 @@ class Person < ActiveRecord::Base
 
   def father
     relationships.each do |relationship|
-      return relationship.related_person if (relationship.role.name=="son" or relationship.role.name=="daughter") && relationship.related_person!=nil && relationship.related_person.male?
+      return relationship.related_person if (relationship.role.role_type=="child") && relationship.related_person!=nil && relationship.related_person.male?
     end
     nil
   end
 
   def mother
     relationships.each do |relationship|
-      return relationship.related_person if (relationship.role.name=="son" or relationship.role.name=="daughter") && relationship.related_person!=nil && relationship.related_person.female?
+      return relationship.related_person if (relationship.role.role_type=="child") && relationship.related_person!=nil && relationship.related_person.female?
     end
     nil
   end
@@ -308,7 +308,7 @@ class Person < ActiveRecord::Base
   def children
     issue = []
     relationships.each do |relationship|
-      issue << relationship.related_person if relationship.role.name=="father" or relationship.role.name=="mother"
+      issue << relationship.related_person if relationship.role.role_type=="parent"
     end
     issue.sort! { |a,b| a.born_on ? a.born_on : 0 <=> b.born_on ? b.born_on : 0 }
   end
@@ -335,7 +335,7 @@ class Person < ActiveRecord::Base
   def spouses
     people = []
     relationships.each do |relationship|
-      people << relationship.related_person if relationship.role.name=="wife" or relationship.role.name=="husband"
+      people << relationship.related_person if relationship.role.role_type == "spouse"
     end
     people #.sort! { |a,b| a.born_on ? a.born_on : 0 <=> b.born_on ? b.born_on : 0 }
   end
@@ -343,7 +343,7 @@ class Person < ActiveRecord::Base
   def spousal_relationships
     spousal_relationships = []
     relationships.each do |relationship|
-      spousal_relationships << relationship if relationship.role.name=="wife" or relationship.role.name=="husband"
+      spousal_relationships << relationship if relationship.role.role_type == "spouse"
     end
     spousal_relationships
   end
@@ -351,7 +351,7 @@ class Person < ActiveRecord::Base
   def non_family_relationships
     non_family = []
     relationships.each{|relationship|
-      non_family << relationship if relationship.role.name!="husband" and relationship.role.name!="wife" and relationship.role.name!="brother" and relationship.role.name!="sister" and relationship.role.name!="half-brother" and relationship.role.name!="half-sister" and relationship.role.name!="father" and relationship.role.name!="mother" and relationship.role.name!="son" and relationship.role.name!="daughter"
+      non_family << relationship if relationship.role.family? != true
     }
     non_family
   end
