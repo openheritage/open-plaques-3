@@ -63,6 +63,18 @@ class Role < ActiveRecord::Base
     return false
   end
 
+  def family?
+    return true if role_type == "parent"
+    return true if role_type == "child"
+    return true if role_type == "spouse"
+    # redundant roles
+    return true if name == "brother"
+    return true if name == "sister"
+    return true if name == "half-brother"
+    return true if name == "half-sister"
+    false
+  end
+
   def type
 	  return "person" if person?
 	  return "animal" if animal?
