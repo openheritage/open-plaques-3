@@ -1,0 +1,11 @@
+<div class="card">
+    <h2 class="card-header"><%=t '.explore' %></h2>
+    <div class="card-block">
+        <p class="card-text">Browse the
+            <%= @plaques_count %>
+            plaques by
+            <%= link_to "person", people_path %>,
+            <%= link_to "place", countries_path %>, or
+            <%= link_to "search", search_path %>.</p>
+    </div>
+</div>

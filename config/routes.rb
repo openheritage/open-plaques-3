@@ -111,9 +111,9 @@ Rails.application.routes.draw do
   resources :pages
   resource :about, controller: :pages, id: 'about', only: :show
   resource :contact, controller: :pages, id: 'contact', only: :show
-  scope '/about' do
-    resource :data, controller: :pages, id: 'data', as: 'about_the_data', only: :show
-  end
+#  scope '/about' do
+  resource :data, controller: :pages, id: 'data', as: 'about_the_data', only: :show
+#  end
   resource :contribute, controller: :pages, id: 'contribute', as: 'contribute', only: :show
   resource :explore, controller: :explore, only: :show
 

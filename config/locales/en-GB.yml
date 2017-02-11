@@ -114,24 +114,31 @@ en-GB:
   unphotographed_plaques: unphotographed plaques
 
   home:
-    index:
-      page_title: Open Plaques - linking historical people and places
-      pages: pages
-      page_heading: yy
-      strapline_html: Documenting the historical links between <strong>people</strong> and <strong>places</strong>, as recorded by commemorative <strong>plaques</strong>.
-      explore: Explore
-      contribute: Contribute
+    contribute:
+      contribute: contribute
+      mission: You are all part of our mission to find all of the plaques in the world!
       contribute1: Spotted one? Anyone can help us and
       add_a_plaque: add a plaque
       take_a_photo: Take a photo. Add it to Wikimedia Commons or Flickr and link it to our record
       spot_an_innaccuracy: Spot an innaccuracy. Tell us.
       find_something: Or find something
       to_do: to do
-      mission: You are all part of our mission to find all of the plaques in the world!
-      news: News
-      news_detail_html: Subscribe to <a href="http://blog.openplaques.org">our blog</a>, follow us on <a href="http://www.twitter.com/openplaques">Twitter</a> for updates.
+    explore:
+      explore: explore
+    news:
+      news: news
+      news_detail_html: Follow us on <a href="http://www.twitter.com/openplaques">Twitter</a> and Facebook for updates.
+    open_data:
+      open_data: open data
+      who_can_use: Who can use the data and how?
+    plaque_of_the_day:
+      plaque_of_the_day: plaque of the day
+    special_offer:
+    index:
+      page_title: Open Plaques - linking historical people and places
+      pages: pages
+      strapline_html: Documenting the historical links between <strong>people</strong> and <strong>places</strong> as recorded by commemorative <strong>plaques</strong>
       like_us_on_Facebook: us on Facebook for features and trivia.
-      plaque_of_the_day: Plaque of the day
       recently_photographed: recently photographed plaques
 
   area_plaques:
