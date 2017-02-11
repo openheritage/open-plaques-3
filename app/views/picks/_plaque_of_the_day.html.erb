@@ -1,13 +1,15 @@
-<div class="row">
-  <% if pick.photo %>
+<div class="card">
+    <% if pick.photo %>
     <%= link_to pick.plaque do %>
-      <div class="col-xs-12 col-sm-3">
+    <div class="card-img-top">
         <%= render pick.plaque.main_photo %>
-      </div>
+    </div>
     <% end %>
-  <% end %>
-  <div class="col-xs-12<% if pick.photo %> col-sm-9<% end %>">
-    <div class="card-title"><%= link_to pick.plaque.title, pick.plaque %></div>
-    <div class="card-text"><%= pick.proposer %> says,"<%= pick.description %>"</div>
-  </div>
+    <% end %>
+    <div class="card-block">
+        <h2 class="card-title"><%= t '.plaque_of_the_day' %></h2>
+        <p class="card-text"><%= link_to pick.plaque.title, pick.plaque %>
+            <%= pick.proposer %>
+            says,"<%= pick.description %>"</p>
+    </div>
 </div>
