@@ -38,20 +38,26 @@
 <div class="plaque">
     <div class="row">
         <div class="col-xs-12 col-md-8">
-            <div class="col-xs-12">
-                <%= render @plaque.main_photo, large: true if @plaque.main_photo %>
-            </div>
-            <div class="col-xs-12 card-columns">
-                <%= link_to plaque_photos_path(@plaque) do %>
-                <div class="card">
-                    <%= image_tag("NoPhotoSqr.png", class: 'card-img img-rounded w-100') %>
-                    <p class="card-text"><%= t '.how_to_add_yours' %></p>
+            <div class="row">
+                <div class="col-xs-12 col-lg-8">
+                  <%= render @plaque.main_photo, large: true if @plaque.main_photo %>
                 </div>
+                <div class="col-xs-6 col-sm-4">
+                    <div class="card">
+                        <%= link_to plaque_photos_path(@plaque) do %>
+                        <%= image_tag("NoPhotoSqr.png", class: 'card-img img-rounded w-100') %>
+                        <p class="card-text"><%= t '.how_to_add_yours' %></p>
+                        <% end %>
+                    </div>
+                </div>
+                <% @plaque.other_photos.each do |photo| %>
+                    <div class="col-xs-4">
+                    <%= render photo %>
+                  </div>
                 <% end %>
-                <%= render @plaque.other_photos %>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-xs-12 col-md-4">
             <%= content_tag(:p, t('.does_not_exist'), class: 'bg-danger') unless @plaque.is_current %>
             <%= content_tag(:p, t('.not_erected'), class: 'bg-warning') unless @plaque.erected? %>
             <% if @plaque.is_current && @plaque.geolocated? %>
@@ -94,14 +100,12 @@
             <p>Flickr:
                 <i><%= @plaque.machine_tag %></i>
                 <%= button_tag icon("clipboard"), id: 'copy-flickr-tag', type: 'button', class: :button %></p>
-            <div class="subjects">
-                <h7><%= pluralize_word(@plaque.people.size, 'Subject') %></h7>
+            <div class="card">
+                <h4 class="card-header"><%= pluralize_word(@plaque.people.size, 'Subject') %></h4>
                 <% if @plaque.people.size == 0 %>
-                <p>None identified yet. Subjects are created and linked by hand so please bear with us.</p>
+                <p class="card-text">None identified yet. Subjects are curated by hand so please bear with us.</p>
                 <% elsif @plaque.people.size == 1 %>
-                <div class="col-xs-12">
-                    <%= render @plaque.people.first %>
-                </div>
+                <%= render @plaque.people.first %>
             <% else %>
                 <div class="row">
                     <div class="col-xs-6 col-md-12 col-lg-6">
@@ -118,14 +122,13 @@
                 <% end %>
             </div>
         </div>
-
-        <% unless @plaque.description.blank? %>
-        <div class="row">
-            <%= markdown(@plaque.description) %>
-        </div>
-        <% end %>
-
     </div>
+
+    <% unless @plaque.description.blank? %>
+    <div class="row">
+        <%= markdown(@plaque.description) %>
+    </div>
+    <% end %>
 
     <% unless @plaque.see_also.empty? %>
     <h7>See also...</h7>
