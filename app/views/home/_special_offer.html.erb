@@ -1,6 +1,8 @@
 <div class="card">
     <h2 class="card-header">Special offer</h2>
-    <%= image_tag("london-plaques-book.jpg", class: 'img-fluid' ) %>
+    <%= link_to page_path(:five_fascinating_walks) do %>
+        <%= image_tag("london-plaques-book.jpg", class: 'img-fluid' ) %>
+    <% end %>
     <div class="card-block">
         <p class="card-text">Our readers will get a discount on this new book</p>
         <div class="text-center">
