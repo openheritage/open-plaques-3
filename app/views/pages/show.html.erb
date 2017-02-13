@@ -14,7 +14,7 @@
 <div class="row">
 	<div class="col-xs-0 col-sm-2 col-md-2"></div>
 	<div class="col-xs-12 col-sm-8 col-md-8">
-    <%= ERB.new(markdown(@page.body)).result(binding).html_safe %>
+    <%= markdown(@page.body) %>
   </div>
   <div class="col-xs-0 col-sm-2 col-md-2"></div>
 </div>
