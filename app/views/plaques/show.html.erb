@@ -32,6 +32,7 @@
     <% end %>
 </div>
 <% end %>
+<%= content_tag(:p, markdown(@plaque.description)) unless @plaque.description.blank? %>
 <% end %>
 <%= render 'plaques/edit_bar', plaque: @plaque %>
 
@@ -135,12 +136,6 @@
             </div>
         </div>
     </div>
-
-    <% unless @plaque.description.blank? %>
-    <div class="row">
-        <%= markdown(@plaque.description) %>
-    </div>
-    <% end %>
 
     <% unless @plaque.see_also.empty? %>
     <div class="card" id="see-also">
