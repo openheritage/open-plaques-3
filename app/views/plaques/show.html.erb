@@ -151,7 +151,7 @@
             <% cols = (12 / @plaque.see_also.count).ceil %>
             <% cols = [cols,2].max %>
             <% @plaque.see_also.each do |plaque| %>
-            <div class="col-xs-6 col-sm-<%= cols %>"><%= render partial: 'plaques/tile', object: plaque, as: :plaque %></div>
+            <div class="col-xs-6 col-sm-4 col-md-<%= cols %>"><%= render partial: 'plaques/tile', object: plaque, as: :plaque %></div>
             <% end %>
         </div>
     <% else %>

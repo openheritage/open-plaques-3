@@ -1,22 +1,27 @@
 <% if plaque %>
-  <% begin %>
+<% begin %>
     <% if plaque.inscription %><% end %>
-  <% rescue %>
+<% rescue %>
     <% plaque = plaque.plaque %>
-  <% end %>
-  <% photo = plaque.main_photo %>
-  <%= link_to plaque_path(plaque) do %>
+<% end %>
+<% photo = plaque.main_photo %>
 
-<div class="card plaque">
-  <% if photo && photo.thumbnail_url %>
-    <%= render photo %>
-  <% else %>
-    <%= image_tag('NoPhotoSqr.png', {class: 'card-img-top img-responsive w-100'}) %>
-    <div class="card-block">
-      <h7 class="card-title"><%= plaque.inscription %></h7>
+<div class="card plaque text-center">
+    <%= link_to plaque_path(plaque) do %>
+        <% if photo && photo.thumbnail_url %>
+          <%= render photo %>
+        <% else %>
+            <%= image_tag('NoPhotoSqr.png', {class: 'card-img-top img-responsive w-100'}) %>
+            <div class="card-img-overlay">
+                <% unless photo && photo.thumbnail_url %>
+                    <h7 class="card-title"><%= plaque.inscription %></h7>
+                <% end %>
+            </div>
+        <% end %>
+    <% end %>
+    <div class="card-footer">
+      <small class="text-muted"><%= plaque.area.full_name %></small>
     </div>
-  <% end %>
 </div>
 
-  <% end %>
 <% end %>
