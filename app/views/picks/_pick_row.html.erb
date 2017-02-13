@@ -1,6 +1,6 @@
 <div class="row pick">
   <div class="col-xs-4">
-    <%= render pick.photo if pick.photo %>
+    <%= render partial: 'plaques/tile', object: pick.plaque, as: :plaque %>
   </div>
   <div class="col-xs-8">
     <blockquote class="blockquote">
