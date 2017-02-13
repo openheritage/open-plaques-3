@@ -61,19 +61,14 @@
             </div>
         </div>
         <div class="col-xs-12 col-md-4">
-            <% if !@plaque.is_current || !@plaque.erected? %>
-            <div class="card" id="warnings">
-                <%= content_tag(:p, t('.does_not_exist'), class: 'bg-danger') unless @plaque.is_current %>
-                <%= content_tag(:p, t('.not_erected'), class: 'bg-warning') unless @plaque.erected? %>
-            </div>
-            <% end %>
-
             <div class="card" id="location">
                 <% if @plaque.is_current && @plaque.geolocated? %>
                 <div id="plaque-map" data-latitude="<%= @plaque.latitude %>" data-longitude="<%= @plaque.longitude %>" class="mini" data-zoom="17" data-view="one"></div>
                 <%= content_tag(:div, t('.approximate_position'), class: 'bg-danger') unless @plaque.is_accurate_geolocation %>
                 <% end %>
                 <div class="card-block">
+                  <%= content_tag(:p, t('.does_not_exist'), class: 'card-text bg-danger') unless @plaque.is_current %>
+                  <%= content_tag(:p, t('.not_erected'), class: 'bg-warning') unless @plaque.erected? %>
                     <p class="card-text">
                         <%= @plaque.address %>,
                         <%= link_to(@plaque.area.name, @plaque.area) if @plaque.area %>
