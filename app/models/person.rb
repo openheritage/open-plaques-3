@@ -356,6 +356,18 @@ class Person < ActiveRecord::Base
     non_family
   end
 
+  def family_relationships
+    family = []
+    relationships.each{|relationship|
+      family << relationship if relationship.role.family? == true
+    }
+    family
+  end
+
+  def has_family?
+    family_relationships.size > 0
+  end
+
   def creation_word
     return "from" if thing?
     return "formed in" if group?

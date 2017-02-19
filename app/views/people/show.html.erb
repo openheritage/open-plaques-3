@@ -44,7 +44,7 @@
     </div>
   </div>
 
-  <% if @person.person? && @person.relationships.size > 0 %>
+  <% if @person.person? && @person.has_family? %>
     <h2>Family tree</h2>
     <div class="row">
       <div class="tree">
