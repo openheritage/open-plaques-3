@@ -423,6 +423,7 @@ class Person < ActiveRecord::Base
       "Ursula",
       "Vera","Victoria","Violet","Virginia",
       "Wilhelmina","Winifred")
+      self.gender = 'm' if self.name.start_with?("Reginald")
     end
     self.gender == 'f'
   end
