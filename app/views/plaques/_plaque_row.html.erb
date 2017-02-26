@@ -7,11 +7,11 @@
   <% photo = plaque.main_photo %>
 <div class="row card plaque">
   <%= link_to plaque_path(plaque) do %>
-    <div class="col-xs-3">
+    <div class="<% if photo == nil %>col-xs-4<% else %>col-xs-12 col-sm-4<% end %>">
       <%= image_tag(photo != nil ? photo.thumbnail_url : "NoPhotoSqr.png", {class: 'card-img-top img-thumbnail w-100'}) %>
     </div>
   <% end %>
-  <div class="col-xs-9">
+  <div class="col-xs-12 col-sm-8">
     <h7 class="card-title">
       <% if controller.controller_name.eql?('series') && !plaque.series_ref.to_s.empty? %>
         <span class="tag tag-success">#<%= plaque.series_ref %> </span>
