@@ -7,18 +7,18 @@ class AreaPlaquesController < ApplicationController
     @display = 'all'
     if (params[:filter] && params[:filter]!='')
       begin
-        request.format == 'html' ?
+        request.format.html? ?
           @plaques = @area.plaques.send(params[:filter].to_s).paginate(page: params[:page], per_page: 50)
           : @plaques = @area.plaques.send(params[:filter].to_s)
         @display = params[:filter].to_s
       rescue # an unrecognised filter method
-        request.format == 'html' ?
+        request.format.html? ?
           @plaques = @area.plaques.paginate(page: params[:page], per_page: 50)
           : @plaques = @area.plaques
         @display = 'all'
       end
     else
-      request.format == 'html' ?
+      request.format.html? ?
         @plaques = @area.plaques.paginate(page: params[:page], per_page: 50)
         : @plaques = @area.plaques
     end
