@@ -65,7 +65,7 @@ class PlaquesController < ApplicationController
         end
       }
       format.geojson { render geojson: @plaques }
-      format.rss
+      format.rss { render json: {error: "format unsupported"}.to_json, status: 406 }
       format.csv {
         send_data(
           PlaqueCsv.new(@plaques).build,
