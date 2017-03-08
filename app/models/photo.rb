@@ -29,6 +29,7 @@ class Photo < ActiveRecord::Base
   validates_presence_of :file_url
   validates_uniqueness_of :file_url, message: "of photo already exists in Open Plaques"
   after_update :reset_plaque_photo_count
+  before_save :geograph_data
   after_save :geolocate_plaque
   scope :reverse_detail_order, -> { order('shot DESC') }
   scope :detail_order, -> { order('shot ASC') }
@@ -152,10 +153,10 @@ class Photo < ActiveRecord::Base
         self.thumbnail = parsed_json['thumbnail_url']
         self.file_url = parsed_json['url']
         self.licence = Licence.find_by_url(parsed_json['license_url'])
-        self.subject = parsed_json['title'][0,255]
-        self.description = parsed_json['description'][0,255]
-        self.latitude = parsed_json['geo']['lat']
-        self.longitude = parsed_json['geo']['long']
+        self.subject = parsed_json['title'][0,255] if parsed_json['title']
+        self.description = parsed_json['description'][0,255] if parsed_json['description']
+        self.latitude = parsed_json['geo']['lat'] if parsed_json['geo']
+        self.longitude = parsed_json['geo']['long'] if parsed_json['geo']
       rescue
         puts 'Geograph Curl call failed'
       end
@@ -214,6 +215,12 @@ class Photo < ActiveRecord::Base
       if plaque_id_changed?
         Plaque.reset_counters(plaque_id_was, :photos) unless plaque_id_was == nil || plaque_id_was == 0
         Plaque.reset_counters(plaque.id, :photos) unless plaque == nil || plaque_id_was == 0
+      end
+    end
+
+    def geograph_data
+      if geograph? && !geolocated?
+        wikimedia_data
       end
     end
 
