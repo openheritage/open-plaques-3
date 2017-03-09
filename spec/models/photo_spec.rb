@@ -86,7 +86,7 @@ describe Photo do
         @photo.wikimedia_data
       end
       it 'has no file_url' do
-        expect(@photo.file_url).to eq(nil)
+        expect(@photo.file_url).to eq('https://commons.wikimedia.org/wiki/Special:FilePath/DogDewClawTika1_wb.jpg?width=640')
       end
     end
   end
