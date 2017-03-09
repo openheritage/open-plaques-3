@@ -93,7 +93,11 @@ class Photo < ActiveRecord::Base
 
   def wikimedia_filename
     name = ''
-    name = url[url.index('File:')+5..-1] if wikimedia?
+    begin
+      name = url[url.index('File:')+5..-1] if wikimedia?
+    rescue
+      name = url.split('/').last
+    end
     name
   end
 
