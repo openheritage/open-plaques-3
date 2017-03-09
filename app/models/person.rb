@@ -214,7 +214,7 @@ class Person < ActiveRecord::Base
     personal_roles.each do |pr|
       current_roles << pr.role if pr.role.prefix == "King" or pr.role.prefix == "Queen" || pr.ended_at == nil or pr.ended_at == '' or (pr.ended_at && pr.ended_at.year.to_s == died_on.to_s)
     end
-    current_roles.sort! { |a,b| a.priority && b.priority ? b.priority <=> a.priority : a.priority ? 1 : 0 }
+    current_roles.sort! { |b,a| a.priority && b.priority ? a.priority <=> b.priority : (a.priority ? 1 : -1) }
     current_roles
   end
 
