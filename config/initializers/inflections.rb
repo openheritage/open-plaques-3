@@ -10,8 +10,8 @@ ActiveSupport::Inflector.inflections(:en) do |inflect|
 #   inflect.uncountable %w( fish sheep )
   inflect.irregular 'is', 'are'
   inflect.irregular 'was', 'were'
-  inflect.plural /(.*)( of .*$)/i, '\1'.pluralize + ' \2'
-  inflect.plural /(.*)( for .*$)/i, '\1'.pluralize + ' \2'
+  inflect.plural /(.*?)( of .*$)/i, '\1'.pluralize + ' \2'
+  inflect.plural /(.*?)( for .*$)/i, '\1'.pluralize + ' \2'
 end
 
 # These inflection rules are supported but not enabled by default:
