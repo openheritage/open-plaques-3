@@ -41,7 +41,7 @@ describe Photo do
   end
 
   describe '#attribution' do
-    context 'a photo' do
+    context 'a new photo' do
       before do
         @photo = Photo.new()
       end
@@ -49,7 +49,6 @@ describe Photo do
         expect(@photo.attribution).to eq('&copy;  on the web')
       end
     end
-
     context 'a Commons photo' do
       before do
         @photo = Photo.new(url: 'https://commons.wikimedia.org/wiki/File:Goderich_BCATP_Historical_Plaque.JPG')
