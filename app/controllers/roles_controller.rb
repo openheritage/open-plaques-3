@@ -78,6 +78,7 @@ class RolesController < ApplicationController
         :abbreviation,
         :prefix,
         :suffix,
+        :priority,
         :slug,
         :wikipedia_stub,
         :role_type,
