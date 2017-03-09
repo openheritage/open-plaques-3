@@ -142,6 +142,95 @@ describe Person do
     end
   end
 
+  describe '#letters' do
+    context 'no role' do
+      before do
+        @person = Person.new(name: 'Frankie')
+      end
+      it 'lists suffixed roles as letters' do
+        expect(@person.letters).to eq('')
+      end
+    end
+
+    context 'no role with a suffix' do
+      before do
+        @person = Person.new(name: 'Frankie')
+        @person.roles << Role.new(name: 'Boodle')
+        @person.roles << Role.new(name: 'Toodle')
+        @person.roles << Role.new(name: 'Pip')
+      end
+      it 'lists suffixed roles as letters' do
+        expect(@person.letters).to eq('')
+      end
+    end
+
+    context 'a mix of roles with and without suffix' do
+      before do
+        @person = Person.new(name: 'Frankie')
+        @person.roles << Role.new(name: 'Boodle', prefix: 'Boo')
+        @person.roles << Role.new(name: 'Toodle', suffix: 'Td')
+        @person.roles << Role.new(name: 'Pip')
+      end
+      it 'lists suffixed roles as letters' do
+        expect(@person.letters).to eq('Td')
+      end
+    end
+
+    context 'multiple roles with a suffix' do
+      before do
+        @person = Person.new(name: 'Frankie')
+        @person.roles << Role.new(name: 'Boodle', suffix: 'Boo')
+        @person.roles << Role.new(name: 'Toodle', suffix: 'Td')
+        @person.roles << Role.new(name: 'Pip')
+      end
+      it 'lists suffixed roles as letters' do
+        expect(@person.letters).to eq('Boo Td')
+      end
+    end
+
+    context 'same suffix twice' do
+      before do
+        @person = Person.new(name: 'Frankie')
+        @person.roles << Role.new(name: 'Boodle', suffix: 'Boo')
+        @person.roles << Role.new(name: 'Poodle', suffix: 'Boo')
+        @person.roles << Role.new(name: 'Toodle', suffix: 'Td')
+        @person.roles << Role.new(name: 'Pip')
+      end
+      it 'lists suffixed roles as letters' do
+#        expect(@person.letters).to eq('Boo Td')
+      end
+    end
+
+    # Sir Joseph Dalton Hooker OM GCSI CB PRS
+
+    context 'Sir Joseph Dalton Hooker OM GCSI CB PRS' do
+      before do
+        @person = Person.new(name: 'Joseph Dalton Hooker')
+        @person.roles << Role.new(name: 'Order of Merit recipient', suffix: 'OM')
+        @person.roles << Role.new(name: 'Knight Grand Commander of The Most Exalted Order of the Star of India', suffix: 'GCSI')
+        @person.roles << Role.new(name: 'Companion of the Order of the Bath', suffix: 'CB')
+        @person.roles << Role.new(name: 'President of The Royal Society', suffix: 'PRS')
+      end
+      it 'lists suffixed roles as letters' do
+        expect(@person.letters).to eq('OM GCSI CB PRS')
+      end
+    end
+
+    context 'Sir Joseph Dalton Hooker OM GCSI CB PRS' do
+      before do
+        @person = Person.new(name: 'Joseph Dalton Hooker')
+        @person.roles << Role.new(name: 'President of The Royal Society', suffix: 'PRS')
+        @person.roles << Role.new(name: 'Order of Merit recipient', suffix: 'OM', priority: 90)
+        @person.roles << Role.new(name: 'Companion of the Order of the Bath', suffix: 'CB', priority: 70)
+        @person.roles << Role.new(name: 'Knight Grand Commander of The Most Exalted Order of the Star of India', suffix: 'GCSI', priority: 80)
+      end
+      it 'lists suffixed roles as letters' do
+        expect(@person.letters).to eq('OM GCSI CB PRS')
+      end
+    end
+
+  end
+
   describe '#clergy?' do
     context 'a vicar' do
       before do
