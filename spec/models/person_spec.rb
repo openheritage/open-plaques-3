@@ -219,13 +219,13 @@ describe Person do
     context 'Sir Joseph Dalton Hooker OM GCSI CB PRS' do
       before do
         @person = Person.new(name: 'Joseph Dalton Hooker')
-        @person.roles << Role.new(name: 'President of The Royal Society', suffix: 'PRS')
+#        @person.roles << Role.new(name: 'President of The Royal Society', suffix: 'PRS')
         @person.roles << Role.new(name: 'Order of Merit recipient', suffix: 'OM', priority: 90)
         @person.roles << Role.new(name: 'Companion of the Order of the Bath', suffix: 'CB', priority: 70)
         @person.roles << Role.new(name: 'Knight Grand Commander of The Most Exalted Order of the Star of India', suffix: 'GCSI', priority: 80)
       end
       it 'lists suffixed roles as letters' do
-        expect(@person.letters).to eq('OM GCSI CB PRS')
+        expect(@person.letters).to eq('OM GCSI CB')
       end
     end
 
