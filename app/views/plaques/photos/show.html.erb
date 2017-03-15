@@ -53,7 +53,7 @@ When you are done, paste the url of the Wikimedia page in here and Open Plaques 
   <h2>I'd like to add my photo via Flickr</h2>
   <ol><li>put it on <a href="https://www.flickr.com/" target="new">Flickr</a> (for free)</li>
   <li>give it a Creative Commons licence</li>
-  <li>tag it <strong><%= @plaque.machine_tag %></strong></li>
+  <li>tag it <input type="text" readonly value="<%= @plaque.machine_tag %>"></li>
   <li>add it to <a href="https://www.flickr.com/groups/openplaques/" target="new">our Flickr group</a></li>
   <li>wait 5 minutes</li>
   <li>it should now appear in the Flickr search of <a href="https://www.flickr.com/search/?q=<%= @plaque.machine_tag %>&m=machinetags&l=cc&content_type=1" target="new">photos tagged '<%= @plaque.machine_tag %>'</a></li>
