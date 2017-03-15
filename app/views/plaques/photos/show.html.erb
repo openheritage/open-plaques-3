@@ -53,7 +53,8 @@ When you are done, paste the url of the Wikimedia page in here and Open Plaques 
   <h2>I'd like to add my photo via Flickr</h2>
   <ol><li>put it on <a href="https://www.flickr.com/" target="new">Flickr</a> (for free)</li>
   <li>give it a Creative Commons licence</li>
-  <li>tag it <input type="text" readonly value="<%= @plaque.machine_tag %>"></li>
+  <li>tag it <input type="text" readonly value="<%= @plaque.machine_tag %>"/> <%= button_tag icon("clipboard"), id: 'copy-flickr-tag', type: 'button', class: :button %></p>
+</li>
   <li>add it to <a href="https://www.flickr.com/groups/openplaques/" target="new">our Flickr group</a></li>
   <li>wait 5 minutes</li>
   <li>it should now appear in the Flickr search of <a href="https://www.flickr.com/search/?q=<%= @plaque.machine_tag %>&m=machinetags&l=cc&content_type=1" target="new">photos tagged '<%= @plaque.machine_tag %>'</a></li>
@@ -93,3 +94,42 @@ When you are done, paste the url of the Wikimedia page in here and Open Plaques 
   <h2>Help, I really don&apos;t understand!</h2>
   <p>If this all proves too complicated, then have a chat with us via email. We are generally rather nice and want to help. You can <a href="https://openplaques.org/contact">email your photo</a> to us stating that you are happy for us to publish it as open data on your behalf and that you grant anyone in the world the right to re-use the image.</p>
 </div>
+
+<script>
+    function copyTextToClipboard(text) {
+        var textArea = document.createElement("textarea");
+        textArea.style.position = 'fixed';
+        textArea.style.top = 0;
+        textArea.style.left = 0;
+        textArea.style.width = '2em';
+        textArea.style.height = '2em';
+        textArea.style.padding = 0;
+        textArea.style.border = 'none';
+        textArea.style.outline = 'none';
+        textArea.style.boxShadow = 'none';
+        textArea.style.background = 'transparent';
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+            var successful = document.execCommand('copy');
+            var msg = successful
+                ? 'successful'
+                : 'unsuccessful';
+            console.log('Copying text command was ' + msg);
+        } catch (err) {
+            console.log('Oops, unable to copy');
+        }
+        document.body.removeChild(textArea);
+    }
+
+    var copyFlickrTagBtn = document.querySelector('#copy-flickr-tag');
+    copyFlickrTagBtn.addEventListener('click', function (event) {
+        copyTextToClipboard('<%= @plaque.machine_tag %>');
+    });
+
+    var copyWikimediaTagBtn = document.querySelector('#copy-wikimedia-tag');
+    copyWikimediaTagBtn.addEventListener('click', function (event) {
+        copyTextToClipboard('<%= @plaque.wikimedia_tag %>');
+    });
+</script>
