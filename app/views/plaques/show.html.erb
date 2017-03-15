@@ -102,10 +102,10 @@
                     <% end %>
                 </p>
                 <p class="card-text">Wikimedia:
-                    <i><%= @plaque.wikimedia_tag %></i>
+                    <i><input type="text" readonly value="<%= @plaque.wikimedia_tag %>"/></i>
                     <%= button_tag icon("clipboard"), id: 'copy-wikimedia-tag', type: 'button', class: :button %></p>
                 <p class="card-text">Flickr:
-                    <i><%= @plaque.machine_tag %></i>
+                    <i><input type="text" readonly value="<%= @plaque.machine_tag %>"/></i>
                     <%= button_tag icon("clipboard"), id: 'copy-flickr-tag', type: 'button', class: :button %></p>
             </div>
             <div class="card" id="subjects">
