@@ -12,7 +12,7 @@
   <canvas id="myCanvas" width="1000" height="1000">
     <ol>
       <% @photographers.each do |photographer| %>
-        <li><%= link_to(photographer.id, photographer_url(photographer.id.gsub(/\./,'_').gsub('/','_'))) rescue photographer %> - <%= pluralize(photographer.photos_count, "") %> </li>
+        <li><%= link_to(photographer.id.gsub("'","’"), photographer_url(photographer.id.gsub(/\./,'_').gsub('/','_'))) rescue photographer %> - <%= pluralize(photographer.photos_count, "") %> </li>
       <% end %>
    </ol>
   </canvas>
@@ -23,7 +23,7 @@
   {
     var data = [<% @photographers.each_with_index do |photographer, idx| %><% if idx < 50 %><%= photographer.photos_count %>,<% end %><% end %>];
     var hbar = new RGraph.HBar('myCanvas', data);
-    hbar.Set('chart.labels', [<% @photographers.each_with_index do |photographer, idx| %><% if idx < 50 %>'<%= photographer.id %>',<% end %><% end %>]);
+    hbar.Set('chart.labels', [<% @photographers.each_with_index do |photographer, idx| %><% if idx < 50 %>"<%= photographer.id.gsub("'","’") %>",<% end %><% end %>]);
     hbar.Set('chart.strokestyle', 'rgba(0,0,0,0)');
     hbar.Set('chart.labels.above', true);
     hbar.Set('chart.vmargin', 15);
