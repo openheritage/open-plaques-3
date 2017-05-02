@@ -9,18 +9,18 @@ class AreaPlaquesController < ApplicationController
       begin
         request.format.html? ?
           @plaques = @area.plaques.send(params[:filter].to_s).paginate(page: params[:page], per_page: 50)
-          : @plaques = @area.plaques.send(params[:filter].to_s)
+          : @plaques = @area.plaques.send(params[:filter].to_s).paginate(page: params[:page], per_page: 5000000)
         @display = params[:filter].to_s
       rescue # an unrecognised filter method
         request.format.html? ?
           @plaques = @area.plaques.paginate(page: params[:page], per_page: 50)
-          : @plaques = @area.plaques
+          : @plaques = @area.plaques.paginate(page: params[:page], per_page: 5000000)
         @display = 'all'
       end
     else
       request.format.html? ?
         @plaques = @area.plaques.paginate(page: params[:page], per_page: 50)
-        : @plaques = @area.plaques
+        : @plaques = @area.plaques.paginate(page: params[:page], per_page: 5000000)
     end
     @area.find_centre if !@area.geolocated?
     respond_with @plaques do |format|
