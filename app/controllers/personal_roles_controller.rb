@@ -62,8 +62,9 @@ class PersonalRolesController < ApplicationController
         opposite = Role.find_by_name 'son' if @personal_role.role.role_type == 'parent' && @personal_role.related_person.male?
         opposite = Role.find_by_name 'daughter' if @personal_role.role.role_type == 'parent' && @personal_role.related_person.female?
         opposite = Role.find_by_name 'band_member' if @personal_role.role.name == 'band'
-        opposite = Role.find_by_name 'lead_singer' if @personal_role.role.name == 'band'
         opposite = Role.find_by_name 'band' if @personal_role.role.name == 'band member'
+        opposite = Role.find_by_name 'band' if @personal_role.role.name == 'lead singer'
+        opposite = Role.find_by_name 'band' if @personal_role.role.name == 'drummer'
         opposite = Role.find_by_name 'footballer' if @personal_role.role.name == 'association football club'
         opposite = Role.find_by_name 'association football club' if @personal_role.role.name == 'footballer'
         opposite = Role.find_by_name 'cricketer' if @personal_role.role.name == 'cricket club'
