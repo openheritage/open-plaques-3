@@ -1,7 +1,8 @@
 class SearchController < ApplicationController
 
   def index
-    @phrase = params[:phrase]
+    @original_phrase = params[:phrase]
+    @phrase = @original_phrase
     @search_results = []
     @phrase = "" if @phrase == nil
     if @phrase != ""
