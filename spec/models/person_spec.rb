@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Person do
+describe Person, :type => :model do
 
   describe '#full_name' do
     context 'a person' do
@@ -504,6 +504,66 @@ describe Person do
       end
       it 'displays a built date' do
         expect(@person.dates).to eq('(1880-present)')
+      end
+    end
+  end
+
+  describe '#accented_name?' do
+    context 'a person with an accented name' do
+      before do
+        @person = Person.new
+        @person.name = "Béla Bartók"
+        @person.aka_accented_name
+      end
+      it 'is accented' do
+        expect(@person.accented_name?).to be_true
+      end
+    end
+
+    context 'a person with an unaccented name' do
+      before do
+        @person = Person.new
+        @person.name = "John Smith"
+        @person.aka_accented_name
+      end
+      it 'is not accented' do
+        expect(@person.accented_name?).to be_false
+      end
+    end
+  end
+
+  describe '#aka_accented_name' do
+    context 'a person with an accented name' do
+      before do
+        @person = Person.new
+        @person.name = "Béla Bartók"
+        @person.aka_accented_name
+      end
+      it 'has an unaccented version as an aka' do
+        expect(@person.aka).to include("Bela Bartok")
+      end
+    end
+
+    context 'a person with an accented name and an aka' do
+      before do
+        @person = Person.new
+        @person.name = "Béla Bartók"
+        @person.aka.push("womble")
+        @person.aka_accented_name
+      end
+      it 'has an unaccented version as an aka' do
+        expect(@person.aka).to include("Bela Bartok")
+      end
+    end
+
+    context 'a person with an unaccented name' do
+      before do
+        @person = Person.new
+        @person.name = "John Smith"
+        @person.aka_accented_name
+      end
+      it 'has no aka' do
+        expect(@person.aka).to_not include("Bela Bartok")
       end
     end
   end

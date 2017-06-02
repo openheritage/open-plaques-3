@@ -37,7 +37,7 @@ class Person < ActiveRecord::Base
   attr_accessor :abstract, :comment # dbpedia fields
 
   validates_presence_of :name
-  before_save :update_index
+  before_save :update_index, :aka_accented_name
   scope :roled, -> { where("personal_roles_count > 0").order("id DESC") }
   scope :unroled, -> { where(personal_roles_count: [nil,0]) }
   scope :dated, -> { where("born_on IS NOT NULL or died_on IS NOT NULL") }
@@ -507,6 +507,22 @@ class Person < ActiveRecord::Base
         self.surname_starts_with = self.name[self.name.rindex(" ") ? self.name.rindex(" ") + 1 : 0,1].downcase
       end
       self.surname_starts_with.downcase!
+    end
+
+    def unaccented_name
+      name.tr("ÀÁÂÃÄÅàáâãäåĀāĂăĄąÇçĆćĈĉĊċČčÐðĎďĐđÈÉÊËèéêëĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħÌÍÎÏìíîïĨĩĪīĬĭĮįİıĴĵĶķĸĹĺĻļĽľĿŀŁłÑñŃńŅņŇňŉŊŋÒÓÔÕÖØòóôõöøŌōŎŏŐőŔŕŖŗŘřŚśŜŝŞşŠšſŢţŤťŦŧÙÚÛÜùúûüŨũŪūŬŭŮůŰűŲųŴŵÝýÿŶŷŸŹźŻżŽž",
+"AAAAAAaaaaaaAaAaAaCcCcCcCcCcDdDdDdEEEEeeeeEeEeEeEeEeGgGgGgGgHhHhIIIIiiiiIiIiIiIiIiJjKkkLlLlLlLlLlNnNnNnNnnNnOOOOOOooooooOoOoOoRrRrRrSsSsSsSssTtTtTtUUUUuuuuUuUuUuUuUuUuWwYyyYyYZzZzZz")
+    end
+
+    def accented_name?
+      return name != unaccented_name
+    end
+
+    def aka_accented_name
+      if accented_name? && !aka.include?(unaccented_name)
+        self.aka_will_change!
+        self.aka.push(unaccented_name)
+      end
     end
 
 end

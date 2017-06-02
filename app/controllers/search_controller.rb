@@ -6,22 +6,25 @@ class SearchController < ApplicationController
     @search_results = []
     @phrase = "" if @phrase == nil
     if @phrase != ""
+      cap = 20 # to protect from stupid searches like "%a%"
       @phrase = @phrase.downcase
       @unaccented_phrase = @phrase.tr("ÀÁÂÃÄÅàáâãäåĀāĂăĄąÇçĆćĈĉĊċČčÐðĎďĐđÈÉÊËèéêëĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħÌÍÎÏìíîïĨĩĪīĬĭĮįİıĴĵĶķĸĹĺĻļĽľĿŀŁłÑñŃńŅņŇňŉŊŋÒÓÔÕÖØòóôõöøŌōŎŏŐőŔŕŖŗŘřŚśŜŝŞşŠšſŢţŤťŦŧÙÚÛÜùúûüŨũŪūŬŭŮůŰűŲųŴŵÝýÿŶŷŸŹźŻżŽž",
 "AAAAAAaaaaaaAaAaAaCcCcCcCcCcDdDdDdEEEEeeeeEeEeEeEeEeGgGgGgGgHhHhIIIIiiiiIiIiIiIiIiJjKkkLlLlLlLlLlNnNnNnNnnNnOOOOOOooooooOoOoOoRrRrRrSsSsSsSssTtTtTtUUUUuuuuUuUuUuUuUuUuWwYyyYyYZzZzZz")
+      phrase_like = "%" + @phrase.tr(" ","%").tr(".","%") + "%"
+      unaccented_phrase_like = "%" + @unaccented_phrase.tr(" ","%").tr(".","%") + "%"
+      @people =  Person.where(["lower(name) LIKE ?", phrase_like]).limit(cap)
+      @people += Person.where(["lower(name) LIKE ?", unaccented_phrase_like]).limit(cap) if @phrase.match(/[À-ž]/)
+      @people += Person.where(["lower(array_to_string(aka, ' ')) LIKE ?", phrase_like]).limit(cap)
+      @people += Person.where(["lower(array_to_string(aka, ' ')) LIKE ?", unaccented_phrase_like]).limit(cap) if @phrase.match(/[À-ž]/)
 
-      @people =  Person.where(["lower(name) LIKE ?", "%" + @phrase.tr(" ","%").tr(".","%") + "%"])
-      @people += Person.where(["lower(name) LIKE ?", "%" + @unaccented_phrase.tr(" ","%").tr(".","%") + "%"]) if @phrase.match(/[À-ž]/)
-      @people += Person.where(["lower(array_to_string(aka, ' ')) LIKE ?", "%" + @phrase.tr(" ","%").tr(".","%") + "%"])
-
-      @places = Area.where(["lower(name) LIKE ?", "%" + @phrase.tr(" ","%").tr(".","%") + "%"])
+      @places = Area.where(["lower(name) LIKE ?", "%" + phrase_like]).limit(cap)
       @places.uniq!
 
-      @plaques = Plaque.where(["lower(inscription) LIKE ?", "%" + @phrase + "%"]).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
-      @plaques += Plaque.where(["lower(inscription_in_english) LIKE ?", "%" + @phrase + "%"]).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
+      @plaques = Plaque.where(["lower(inscription) LIKE ?", phrase_like]).limit(cap).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
+      @plaques += Plaque.where(["lower(inscription_in_english) LIKE ?", phrase_like]).limit(cap).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
       if @phrase.match(/[À-ž]/)
-        @plaques += Plaque.where(["lower(inscription) LIKE ?", "%" + @unaccented_phrase + "%"]).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
-        @plaques += Plaque.where(["lower(inscription_in_english) LIKE ?", "%" + @unaccented_phrase + "%"]).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
+        @plaques += Plaque.where(["lower(inscription) LIKE ?", unaccented_phrase_like]).limit(cap).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
+        @plaques += Plaque.where(["lower(inscription_in_english) LIKE ?", unaccented_phrase_like]).limit(cap).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
       end
       # include all that person's plaques
       @people.each do |person|
@@ -30,7 +33,7 @@ class SearchController < ApplicationController
       # Look for their akas in the inscription
       @people.each do |person|
         person.aka.each do |aka|
-          @plaques += Plaque.where(["lower(inscription) LIKE ?", "%" + aka.downcase + "%"]).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
+          @plaques += Plaque.where(["lower(inscription) LIKE ?", "%" + aka.downcase + "%"]).limit(cap).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
         end
       end
 
