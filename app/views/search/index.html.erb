@@ -1,8 +1,8 @@
-<% content_for(:page_title) {t '.page_title', phrase: @phrase} %>
-<% content_for(:title) {t '.page_heading', phrase: @phrase} %>
+<% content_for(:page_title) {t '.page_title', phrase: @original_phrase} %>
+<% content_for(:title) {t '.page_heading', phrase: @original_phrase} %>
 
 <% if @places.count > 0 %>
-  <h2><%= pluralize @places.count,'place' %> matching '<%= @phrase %>'</h2>
+  <h2><%= pluralize @places.count,'place' %> matching "<%= @original_phrase %>"</h2>
   <% if @places.count < 3 %>
     <div class="row">
       <% @places.each do |place| %>
@@ -25,7 +25,7 @@
 <% end %>
 
 <% if @people.count > 0 %>
-  <h2><%= pluralize @people.count,'subject' %> matching '<%= @phrase %>'</h2>
+  <h2><%= pluralize @people.count,'subject' %> matching "<%= @original_phrase %>"</h2>
   <% if @people.count < 3 %>
     <div class="row">
       <% @people.each do |person| %>
@@ -48,7 +48,7 @@
 <% end %>
 
 <% if @plaques.count > 0 %>
-  <h2><%= pluralize @plaques.count,'plaque' %>  matching '<%= @phrase %>'</h2>
+  <h2><%= pluralize @plaques.count,'plaque' %>  matching "<%= @original_phrase %>"</h2>
   <%= render partial: 'plaques/plaque_row', collection: @plaques, as: :plaque %>
 <% end %>
 

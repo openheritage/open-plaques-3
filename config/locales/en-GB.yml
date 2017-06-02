@@ -507,8 +507,8 @@ en-GB:
 
   search:
     index:
-      page_title: People or plaques matching %{phrase}
-      page_heading: People or plaques matching %{phrase}
+      page_title: Places, subjects,or plaques matching "%{phrase}"
+      page_heading: Places, subjects, or plaques matching "%{phrase}"
       not_found: Plaque not listed?
       add_it: Add it
       try_again: Can't find what you're looking for? Try another search or
