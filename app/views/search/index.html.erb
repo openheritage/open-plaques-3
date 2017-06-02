@@ -57,6 +57,6 @@
 <% else %>
   <h2><%= t '.try_again' %> <%= link_to t('.add_it'), new_plaque_path(checked: true, phrase: @original_phrase) %></h2>
   <div class="row">
-    <%= render partial: "search_form", locals: { phrase: @phrase } %>
+    <%= render partial: "search_form", locals: { phrase: @original_phrase } %>
   </div>
 <% end %>
