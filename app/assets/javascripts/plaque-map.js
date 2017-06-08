@@ -38,7 +38,7 @@ function addPlaque(geojson)
       if (allow_popups===true)
       {
         var plaque_description = '<div class="inscription">' + truncate(plaque.inscription, 255) + '</div><div class="info">' +
-          '<a class="link" href="https://openplaques.org/plaques/' + plaque.id + '">Plaque ' + plaque.id + '</a>';
+          '<a class="link" href="http://openplaques.org/plaques/' + plaque.id + '">Plaque ' + plaque.id + '</a>';
         plaque_marker.bindPopup(plaque_description);
       }
       clusterer.addLayer(plaque_marker)
