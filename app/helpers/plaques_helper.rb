@@ -56,43 +56,69 @@ module PlaquesHelper
     end
   end
 
-  # pass null to search all machinetagged photos on Flickr
-  def find_photo_by_machinetag(plaque, flickr_user_id)
-#    key = FLICKR_KEY # "86c115028094a06ed5cd19cfe72e8f8b"
-    key = "86c115028094a06ed5cd19cfe72e8f8b"
-    content_type = "1" # Photos only
-    machine_tag_key = "openplaques:id=".to_s
-    repeat = 20 # 100 per page, we will check the 2000 most recently created Flickr images
-    if (plaque)
-      machine_tag_key += plaque.id.to_s
-      repeat = 1 # 100 per page, so I hope that one plaque has fewer than 100 Flickr images
+  def find_flickr_photos_non_api(plaque)
+    # "/photos/tags/openplaques:id=1%20" gets any id with 1 in
+    url = "https://www.flickr.com/search/?tags=#{plaque.machine_tag}%20"
+    response = ""
+    open(url){|f| response = f.read }
+    pics = response.match( /\[{"_flickrModelRegistry":"photo-lite-models"[a-zA-Z\d,\":@ -.{\\\/_}=\(\)]*\]/ )
+    pics = "[]" if pics == nil
+    json_parsed = JSON.parse("{\"data\":#{pics}}")
+    json_parsed['data'].each do |pic|
+      file_url = ""
+      pic['sizes'].each do |size|
+        puts "size #{size}"
+        file_url = "http:#{size[1]['displayUrl']}" if size[0] == "z"
+      end
+      puts "*** file_url #{file_url}"
+      photo_url = "http://www.flickr.com/photos/#{pic['ownerNsid']}/#{pic['id']}/"
+      puts "*** photo_url #{photo_url}"
+      puts "*** by #{pic['username']}"
+      @photo = Photo.find_by_url(photo_url)
+      if @photo
+        puts "we've already got #{photo_url}"
+      else
+        @photo = Photo.new
+        @photo.plaque = plaque
+        @photo.file_url = file_url
+        @photo.url = photo_url
+        @photo.photographer_url = "http://www.flickr.com/photos/#{pic['username']}/"
+        @photo.photographer = pic['username']
+        @photo.licence = Licence.find_by_flickr_licence_id(pic['license'])
+        @photo.subject = pic['title']
+        if @photo.save
+          puts "New photo found and saved"
+        else
+  #            puts "Error saving photo" + @photo.errors.each_full{|msg| puts msg }
+        end
+      end
     end
 
-    flickr_url = "https://api.flickr.com/services/rest/"
-    method = "flickr.photos.search"
+  end
+
+  # pass null to search all machinetagged photos on Flickr
+  def find_photo_by_machinetag(plaque, flickr_user_id)
+#    key = FLICKR_KEY
+    key = "86c115028094a06ed5cd19cfe72e8f8b"
+    repeat = 20 # 100 per page, we will check the 2000 most recently created Flickr images
+    if (plaque)
+      repeat = 1 # 100 per page, so I hope that one plaque has fewer than 100 Flickr images
+    end
     license = "1,2,3,4,5,6,7,8,9,10"
-
     repeat.times do |page|
-
-      url = flickr_url + "?api_key=" + key + "&method=" + method + "&page=" + page.to_s + "&license=" + license + "&content_type=" + content_type + "&machine_tags=" + machine_tag_key +  "&extras=date_taken,owner_name,license,geo,machine_tags"
-
+      url = "https://api.flickr.com/services/rest/?api_key=" + key + "&method=flickr.photos.search&page=" + page.to_s + "&license=" + license + "&content_type=1&machine_tags=" + plaque.machine_tag +  "&extras=date_taken,owner_name,license,geo,machine_tags"
       if (flickr_user_id)
         url += "&user_id=" + flickr_user_id
       end
       puts "Flickr: " + url
-
-      new_photos_count = 0
       response = open(url)
       doc = REXML::Document.new(response.read)
       doc.elements.each('//rsp/photos/photo') do |photo|
         print "."
         $stdout.flush
-
         @photo = nil
-
         file_url = "http://farm" + photo.attributes["farm"] + ".staticflickr.com/" + photo.attributes["server"] + "/" + photo.attributes["id"] + "_" + photo.attributes["secret"] + "_z.jpg"
         photo_url = "http://www.flickr.com/photos/" + photo.attributes["owner"] + "/" + photo.attributes["id"] + "/"
-
         @photo = Photo.find_by_url(photo_url)
         if @photo
           # we've already got that one
@@ -114,7 +140,6 @@ module PlaquesHelper
               @photo.longitude = photo.attributes["longitude"]
             end
             if @photo.save
-              new_photos_count += 1
               puts "New photo found and saved"
             else
 #            puts "Error saving photo" + @photo.errors.each_full{|msg| puts msg }
@@ -129,19 +154,13 @@ module PlaquesHelper
 
     # pass null to search all photos on Flickr
     def crawl_flickr(group_id='74191472@N00')
-
       key = "86c115028094a06ed5cd19cfe72e8f8b" # FLICKR_KEY
-      content_type = "1" # Photos only
       flickr_url = "https://api.flickr.com/services/rest/"
-      method = "flickr.photos.search"
-      jez = User.find(2)
       black = Colour.find_by_name('black')
       english = Language.find_by_name('English')
-      new_photos_count = 0
-
       19.times do |page|
         puts page.to_s
-        url = flickr_url + "?api_key=" + key + "&method=" + method + "&page=" + page.to_s + "&per_page=5&content_type=" + content_type + "&extras=date_taken,owner_name,license,geo,description"
+        url = flickr_url + "?api_key=" + key + "&method=flickr.photos.search&page=" + page.to_s + "&per_page=5&content_type=1&extras=date_taken,owner_name,license,geo,description"
         if group_id
           url += "&group_id=" + group_id
         end
@@ -169,7 +188,7 @@ module PlaquesHelper
 #            32.76696, -94.348526
 #            32.766955, -94.348472
             # Plaque.find_or_create_by_???
-            @plaque = Plaque.new(inscription: inscription, user: jez, inscription_is_stub: inscription_is_stub, colour: black, language: english)
+            @plaque = Plaque.new(inscription: inscription, inscription_is_stub: inscription_is_stub, colour: black, language: english)
             @plaque.location = Location.new(name: 'somewhere in Texas')
             # the Flickr woeids appear to be at town level, so can only create an area from them
             woeid = photo.attributes["woeid"]
