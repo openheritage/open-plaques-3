@@ -48,7 +48,7 @@
         <div class="col-sm-4">
         </div>
         <div class="col-sm-8">
-          <%= link_to(icon('external-link') + 'Geograph image mentioned', "http://www.geograph.org.uk/photo/#{@photo.description.match(/\[\[(\d*)]]/i).try(:captures)[0]}", target: '_blank') %>
+          <%= link_to(icon('external-link') + 'Geograph image mentioned', "http://www.geograph.org.uk/photo/#{@photo.description.match(/\[\[(\d*)\]\]/i).try(:captures)[0]}", target: '_blank') %>
         </div>
       </div>
       <% end %>
