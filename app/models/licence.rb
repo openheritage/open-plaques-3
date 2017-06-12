@@ -13,7 +13,7 @@ class Licence < ActiveRecord::Base
   validates_uniqueness_of :url
 
   def self.find_by_flickr_licence_id(flickr_licence_id)
-    case flickr_licence_id
+    case flickr_licence_id.to_s
     when "0"
       return Licence.find_by_url("http://en.wikipedia.org/wiki/All_rights_reserved/")
     when "1"
