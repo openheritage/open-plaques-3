@@ -67,23 +67,20 @@ module PlaquesHelper
     json_parsed['data'].each do |pic|
       file_url = ""
       pic['sizes'].each do |size|
-        puts "size #{size}"
         file_url = "http:#{size[1]['displayUrl']}" if size[0] == "z"
       end
-      puts "*** file_url #{file_url}"
       photo_url = "http://www.flickr.com/photos/#{pic['ownerNsid']}/#{pic['id']}/"
-      puts "*** photo_url #{photo_url}"
-      puts "*** by #{pic['username']}"
-      @photo = Photo.find_by_url(photo_url)
+      @photo = Photo.find_by_url(photo_url) || Photo.find_by_url(photo_url.sub("http:","https:"))
       if @photo
         puts "we've already got #{photo_url}"
       else
+        puts "**** #{pic}"
         @photo = Photo.new
         @photo.plaque = plaque
         @photo.file_url = file_url
         @photo.url = photo_url
-        @photo.photographer_url = "http://www.flickr.com/photos/#{pic['username']}/"
         @photo.photographer = pic['username']
+        @photo.photographer_url = "http://www.flickr.com/photos/#{pic['username']}/"
         @photo.licence = Licence.find_by_flickr_licence_id(pic['license'])
         @photo.subject = pic['title']
         if @photo.save
