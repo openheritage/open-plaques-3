@@ -57,43 +57,47 @@ module PlaquesHelper
   end
 
   def find_flickr_photos_non_api(plaque)
-    # "/photos/tags/openplaques:id=1%20" gets any id with 1 in
+    puts "find_flickr_photos_non_api"
+    # "/photos/tags/openplaques:id=1" gets any id with 1 in
     url = "https://www.flickr.com/search/?tags=#{plaque.machine_tag}%20"
     response = ""
     open(url){|f| response = f.read }
-    pics = response.match( /\[{"_flickrModelRegistry":"photo-lite-models"[a-zA-Z\d,\":@ -.{\\\/_}=\(\)]*\]/ )
+    pics = response.match( /\[{"_flickrModelRegistry":"photo-lite-models"[a-zA-Z\d,\":@ -.{\\\/_}=\(\)'’]*\]/ )
     pics = "[]" if pics == nil
+#    puts "*** #{pics}"
     json_parsed = JSON.parse("{\"data\":#{pics}}")
     json_parsed['data'].each do |pic|
+#      puts "*** #{pic}"
       file_url = ""
       pic['sizes'].each do |size|
-        file_url = "http:#{size[1]['displayUrl']}" if size[0] == "z"
+        file_url = "https:#{size[1]['displayUrl']}" if size[0] == "z"
       end
-      photo_url = "http://www.flickr.com/photos/#{pic['ownerNsid']}/#{pic['id']}/"
-      @photo = Photo.find_by_url(photo_url) || Photo.find_by_url(photo_url.sub("http:","https:"))
+      photo_url = "https://www.flickr.com/photos/#{pic['ownerNsid']}/#{pic['id']}/"
+      @photo = Photo.find_by_url(photo_url) || Photo.find_by_url(photo_url.sub("https:","http:"))
       if @photo
-        puts "we've already got #{photo_url}"
+#        puts "we've already got #{photo_url}"
       else
-        puts "**** #{pic}"
         @photo = Photo.new
         @photo.plaque = plaque
         @photo.file_url = file_url
         @photo.url = photo_url
         @photo.photographer = pic['username']
-        @photo.photographer_url = "http://www.flickr.com/photos/#{pic['username']}/"
+        @photo.photographer_url = "https://www.flickr.com/photos/#{pic['username']}/"
         @photo.licence = Licence.find_by_flickr_licence_id(pic['license'])
         @photo.subject = pic['title']
-        if @photo.save
-          puts "New photo found and saved"
-        else
-  #            puts "Error saving photo" + @photo.errors.each_full{|msg| puts msg }
+        open(photo_url){|f| response = f.read }
+        if response
+          matches = /latitude":(?<latitude>[-\d.]*),"longitude":(?<longitude>[-\d.]*)/.match(response)
+          @photo.longitude = matches[:longitude] if matches
+          @photo.latitude = matches[:latitude] if matches
         end
+        @photo.save
       end
     end
 
   end
 
-  # pass null to search all machinetagged photos on Flickr
+  # pass null flickr_user_id to search all machinetagged photos on Flickr
   def find_photo_by_machinetag(plaque, flickr_user_id)
 #    key = FLICKR_KEY
     key = "86c115028094a06ed5cd19cfe72e8f8b"
