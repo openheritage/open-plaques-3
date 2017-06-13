@@ -62,7 +62,7 @@ module PlaquesHelper
     url = "https://www.flickr.com/search/?tags=#{plaque.machine_tag}%20"
     response = ""
     open(url){|f| response = f.read }
-    pics = response.match( /\[{"_flickrModelRegistry":"photo-lite-models"[a-zA-Z\d,\":@ -.{\\\/_}=\(\)'’]*\]/ )
+    pics = response.match( /\[{"_flickrModelRegistry":"photo-lite-models".*?\]/ )
     pics = "[]" if pics == nil
 #    puts "*** #{pics}"
     json_parsed = JSON.parse("{\"data\":#{pics}}")
