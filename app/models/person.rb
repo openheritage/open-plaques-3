@@ -413,7 +413,7 @@ class Person < ActiveRecord::Base
       "Ida","Ilse","Irene","Irma",
       "Jane","Janet","Jacqueline","Jeanne","Jenny","Jennifer","Johanna","Josephine","Judith","Julia","Julie",
       "Kate","Käte","Käthe","Kathleen","Klara",
-      "Laura","Letitia","Lidia","Lina","Liz","Lotte","Louisa","Lucie","Lucy","Luise",
+      "Laura","Letitia","Lidia","Lina","Liz","Lotte","Louise","Louisa","Lucie","Lucy","Luise",
       "Mabel","Mala","Margaret","Margery","Margot","Marianne","Marie","Martha","Mary","Mathilde","May","Mercy","Meta","Minna","Monica","Monika",
       "Nancy, Nelly",
       "Olga",
