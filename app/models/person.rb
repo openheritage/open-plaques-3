@@ -417,7 +417,7 @@ class Person < ActiveRecord::Base
       "Mabel","Mala","Margaret","Margery","Margot","Marianne","Marie","Martha","Mary","Mathilde","May","Mercy","Meta","Minna","Monica","Monika",
       "Nancy, Nelly",
       "Olga",
-      "Paloma","Paula","Pauline","Priscilla",
+      "Paloma","Paula","Pauline","Peggy","Priscilla",
       "Rachel","Regina","Roberta","Rosa","Rose","Ruth",
       "Sally","Sarah","Sara","Selma","Shelley","Sophie","Susan","Susanna",
       "Toni","Therese",

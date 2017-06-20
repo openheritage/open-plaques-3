@@ -19,6 +19,8 @@
 # File used by .rbenv:
 .ruby-version
 db/db.dump
+db/*.csv
+db/*.*json
 
 Cemetery_20160227_053514_473875.csv
 

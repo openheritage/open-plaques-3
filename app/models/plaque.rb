@@ -234,14 +234,14 @@ class Plaque < ActiveRecord::Base
         t += " " + colour_name if colour_name && "unknown"!=colour_name
         t + " plaque"
       elsif colour_name && "unknown"!=colour_name
-        colour_name.to_s.capitalize + " plaque № #{id}"
+        colour_name.to_s.capitalize + " plaque number #{id}"
       elsif id != nil
-        "plaque № #{id}"
+        "plaque number #{id}"
       else
         "plaque"
       end # << " in " + area.name if area
     rescue Exception => e
-      "plaque № #{id}"
+      "plaque number #{id}"
     end
   end
 
