@@ -4,6 +4,8 @@
   <% rescue %>
     <% plaque = plaque.plaque %>
   <% end %>
+  <% if plaque %>
+
   <% photo = plaque.main_photo %>
 <div class="row card plaque">
   <%= link_to plaque_path(plaque) do %>
@@ -59,4 +61,5 @@
   </div>
 </div>
 
+<% end %>
 <% end %>
