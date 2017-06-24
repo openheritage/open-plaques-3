@@ -10,7 +10,7 @@ xml.openplaques(){
         end
         xml.inscription {
           xml.raw plaque.inscription
-          xml.linked new_linked_inscription(plaque) if new_linked_inscription(plaque) != plaque.inscription
+          xml.linked linked_inscription(plaque) if linked_inscription(plaque) != plaque.inscription
         }
         if plaque.geolocated?
           xml.geo(reference_system: "WGS84", latitude: plaque.latitude, longitude: plaque.longitude, is_accurate: plaque.is_accurate_geolocation)
