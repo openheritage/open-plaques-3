@@ -5,6 +5,9 @@ class SearchController < ApplicationController
     @phrase = @original_phrase
     @search_results = []
     @phrase = "" if @phrase == nil
+    @people = []
+    @places = []
+    @plaques = []
     if @phrase != ""
       cap = 20 # to protect from stupid searches like "%a%"
       @phrase = @phrase.downcase
@@ -36,14 +39,14 @@ class SearchController < ApplicationController
           @plaques += Plaque.where(["lower(inscription) LIKE ?", "%" + aka.downcase + "%"]).limit(cap).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
         end
       end
-
+      @people.uniq!
+      @places.uniq!
+      @plaques.uniq!
+      @search_results += @people
+      @search_results += @places
+      @search_results += @plaques
     end
-    @people.uniq!
-    @places.uniq!
-    @plaques.uniq!
-    @search_results += @people
-    @search_results += @places
-    @search_results += @plaques
+
     respond_to do |format|
       format.html
       format.json { render json: @search_results.uniq }
