@@ -8,7 +8,7 @@ describe Plaque do
         @plaque = Plaque.new(id: 666)
       end
       it 'states its id number (which it gets when it is saved)' do
-        expect(@plaque.title).to eq('plaque № 666')
+        expect(@plaque.title).to eq('plaque number 666')
       end
     end
     context 'a plaque with a subject' do
