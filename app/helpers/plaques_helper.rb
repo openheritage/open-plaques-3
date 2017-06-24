@@ -35,39 +35,14 @@ module PlaquesHelper
     end
   end
 
-  def kml(plaque, xml)
-    if plaque.geolocated?
-      xml.Placemark do
-        xml.name(plaque.title)
-        xml.description do
-          xml.cdata!(("<p>" + plaque.inscription + "</p> <p><a href=\"" + plaque_url(plaque) + "\">" + thumbnail_img(plaque) + "</a></p>").html_safe)
-        end
-        if plaque.latitude && plaque.longitude
-          xml.Point do
-            xml.coordinates plaque.longitude.to_s + ',' + plaque.latitude.to_s + ",0"
-          end
-        end
-        if plaque.colour && plaque.colour.slug =~ /(blue|black|yellow|red|white|green)/
-          xml.styleUrl "#plaque-" + plaque.colour.slug
-        else
-          xml.styleUrl "#plaque-blue"
-        end
-      end
-    end
-  end
-
   def find_flickr_photos_non_api(plaque)
-    puts "find_flickr_photos_non_api"
-    # "/photos/tags/openplaques:id=1" gets any id with 1 in
     url = "https://www.flickr.com/search/?tags=#{plaque.machine_tag}%20"
     response = ""
     open(url){|f| response = f.read }
     pics = response.match( /\[{"_flickrModelRegistry":"photo-lite-models".*?\]/ )
     pics = "[]" if pics == nil
-#    puts "*** #{pics}"
     json_parsed = JSON.parse("{\"data\":#{pics}}")
     json_parsed['data'].each do |pic|
-#      puts "*** #{pic}"
       file_url = ""
       pic['sizes'].each do |size|
         file_url = "https:#{size[1]['displayUrl']}" if size[0] == "z"
@@ -97,54 +72,47 @@ module PlaquesHelper
 
   end
 
-  # pass null flickr_user_id to search all machinetagged photos on Flickr
+  # pass null plaque and flickr_user_id to search all machinetagged photos on Flickr
   def find_photo_by_machinetag(plaque, flickr_user_id)
 #    key = FLICKR_KEY
     key = "86c115028094a06ed5cd19cfe72e8f8b"
-    repeat = 20 # 100 per page, we will check the 2000 most recently created Flickr images
-    if (plaque)
-      repeat = 1 # 100 per page, so I hope that one plaque has fewer than 100 Flickr images
-    end
-    license = "1,2,3,4,5,6,7,8,9,10"
+    repeat = plaque ? 1 : 20 # 100 per page, we will check the 2000 most recently created Flickr images
+    open_licenses = "1,2,3,4,5,6,7,8,9,10"
     repeat.times do |page|
-      url = "https://api.flickr.com/services/rest/?api_key=" + key + "&method=flickr.photos.search&page=" + page.to_s + "&license=" + license + "&content_type=1&machine_tags=" + plaque.machine_tag +  "&extras=date_taken,owner_name,license,geo,machine_tags"
+      machine_tag = plaque ? plaque.machine_tag : "openplaques:id="
+      url = "https://api.flickr.com/services/rest/?api_key=#{key}&method=flickr.photos.search&page=#{page.to_s}&license=#{open_licenses}&content_type=1&machine_tags=#{machine_tag}&extras=date_taken,owner_name,license,geo,machine_tags"
       if (flickr_user_id)
-        url += "&user_id=" + flickr_user_id
+        url += "&user_id=#{flickr_user_id}"
       end
-      puts "Flickr: " + url
+      puts "Flickr: #{url}"
       response = open(url)
       doc = REXML::Document.new(response.read)
       doc.elements.each('//rsp/photos/photo') do |photo|
-        print "."
         $stdout.flush
         @photo = nil
-        file_url = "http://farm" + photo.attributes["farm"] + ".staticflickr.com/" + photo.attributes["server"] + "/" + photo.attributes["id"] + "_" + photo.attributes["secret"] + "_z.jpg"
-        photo_url = "http://www.flickr.com/photos/" + photo.attributes["owner"] + "/" + photo.attributes["id"] + "/"
+        file_url = "http://farm#{photo.attributes['farm']}.staticflickr.com/#{photo.attributes['server']}/#{photo.attributes['id']}_#{photo.attributes['secret']}_z.jpg"
+        photo_url = "http://www.flickr.com/photos/#{photo.attributes['owner']}/#{photo.attributes['id']}/"
         @photo = Photo.find_by_url(photo_url)
         if @photo
           # we've already got that one
         else
           plaque_id = photo.attributes["machine_tags"][/openplaques\:id\=(\d+)/, 1]
-          puts "Flickr: photo of plaque " + plaque_id.to_s + " '" + photo.attributes["title"] + "'"
+          puts "Flickr: photo of plaque #{plaque_id.to_s} '#{photo.attributes["title"]}'"
           @plaque = Plaque.find_by_id(plaque_id)
           if @plaque
             @photo = Photo.new
             @photo.plaque = @plaque
             @photo.file_url = file_url
             @photo.url = photo_url
-            @photo.taken_at = photo.attributes["datetaken"]
-            @photo.photographer_url = photo_url = "http://www.flickr.com/photos/" + photo.attributes["owner"] + "/"
-            @photo.photographer = photo.attributes["ownername"]
-            @photo.licence = Licence.find_by_flickr_licence_id(photo.attributes["license"])
-            if photo.attributes["latitude"] != "0"
-              @photo.latitude = photo.attributes["latitude"]
-              @photo.longitude = photo.attributes["longitude"]
+            @photo.taken_at = photo.attributes['datetaken']
+            @photo.photographer_url = photo_url = "http://www.flickr.com/photos/#{photo.attributes['owner']}/"
+            @photo.photographer = photo.attributes['ownername']
+            @photo.licence = Licence.find_by_flickr_licence_id(photo.attributes['license'])
+            if photo.attributes['latitude'] != "0"
+              @photo.latitude = photo.attributes['latitude']
+              @photo.longitude = photo.attributes['longitude']
             end
-            if @photo.save
-              puts "New photo found and saved"
-            else
-#            puts "Error saving photo" + @photo.errors.each_full{|msg| puts msg }
-            end
+            @photo.save
           else
             puts "Photo's machine tag doesn't match a plaque."
           end
@@ -161,9 +129,9 @@ module PlaquesHelper
       english = Language.find_by_name('English')
       19.times do |page|
         puts page.to_s
-        url = flickr_url + "?api_key=" + key + "&method=flickr.photos.search&page=" + page.to_s + "&per_page=5&content_type=1&extras=date_taken,owner_name,license,geo,description"
+        url = "#{flickr_url}?api_key=#{key}&method=flickr.photos.search&page=#{page.to_s}&per_page=5&content_type=1&extras=date_taken,owner_name,license,geo,description"
         if group_id
-          url += "&group_id=" + group_id
+          url += "&group_id=#{group_id}"
         end
         response = open(url)
         doc = REXML::Document.new(response.read)
@@ -171,16 +139,16 @@ module PlaquesHelper
           print "."
           $stdout.flush
           @photo = nil
-          file_url = "http://farm" + photo.attributes["farm"] + ".staticflickr.com/" + photo.attributes["server"] + "/" + photo.attributes["id"] + "_" + photo.attributes["secret"] + "_z.jpg"
-          photo_url = "http://www.flickr.com/photos/" + photo.attributes["owner"] + "/" + photo.attributes["id"] + "/"
+          file_url = "http://farm#{photo.attributes['farm']}.staticflickr.com/#{photo.attributes['server']}/#{photo.attributes['id']}_#{photo.attributes['secret']}_z.jpg"
+          photo_url = "http://www.flickr.com/photos/#{photo.attributes['owner']}/#{photo.attributes['id']}/"
           @photo = Photo.find_by_url(photo_url)
           inscription_is_stub = true
-          if photo.attributes["title"]!=nil
-            subject = photo.attributes["title"].split(",")[0].split("()")[0].rstrip.lstrip + "."
+          if photo.attributes['title']!=nil
+            subject = photo.attributes['title'].split(",")[0].split("()")[0].rstrip.lstrip + "."
             inscription = subject
           end
-          if photo.elements["description"].text != nil && photo.elements["description"].text.length > 50
-            inscription << " " + photo.elements["description"].text
+          if photo.elements['description'].text != nil && photo.elements['description'].text.length > 50
+            inscription << " " + photo.elements['description'].text
           end
           if @photo
             puts "photo already exists in Open Plaques"
@@ -206,13 +174,13 @@ module PlaquesHelper
               @photo.plaque = @plaque
               @photo.file_url = file_url
               @photo.url = photo_url
-              @photo.taken_at = photo.attributes["datetaken"]
-              @photo.photographer_url = "http://www.flickr.com/photos/" + photo.attributes["owner"] + "/"
-              @photo.photographer = photo.attributes["ownername"]
-              @photo.licence = Licence.find_by_flickr_licence_id(photo.attributes["license"])
-              if photo.attributes["latitude"] != "0" && photo.attributes["longitude"] != "0" && !@plaque.geolocated?
-                @plaque.latitude = photo.attributes["latitude"]
-                @plaque.longitude = photo.attributes["longitude"]
+              @photo.taken_at = photo.attributes['datetaken']
+              @photo.photographer_url = "http://www.flickr.com/photos/#{photo.attributes['owner']}/"
+              @photo.photographer = photo.attributes['ownername']
+              @photo.licence = Licence.find_by_flickr_licence_id(photo.attributes['license'])
+              if photo.attributes['latitude'] != "0" && photo.attributes['longitude'] != "0" && !@plaque.geolocated?
+                @plaque.latitude = photo.attributes['latitude']
+                @plaque.longitude = photo.attributes['longitude']
               end
               if @plaque.save
                 puts "New plaque and photo added"
