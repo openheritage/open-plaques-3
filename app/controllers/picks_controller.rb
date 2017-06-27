@@ -4,6 +4,7 @@ class PicksController < ApplicationController
 
   def index
     @picks = Pick.all
+    @todays = Pick.todays
     respond_to do |format|
       format.html
       format.json { render json: @picks }
@@ -27,11 +28,6 @@ class PicksController < ApplicationController
     @plaque = Plaque.find(params[:pick][:plaque_id])
     @pick.plaque = @plaque
     @pick.save
-    redirect_to picks_path
-  end
-
-  def destroy
-    @pick.destroy
     redirect_to picks_path
   end
 

@@ -8,5 +8,6 @@
       <footer class="blockquote-footer"><%= pick.proposer %></footer>
     </blockquote>
     <p class="label label-default label-pill pull-right">featured <%= pluralize(pick.featured_count, "time") %></p>
+    <%= link_to t('buttons.edit'), edit_pick_path(pick), class: 'btn btn-primary' if current_user && current_user.is_admin? %>
   </div>
 </div>

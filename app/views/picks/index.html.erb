@@ -3,4 +3,12 @@
 <% content_for(:page_subhead) {t '.explanation'} %>
 <% content_for(:admin_panel) {navbar_link_to t('buttons.add'), new_pick_path} %>
 
-<%= render partial: 'picks/pick_row', collection: @picks, as: :pick %>
+<div class="col-xs-12 col-lg-6">
+  <%= render partial: 'home/plaque_of_the_day' %>
+</div>
+
+<div class="container">
+  <div class="col-xs-12 col-lg-6">
+    <%= render partial: 'picks/pick_row', collection: @picks, as: :pick %>
+  </div>
+</div>
