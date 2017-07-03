@@ -17,7 +17,23 @@ class SeriesController < ApplicationController
       .order('series_ref asc')
       .paginate(page: params[:page], per_page: 20) # Postgres -> NULLS LAST
       .preload(:personal_connections, :language, :photos, area: :country )
-    respond_to do |format|
+      begin
+        set_meta_tags open_graph: {
+          title: "Open Plaques Series #{@series.name}",
+          description: @series.description,
+        }
+        @main_photo = @series.main_photo
+        set_meta_tags twitter: {
+          title: "Open Plaques Series #{@series.name}",
+          image: {
+            _: @main_photo ? @main_photo.file_url : view_context.root_url[0...-1] + view_context.image_path("openplaques.png"),
+            width: 100,
+            height: 100,
+          }
+        }
+      rescue
+      end
+      respond_to do |format|
       format.html
       format.json { render json: @series }
       format.geojson { render geojson: @series }
@@ -59,7 +75,7 @@ class SeriesController < ApplicationController
     include Singleton
     include PlaquesHelper
   end
-  
+
   protected
 
     def find
@@ -75,5 +91,5 @@ class SeriesController < ApplicationController
         :latitude,
         :longitude,
         :streetview_url)
-    end  
+    end
 end

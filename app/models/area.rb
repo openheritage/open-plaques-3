@@ -87,4 +87,9 @@ class Area < ActiveRecord::Base
     "http://openplaques.org" + Rails.application.routes.url_helpers.country_area_plaques_path(self.country, self, format: :json) if id && country
   end
 
+  def main_photo
+    random_photographed_plaque = plaques.photographed.order("random()").limit(1).first
+    random_photographed_plaque ? random_photographed_plaque.main_photo : nil
+  end
+
 end

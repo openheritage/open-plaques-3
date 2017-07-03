@@ -7,9 +7,19 @@ class HomeController < ApplicationController
       set_meta_tags open_graph: {
         type: :website,
         url: url_for(only_path: false),
-        image: view_context.root_url[0...-1] + view_context.image_path("openplaques-icon.png"),
+        image: view_context.root_url[0...-1] + view_context.image_path("openplaques.png"),
         title: "Open Plaques",
         description: "Documenting the historical links between people and places, as recorded by commemorative plaques",
+      }
+      set_meta_tags twitter: {
+        card: "summary_large_image",
+        site: "@openplaques",
+        title: "Open Plaques",
+        image: {
+          _: @todays.main_photo ? @todays.main_photo.file_url : view_context.root_url[0...-1] + view_context.image_path("openplaques.png"),
+          width: 100,
+          height: 100,
+        }
       }
     rescue
     end

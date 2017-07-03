@@ -23,6 +23,21 @@ class AreaPlaquesController < ApplicationController
         : @plaques = @area.plaques.paginate(page: params[:page], per_page: 5000000)
     end
     @area.find_centre if !@area.geolocated?
+    begin
+      set_meta_tags open_graph: {
+        title: "Open Plaques Area #{@area.name}",
+      }
+      @main_photo = @area.main_photo
+      set_meta_tags twitter: {
+        title: "Open Plaques Area #{@area.name}",
+        image: {
+          _: @main_photo ? @main_photo.file_url : view_context.root_url[0...-1] + view_context.image_path("openplaques.png"),
+          width: 100,
+          height: 100,
+        }
+      }
+    rescue
+    end
     respond_with @plaques do |format|
       format.html
       format.json { render json: @plaques }
