@@ -79,23 +79,26 @@ class PlaquesController < ApplicationController
 
   def show
     @plaques = [@plaque]
-    set_meta_tags open_graph: {
-      type: :website,
-      url: url_for(:only_path=>false),
-      image: @plaque.main_photo ? @plaque.main_photo.file_url : view_context.root_url[0...-1] + view_context.image_path("openplaques-icon.png"),
-      title: @plaque.title,
-      description: @plaque.inscription,
-    }
-    set_meta_tags twitter: {
-      card: "summary_large_image",
-      site: "@openplaques",
-      title: @plaque.title,
-      image: {
-        _: @plaque.main_photo ? @plaque.main_photo.file_url : view_context.root_url[0...-1] + view_context.image_path("openplaques-icon.png"),
-        width: 100,
-        height: 100,
+    begin
+      set_meta_tags open_graph: {
+        type: :website,
+        url: url_for(:only_path=>false),
+        image: @plaque.main_photo ? @plaque.main_photo.file_url : view_context.root_url[0...-1] + view_context.image_path("openplaques.png"),
+        title: @plaque.title,
+        description: @plaque.inscription,
       }
-    }
+      set_meta_tags twitter: {
+        card: "summary_large_image",
+        site: "@openplaques",
+        title: @plaque.title,
+        image: {
+          _: @plaque.main_photo ? @plaque.main_photo.file_url : view_context.root_url[0...-1] + view_context.image_path("openplaques.png"),
+          width: 100,
+          height: 100,
+        }
+      }
+    rescue
+    end
 
     respond_to do |format|
       format.html

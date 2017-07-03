@@ -3,7 +3,7 @@
     <h4 class="card-title"><%= link_to series.name, series %></h4>
     <p class="card-text"><%= series.description %></p>
     <div class="card-columns">
-      <%= render partial: 'plaques/tile', collection: series.plaques.photographed.limit(5), as: :plaque %>
+      <%= render partial: 'photos/photo', collection: series.plaques.photographed.order("random()").limit(5), as: :photo %>
     </div>
   </div>
 </div>

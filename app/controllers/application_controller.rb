@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   around_filter :global_request_logging
-  before_action :set_locale
+  before_action :set_locale, :set_global_meta_tags
 
   def authenticate_admin!
     raise UnAuthorised, "NotAuthorised" unless current_user.try(:is_admin?)
@@ -27,5 +27,28 @@ class ApplicationController < ActionController::Base
 
   def set_locale
     I18n.locale = params[:locale] || I18n.default_locale if params[:locale]!=nil
+  end
+
+  def set_global_meta_tags
+    begin
+      set_meta_tags open_graph: {
+        type: :website,
+        url: url_for(only_path: false),
+        image: view_context.root_url[0...-1] + view_context.image_path("openplaques.png"),
+        title: "Open Plaques",
+        description: "Documenting the historical links between people and places, as recorded by commemorative plaques",
+      }
+      set_meta_tags twitter: {
+        card: "summary_large_image",
+        site: "@openplaques",
+        title: "Open Plaques",
+        image: {
+          _: view_context.root_url[0...-1] + view_context.image_path("openplaques.png"),
+          width: 100,
+          height: 100,
+        }
+      }
+    rescue
+    end
   end
 end
