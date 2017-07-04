@@ -465,8 +465,8 @@ en-GB:
       page_title: xx
       page_heading: yy
     index:
-      page_title: Latest plaques
-      page_heading: Latest plaques
+      page_title: Latest %{limit} plaques
+      page_heading: Latest %{limit} plaques
     new:
       page_title: Open Plaques - new plaque
       page_heading: Tell us about the plaque

@@ -29,11 +29,11 @@ class PlaquesController < ApplicationController
       end
     end
     if params[:limit] && params[:limit].to_i <= 2000
-      limit = params[:limit]
+      @limit = params[:limit]
     elsif params[:limit]
-      limit = 2000
+      @limit = 2000
     else
-      limit = 20
+      @limit = 20
     end
     select = "all"
     select = "unphotographed" if params[:id] == "unphotographed"
@@ -44,12 +44,12 @@ class PlaquesController < ApplicationController
       y = params[:y].to_i
       @plaques = Plaque.tile(zoom, x, y, select)
     elsif params[:data] && params[:data] == "simple"
-      @plaques = Plaque.all(conditions: conditions, order: "created_at DESC", limit: limit)
+      @plaques = Plaque.where(conditions).order("created_at DESC").limit(@limit)
     elsif params[:data] && params[:data] == "basic"
       @plaques = Plaque.all(select: [:id, :latitude, :longitude, :inscription])
     else
-#      limit = 1000000000000
-      @plaques = Plaque.where(conditions).order("created_at DESC").limit(limit).preload(:language, :organisations, :colour, [area: :country])
+#      @limit = 1000000000000
+      @plaques = Plaque.where(conditions).order("created_at DESC").limit(@limit).preload(:language, :organisations, :colour, [area: :country])
     end
 
     respond_to do |format|
@@ -210,10 +210,7 @@ class PlaquesController < ApplicationController
 
   def destroy
     @plaque.destroy
-    respond_to do |format|
-      format.html { redirect_to(plaques_url) }
-      format.xml  { head :ok }
-    end
+    redirect_to(plaques_url)
   end
 
   def help
@@ -246,6 +243,7 @@ class PlaquesController < ApplicationController
           :colour_id,
           :other_colour_id,
           # for plaque update
+          :notes,
           :inscription_in_english,
           :description,
           :area_id,
