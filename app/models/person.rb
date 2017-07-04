@@ -66,7 +66,15 @@ class Person < ActiveRecord::Base
       straight_roles = personal_roles.select do |personal_role|
         personal_role.related_person_id == nil
       end
-      straight_roles.sort { |a,b| a.started_at.to_s <=> b.started_at.to_s }
+      straight_roles.sort { |a,b| a.primary.to_s + a.started_at.to_s <=> a.primary.to_s + b.started_at.to_s }
+    end
+  end
+
+  def primary_roles
+    @primary_roles ||= begin
+      primary_roles = personal_roles.select do |personal_role|
+        personal_role.primary == true
+      end
     end
   end
 
