@@ -76,7 +76,7 @@ class PersonalRolesController < ApplicationController
         opposite = Role.find_by_name 'cricketer' if @personal_role.role.name == 'cricket club'
         opposite = Role.find_by_name 'cricket club' if @personal_role.role.name == 'cricketer'
       end
-      if opposite != nil
+      if opposite != nil && PersonalRole.find_by(person_id: @personal_role.related_person.id, related_person: @personal_role.person.id, role_id: opposite.id) == nil
         @vice_versa = PersonalRole.new
         @vice_versa.person = @personal_role.related_person
         @vice_versa.role = opposite
