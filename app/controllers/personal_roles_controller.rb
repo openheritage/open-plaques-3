@@ -52,7 +52,13 @@ class PersonalRolesController < ApplicationController
         ended_at = Date.parse(ended_at)
       end
     end
-    if @personal_role.update_attributes(started_at: started_at, ended_at: ended_at, related_person: related_person, ordinal: params[:personal_role][:ordinal])
+    if @personal_role.update_attributes(
+        started_at: started_at,
+        ended_at: ended_at,
+        related_person: related_person,
+        ordinal: params[:personal_role][:ordinal],
+        primary: params[:personal_role][:primary]
+    )
       opposite = nil
       if @personal_role.related_person && !@personal_role.related_person.is_related_to?(@personal_role.person)
         opposite = Role.find_by_name 'wife' if @personal_role.role.name == 'husband'

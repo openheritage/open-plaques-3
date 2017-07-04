@@ -6,9 +6,7 @@ module PeopleHelper
 
   def roles_list(person)
     list = []
-    if person.roles.size == 0
-      list << person.type
-    elsif person.type != 'man'
+    if person.roles.size == 0 || person.type != 'man'
       list << person.type
     end
     person.straight_roles.each do |personal_role|
