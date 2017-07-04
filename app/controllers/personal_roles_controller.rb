@@ -60,7 +60,7 @@ class PersonalRolesController < ApplicationController
         primary: params[:personal_role][:primary]
     )
       opposite = nil
-      if @personal_role.related_person && !@personal_role.related_person.is_related_to?(@personal_role.person)
+      if @personal_role.related_person # && !@personal_role.related_person.is_related_to?(@personal_role.person)
         opposite = Role.find_by_name 'wife' if @personal_role.role.name == 'husband'
         opposite = Role.find_by_name 'husband' if @personal_role.role.name == 'wife'
         opposite = Role.find_by_name 'father' if @personal_role.role.role_type == 'child' && @personal_role.related_person.male?
@@ -73,17 +73,46 @@ class PersonalRolesController < ApplicationController
         opposite = Role.find_by_name 'band' if @personal_role.role.name == 'drummer'
         opposite = Role.find_by_name 'footballer' if @personal_role.role.name == 'association football club'
         opposite = Role.find_by_name 'association football club' if @personal_role.role.name == 'footballer'
+        opposite = Role.find_by_name 'football manager' if @personal_role.role.name == 'football managerial post'
+        opposite = Role.find_by_name 'football managerial post' if @personal_role.role.name == 'football manager'
         opposite = Role.find_by_name 'cricketer' if @personal_role.role.name == 'cricket club'
         opposite = Role.find_by_name 'cricket club' if @personal_role.role.name == 'cricketer'
       end
-      if opposite != nil && PersonalRole.find_by(person_id: @personal_role.related_person.id, related_person: @personal_role.person.id, role_id: opposite.id) == nil
-        @vice_versa = PersonalRole.new
-        @vice_versa.person = @personal_role.related_person
-        @vice_versa.role = opposite
-        @vice_versa.related_person = @personal_role.person
-        @vice_versa.started_at = @personal_role.started_at if @personal_role.started_at
-        @vice_versa.ended_at = @personal_role.ended_at if @personal_role.ended_at
-        @vice_versa.save
+      if opposite != nil
+        it_exists = false
+        if @personal_role.started_at && @personal_role.ended_at
+          it_exists = PersonalRole.find_by(
+            person_id: @personal_role.related_person.id,
+            related_person: @personal_role.person.id,
+            role_id: opposite.id,
+            started_at: @personal_role.started_at,
+            ended_at: @personal_role.ended_at
+          ) != nil
+          if !it_exists
+            it_exists = PersonalRole.find_by(
+              person_id: @personal_role.related_person.id,
+              related_person: @personal_role.person.id,
+              role_id: opposite.id,
+              started_at: nil,
+              ended_at: nil
+            ) != nil
+          end
+        else
+          it_exists = PersonalRole.find_by(
+            person_id: @personal_role.related_person.id,
+            related_person: @personal_role.person.id,
+            role_id: opposite.id
+          ) != nil
+        end
+        if !it_exists
+          @vice_versa = PersonalRole.new
+          @vice_versa.person = @personal_role.related_person
+          @vice_versa.role = opposite
+          @vice_versa.related_person = @personal_role.person
+          @vice_versa.started_at = @personal_role.started_at if @personal_role.started_at
+          @vice_versa.ended_at = @personal_role.ended_at if @personal_role.ended_at
+          @vice_versa.save
+        end
       end
       redirect_to(edit_person_path(@personal_role.person))
     else
