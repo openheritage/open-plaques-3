@@ -28,8 +28,8 @@ class Person < ActiveRecord::Base
 
   has_many :personal_roles
   has_many :personal_connections
-  has_many :roles, through: :personal_roles
-  has_many :plaques, through: :personal_connections
+  has_many :roles, -> { distinct }, through: :personal_roles
+  has_many :plaques, -> { distinct }, through: :personal_connections
   has_one :birth_connection, -> { where('verb_id in (8,504)') }, class_name: "PersonalConnection"
   has_one :death_connection, -> { where('verb_id in (3,49,161,1108)') }, class_name: "PersonalConnection"
   has_one :main_photo, class_name: "Photo"
