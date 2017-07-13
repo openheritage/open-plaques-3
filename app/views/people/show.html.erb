@@ -53,7 +53,7 @@
             <%= @person.father ? link_to(@person.father.full_name, @person.father) : link_to('father?', '#') %> <%= @person.mother ? link_to(@person.mother.full_name, @person.mother) : link_to('mother?', '#') %>
             <ul>
               <li>
-                <%= link_to(@person) %>
+                <%= link_to(@person.full_name, @person) %>
                 <% @person.spouses.each do |spouse| %>
                   <%= link_to(spouse.full_name, spouse) %>
                 <% end %>
