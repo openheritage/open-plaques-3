@@ -116,7 +116,7 @@
 </div>
 
 <% if @person.plaques.size > 0 %>
-  <h2>Commemorated on <%= @person.plaques.size %> <%= 'plaque'.pluralize @person.plaques.size %></h2>
+  <h2><%= t '.commemorated_on', count: @person.plaques.size %></h2>
 <% else %>
   <h2><%= t '.not_commemorated'%></h2>
 <% end %>

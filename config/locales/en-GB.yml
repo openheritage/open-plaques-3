@@ -300,6 +300,9 @@ en-GB:
       page_heading: New person
     show:
       page_title: Historical plaques about %{person}
+      commemorated_on:
+        one: Commemorated on %{count} plaque
+        other: Commemorated on %{count} plaques
       not_commemorated: Is not commemorated on any plaques in our database (yet)
 
   people_alive_in:
