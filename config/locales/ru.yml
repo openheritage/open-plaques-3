@@ -283,6 +283,9 @@ ru:
       page_heading: Новый человек
     show:
       page_title: Памятные таблички о %{person}
+      commemorated_on:
+        one: Commemorated on %{count} plaque
+        other: Commemorated on %{count} plaques
       not_commemorated: (Пока) не упоминается на табличках из нашей базы
 
   people_alive_in:
