@@ -182,6 +182,10 @@ class Role < ActiveRecord::Base
     abbreviated? ? abbreviation : name
   end
 
+  def sticky?
+    name == "President of the Royal Society" || prefix == "King" || prefix == "Queen"
+  end
+
   def uri
     "http://openplaques.org" + Rails.application.routes.url_helpers.role_path(self.slug, format: :json)
   end
