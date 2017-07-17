@@ -1,0 +1,25 @@
+<div class="card vcard">
+  <div class="card-block">
+    <h4 class="card-title">
+      <%= icon('user') if role.person?%>
+      <%= icon('paw') if role.animal? %>
+      <%= icon('users') if role.group? %>
+      <%= icon('building') if role.place? %>
+      <%= icon('map-marker') if role.thing? %>
+      <%= link_to role.name, role %>
+    </h4>
+  </div>
+  <div class="card-block">
+    <% if role.used_as_a_suffix? %>
+      <p class="card-text">
+        <%= role.military_medal? ? 'A military medal that confers' : 'Confers' %>
+        <strong><%= role.letters %></strong> priority <%= role.priority %>
+      </p>
+    <% end %>
+    <ul class="list-group">
+      <% role.people.first(3).each do |person|%>
+        <li class="list-group-item"><%= link_to person.full_name, person %></li>
+      <% end %>
+    </ul>
+  </div>
+</div>

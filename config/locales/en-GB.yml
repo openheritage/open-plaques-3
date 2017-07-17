@@ -508,6 +508,12 @@ en-GB:
       page_title: Roles - %{letter}
       page_heading: Roles - %{letter}
 
+  roles_by_precedence:
+    index:
+      page_title: Roles by precedence
+      page_heading: Roles by precedence
+      page_subhead: Shown in the order that letters are displayed after the name with 3 examples
+
   search:
     index:
       page_title: Places, subjects,or plaques matching "%{phrase}"

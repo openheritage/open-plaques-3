@@ -69,6 +69,7 @@ Rails.application.routes.draw do
 
   scope '/roles' do
     resources 'a-z', controller: :roles_by_index, as: 'roles_by_index', only: [:show, :index]
+    resources 'precedence', controller: :roles_by_precedence, as: 'roles_by_precedence', only: [:index]
   end
   resources :roles do
     collection do
