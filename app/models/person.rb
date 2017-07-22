@@ -46,8 +46,8 @@ class Person < ActiveRecord::Base
   scope :unphotographed, -> { where("id not in (select person_id from photos)").order("id DESC") }
   scope :connected, -> { where("personal_connections_count > 0").order("id DESC") }
   scope :unconnected, -> { where(personal_connections_count: [nil,0]).order("id DESC") }
-  scope :name_starts_with, lambda {|term| where(["lower(name) LIKE ?", term.downcase + "%"]) }
-  scope :name_contains, lambda {|term| where(["lower(name) LIKE ?", "%" + term.downcase + "%"]) }
+  scope :name_starts_with, lambda { |term| where(["lower(name) LIKE ?", term.downcase + "%"]) }
+  scope :name_contains, lambda { |term| where(["lower(name) LIKE ?", "%" + term.downcase + "%"]) }
 
   DATE_REGEX = /c?[\d]{4}/
   DATE_RANGE_REGEX = /(?:\(#{DATE_REGEX}-#{DATE_REGEX}\)|#{DATE_REGEX}-#{DATE_REGEX})/
@@ -63,18 +63,14 @@ class Person < ActiveRecord::Base
 
   def straight_roles
     @straight_roles ||= begin
-      straight_roles = personal_roles.select do |personal_role|
-        personal_role.related_person_id == nil
-      end
+      straight_roles = personal_roles.select { |personal_role| personal_role.related_person_id == nil }
       straight_roles.sort { |a,b| a.primary.to_s + a.started_at.to_s <=> a.primary.to_s + b.started_at.to_s }
     end
   end
 
   def primary_roles
     @primary_roles ||= begin
-      primary_roles = personal_roles.select do |personal_role|
-        personal_role.primary == true
-      end
+      primary_roles = personal_roles.select { |personal_role| personal_role.primary == true }
     end
   end
 
@@ -110,35 +106,35 @@ class Person < ActiveRecord::Base
   end
 
   def born_in
-    born_on.year if born_on
+    born_on&.year
   end
 
   def died_in
-    died_on.year if died_on
+    died_on&.year
   end
 
   def dates
     dates = ""
     if born_in
       dates = "("
-      dates += born_in.to_s
+      dates << born_in.to_s
       if died_in
-        dates += "-" + died_in.to_s if (born_in != died_in)
+        dates << "-#{died_in.to_s}" if (born_in != died_in)
       else
-        dates += alive? ? "-present" : "-?"
+        dates << alive? ? "-present" : "-?"
       end
-      dates += ")"
+      dates << ")"
     elsif died_in
-      dates = '(d.' + died_in.to_s + ')'
+      dates = "(d.#{died_in.to_s})"
     end
   end
 
   def born_at
-    birth_connection.location if birth_connection
+    birth_connection&.location
   end
 
   def died_at
-    death_connection.location if death_connection
+    death_connection&.location
   end
 
   def dead?
@@ -184,11 +180,11 @@ class Person < ActiveRecord::Base
   end
 
   def name_and_dates
-    name + " " + dates.to_s
+     "#{full_name} #{dates.to_s}"
   end
 
   def surname
-    self.name[self.name.downcase.rindex(" " + self.surname_starts_with.downcase) ? self.name.downcase.rindex(" " + self.surname_starts_with.downcase) + 1: 0,self.name.size]
+    name[name.downcase.rindex(" #{surname_starts_with.downcase}") ? name.downcase.rindex(" #{surname_starts_with.downcase}") + 1: 0, name.size]
   end
 
   def default_thumbnail_url
@@ -231,9 +227,9 @@ class Person < ActiveRecord::Base
     current_roles.each do |role|
       if !role.prefix.blank?
         # NB a clergyman or Commonwealth citizen does not get called 'Sir'
-        title += "#{role.prefix} " if !title.include?(role.prefix) && !(role.prefix == "Sir" && clergy?)
+        title << "#{role.prefix} " if !title.include?(role.prefix) && !(role.prefix == "Sir" && clergy?)
       elsif role.used_as_a_prefix? and !title.include?(role.display_name)
-        title += "#{role.display_name} "
+        title << "#{role.display_name} "
       end
     end
     title.strip
@@ -244,57 +240,56 @@ class Person < ActiveRecord::Base
   end
 
   def clergy?
-    roles.any? { |role| role.role_type=="clergy"}
+    roles.any? { |role| role.role_type=="clergy" }
   end
 
   def letters
     letters = ""
     current_roles.each do |role|
-      letters += " " + role.suffix if !role.suffix.blank?
+      letters << " #{role.suffix}" if !role.suffix.blank? && !letters.include?(role.suffix)
     end
     letters.strip
   end
 
   def full_name
-    fullname = title + " " + name + " " + letters
-    fullname.strip
+    "#{title} #{name} #{letters}".strip
   end
 
   def names
     nameparts = name.split(" ")
     firstname = nameparts.first
-    firstinitial = nameparts.second ? firstname[0,1] + "." : ""
+    firstinitial = nameparts.second ? "#{firstname[0,1]}." : ""
     secondname = nameparts.third ? nameparts.second : ""
-    secondinitial = nameparts.third ? secondname[0,1] + "." : ""
+    secondinitial = nameparts.third ? "#{secondname[0,1]}." : ""
     middlenames = nameparts.length > 2 ? nameparts.from(1).to(nameparts.from(1).length - 2) : []
     middleinitials = ""
     middlenames.each_with_index do |name, index|
-      middleinitials += " " if index > 0
-      middleinitials += name.to_s[0,1] + "."
+      middleinitials << " " if index > 0
+      middleinitials << "#{name.to_s[0,1]}."
     end
     lastname = nameparts.last
     names = []
     names << full_name # Sir Joseph Aloysius Hansom
-    names << title + " " + name if titled? # Dame Laura Knight [DBE]
+    names << "#{title} #{name}" if titled? # Dame Laura Knight [DBE]
     names += self.aka # Boz, Charlie Cheese, and Crackers
-    names << title + " " + firstinitial + " " + middleinitials + " " + lastname if titled? && nameparts.length > 2
-    names << title + " " + firstinitial + " " + lastname if titled? && nameparts.length > 1
+    names << "#{title} #{firstinitial} #{middleinitials} #{lastname}" if titled? && nameparts.length > 2
+    names << "#{title} #{firstinitial} #{lastname}" if titled? && nameparts.length > 1
     names << name if name != full_name # Joseph Aloysius Hansom
     if name.include? ',' # George Inn, Barcombe
       names << name.split(/,/).first
       return names
     end
-    names << title + " " + name.split(/ of /).first if name.include?(' of ') && titled? # King Charles II [of England]
-    names << name.split(/ of /).first if name.include? ' of ' # [King] Charles II [of England]
-    names << firstname + " " + middleinitials + " " + lastname if nameparts.length > 2 # Joseph A[loysius]. R[obert]. Hansom
-    names << firstinitial + " " + middleinitials + " " + lastname if nameparts.length > 2 # J. A. R. Hansom
-    names << firstname + " " + nameparts.second + " " + lastname if nameparts.length > 2 # Joseph Aaron Hansom
-    names << firstname + " " + secondinitial + " " + lastname if nameparts.length > 2 # Joseph A. Hansom
-    names << firstinitial + " " + secondname + " " + lastname if nameparts.length > 2 # J. Aaron Hansom
-    names << firstname + " " + lastname if nameparts.length > 2 # Joseph Hansom
-    names << firstinitial + " " + lastname  if nameparts.length > 1 # J. Hansom
-    names << title + " " + lastname if titled? # Lord Carlisle
-    names << title + " " + firstname if titled? # Sir William
+    names << "#{title} #{name.split(/ of /).first}" if name.include?(' of ') && titled? # King Charles II [of England]
+    names << name.split(/ of /).first if name.include?(' of ') # [King] Charles II [of England]
+    names << "#{firstname} #{middleinitials} #{lastname}" if nameparts.length > 2 # Joseph A[loysius]. R[obert]. Hansom
+    names << "#{firstinitial} #{middleinitials} #{lastname}" if nameparts.length > 2 # J. A. R. Hansom
+    names << "#{firstname} #{nameparts.second} #{lastname}" if nameparts.length > 2 # Joseph Aaron Hansom
+    names << "#{firstname} #{secondinitial} #{lastname}" if nameparts.length > 2 # Joseph A. Hansom
+    names << "#{firstinitial} #{secondname} #{lastname}" if nameparts.length > 2 # J. Aaron Hansom
+    names << "#{firstname} #{lastname}" if nameparts.length > 2 # Joseph Hansom
+    names << "#{firstinitial} #{lastname}" if nameparts.length > 1 # J. Hansom
+    names << "#{title} #{lastname}" if titled? # Lord Carlisle
+    names << "#{title} #{firstname}" if titled? # Sir William
     names << firstname if nameparts.length > 1 # Charles
     names << lastname if nameparts.length > 1 # Kitchener
     names.uniq
@@ -329,14 +324,10 @@ class Person < ActiveRecord::Base
   def siblings
     siblings = []
     if father != nil
-      father.children.each do |child|
-        siblings << child if child != self
-      end
+      father.children.each { |child| siblings << child if child != self }
     end
     if mother != nil
-      mother.children.each do |child|
-        siblings << child if child != self
-      end
+      mother.children.each { |child| siblings << child if child != self }
     end
     siblings.uniq.sort! { |a,b| a.born_on ? a.born_on : 0 <=> b.born_on ? b.born_on : 0 }
   end
@@ -359,17 +350,17 @@ class Person < ActiveRecord::Base
 
   def non_family_relationships
     non_family = []
-    relationships.each{|relationship|
+    relationships.each do |relationship|
       non_family << relationship if relationship.role.family? != true
-    }
+    end
     non_family
   end
 
   def family_relationships
     family = []
-    relationships.each{|relationship|
+    relationships.each do |relationship|
       family << relationship if relationship.role.family? == true
-    }
+    end
     family
   end
 
@@ -458,15 +449,15 @@ class Person < ActiveRecord::Base
   end
 
   def find_a_grave_url
-    self.find_a_grave_id ? "http://www.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=" + self.find_a_grave_id : null
+    "http://www.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=#{self.find_a_grave_id}" if find_a_grave_id
   end
 
   def ancestry_url
-    self.ancestry_id ? "http://www.ancestry.co.uk/genealogy/records/" + self.ancestry_id : null
+    "http://www.ancestry.co.uk/genealogy/records/#{self.ancestry_id}" if ancestry_id
   end
 
   def uri
-    "http://openplaques.org" + Rails.application.routes.url_helpers.person_path(self, format: :json)
+    "http://openplaques.org#{Rails.application.routes.url_helpers.person_path(self, format: :json)}"
   end
 
   def to_s
