@@ -121,7 +121,7 @@ class Person < ActiveRecord::Base
       if died_in
         dates << "-#{died_in.to_s}" if (born_in != died_in)
       else
-        dates << alive? ? "-present" : "-?"
+        dates << (alive? ? "-present" : "-?")
       end
       dates << ")"
     elsif died_in
