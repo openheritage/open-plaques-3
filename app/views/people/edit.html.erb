@@ -132,6 +132,7 @@
   <div class="form-group row">
     <div class="col-sm-2">
       <%= f.label :find_a_grave_id, class: 'col-form-label' %>
+      <%= link_to(icon('external-link'), "https://www.findagrave.com/php/famous.php?page=gSearch&page=gSearch&globalSearchCriteria=#{@person.name}", target: '_blank') if @person.find_a_grave_id.blank?%>
       <%= link_to(icon('external-link'), @person.find_a_grave_url, target: '_blank') unless @person.find_a_grave_id.blank?%>
     </div>
     <div class="col-sm-10">
