@@ -150,8 +150,16 @@ class Person < ActiveRecord::Base
   end
 
   def age
-    circa = died_on && born_on && born_on.month == 1 && born_on.day == 1 && died_on.month == 1 && died_on.day == 1 ? 'c.' : ''
-    return circa + (died_in - born_in).to_s if died_on && born_on
+    circa = died_on && born_on && born_on.month == 1 && born_on.day == 1 && died_on.month == 1 && died_on.day == 1
+    return "c. #{(died_on.year - born_on.year)}" if circa
+    if died_on && born_on
+      a = died_on.year - born_on.year
+      a = a - 1 if (
+        born_on.month > died_on.month or
+        (born_on.month >= died_on.month and born_on.day > died_on.day)
+      )
+      return "#{a}"
+    end
     return Time.now.year - born_in if born_in && inanimate_object?
     return Time.now.year - born_in if born_in && born_in > 1910
     "unknown"

@@ -1,7 +1,9 @@
 require 'spec_helper'
 
-describe Person, :type => :model do
-
+describe Person, type: :model do
+  it 'has a valid factory' do
+    expect(FactoryGirl.create(:person)).to be_valid
+  end
   describe '#full_name' do
     context 'a person' do
       before do
@@ -35,7 +37,9 @@ describe Person, :type => :model do
     context 'a vicar' do
       before do
         @person = Person.new(name: 'Malcolm McBonny')
-        @person.roles << Role.new(name: 'Vicar', role_type: 'clergy', prefix: 'Revd')
+        @person.roles << Role.new(
+          name: 'Vicar', role_type: 'clergy', prefix: 'Revd'
+        )
       end
       it 'is referred to as a Revd' do
         expect(@person.full_name).to eq('Revd Malcolm McBonny')
@@ -45,7 +49,9 @@ describe Person, :type => :model do
     context 'a member of the clergy who has been ennobled' do
       before do
         @person = Person.new(name: 'Malcolm McBonny')
-        @person.roles << Role.new(name: 'Vicar', role_type: 'clergy', prefix: 'Revd')
+        @person.roles << Role.new(
+          name: 'Vicar', role_type: 'clergy', prefix: 'Revd'
+        )
         @person.roles << Role.new(name: 'Baronet', prefix: 'Sir')
       end
       it 'does not get called a Sir/Lady' do
@@ -57,7 +63,7 @@ describe Person, :type => :model do
       it 'does not get called Sir/Lady'
     end
 
-    context 'a person with a role that confers a title' do
+    context 'with a role that confers a title' do
       before do
         @person = Person.new(name: 'Harry Bean')
         @role = Role.new(name: 'Smiter', role_type: 'title')
@@ -68,10 +74,12 @@ describe Person, :type => :model do
       end
     end
 
-    context 'a person with a title that can be abbreviated' do
+    context 'with a title that can be abbreviated' do
       before do
         @person = Person.new(name: 'Harry Bean')
-        @role = Role.new(name: 'Smiter', abbreviation: 'Smt', role_type: 'title')
+        @role = Role.new(
+          name: 'Smiter', abbreviation: 'Smt', role_type: 'title'
+        )
         @person.roles << @role
       end
       it 'has the abbreviated title displayed before their name' do
@@ -79,12 +87,16 @@ describe Person, :type => :model do
       end
     end
 
-    context 'a person with two different titles confering the same prefix' do
+    context 'with two different titles confering the same prefix' do
       before do
         @person = Person.new(name: 'Harry Bean')
-        @role = Role.new(name: 'Smiter', abbreviation: 'Smt', role_type: 'title')
+        @role = Role.new(
+          name: 'Smiter', abbreviation: 'Smt', role_type: 'title'
+        )
         @person.roles << @role
-        @role2 = Role.new(name: 'Wolverine', abbreviation: 'Smt', role_type: 'title')
+        @role2 = Role.new(
+          name: 'Wolverine', abbreviation: 'Smt', role_type: 'title'
+        )
         @person.roles << @role2
       end
       it 'has the title displayed once before their name' do
@@ -92,7 +104,7 @@ describe Person, :type => :model do
       end
     end
 
-    context 'a person with higher education qualifications' do
+    context 'with higher education qualifications' do
       before do
         @person = Person.new(name: 'John Smith')
         @role = Role.new(name: 'Toodle', suffix: 'Td', role_type: 'letters')
@@ -103,7 +115,7 @@ describe Person, :type => :model do
       end
     end
 
-    context 'a person with multiple higher education qualifications' do
+    context 'with multiple higher education qualifications' do
       before do
         @person = Person.new(name: 'John Smith')
         @role = Role.new(name: 'Toodle', suffix: 'Td', role_type: 'letters')
@@ -111,7 +123,7 @@ describe Person, :type => :model do
         @role = Role.new(name: 'Pip', suffix: 'P', role_type: 'letters')
         @person.roles << @role
       end
-      it 'has multiple letters after their name (in the order they were added)' do
+      it 'has multiple letters after their name in the order they were added' do
         expect(@person.full_name).to eq('John Smith Td P')
       end
     end
@@ -119,11 +131,19 @@ describe Person, :type => :model do
     context 'a princess who became queen' do
       before do
         @victoria = Person.new(name: 'Victoria')
-        @victoria.roles << Role.new(name: 'Queen of the United Kingdom', abbreviation: 'Queen', role_type: 'title')
-        @princess = Role.new(name: 'Princess', abbreviation: 'Princess', role_type: 'title')
+        @victoria.roles << Role.new(
+          name: 'Queen of the United Kingdom',
+          abbreviation: 'Queen',
+          role_type: 'title'
+        )
+        @princess = Role.new(
+          name: 'Princess',
+          abbreviation: 'Princess',
+          role_type: 'title'
+        )
         @victoria.roles << @princess
         @victoria_is_a_princess = @victoria.personal_roles.last
-        @victoria_is_a_princess.ended_at = "1902-01-01"
+        @victoria_is_a_princess.ended_at = '1902-01-01'
       end
       it 'is called \'Queen\' and not \'Princess Queen\'' do
         expect(@victoria.full_name).to eq('Queen Victoria')
@@ -197,7 +217,7 @@ describe Person, :type => :model do
         @person.roles << Role.new(name: 'Pip')
       end
       it 'lists suffixed roles as letters' do
-#        expect(@person.letters).to eq('Boo Td')
+        #        expect(@person.letters).to eq('Boo Td')
       end
     end
 
@@ -206,10 +226,18 @@ describe Person, :type => :model do
     context 'Sir Joseph Dalton Hooker OM GCSI CB PRS' do
       before do
         @person = Person.new(name: 'Joseph Dalton Hooker')
-        @person.roles << Role.new(name: 'Order of Merit recipient', suffix: 'OM')
-        @person.roles << Role.new(name: 'Knight Grand Commander of The Most Exalted Order of the Star of India', suffix: 'GCSI')
-        @person.roles << Role.new(name: 'Companion of the Order of the Bath', suffix: 'CB')
-        @person.roles << Role.new(name: 'President of The Royal Society', suffix: 'PRS')
+        @person.roles << Role.new(
+          name: 'Order of Merit recipient', suffix: 'OM'
+        )
+        @person.roles << Role.new(
+          name: 'Knight Grand Commander of The Star of India', suffix: 'GCSI'
+        )
+        @person.roles << Role.new(
+          name: 'Companion of the Order of the Bath', suffix: 'CB'
+        )
+        @person.roles << Role.new(
+          name: 'President of The Royal Society', suffix: 'PRS'
+        )
       end
       it 'lists suffixed roles as letters' do
         expect(@person.letters).to eq('OM GCSI CB PRS')
@@ -219,23 +247,34 @@ describe Person, :type => :model do
     context 'Sir Joseph Dalton Hooker OM GCSI CB PRS' do
       before do
         @person = Person.new(name: 'Joseph Dalton Hooker')
-        @person.roles << Role.new(name: 'Order of Merit recipient', suffix: 'OM', priority: 90)
-        @person.roles << Role.new(name: 'President of The Royal Society', suffix: 'PRS')
-        @person.roles << Role.new(name: 'Companion of the Order of the Bath', suffix: 'CB', priority: 70)
-        @person.roles << Role.new(name: 'Knight Grand Commander of The Most Exalted Order of the Star of India', suffix: 'GCSI', priority: 80)
+        @person.roles << Role.new(
+          name: 'Order of Merit recipient', suffix: 'OM', priority: 90
+        )
+        @person.roles << Role.new(
+          name: 'President of The Royal Society', suffix: 'PRS'
+        )
+        @person.roles << Role.new(
+          name: 'Companion of the Order of the Bath', suffix: 'CB', priority: 70
+        )
+        @person.roles << Role.new(
+          name: 'Knight Grand Commander of The Star of India',
+          suffix: 'GCSI',
+          priority: 80
+        )
       end
       it 'lists suffixed roles as letters' do
         expect(@person.letters).to eq('OM GCSI CB PRS')
       end
     end
-
   end
 
   describe '#clergy?' do
     context 'a vicar' do
       before do
         @person = Person.new(name: 'Malcolm McBonny')
-        @person.roles << Role.new(name: 'vicar', role_type: 'clergy', abbreviation: 'Revd')
+        @person.roles << Role.new(
+          name: 'vicar', role_type: 'clergy', abbreviation: 'Revd'
+        )
       end
       it 'is in the clergy' do
         expect(@person).to be_clergy
@@ -256,7 +295,9 @@ describe Person, :type => :model do
       before do
         @person = Person.new(name: 'Malcolm McBonny')
         @person.roles << Role.new(name: 'farmer')
-        @person.roles << Role.new(name: 'vicar', role_type: 'clergy', abbreviation: 'Revd')
+        @person.roles << Role.new(
+          name: 'vicar', role_type: 'clergy', abbreviation: 'Revd'
+        )
       end
       it 'is in the clergy' do
         expect(@person).to be_clergy
@@ -330,7 +371,7 @@ describe Person, :type => :model do
   end
 
   describe '#dead?' do
-    context 'a person with no dates' do
+    context 'with no dates' do
       before do
         @person = Person.new
       end
@@ -339,7 +380,7 @@ describe Person, :type => :model do
       end
     end
 
-    context 'a person with a date of death' do
+    context 'with a date of death' do
       before do
         @person = Person.new
         @person.died_on = Date.new(2009, 1, 1)
@@ -349,7 +390,7 @@ describe Person, :type => :model do
       end
     end
 
-    context 'a person with a date of death and a date of birth' do
+    context 'with a date of death and a date of birth' do
       before do
         @person = Person.new
         @person.born_on = Date.new(1932, 7, 8)
@@ -360,7 +401,7 @@ describe Person, :type => :model do
       end
     end
 
-    context 'a person with a date of birth and no date of death' do
+    context 'with a date of birth and no date of death' do
       before do
         @person = Person.new
         @person.born_on = Date.new(1980, 1, 1)
@@ -370,7 +411,7 @@ describe Person, :type => :model do
       end
     end
 
-    context 'a person with a date of birth before 1900' do
+    context 'with a date of birth before 1900' do
       before do
         @person = Person.new
         @person.born_on = Date.new(1880, 1, 1)
@@ -393,37 +434,59 @@ describe Person, :type => :model do
   end
 
   describe '#age' do
-    context 'a person with no dates' do
+    context 'with no dates' do
       before do
         @person = Person.new
       end
-      it 'is of unknown age' do
+      it 'is unknown' do
         expect(@person.age).to eq('unknown')
       end
     end
 
-    context 'a person with only a date of death' do
+    context 'with date of death only' do
       before do
         @person = Person.new
         @person.died_on = Date.new(2009, 1, 1)
       end
-      it 'is of unknown age' do
+      it 'is unknown' do
         expect(@person.age).to eq('unknown')
       end
     end
 
-    context 'a person born in 1932 and died in 2009' do
+    context 'born 1 March 1932 and died 4 April 2009' do
       before do
         @person = Person.new
-        @person.born_on = Date.new(1932, 7, 8)
-        @person.died_on = Date.new(2009, 1, 1)
+        @person.born_on = Date.new(1932, 3, 1)
+        @person.died_on = Date.new(2009, 4, 4)
       end
       it 'was 77' do
         expect(@person.age).to be == '77'
       end
     end
 
-    context 'a person with a date of birth and no date of death' do
+    context 'born 14 April 1932 and died 4 April 2009' do
+      before do
+        @person = Person.new
+        @person.born_on = Date.new(1932, 4, 14)
+        @person.died_on = Date.new(2009, 4, 4)
+      end
+      it 'was 76' do
+        expect(@person.age).to be == '76'
+      end
+    end
+
+    context 'born 29 April 1932 and died 4 April 2009' do
+      before do
+        @person = Person.new
+        @person.born_on = Date.new(1932, 4, 29)
+        @person.died_on = Date.new(2009, 4, 4)
+      end
+      it 'was 76' do
+        expect(@person.age).to be == '76'
+      end
+    end
+
+    context 'with a date of birth and no date of death' do
       before do
         @person = Person.new
         @person.born_on = Date.new(1980, 1, 1)
@@ -433,7 +496,7 @@ describe Person, :type => :model do
       end
     end
 
-    context 'a person born in 1880 with no date of death' do
+    context 'born in 1880 with no date of death' do
       before do
         @person = Person.new
         @person.born_on = Date.new(1880, 1, 1)
@@ -443,55 +506,55 @@ describe Person, :type => :model do
       end
     end
 
-    context 'a building built before 1900' do
+    context 'a building built in 1880' do
       before do
         @person = Person.new
         @person.born_on = Date.new(1880, 1, 1)
         @person.roles << Role.new(name: 'building', role_type: 'thing')
       end
       it 'is over a hundred years old' do
-        expect(@person.age).to be > 133
+        expect(@person.age).to be > 100
       end
     end
   end
 
   describe '#dates' do
-    context 'a person born in 1932 and died in 2009' do
+    context 'born in 1932 and died in 2009' do
       before do
         @person = Person.new
         @person.born_on = Date.new(1932, 7, 8)
         @person.died_on = Date.new(2009, 1, 1)
       end
-      it 'displays a date range' do
+      it 'is a year range' do
         expect(@person.dates).to eq('(1932-2009)')
       end
     end
 
-    context 'a person with no dates' do
+    context 'with no dates' do
       before do
         @person = Person.new
       end
-      it 'can\'t display a date range' do
+      it 'is nil' do
         expect(@person.dates).to eq(nil)
       end
     end
 
-    context 'a person who died in 2009' do
+    context 'who died in 2009' do
       before do
         @person = Person.new
         @person.died_on = Date.new(2009, 1, 1)
       end
-      it 'displays a death date' do
+      it 'is a death year' do
         expect(@person.dates).to eq('(d.2009)')
       end
     end
 
-    context 'a person born in 1980 with no date of death' do
+    context 'born in 1980 with no date of death' do
       before do
         @person = Person.new
         @person.born_on = Date.new(1980, 1, 1)
       end
-      it 'displays a birth date' do
+      it 'is a range \'([birth year]-present)\'' do
         expect(@person.dates).to eq('(1980-present)')
       end
     end
@@ -502,17 +565,17 @@ describe Person, :type => :model do
         @person.born_on = Date.new(1880, 1, 1)
         @person.roles << Role.new(name: 'building', role_type: 'place')
       end
-      it 'displays a built date' do
+      it 'is a range \'([construction year]-present)\'' do
         expect(@person.dates).to eq('(1880-present)')
       end
     end
   end
 
   describe '#accented_name?' do
-    context 'a person with an accented name' do
+    context 'with an accented name' do
       before do
         @person = Person.new
-        @person.name = "Béla Bartók"
+        @person.name = 'Béla Bartók'
         @person.aka_accented_name
       end
       it 'is accented' do
@@ -520,10 +583,10 @@ describe Person, :type => :model do
       end
     end
 
-    context 'a person with an unaccented name' do
+    context 'with an unaccented name' do
       before do
         @person = Person.new
-        @person.name = "John Smith"
+        @person.name = 'John Smith'
         @person.aka_accented_name
       end
       it 'is not accented' do
@@ -533,39 +596,38 @@ describe Person, :type => :model do
   end
 
   describe '#aka_accented_name' do
-    context 'a person with an accented name' do
+    context 'with an accented name' do
       before do
         @person = Person.new
-        @person.name = "Béla Bartók"
+        @person.name = 'Béla Bartók'
         @person.aka_accented_name
       end
       it 'has an unaccented version as an aka' do
-        expect(@person.aka).to include("Bela Bartok")
+        expect(@person.aka).to include('Bela Bartok')
       end
     end
 
-    context 'a person with an accented name and an aka' do
+    context 'with an accented name and an aka' do
       before do
         @person = Person.new
-        @person.name = "Béla Bartók"
-        @person.aka.push("womble")
+        @person.name = 'Béla Bartók'
+        @person.aka.push('womble')
         @person.aka_accented_name
       end
       it 'has an unaccented version as an aka' do
-        expect(@person.aka).to include("Bela Bartok")
+        expect(@person.aka).to include('Bela Bartok')
       end
     end
 
-    context 'a person with an unaccented name' do
+    context 'with an unaccented name' do
       before do
         @person = Person.new
-        @person.name = "John Smith"
+        @person.name = 'John Smith'
         @person.aka_accented_name
       end
       it 'has no aka' do
-        expect(@person.aka).to_not include("Bela Bartok")
+        expect(@person.aka).to_not include('Bela Bartok')
       end
     end
   end
-
 end
