@@ -23,8 +23,7 @@ class SearchController < ApplicationController
       @people += Person.where(["array_to_string(aka, ' ') ILIKE ?", phrase_like]).limit(cap)
       @people += Person.where(["array_to_string(aka, ' ') ILIKE ?", unaccented_phrase_like]).limit(cap) if @phrase.match(/[À-ž]/)
 
-      @places = Area.where(["name ILIKE ?", phrase_like]).limit(cap)
-      @places.uniq!
+      @places += Area.where(["name ILIKE ?", phrase_like]).limit(cap)
 
       @plaques += Plaque.where(["inscription ILIKE ?", full_phrase_like]).limit(cap).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
       @plaques += Plaque.where(["inscription ILIKE ?", phrase_like]).limit(cap).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
