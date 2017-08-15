@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Language, type: :model do
   it 'has a valid factory' do
-    expect(FactoryGirl.create(:language)).to be_valid
+    expect(create(:language)).to be_valid
   end
   describe '#full_name' do
     context 'with nothing set' do

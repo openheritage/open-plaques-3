@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Licence, type: :model do
   it 'has a valid factory' do
-    expect(FactoryGirl.create(:licence)).to be_valid
+    expect(create(:licence)).to be_valid
   end
   describe '#to_s' do
     context 'with a name' do

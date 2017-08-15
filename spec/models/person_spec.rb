@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Person, type: :model do
   it 'has a valid factory' do
-    expect(FactoryGirl.create(:person)).to be_valid
+    expect(create(:person)).to be_valid
   end
   describe '#full_name' do
     context 'a person' do

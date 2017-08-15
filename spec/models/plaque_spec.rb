@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Plaque, type: :model do
   it 'has a valid factory' do
-    expect(FactoryGirl.create(:plaque)).to be_valid
+    expect(create(:plaque)).to be_valid
   end
   describe '#title' do
     context 'with nothing linked' do

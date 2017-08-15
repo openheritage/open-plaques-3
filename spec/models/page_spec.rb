@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Page, type: :model do
   it 'has a valid factory' do
-    expect(FactoryGirl.create(:page)).to be_valid
+    expect(create(:page)).to be_valid
   end
   describe '#to_s' do
     context 'with a name' do
