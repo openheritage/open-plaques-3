@@ -277,8 +277,8 @@ class Person < ActiveRecord::Base
     end
     lastname = nameparts.last
     names = []
-    names << full_name # Sir Joseph Aloysius Hansom
-    names << "#{title} #{name}" if titled? # Dame Laura Knight [DBE]
+    names << full_name # Joseph Aloysius Hansom
+    names << "#{title} #{name}" if titled? # Sir Joseph Aloysius Hansom
     names += self.aka # Boz, Charlie Cheese, and Crackers
     names << "#{title} #{firstinitial} #{middleinitials} #{lastname}" if titled? && nameparts.length > 2
     names << "#{title} #{firstinitial} #{lastname}" if titled? && nameparts.length > 1
@@ -294,6 +294,7 @@ class Person < ActiveRecord::Base
     names << "#{firstname} #{nameparts.second} #{lastname}" if nameparts.length > 2 # Joseph Aaron Hansom
     names << "#{firstname} #{secondinitial} #{lastname}" if nameparts.length > 2 # Joseph A. Hansom
     names << "#{firstinitial} #{secondname} #{lastname}" if nameparts.length > 2 # J. Aaron Hansom
+    names << "#{title} #{firstname} #{lastname}" if nameparts.length > 2 && titled?# Sir Joseph Hansom
     names << "#{firstname} #{lastname}" if nameparts.length > 2 # Joseph Hansom
     names << "#{firstinitial} #{lastname}" if nameparts.length > 1 # J. Hansom
     names << "#{title} #{lastname}" if titled? # Lord Carlisle

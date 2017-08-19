@@ -241,19 +241,22 @@ module PlaquesHelper
       people.each_with_index do |person, person_index|
         matched = false
         search_for = ""
+        i = 0
         person.names.each_with_index do |name, index|
           if (!matched)
             search_for = name
-            matched = reduced_inscription.index(search_for) != nil
+            matched = reduced_inscription.upcase.index(search_for.upcase) != nil
+            i = reduced_inscription.upcase.index(search_for.upcase)
           end
         end
-        reduced_inscription = reduced_inscription.gsub(search_for, "") if matched
-        inscription = inscription.gsub(search_for, link_to(search_for, person_path(person))).html_safe if matched
+        reduced_inscription = "#{reduced_inscription[0..i]}#{reduced_inscription[(i + search_for.length - 1)..-1]}" if matched
+        i_inscription = inscription.upcase.index(search_for.upcase)
+        inscription = "#{inscription[0..(i_inscription - 1)] if i_inscription > 0}#{link_to(search_for, person_path(person))}#{inscription[(i_inscription + search_for.length)..-1]}" if i
       end
     end
     inscription += " [full inscription unknown]" if plaque.inscription_is_stub
     inscription += " [has not been erected yet]" if !plaque.erected?
-    return inscription
+    return inscription.html_safe
   end
 
   # given a set of plaques, or a thing that has plaques (like an organisation) tell me what the mean point is
