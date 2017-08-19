@@ -1,42 +1,50 @@
 require 'spec_helper'
 
-describe Plaque do
-
-  describe 'the #title of' do
-    context 'a plaque with nothing linked' do
+describe Plaque, type: :model do
+  it 'has a valid factory' do
+    expect(create(:plaque)).to be_valid
+  end
+  describe '#title' do
+    context 'with nothing linked' do
       before do
         @plaque = Plaque.new(id: 666)
       end
-      it 'states its id number (which it gets when it is saved)' do
+      it 'is \'plaque number [id]\'' do
         expect(@plaque.title).to eq('plaque number 666')
       end
     end
-    context 'a plaque with a subject' do
+    context 'with a subject' do
       before do
         @plaque = Plaque.new
         @person = Person.new(name: 'Gizmo')
         @verb = Verb.new
-        @plaque.personal_connections << PersonalConnection.new(plaque: @plaque, person: @person, verb: @verb)
+        pc = PersonalConnection.new(
+          plaque: @plaque, person: @person, verb: @verb
+        )
+        @plaque.personal_connections << pc
       end
-      it 'has the subject\'s name in it' do
+      it 'is \'[subject\'s name] plaque\'' do
         expect(@plaque.title).to eq('Gizmo plaque')
       end
     end
-    context 'a plaque with a subject and a colour' do
+    context 'with a subject and a colour' do
       before do
         @plaque = Plaque.new(colour: Colour.new(name: 'blue'))
         @person = Person.new(name: 'Gizmo')
         @verb = Verb.new
-        @plaque.personal_connections << PersonalConnection.new(plaque: @plaque, person: @person, verb: @verb)
+        pc = PersonalConnection.new(
+          plaque: @plaque, person: @person, verb: @verb
+        )
+        @plaque.personal_connections << pc
       end
-      it 'has the subject\'s name and the plaque colour in it' do
+      it 'is \'[subject\'s name] [plaque colour] plaque\'' do
         expect(@plaque.title).to eq('Gizmo blue plaque')
       end
     end
   end
 
-  describe 'the geo accuracy' do
-    context 'of a plaque given detailed geolocation' do
+  describe 'geo accuracy' do
+    context 'given detailed geolocation' do
       before do
         @plaque = Plaque.new(latitude: -79.40822346, longitude: 43.677634565)
       end
@@ -50,7 +58,7 @@ describe Plaque do
   end
 
   describe '#geolocated?' do
-    context 'a plaque with no latitude or longitude' do
+    context 'with neither latitude nor longitude' do
       before do
         @plaque = Plaque.new
       end
@@ -58,7 +66,7 @@ describe Plaque do
         expect(@plaque).to_not be_geolocated
       end
     end
-    context 'a plaque with latitude and longitude' do
+    context 'with latitude and longitude' do
       before do
         @plaque = Plaque.new(latitude: 1335, longitude: 1234)
       end
@@ -66,7 +74,7 @@ describe Plaque do
         expect(@plaque).to be_geolocated
       end
     end
-    context 'a plaque with only latitude' do
+    context 'with latitude only' do
       before do
         @plaque = Plaque.new(latitude: 1335)
       end
@@ -74,7 +82,7 @@ describe Plaque do
         expect(@plaque).to_not be_geolocated
       end
     end
-    context 'a plaque with only longitude' do
+    context 'with longitude only' do
       before do
         @plaque = Plaque.new(longitude: 1335)
       end
@@ -85,35 +93,35 @@ describe Plaque do
   end
 
   describe '#as_json of' do
-    context 'a plaque with nothing set' do
+    context 'with nothing set' do
       before do
-        @plaque = Plaque.new()
+        @plaque = Plaque.new
       end
-      it 'is some json' do
-        # can do better than this. Probably by using https://github.com/collectiveidea/json_spec
+      it 'is json' do
+        # can do better than this
+        # Probably by using https://github.com/collectiveidea/json_spec
         expect(@plaque.as_json.to_s.size).to be > 10
       end
     end
   end
 
-  describe 'the #uri of' do
-    context 'a plaque with nothing set' do
+  describe '#uri' do
+    context 'with nothing set' do
       before do
-        @plaque = Plaque.new()
+        @plaque = Plaque.new
       end
       it 'is nil' do
         expect(@plaque.uri).to eq(nil)
       end
     end
-    context 'a plaque with an id' do
+    context 'with an id' do
       before do
         @plaque = Plaque.new(id: 13)
       end
-      it 'is openplaques.org/plaques/ and the id' do
+      it 'is \'openplaques.org/plaques/[id]\'' do
         # this is not ideal response. It should depend on the output format
         expect(@plaque.uri).to eq('http://openplaques.org/plaques/13')
       end
     end
   end
-
 end

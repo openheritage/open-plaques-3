@@ -1,31 +1,29 @@
 require 'spec_helper'
 
-describe Page do
-  
-  describe '#name' do
-    context 'a page' do
+describe Page, type: :model do
+  it 'has a valid factory' do
+    expect(create(:page)).to be_valid
+  end
+  describe '#to_s' do
+    context 'with a name' do
       before do
         @page = Page.new(name: 'blinky')
       end
-      it 'has their name displayed as-is' do
+      it 'is their name' do
         expect(@page.to_s).to eq('blinky')
       end
     end
-
   end
 
   describe '#as_json' do
-
-    context 'a page with nothing set' do
+    context 'with nothing set' do
       before do
-        @page = Page.new()
+        @page = Page.new
       end
-      it 'returns json' do
+      it 'is json' do
         # can do better than this. Probably by using https://github.com/collectiveidea/json_spec
         expect(@page.as_json.to_s.size).to be > 10
       end
     end
-
   end
-
 end

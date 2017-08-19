@@ -1,19 +1,24 @@
+# frozen_string_literal: true
+
 # The largest commonly identified region of residence below a country level.
-# By this, we mean the place that people would normally name in answer to the question of 'where do you live?'.
-# In most cases, this will be either a city (eg 'London'), town (eg 'Margate'), or village.
-# It should not normally be either a state, county, district or other administrative region.
+# By this, we mean the place that people would normally name in answer to the
+# question of 'where do you live?'.
+# In most cases, this will be either a city (eg 'London'), town (eg 'Margate'),
+# or village.
+# It should not normally be either a state, county, district or other
+# administrative region.
 #
 # === Attributes
 # * +name+ - the area's common name (not neccessarily 'official')
 # * +created_at+
 # * +updated_at+
 # * +dbpedia_uri+ - uri to link to DBPedia record
-# * +slug+ - a textual identifier, usually equivalent to its name in lower case, with spaces replaced by underscores. Used in URLs.
+# * +slug+ - a textual identifier, usually equivalent to its name in lower case,
+#            with spaces replaced by underscores. Used in URLs.
 # * +latitude+ - mean location of plaques
 # * +longitude+ - mean location of plaques
 # * +plaques_count+ - cached count of plaques
 class Area < ActiveRecord::Base
-
   belongs_to :country, counter_cache: true
   has_many :plaques
 
@@ -23,51 +28,51 @@ class Area < ActiveRecord::Base
   validates_presence_of :name, :slug, :country_id
   validates_uniqueness_of :slug, scope: :country_id
   default_scope { order('name ASC') }
-  scope :name_starts_with, lambda {|term| where(["lower(name) LIKE ?", term.downcase + "%"]) }
-  scope :name_contains, lambda {|term| where(["lower(name) LIKE ?", "%" + term.downcase + "%"]) }
+  scope :name_starts_with, ->(term) { where(['lower(name) LIKE ?', term.downcase + '%']) }
+  scope :name_contains, ->(term) { where(['lower(name) LIKE ?', '%' + term.downcase + '%']) }
 
   include ApplicationHelper
   include PlaquesHelper
 
   def find_centre
-    if !geolocated?
-      @mean = find_mean(self.plaques.geolocated)
-      self.latitude = @mean.latitude
-      self.longitude = @mean.longitude
-    end
+    return nil unless geolocated?
+    @mean = find_mean(plaques.geolocated)
+    self.latitude = @mean.latitude
+    self.longitude = @mean.longitude
   end
 
   def geolocated?
-    return !(self.latitude == nil || self.longitude == nil || self.latitude == 51.475 && self.longitude == 0)
+    !(latitude.nil? || longitude.nil? || latitude == 51.475 && longitude.zero?)
   end
 
   def full_name
-    name + ", " + country.name
+    name + ', ' + country.name
   end
 
   def people
-    people = Array.new
+    people = []
     plaques.each do |plaque|
-      if plaque.people != nil
-        plaque.people.each do |person|
-          people << person
-        end
+      next if plaque.people.nil?
+      plaque.people.each do |person|
+        people << person
       end
     end
-    return people.uniq
+    people.uniq
   end
 
-  def as_json(options=nil)
-    options = {
-      only: [:name, :plaques_count],
-      include: {
-        country: {
-          only: [:name],
-          methods: :uri
-        }
-      },
-      methods: [:uri, :plaques_uri]
-    } if !options || !options[:only]
+  def as_json(options = nil)
+    if !options || !options[:only]
+      options = {
+        only: %i[name plaques_count],
+        include: {
+          country: {
+            only: [:name],
+            methods: :uri
+          }
+        },
+        methods: %i[uri plaques_uri]
+      }
+    end
     super options
   end
 
@@ -80,16 +85,23 @@ class Area < ActiveRecord::Base
   end
 
   def uri
-    "http://openplaques.org" + Rails.application.routes.url_helpers.country_area_path(self.country, self, format: :json) if id && country
+    return nil unless id && country
+    path = Rails.application.routes.url_helpers.country_area_path(
+      country, self, format: :json
+    )
+    "http://openplaques.org#{path}"
   end
 
   def plaques_uri
-    "http://openplaques.org" + Rails.application.routes.url_helpers.country_area_plaques_path(self.country, self, format: :json) if id && country
+    return nil unless id && country
+    path = Rails.application.routes.url_helpers.country_area_plaques_path(
+      country, self, format: :json
+    )
+    "http://openplaques.org#{path}"
   end
 
   def main_photo
-    random_photographed_plaque = plaques.photographed.order("random()").limit(1).first
-    random_photographed_plaque ? random_photographed_plaque.main_photo : nil
+    random_plaque = plaques.photographed.order('random()').limit(1).first
+    random_plaque ? random_plaque.main_photo : nil
   end
-
 end
