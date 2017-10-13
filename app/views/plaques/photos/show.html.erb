@@ -1,43 +1,42 @@
 <% content_for :page_title, "Photos of the " + @plaque.title %>
 <% content_for :title do %>
-Photos of
-<%= link_to(@plaque.title, @plaque) %>
+  Photos of <%= link_to(@plaque.title, @plaque) %>
 <% end %>
 <% content_for :page_subhead do %>
-<% if @plaque.photos.size < 1 %>
-<p>Be the first to take a photo of this plaque!</p>
-<% else %>
-<p>Add your photo to the collection!</p>
-<% end %>
+  <% if @plaque.photos.size < 1 %>
+    <p>Be the first to take a photo of this plaque!</p>
+  <% else %>
+    <p>Add your photo to the collection!</p>
+  <% end %>
 <% end %>
 <%= render 'plaques/edit_bar', plaque: @plaque %>
 
 <div class="row">
-    <% @plaque.photos.detail_order.each do |photo| %>
+  <% @plaque.photos.detail_order.each do |photo| %>
     <div class="card col-xs-6 col-sm-4 col-md-3">
-        <%= link_to photo_url(photo) do %>
+      <%= link_to photo_url(photo) do %>
         <% render photo %>
-        <% end %>
-        <%= form_for photo do |f| %>
+      <% end %>
+      <%= form_for photo do |f| %>
         <p>This is a
-            <%= f.collection_select :shot, Photo.shots, :to_s, :to_s, include_blank: true %></p>
+          <%= f.collection_select :shot, Photo.shots, :to_s, :to_s, include_blank: true %></p>
         <%= f.submit t('buttons.save'), class: "btn btn-primary pull-left" %>
         <%= link_to(t('buttons.edit'), edit_photo_path(photo), {class: "btn btn-secondary pull-right", title: "edit photo"}) if current_user && current_user.is_admin? %>
-        <% end %>
+      <% end %>
     </div>
-    <% end %>
+  <% end %>
 </div>
 
 <div class="row">
   <p>
     <% @photo = Photo.new %>
-    <%= form_for @photo do |f| %>
-    <%= f.label(:url, "A photo page url from Flickr, Wikimedia Commons, or Geograph is") %>
-    <%= f.text_field :url %>
-    <%= f.hidden_field :plaque_id, value: @plaque.id %>
-    <%= submit_tag("Please link to it", class: "btn btn-primary") %>
+      <%= form_for @photo do |f| %>
+      <%= f.label(:url, "A photo page url from Flickr, Wikimedia Commons, or Geograph is") %>
+      <%= f.text_field :url %>
+      <%= f.hidden_field :plaque_id, value: @plaque.id %>
+      <%= submit_tag("Please link to it", class: "btn btn-primary") %>
     <% end %>
-</p>
+  </p>
 </div>
 
 <div class="row">
@@ -45,7 +44,9 @@ Photos of
   <ul>
     <li>We do not store photos. We add context to existing resources on the web by linking to them.</li>
     <li>We link to stable, open sources: Flickr; Wikimedia Commons; and Geograph.</li>
-    <li>Images are <a href="https://creativecommons.org/">Creative Commons</a> licenced which means that you remain the copyright holder and grant others the right to display your image. We attribute them to the copyright holder.</li>
+    <li>Images are
+      <a href="https://creativecommons.org/">Creative Commons</a>
+      licenced which means that you remain the copyright holder and grant others the right to display your image. We attribute them to the copyright holder.</li>
     <li>We display multiple photos of each plaque. We like close-ups as well as long-shots that set the scene.</li>
     <li>The closest shot is used as the main image so that people can read the words.</li>
     <li>Sometimes people remove their pictures from the original site...please don't, they are a valuable resource for all.</li>
@@ -53,94 +54,98 @@ Photos of
 </div>
 
 <div class="row">
-<h2>Help, I really don&apos;t understand!</h2>
-<p>If this sounds too complicated, then have a chat with us via email. We are generally rather nice and want to help. You can
+  <h2>Help, I really don&apos;t understand!</h2>
+  <p>If this sounds too complicated, then have a chat with us via email. We are generally rather nice and want to help. You can
     <a href="https://openplaques.org/contact">email your photo</a>
     to us stating that you are happy for us to publish it as open data on your behalf and that you grant anyone in the world the right to re-use the image.</p>
-    <p>We are volunteers, so please try not to swamp us with requests...three or four is fine.</p>
-</div>
-
-<div class="row">
-    <div class="hidden-xs-down col-sm-3 col-md-2">
-      <%= image_tag("https://upload.wikimedia.org/wikipedia/commons/7/79/Wiki-commons.png", {class: "card-img img-rounded w-100"}) %>
-    </div>
-    <div class="col-xs-12 col-sm-9 col-md-10">
-        <h2><a href="https://commons.wikimedia.org/" target="new">Wikimedia Commons</a> is a great place to donate your image to the world</h2>
-            <p>It is free, fairly easy to use, and your image will [probably] live forever as part of the awesome Wikipedia platform. When you are done, paste the url of the Wikimedia page in here and Open Plaques will link to the photo.</p>
-        <p class="card-text">You can also tag it when asked for other information, or at the bottom of the Summary with
-            <i><input type="text" readonly value="<%= @plaque.wikimedia_tag %>"/></i>
-            <%= button_tag icon("clipboard"), id: 'copy-wikimedia-tag', type: 'button', class: :button %>
-            which will add a link back to Open Plaques.
-          </p>
-          <p>Do not upload photos of Pennsylvania historical markers as the copyright states that you may not reproduce an image and it will be removed from Wikimedia Commons</p>
-    </div>
+  <p>We are volunteers, so please try not to swamp us with requests...three or four is fine.</p>
 </div>
 
 <div class="row">
   <div class="hidden-xs-down col-sm-3 col-md-2">
-<%= image_tag("https://upload.wikimedia.org/wikipedia/commons/9/9b/Flickr_logo.png", {class: "card-img img-rounded w-100"}) %>
-</div>
+    <%= image_tag("https://upload.wikimedia.org/wikipedia/commons/7/79/Wiki-commons.png", {class: "card-img img-rounded w-100"}) %>
+  </div>
   <div class="col-xs-12 col-sm-9 col-md-10">
-    <h2><a href="https://www.flickr.com/" target="new">Flickr</a> is used by lots of people</h2>
+    <h2>
+      <a href="https://commons.wikimedia.org/" target="new">Wikimedia Commons</a>
+      is a great place to donate your image to the world</h2>
+    <p>It is free, fairly easy to use, and your image will [probably] live forever as part of the awesome Wikipedia platform. When you are done, paste the url of the Wikimedia page in here and Open Plaques will link to the photo.</p>
+    <p class="card-text">You can also tag it when asked for other information, or at the bottom of the Summary with
+      <i><input type="text" readonly value="<%= @plaque.wikimedia_tag %>"/></i>
+      <%= button_tag icon("clipboard"), id: 'copy-wikimedia-tag', type: 'button', class: :button %>
+      which will add a link back to Open Plaques.
+    </p>
+    <p>Do not upload photos of Pennsylvania historical markers as the copyright states that you may not reproduce an image and it will be removed from Wikimedia Commons</p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="hidden-xs-down col-sm-3 col-md-2">
+    <%= image_tag("https://upload.wikimedia.org/wikipedia/commons/9/9b/Flickr_logo.png", {class: "card-img img-rounded w-100"}) %>
+  </div>
+  <div class="col-xs-12 col-sm-9 col-md-10">
+    <h2>
+      <a href="https://www.flickr.com/" target="new">Flickr</a>
+      is used by lots of people</h2>
     <ol>
-        <li>we use the API, so check you haven&apos;t ticked the &apos;hidden from search&apos; setting. (On Flickr, go to your profile by clicking your username in top right hand corner, do you have "Hide your stuff from public searches" set to "no"?)</li>
-        <li>give it a Creative Commons licence, i.e. it shouldn't say "All Rights Reserved"</li>
-        <li>tag it
-            <input type="text" readonly value="<%= @plaque.machine_tag %>"/>
-            <%= button_tag icon("clipboard"), id: 'copy-flickr-tag', type: 'button', class: :button %></p>
+      <li>we use the API, so check you haven&apos;t ticked the &apos;hidden from search&apos; setting. (On Flickr, go to your profile by clicking your username in top right hand corner, do you have "Hide your stuff from public searches" set to "no"?)</li>
+      <li>give it a Creative Commons licence, i.e. it shouldn't say "All Rights Reserved"</li>
+      <li>tag it
+        <input type="text" readonly value="<%= @plaque.machine_tag %>"/>
+        <%= button_tag icon("clipboard"), id: 'copy-flickr-tag', type: 'button', class: :button %></p>
     </li>
     <li>wait for 24 hours and our servers should automatically find it and display it on our site</li>
     <li>does it appear in the Flickr search of
-        <a href="https://www.flickr.com/search/?q=<%= @plaque.machine_tag %>&m=machinetags&l=cc&content_type=1" target="new">photos tagged '<%= @plaque.machine_tag %>'</a>?</li>
+      <a href="https://www.flickr.com/search/?q=<%= @plaque.machine_tag %>&m=machinetags&l=cc&content_type=1" target="new">photos tagged '<%= @plaque.machine_tag %>'</a>?</li>
     <li>brand new Flickr accounts are not included in the search immediately. It may wait until you have posted 5+ images.</li>
     <li>if you are impatient, you can try
-        <%= button_to "giving the automatic search a kick", controller: :plaques, action: :flickr_search, id: @plaque, class: "btn btn-primary" %></li>
-</ol>
-<br/>
-<p>I did that, but my photo hasn&apos;t appeared!</p>
-<p>Paste the url of the photo here and we will try to sort it out
+      <%= button_to "giving the automatic search a kick", controller: :plaques, action: :flickr_search, id: @plaque, class: "btn btn-primary" %></li>
+  </ol>
+  <br/>
+  <p>I did that, but my photo hasn&apos;t appeared!</p>
+  <p>Paste the url of the photo here and we will try to sort it out
     <%= form_tag("/photographers", method: "create") do %>
-    <%= label_tag(:flickr_url, "Flickr photo url:") %>
-    <%= text_field_tag(:flickr_url) %>
-    <%= submit_tag("Search", class: "btn btn-primary") %>
+      <%= label_tag(:flickr_url, "Flickr photo url:") %>
+      <%= text_field_tag(:flickr_url) %>
+      <%= submit_tag("Search", class: "btn btn-primary") %>
     <% end %></p>
-<br/>
+  <br/>
 </div>
 </div>
 
 <script>
 function copyTextToClipboard(text) {
-    var textArea = document.createElement("textarea");
-    textArea.style.position = 'fixed';
-    textArea.style.top = 0;
-    textArea.style.left = 0;
-    textArea.style.width = '2em';
-    textArea.style.height = '2em';
-    textArea.style.padding = 0;
-    textArea.style.border = 'none';
-    textArea.style.outline = 'none';
-    textArea.style.boxShadow = 'none';
-    textArea.style.background = 'transparent';
-    textArea.value = text;
-    document.body.appendChild(textArea);
-    textArea.select();
-    try {
-        var successful = document.execCommand('copy');
-        var msg = successful
-            ? 'successful'
-            : 'unsuccessful';
-        console.log('Copying text command was ' + msg);
-    } catch (err) {
-        console.log('Oops, unable to copy');
-    }
-    document.body.removeChild(textArea);
+  var textArea = document.createElement("textarea");
+  textArea.style.position = 'fixed';
+  textArea.style.top = 0;
+  textArea.style.left = 0;
+  textArea.style.width = '2em';
+  textArea.style.height = '2em';
+  textArea.style.padding = 0;
+  textArea.style.border = 'none';
+  textArea.style.outline = 'none';
+  textArea.style.boxShadow = 'none';
+  textArea.style.background = 'transparent';
+  textArea.value = text;
+  document.body.appendChild(textArea);
+  textArea.select();
+  try {
+    var successful = document.execCommand('copy');
+    var msg = successful
+      ? 'successful'
+      : 'unsuccessful';
+    console.log('Copying text command was ' + msg);
+  } catch (err) {
+    console.log('Oops, unable to copy');
+  }
+  document.body.removeChild(textArea);
 }
 var copyFlickrTagBtn = document.querySelector('#copy-flickr-tag');
 copyFlickrTagBtn.addEventListener('click', function (event) {
-    copyTextToClipboard('<%= @plaque.machine_tag %>');
+  copyTextToClipboard('<%= @plaque.machine_tag %>');
 });
 var copyWikimediaTagBtn = document.querySelector('#copy-wikimedia-tag');
 copyWikimediaTagBtn.addEventListener('click', function (event) {
-    copyTextToClipboard('<%= @plaque.wikimedia_tag %>');
+  copyTextToClipboard('<%= @plaque.wikimedia_tag %>');
 });
 </script>
