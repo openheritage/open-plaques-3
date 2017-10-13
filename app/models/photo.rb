@@ -105,8 +105,10 @@ class Photo < ActiveRecord::Base
     return "https://commons.wikimedia.org/wiki/Special:FilePath/"+wikimedia_filename+"?width=640"
   end
 
-  def flickr_photo_id
-    # retrieve from url e.g. http://www.flickr.com/photos/84195101@N00/3412825200/
+  # retrieve Flickr photo id from url e.g. http://www.flickr.com/photos/84195101@N00/3412825200/
+  def self.flickr_photo_id(url)
+    mtch = url.match(/flickr.com\/photos\/[^\/]*\/([^\/]*)/)
+    mtch ? "#{mtch[1]}" : nil
   end
 
   def thumbnail_url
@@ -114,15 +116,15 @@ class Photo < ActiveRecord::Base
     if (file_url.ends_with?("_b.jpg") or file_url.ends_with?("_z.jpg") or file_url.ends_with?("_z.jpg?zz=1") or file_url.ends_with?("_m.jpg") or file_url.ends_with?("_o.jpg"))
       return file_url.gsub("b.jpg", "m.jpg").gsub("z.jpg?zz=1", "m.jpg").gsub("z.jpg", "m.jpg").gsub("m.jpg", "m.jpg").gsub("o.jpg", "m.jpg")
     end
-    return "https://commons.wikimedia.org/wiki/Special:FilePath/"+wikimedia_filename+"?width=250" if wikimedia?
+    return "https://commons.wikimedia.org/wiki/Special:FilePath/#{wikimedia_filename}?width=250" if wikimedia?
   end
 
   def wikimedia_data
     if wikimedia?
       begin
-        wikimedia = Wikimedia::Commoner.details("File:"+wikimedia_filename)
+        wikimedia = Wikimedia::Commoner.details("File:#{wikimedia_filename}")
         if wikimedia[:description] == 'missing'
-          errors.add :file_url, 'cannot find File:#' + wikimedia_filename + ' on Wikimedia Commons'
+          errors.add :file_url, "cannot find File:#{wikimedia_filename} on Wikimedia Commons"
         else
           self.url = wikimedia[:page_url]
           self.subject = wikimedia[:description]
@@ -145,7 +147,7 @@ class Photo < ActiveRecord::Base
       end
     end
     if geograph?
-      query_url = "http://api.geograph.org.uk/api/oembed?&&url=" + self.url + "&output=json"
+      query_url = "http://api.geograph.org.uk/api/oembed?&&url=#{self.url}&output=json"
       begin
         ch = Curl::Easy.perform(query_url) do |curl|
           curl.headers["User-Agent"] = "openplaques"
@@ -163,6 +165,27 @@ class Photo < ActiveRecord::Base
         self.longitude = parsed_json['geo']['long'] if parsed_json['geo']
       rescue
         puts 'Geograph Curl call failed'
+      end
+    end
+    if flickr?
+      key = "86c115028094a06ed5cd19cfe72e8f8b"
+      flickr_photo_id = Photo.flickr_photo_id(url)
+      if flickr_photo_id
+        q_url = "https://api.flickr.com/services/rest/?api_key=#{key}&format=json&nojsoncallback=1&method=flickr.photos.getInfo&photo_id=#{flickr_photo_id}"
+        puts "Flickr: #{q_url}"
+        response = open(q_url)
+        resp = response.read
+        parsed_json = JSON.parse(resp)['photo']
+        self.file_url = "http://farm#{parsed_json['farm']}.staticflickr.com/#{parsed_json['server']}/#{parsed_json['id']}_#{parsed_json['secret']}_z.jpg"
+        self.photo_url = "http://www.flickr.com/photos/#{parsed_json['owner']['path_alias']}/#{parsed_json['id']}/"
+        self.photographer = parsed_json['owner']['realname']
+        self.photographer_url = "https://www.flickr.com/photos/#{parsed_json['owner']['path_alias']}/"
+  #        self.thumbnail = parsed_json['thumbnail_url']
+        self.licence = Licence.find_by_flickr_licence_id(parsed_json['license'])
+        self.subject = parsed_json['title']['_content'][0,255]
+        self.description = parsed_json['description']['_content'][0,255]
+#        self.latitude = parsed_json['geo']['lat'] if parsed_json['geo']
+#        self.longitude = parsed_json['geo']['long'] if parsed_json['geo']
       end
     end
   end

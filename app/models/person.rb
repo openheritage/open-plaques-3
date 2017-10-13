@@ -176,7 +176,7 @@ class Person < ActiveRecord::Base
   def default_wikipedia_url
     return wikipedia_url.gsub("http:","https:") if wikipedia_url && wikipedia_url > ""
     untitled_name = name.gsub("Canon ","").gsub("Captain ","").gsub("Cardinal ","").gsub("Dame ","").gsub("Dr ","").gsub('Lord ','').gsub('Sir ','').strip.tr(' ','_')
-    "https://en.wikipedia.org/wiki/"+untitled_name
+    "https://en.wikipedia.org/wiki/#{untitled_name}"
   end
 
   def default_dbpedia_uri
