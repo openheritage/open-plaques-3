@@ -258,9 +258,7 @@ class Plaque < ActiveRecord::Base
   end
 
   def main_photo_reverse
-    if !photos.empty?
-      return photos.reverse_detail_order.first
-    end
+    photos.reverse_detail_order.first if !photos.empty?
   end
 
   def thumbnail_url

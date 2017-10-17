@@ -27,9 +27,9 @@ class Photo < ActiveRecord::Base
   attr_accessor :photo_url, :accept_cc_by_licence
 
   validates_presence_of :file_url
-  validates_uniqueness_of :file_url, message: "of photo already exists in Open Plaques"
+  validate :unique_file_url, on: :create
   after_update :reset_plaque_photo_count
-  before_save :geograph_data
+  before_save :geograph_data, :https_flickr_urls
   after_save :geolocate_plaque
   scope :reverse_detail_order, -> { order('shot DESC') }
   scope :detail_order, -> { order('shot ASC') }
@@ -168,24 +168,38 @@ class Photo < ActiveRecord::Base
       end
     end
     if flickr?
-      key = "86c115028094a06ed5cd19cfe72e8f8b"
       flickr_photo_id = Photo.flickr_photo_id(url)
       if flickr_photo_id
+        key = "86c115028094a06ed5cd19cfe72e8f8b"
         q_url = "https://api.flickr.com/services/rest/?api_key=#{key}&format=json&nojsoncallback=1&method=flickr.photos.getInfo&photo_id=#{flickr_photo_id}"
         puts "Flickr: #{q_url}"
         response = open(q_url)
         resp = response.read
-        parsed_json = JSON.parse(resp)['photo']
-        self.file_url = "http://farm#{parsed_json['farm']}.staticflickr.com/#{parsed_json['server']}/#{parsed_json['id']}_#{parsed_json['secret']}_z.jpg"
-        self.photo_url = "http://www.flickr.com/photos/#{parsed_json['owner']['path_alias']}/#{parsed_json['id']}/"
+        parsed_json = JSON.parse(resp)
+        if parsed_json['stat'] == 'fail'
+          errors.add(:file_url, "photo removed from Flickr")
+          return
+        end
+        parsed_json = parsed_json['photo']
+        self.url = parsed_json['urls']['url'][0]['_content']
+        self.file_url = "https://farm#{parsed_json['farm']}.staticflickr.com/#{parsed_json['server']}/#{parsed_json['id']}_#{parsed_json['secret']}_z.jpg"
+        self.photo_url = "https://www.flickr.com/photos/#{parsed_json['owner']['path_alias']}/#{parsed_json['id']}/"
         self.photographer = parsed_json['owner']['realname']
-        self.photographer_url = "https://www.flickr.com/photos/#{parsed_json['owner']['path_alias']}/"
-  #        self.thumbnail = parsed_json['thumbnail_url']
+        self.photographer = parsed_json['owner']['username'] if self.photographer.empty?
+        p_id = parsed_json['owner']['path_alias'] ? parsed_json['owner']['path_alias'] : parsed_json['owner']['nsid']
+        self.photographer_url = "https://www.flickr.com/photos/#{p_id}/"
         self.licence = Licence.find_by_flickr_licence_id(parsed_json['license'])
         self.subject = parsed_json['title']['_content'][0,255]
         self.description = parsed_json['description']['_content'][0,255]
-#        self.latitude = parsed_json['geo']['lat'] if parsed_json['geo']
-#        self.longitude = parsed_json['geo']['long'] if parsed_json['geo']
+        self.latitude = parsed_json['location']['latitude'] if parsed_json['location']
+        self.longitude = parsed_json['location']['longitude'] if parsed_json['location']
+        self.taken_at = parsed_json['dates']['taken'] if parsed_json['dates']
+        if self.plaque_id == nil && parsed_json['tags']
+          parsed_json['tags']['tag'].each do |tag|
+            machine_tag_id = tag['raw'].match(/openplaques:id=(\d*)/)
+            self.plaque_id = machine_tag_id[1] if machine_tag_id
+          end
+        end
       end
     end
   end
@@ -237,6 +251,20 @@ class Photo < ActiveRecord::Base
   end
 
   private
+
+    def https_flickr_urls
+      if flickr?
+        self.url = self.url.gsub("http:","https:")
+        self.file_url = self.file_url.gsub("http:","https:")
+        self.photographer_url = self.photographer_url.gsub("http:","https:")
+      end
+    end
+
+    def unique_file_url
+      if Photo.find_by_file_url(file_url) || Photo.find_by_file_url(file_url.gsub("https","http"))
+        errors.add(:file_url, "already exists")
+      end
+    end
 
     def reset_plaque_photo_count
       if plaque_id_changed?
