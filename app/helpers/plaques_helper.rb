@@ -43,33 +43,16 @@ module PlaquesHelper
     pics = "[]" if pics == nil
     json_parsed = JSON.parse("{\"data\":#{pics}}")
     json_parsed['data'].each do |pic|
-      file_url = ""
-      pic['sizes'].each do |size|
-        file_url = "https:#{size[1]['displayUrl']}" if size[0] == "z"
-      end
       photo_url = "https://www.flickr.com/photos/#{pic['ownerNsid']}/#{pic['id']}/"
       @photo = Photo.find_by_url(photo_url) || Photo.find_by_url(photo_url.sub("https:","http:"))
       if @photo
 #        puts "we've already got #{photo_url}"
       else
-        @photo = Photo.new
-        @photo.plaque = plaque
-        @photo.file_url = file_url
-        @photo.url = photo_url
-        @photo.photographer = pic['username']
-        @photo.photographer_url = "https://www.flickr.com/photos/#{pic['username']}/"
-        @photo.licence = Licence.find_by_flickr_licence_id(pic['license'])
-        @photo.subject = pic['title']
-        open(photo_url){|f| response = f.read }
-        if response
-          matches = /latitude":(?<latitude>[-\d.]*),"longitude":(?<longitude>[-\d.]*)/.match(response)
-          @photo.longitude = matches[:longitude] if matches
-          @photo.latitude = matches[:latitude] if matches
-        end
+        @photo = Photo.new(url: photo_url, plaque: plaque)
+        @photo.wikimedia_data
         @photo.save
       end
     end
-
   end
 
   # pass null plaque and flickr_user_id to search all machinetagged photos on Flickr
@@ -77,10 +60,9 @@ module PlaquesHelper
 #    key = FLICKR_KEY
     key = "86c115028094a06ed5cd19cfe72e8f8b"
     repeat = plaque ? 1 : 20 # 100 per page, we will check the 2000 most recently created Flickr images
-    open_licenses = "1,2,3,4,5,6,7,8,9,10"
     repeat.times do |page|
       machine_tag = plaque ? plaque.machine_tag : "openplaques:id="
-      url = "https://api.flickr.com/services/rest/?api_key=#{key}&method=flickr.photos.search&page=#{page.to_s}&license=#{open_licenses}&content_type=1&machine_tags=#{machine_tag}&extras=date_taken,owner_name,license,geo,machine_tags"
+      url = "https://api.flickr.com/services/rest/?api_key=#{key}&method=flickr.photos.search&page=#{page.to_s}&content_type=1&machine_tags=#{machine_tag}&extras=date_taken,owner_name,license,geo,machine_tags"
       if (flickr_user_id)
         url += "&user_id=#{flickr_user_id}"
       end
@@ -90,28 +72,16 @@ module PlaquesHelper
       doc.elements.each('//rsp/photos/photo') do |photo|
         $stdout.flush
         @photo = nil
-        file_url = "http://farm#{photo.attributes['farm']}.staticflickr.com/#{photo.attributes['server']}/#{photo.attributes['id']}_#{photo.attributes['secret']}_z.jpg"
-        photo_url = "http://www.flickr.com/photos/#{photo.attributes['owner']}/#{photo.attributes['id']}/"
-        @photo = Photo.find_by_url(photo_url)
+        photo_url = "https://www.flickr.com/photos/#{photo.attributes['owner']}/#{photo.attributes['id']}/"
+        @photo = Photo.find_by_url(photo_url) || Photo.find_by_url(photo_url.sub("https:","http:"))
         if @photo
           # we've already got that one
         else
-          plaque_id = photo.attributes["machine_tags"][/openplaques\:id\=(\d+)/, 1]
-          puts "Flickr: photo of plaque #{plaque_id.to_s} '#{photo.attributes["title"]}'"
+          plaque_id = photo.attributes['machine_tags'][/openplaques\:id\=(\d+)/, 1]
           @plaque = Plaque.find_by_id(plaque_id)
           if @plaque
-            @photo = Photo.new
-            @photo.plaque = @plaque
-            @photo.file_url = file_url
-            @photo.url = photo_url
-            @photo.taken_at = photo.attributes['datetaken']
-            @photo.photographer_url = photo_url = "http://www.flickr.com/photos/#{photo.attributes['owner']}/"
-            @photo.photographer = photo.attributes['ownername']
-            @photo.licence = Licence.find_by_flickr_licence_id(photo.attributes['license'])
-            if photo.attributes['latitude'] != "0"
-              @photo.latitude = photo.attributes['latitude']
-              @photo.longitude = photo.attributes['longitude']
-            end
+            @photo = Photo.new(url: photo_url, plaque: @plaque)
+            @photo.wikimedia_data
             @photo.save
           else
             puts "Photo's machine tag doesn't match a plaque."
@@ -121,82 +91,67 @@ module PlaquesHelper
     end
   end
 
-    # pass null to search all photos on Flickr
-    def crawl_flickr(group_id='74191472@N00')
-      key = "86c115028094a06ed5cd19cfe72e8f8b" # FLICKR_KEY
-      flickr_url = "https://api.flickr.com/services/rest/"
-      black = Colour.find_by_name('black')
-      english = Language.find_by_name('English')
-      19.times do |page|
-        puts page.to_s
-        url = "#{flickr_url}?api_key=#{key}&method=flickr.photos.search&page=#{page.to_s}&per_page=5&content_type=1&extras=date_taken,owner_name,license,geo,description"
-        if group_id
-          url += "&group_id=#{group_id}"
+  # pass null to search all photos on Flickr
+  def crawl_flickr(group_id='74191472@N00')
+    key = "86c115028094a06ed5cd19cfe72e8f8b"
+    flickr_url = "https://api.flickr.com/services/rest/"
+    black = Colour.find_by_name('black')
+    english = Language.find_by_name('English')
+    19.times do |page|
+      puts page.to_s
+      url = "#{flickr_url}?api_key=#{key}&method=flickr.photos.search&page=#{page.to_s}&per_page=5&content_type=1&extras=date_taken,owner_name,license,geo,description"
+      if group_id
+        url += "&group_id=#{group_id}"
+      end
+      response = open(url)
+      doc = REXML::Document.new(response.read)
+      doc.elements.each('//rsp/photos/photo') do |photo|
+        print "."
+        $stdout.flush
+        @photo = nil
+        file_url = "https://farm#{photo.attributes['farm']}.staticflickr.com/#{photo.attributes['server']}/#{photo.attributes['id']}_#{photo.attributes['secret']}_z.jpg"
+        photo_url = "https://www.flickr.com/photos/#{photo.attributes['owner']}/#{photo.attributes['id']}/"
+        @photo = Photo.find_by_url(photo_url) || Photo.find_by_url(photo_url.sub("https:","http:"))
+        inscription_is_stub = true
+        if photo.attributes['title']!=nil
+          subject = photo.attributes['title'].split(",")[0].split("()")[0].rstrip.lstrip + "."
+          inscription = subject
         end
-        response = open(url)
-        doc = REXML::Document.new(response.read)
-        doc.elements.each('//rsp/photos/photo') do |photo|
-          print "."
-          $stdout.flush
-          @photo = nil
-          file_url = "http://farm#{photo.attributes['farm']}.staticflickr.com/#{photo.attributes['server']}/#{photo.attributes['id']}_#{photo.attributes['secret']}_z.jpg"
-          photo_url = "http://www.flickr.com/photos/#{photo.attributes['owner']}/#{photo.attributes['id']}/"
-          @photo = Photo.find_by_url(photo_url)
-          inscription_is_stub = true
-          if photo.attributes['title']!=nil
-            subject = photo.attributes['title'].split(",")[0].split("()")[0].rstrip.lstrip + "."
-            inscription = subject
-          end
-          if photo.elements['description'].text != nil && photo.elements['description'].text.length > 50
-            inscription << " " + photo.elements['description'].text
-          end
-          if @photo
-            puts "photo already exists in Open Plaques"
-          else
-            # Plaque find by location and name if already exists.....
+        if photo.elements['description'].text != nil && photo.elements['description'].text.length > 50
+          inscription << " " + photo.elements['description'].text
+        end
+        if @photo
+          puts "photo already exists in Open Plaques"
+        else
+          # Plaque find by location and name if already exists.....
 #            32.76696, -94.348526
 #            32.766955, -94.348472
-            # Plaque.find_or_create_by_???
-            @plaque = Plaque.new(inscription: inscription, inscription_is_stub: inscription_is_stub, colour: black, language: english)
-            @plaque.location = Location.new(name: 'somewhere in Texas')
-            # the Flickr woeids appear to be at town level, so can only create an area from them
-            woeid = photo.attributes["woeid"]
-            if woeid != nil
-              area = Area.find_or_create_by_woeid(woeid)
-              if area != nil
-                @plaque.location.area = area
-              else
-                puts "error: provided woeid " + woeid + " but got no area back"
-              end
-            end
-            if @plaque
-              @photo = Photo.new
-              @photo.plaque = @plaque
-              @photo.file_url = file_url
-              @photo.url = photo_url
-              @photo.taken_at = photo.attributes['datetaken']
-              @photo.photographer_url = "http://www.flickr.com/photos/#{photo.attributes['owner']}/"
-              @photo.photographer = photo.attributes['ownername']
-              @photo.licence = Licence.find_by_flickr_licence_id(photo.attributes['license'])
-              if photo.attributes['latitude'] != "0" && photo.attributes['longitude'] != "0" && !@plaque.geolocated?
-                @plaque.latitude = photo.attributes['latitude']
-                @plaque.longitude = photo.attributes['longitude']
-              end
-              if @plaque.save
-                puts "New plaque and photo added"
-              else
-                puts "Error adding plaque " + @plaque.errors.full_messages.to_s
-              end
-              if @photo.save
-                puts "New photo found and saved"
-              else
-                puts "Error saving photo" + @photo.errors.each_full{|msg| puts msg }
-              end
-            end
+          # Plaque.find_or_create_by_???
+          @plaque = Plaque.new(
+            inscription: inscription,
+            inscription_is_stub: inscription_is_stub,
+            colour: black,
+            language: english
+          )
+          @plaque.location = Location.new(name: 'somewhere in Texas')
+          # the Flickr woeids appear to be at town level, so can only create an area from them
+          woeid = photo.attributes["woeid"]
+          @plaque.location.area = Area.find_or_create_by_woeid(woeid) if woeid != nil
+          @photo = Photo.new(url: photo_url, plaque: @plaque)
+          if @plaque.save
+            puts "New plaque and photo added"
+          else
+            puts "Error adding plaque " + @plaque.errors.full_messages.to_s
+          end
+          if @photo.save
+            puts "New photo found and saved"
+          else
+            puts "Error saving photo" + @photo.errors.each_full{|msg| puts msg }
           end
         end
       end
     end
+  end
 
   def poi(plaque)
     if plaque.geolocated? && plaque.people.size() > 0

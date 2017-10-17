@@ -15,7 +15,7 @@ class Licence < ActiveRecord::Base
   def self.find_by_flickr_licence_id(flickr_licence_id)
     case flickr_licence_id.to_s
     when "0"
-      return Licence.find_by_url("http://en.wikipedia.org/wiki/All_rights_reserved/")
+      return Licence.find_by_url("http://en.wikipedia.org/wiki/All_rights_reserved")
     when "1"
       return Licence.find_by_url("http://creativecommons.org/licenses/by-nc-sa/2.0/")
     when "2"
