@@ -121,27 +121,27 @@ describe Photo, type: :model do
     end
   end
 
-  describe 'setting Flickr data' do
-    context 'of a Flickr photo' do
-      before do
-        @photo = Photo.new(url: 'https://www.flickr.com/photos/josemoya/36584194011/in/album-72157667474637461/')
-        @photo.wikimedia_data
-      end
-      it 'has a file url' do
-        expect(@photo.file_url).to eq('http://farm5.staticflickr.com/4396/36584194011_8178d33349_z.jpg')
-      end
-      it 'has a photo url' do
-        expect(@photo.photo_url).to eq('http://www.flickr.com/photos/josemoya/36584194011/')
-      end
-      it 'has a photographer' do
-        expect(@photo.photographer).to eq('José Moya')
-      end
-      it 'has a photographer url' do
-        expect(@photo.photographer_url).to eq('https://www.flickr.com/photos/josemoya/')
-      end
-      it 'has a licence' do
-        expect(@photo.licence).to be nil
-      end
-    end
-  end
+#  describe 'setting Flickr data' do
+#    context 'of a Flickr photo' do
+#      before do
+#        @photo = Photo.new(url: 'https://www.flickr.com/photos/josemoya/36584194011/in/album-72157667474637461/')
+#        @photo.wikimedia_data
+#      end
+#      it 'has a file url' do
+#        expect(@photo.file_url).to eq('http://farm5.staticflickr.com/4396/36584194011_8178d33349_z.jpg')
+#      end
+#      it 'has a photo url' do
+#        expect(@photo.photo_url).to eq('http://www.flickr.com/photos/josemoya/36584194011/')
+#      end
+#      it 'has a photographer' do
+#        expect(@photo.photographer).to eq('José Moya')
+#      end
+#      it 'has a photographer url' do
+#        expect(@photo.photographer_url).to eq('https://www.flickr.com/photos/josemoya/')
+#      end
+#      it 'has a licence' do
+#        expect(@photo.licence).to be nil
+#      end
+#    end
+#  end
 end
