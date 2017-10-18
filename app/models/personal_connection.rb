@@ -17,15 +17,15 @@ class PersonalConnection < ActiveRecord::Base
 
   def from
     year = started_at ? started_at.year.to_s : ""
-    year = person.born_in.to_s if (verb.id == 8 or verb.id == 504)
-    year = person.died_in.to_s if (verb.id == 3 or verb.id == 49 or verb.id == 161 or verb.id == 288 or verb.id == 566 or verb.id == 1108)
+    year = person.born_in.to_s if (verb.id == 8 || verb.id == 504)
+    year = person.died_in.to_s if (verb.id == 3 || verb.id == 49 || verb.id == 161 || verb.id == 288 || verb.id == 566 || verb.id == 1108)
     year
   end
 
   def to
     year = ended_at ? ended_at.year.to_s : ""
-    year = person.born_in.to_s if (verb.id == 8 or verb.id == 504)
-    year = person.died_in.to_s if (verb.id == 3 or verb.id == 49 or verb.id == 161 or verb.id == 288 or verb.id == 566 or verb.id == 1108)
+    year = person.born_in.to_s if (verb.id == 8 || verb.id == 504)
+    year = person.died_in.to_s if (verb.id == 3 || verb.id == 49 || verb.id == 161 || verb.id == 288 || verb.id == 566 || verb.id == 1108)
     year
   end
 
