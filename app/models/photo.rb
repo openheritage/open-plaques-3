@@ -29,7 +29,9 @@ class Photo < ActiveRecord::Base
   validates_presence_of :file_url
   validate :unique_file_url, on: :create
   after_update :reset_plaque_photo_count
-  before_save :geograph_data, :https_flickr_urls
+  before_save :geograph_data
+  before_save :https_flickr_urls
+  before_save :merge_known_photographer_names
   after_save :geolocate_plaque
   scope :reverse_detail_order, -> { order('shot DESC') }
   scope :detail_order, -> { order('shot ASC') }
@@ -287,5 +289,11 @@ class Photo < ActiveRecord::Base
         plaque.save
       end
       return true
+    end
+
+    def merge_known_photographer_names
+      self.photographer = "Nick Harrison" if self.photographer == "nick.harrisonfli"
+      self.photographer = "Elliott Brown" if self.photographer == "ell brown"
+      self.photographer = "Jez Nicholson" if self.photographer == "J'Roo"
     end
 end
