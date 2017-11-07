@@ -40,10 +40,10 @@ module ApplicationHelper
         current_user.email +
 #        link_to(current_user.email, edit_user_registration_path) +
         ". " +
-        link_to("Logout", destroy_user_session_path, method: :delete)
+        link_to("Log out", destroy_user_session_path, method: :delete)
       ), {class: "user_info"})
     else
-      content_tag("p", link_to("Login", new_user_session_path), {class: "user_info"})
+      content_tag("p", link_to("Log in", new_user_session_path), {class: "user_info"})
     end
   end
 
