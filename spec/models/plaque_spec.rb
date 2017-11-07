@@ -10,7 +10,7 @@ describe Plaque, type: :model do
         @plaque = Plaque.new(id: 666)
       end
       it 'is \'plaque number [id]\'' do
-        expect(@plaque.title).to eq('plaque number 666')
+        expect(@plaque.title).to eq('plaque № 666')
       end
     end
     context 'with a subject' do

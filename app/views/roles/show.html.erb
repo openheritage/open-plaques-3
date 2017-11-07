@@ -1,11 +1,11 @@
-<% content_for(:page_title) {t '.page_title', role: @pluralized_role} %>
+<% content_for(:page_title) {t '.page_title', role: @role.pluralize} %>
 <% content_for(:title) do %>
   <%= icon('user') if @role.person? %>
   <%= icon('paw') if @role.animal? %>
   <%= icon('users') if @role.group? %>
   <%= icon('building') if @role.place? %>
   <%= icon('map-marker') if @role.thing? %>
-  <%= @role.name.pluralize %>
+  <%= @role.pluralize %>
 <% end %>
 <% content_for(:page_subhead) do %>
   <% if !@role.prefix.blank? %>
@@ -19,7 +19,7 @@
   <% end %>
   <span class="label label-default label-pill pull-right"><%= @role.personal_roles_count %></span>
 <% end %>
-<% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_role_path(@role)} %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_role_path(@role)} if @role.id %>
 
 <% if @role.personal_roles.count < 3 %>
   <div class="row">

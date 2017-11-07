@@ -27,10 +27,9 @@ class RolesController < ApplicationController
   end
 
   def show
-    @role = Role.includes(personal_roles: :person).find_by_slug!(params[:id])
-    @pluralized_role = @role.full_name.include?(" of ") ?
-      @role.name.split(/#| of /).first.pluralize + @role.name.sub(/.*? of /, ' of ')
-      : @role.name.pluralize
+    @role = Role.includes(personal_roles: :person).find_by_slug(params[:id])
+    @role = Role.new(name: params[:id]) if !@role #dummy role
+    @pluralized_role = @role.pluralize
     respond_to do |format|
       format.html
       format.json { render json: @role }

@@ -14,6 +14,14 @@ class SeriesPlaquesController < ApplicationController
     respond_to do |format|
       format.json { render json: @plaques }
       format.geojson { render geojson: @plaques.geolocated, parent: @series }
+      format.csv {
+        send_data(
+          "\uFEFF#{PlaqueCsv.new(@plaques).build}",
+          type: 'text/csv',
+          filename: "open-plaques-#{@series.slug}-#{Date.today.to_s}.csv",
+          disposition: 'attachment'
+        )
+      }
     end
   end
 

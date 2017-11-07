@@ -31,7 +31,8 @@ class PlaquesController < ApplicationController
     if params[:limit] && params[:limit].to_i <= 2000
       @limit = params[:limit]
     elsif params[:limit]
-      @limit = 2000
+#      @limit = 2000
+      @limit = 2000000000
     else
       @limit = 20
     end
@@ -68,9 +69,9 @@ class PlaquesController < ApplicationController
       format.rss { render json: {error: "format unsupported"}.to_json, status: 406 }
       format.csv {
         send_data(
-          PlaqueCsv.new(@plaques).build,
+          "\uFEFF#{PlaqueCsv.new(@plaques).build}",
           type: 'text/csv',
-          filename: 'open-plaques-all-' + Date.today.to_s + '.csv',
+          filename: "open-plaques-all-#{Date.today.to_s}.csv",
           disposition: 'attachment'
         )
       }

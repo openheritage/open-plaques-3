@@ -44,9 +44,9 @@ class AreaPlaquesController < ApplicationController
       format.geojson { render geojson: @plaques.geolocated, parent: @area }
       format.csv {
         send_data(
-          PlaqueCsv.new(@plaques).build,
+          "\uFEFF#{PlaqueCsv.new(@plaques).build}",
           type: 'text/csv',
-          filename: 'open-plaques-' + @area.slug + '-' + Date.today.to_s + '.csv',
+          filename: "open-plaques-#{@area.slug}-#{Date.today.to_s}.csv",
           disposition: 'attachment'
         )
       }
