@@ -26,19 +26,15 @@ describe PeopleByIndexController do
   describe '#show' do
     context 'with uppercase index letter' do
       before { get :show, id: 'A' }
-
       it 'should redirect' do
         expect(response).to redirect_to(people_by_index_path('a'))
       end
     end
-
     context 'with lowercase index letter' do
       before { get :show, id: 'a' }
-
       it 'should return 200' do
         expect(response).to be_success
       end
-
       it 'should assign to @people' do
         expect(assigns(:people)).to eql([a_person])
       end

@@ -1,10 +1,10 @@
 namespace :factory_girl do
-  desc "Verify that all FactoryGirl factories are valid"
+  desc "Verify that all FactoryBot factories are valid"
   task lint: :environment do
     if Rails.env.test?
       begin
         DatabaseCleaner.start
-        FactoryGirl.lint
+        FactoryBot.lint
       ensure
         DatabaseCleaner.clean
       end

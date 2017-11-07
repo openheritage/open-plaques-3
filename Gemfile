@@ -38,15 +38,13 @@ gem 'julia_builder'
 
 group :development do
   gem 'spring'
-#  gem 'lol_dba'
   gem 'bullet'
   gem 'meta_request'
 end
 
 group :test do
-#  gem 'rspec', '~> 2.14.0'
   gem 'rspec-rails',        group: :development
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
   gem 'database_cleaner'
 end
 

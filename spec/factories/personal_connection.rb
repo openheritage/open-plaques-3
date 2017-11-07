@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :personal_connection do
     person
     verb

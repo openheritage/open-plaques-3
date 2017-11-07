@@ -579,7 +579,7 @@ describe Person, type: :model do
         @person.aka_accented_name
       end
       it 'is accented' do
-        expect(@person.accented_name?).to be_true
+        expect(@person.accented_name?).to be_truthy
       end
     end
 
@@ -590,7 +590,7 @@ describe Person, type: :model do
         @person.aka_accented_name
       end
       it 'is not accented' do
-        expect(@person.accented_name?).to be_false
+        expect(@person.accented_name?).to be_falsey
       end
     end
   end
