@@ -9,31 +9,39 @@ class OrganisationPlaquesController < ApplicationController
     if zoom > 0
       x = params[:x].to_i
       y = params[:y].to_i
-      @sponsorships = @organisation.plaques.tile(zoom, x, y, '')
+      @plaques = @organisation.plaques.tile(zoom, x, y, '')
     elsif params[:data] && params[:data] == "simple"
-      @sponsorships = @organisation.plaques.all(conditions: conditions, order: "created_at DESC", limit: limit)
+      @plaques = @organisation.plaques.all(conditions: conditions, order: "created_at DESC", limit: limit)
     elsif params[:data] && params[:data] == "basic"
-      @sponsorships = @organisation.plaques.all(select: [:id, :latitude, :longitude, :inscription])
+      @plaques = @organisation.plaques.all(select: [:id, :latitude, :longitude, :inscription])
     elsif (params[:filter] && params[:filter]!='')
       begin
         request.format == 'html' ?
-          @sponsorships = @organisation.plaques.send(params[:filter].to_s).paginate(page: params[:page], per_page: 50)
-          : @sponsorships = @organisation.plaques.send(params[:filter].to_s)
+          @plaques = @organisation.plaques.send(params[:filter].to_s).paginate(page: params[:page], per_page: 50)
+          : @plaques = @organisation.plaques.send(params[:filter].to_s)
         @display = params[:filter].to_s
       rescue # an unrecognised filter method
         request.format == 'html' ?
-          @sponsorships = @organisation.plaques.paginate(page: params[:page], per_page: 50)
-          : @sponsorships = @organisation.plaques
+          @plaques = @organisation.plaques.paginate(page: params[:page], per_page: 50)
+          : @plaques = @organisation.plaques
       end
     else
       request.format == 'html' ?
-        @sponsorships = @organisation.plaques.paginate(page: params[:page], per_page: 50)
-        : @sponsorships = @organisation.plaques
+        @plaques = @organisation.plaques.paginate(page: params[:page], per_page: 50)
+        : @plaques = @organisation.plaques
     end
     respond_to do |format|
       format.html { render "organisations/show" }
-      format.json { render json: @sponsorships }
-      format.geojson { render geojson: @sponsorships, parent: @organisation }
+      format.json { render json: @plaques }
+      format.geojson { render geojson: @plaques, parent: @organisation }
+      format.csv {
+        send_data(
+          "\uFEFF#{PlaqueCsv.new(@plaques).build}",
+          type: 'text/csv',
+          filename: "open-plaques-#{@organisation.slug}-#{Date.today.to_s}.csv",
+          disposition: 'attachment'
+        )
+      }
     end
   end
 

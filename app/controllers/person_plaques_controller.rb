@@ -11,6 +11,14 @@ class PersonPlaquesController < ApplicationController
         )
       }
       format.geojson { render geojson: @plaques }
+      format.csv {
+        send_data(
+          "\uFEFF#{PlaqueCsv.new(@plaques).build}",
+          type: 'text/csv',
+          filename: "open-plaques-#{@person.name}-#{Date.today.to_s}.csv",
+          disposition: 'attachment'
+        )
+      }
     end
   end
 

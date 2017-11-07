@@ -21,9 +21,9 @@ class CountryPlaquesController < ApplicationController
       format.geojson { render geojson: @plaques, parent: @country }
       format.csv {
         send_data(
-          PlaqueCsv.new(@plaques).build,
+          "\uFEFF#{PlaqueCsv.new(@plaques).build}",
           type: 'text/csv',
-          filename: 'open-plaques-' + @country.name + '-' + Date.today.to_s + '.csv',
+          filename: "open-plaques-#{@country.name}-#{Date.today.to_s}.csv",
           disposition: 'attachment'
         )
       }
