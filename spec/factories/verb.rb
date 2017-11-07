@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :verb do
     name 'asfgadsf'
   end

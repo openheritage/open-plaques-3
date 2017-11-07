@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe UpcomingUnveilingsController do
-  describe '#show' do
+  describe 'GET #show' do
     before do
       @plaque_unveiled_today = Plaque.create!(erected_at: Date.today)
       @upcoming_plaque1 = Plaque.create!(erected_at: Date.today + 340.days)
