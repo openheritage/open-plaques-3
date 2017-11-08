@@ -11,7 +11,7 @@
   </span>
 <% end %>
 <% content_for(:page_subhead) do %>
-  <% if @role.used_as_a_prefix? or @role.used_as_a_suffix? %>
+  <% if @role.used_as_a_prefix? || @role.used_as_a_suffix? %>
     <p>e.g. "<% if @role.used_as_a_prefix? %><strong><%= @role.prefix %> </strong><% end %>John Smith<% if @role.used_as_a_suffix? %><strong> <%= @role.letters %></strong><% end %>"</p><% end %>
   <% unless @role.wikipedia_stub.blank? %>
     <%= icon('external-link') %><%= link_to('Wikipedia', @role.wikipedia_url, target: "_blank") %>

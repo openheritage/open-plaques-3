@@ -4,58 +4,47 @@ describe Person, type: :model do
   it 'has a valid factory' do
     expect(create(:person)).to be_valid
   end
+
+  let (:is_a_vicar) { build :role, name: 'Vicar', role_type: 'clergy', prefix: 'Revd' }
+  let (:is_a_baronet) { build :role, name: 'Baronet', role_type: 'title' }
+
   describe '#full_name' do
     context 'a person' do
-      before do
-        @person = Person.new(name: 'John Smith')
-      end
+      let (:person) { build :person, name: 'John Smith' }
       it 'has their name displayed as-is' do
-        expect(@person.full_name).to eq('John Smith')
+        expect(person.full_name).to eq('John Smith')
       end
     end
 
     context 'a Baronet' do
+      let (:person) { build :person, name: 'John Smith' }
+      let (:baronacy) { build :role, name: 'Baronet', prefix: 'Sir' }
       before do
-        @person = Person.new(name: 'John Smith')
-        @person.roles << Role.new(name: 'Baronet', prefix: 'Sir')
+        person.roles << baronacy
       end
       it 'is referred to as a Sir' do
-        expect(@person.full_name).to eq('Sir John Smith')
-      end
-    end
-
-    context 'a Baroness' do
-      before do
-        @person = Person.new(name: 'Ethel Smith')
-        @person.roles << Role.new(name: 'Baroness', prefix: 'Lady')
-      end
-      it 'is referred to as a Lady' do
-        expect(@person.full_name).to eq('Lady Ethel Smith')
+        expect(person.full_name).to eq('Sir John Smith')
       end
     end
 
     context 'a vicar' do
+      let (:person) { build :person, name: 'Malcolm McBonny' }
       before do
-        @person = Person.new(name: 'Malcolm McBonny')
-        @person.roles << Role.new(
-          name: 'Vicar', role_type: 'clergy', prefix: 'Revd'
-        )
+        person.roles << is_a_vicar
       end
       it 'is referred to as a Revd' do
-        expect(@person.full_name).to eq('Revd Malcolm McBonny')
+        expect(person.full_name).to eq('Revd Malcolm McBonny')
       end
     end
 
     context 'a member of the clergy who has been ennobled' do
+      let (:person) { build :person, name: 'Malcolm McBonny' }
       before do
-        @person = Person.new(name: 'Malcolm McBonny')
-        @person.roles << Role.new(
-          name: 'Vicar', role_type: 'clergy', prefix: 'Revd'
-        )
-        @person.roles << Role.new(name: 'Baronet', prefix: 'Sir')
+        person.roles << is_a_vicar
+        person.roles << is_a_baronet
       end
-      it 'does not get called a Sir/Lady' do
-        expect(@person.full_name).to eq('Revd Malcolm McBonny')
+      it 'does not get called a Sir' do
+        expect(person.full_name).to eq('Revd Malcolm McBonny')
       end
     end
 
@@ -63,27 +52,25 @@ describe Person, type: :model do
       it 'does not get called Sir/Lady'
     end
 
-    context 'with a role that confers a title' do
+    context 'with a title' do
+      let (:person) { build :person, name: 'Harry Bean' }
+      let (:is_a_smiter) { build :role, name: 'Smiter', role_type: 'title' }
       before do
-        @person = Person.new(name: 'Harry Bean')
-        @role = Role.new(name: 'Smiter', role_type: 'title')
-        @person.roles << @role
+        person.roles << is_a_smiter
       end
-      it 'has the title displayed before their name' do
-        expect(@person.full_name).to eq('Smiter Harry Bean')
+      it 'does not automatically get it displayed before their name' do
+        expect(person.full_name).to eq('Harry Bean')
       end
     end
 
-    context 'with a title that can be abbreviated' do
+    context 'with a title that has a prefix' do
+      let (:person) { build :person, name: 'Harry Bean' }
+      let (:is_a_smiter) { build :role, name: 'Smiter', prefix: 'Smt', role_type: 'title' }
       before do
-        @person = Person.new(name: 'Harry Bean')
-        @role = Role.new(
-          name: 'Smiter', abbreviation: 'Smt', role_type: 'title'
-        )
-        @person.roles << @role
+        person.roles << is_a_smiter
       end
       it 'has the abbreviated title displayed before their name' do
-        expect(@person.full_name).to eq('Smt Harry Bean')
+        expect(person.full_name).to eq('Smt Harry Bean')
       end
     end
 
@@ -91,11 +78,11 @@ describe Person, type: :model do
       before do
         @person = Person.new(name: 'Harry Bean')
         @role = Role.new(
-          name: 'Smiter', abbreviation: 'Smt', role_type: 'title'
+          name: 'Smiter', prefix: 'Smt', role_type: 'title'
         )
         @person.roles << @role
         @role2 = Role.new(
-          name: 'Wolverine', abbreviation: 'Smt', role_type: 'title'
+          name: 'Wolverine', prefix: 'Smt', role_type: 'title'
         )
         @person.roles << @role2
       end
@@ -133,12 +120,12 @@ describe Person, type: :model do
         @victoria = Person.new(name: 'Victoria')
         @victoria.roles << Role.new(
           name: 'Queen of the United Kingdom',
-          abbreviation: 'Queen',
+          prefix: 'Queen',
           role_type: 'title'
         )
         @princess = Role.new(
           name: 'Princess',
-          abbreviation: 'Princess',
+          prefix: 'Princess',
           role_type: 'title'
         )
         @victoria.roles << @princess
@@ -507,126 +494,113 @@ describe Person, type: :model do
     end
 
     context 'a building built in 1880' do
+      let (:building) { build :person }
       before do
-        @person = Person.new
-        @person.born_on = Date.new(1880, 1, 1)
-        @person.roles << Role.new(name: 'building', role_type: 'thing')
+        building.born_on = Date.new(1880, 1, 1)
+        building.roles << Role.new(name: 'building', role_type: 'thing')
       end
       it 'is over a hundred years old' do
-        expect(@person.age).to be > 100
+        expect(building.age).to be > 100
       end
     end
   end
 
   describe '#dates' do
     context 'born in 1932 and died in 2009' do
+      let (:person) { build :person }
       before do
-        @person = Person.new
-        @person.born_on = Date.new(1932, 7, 8)
-        @person.died_on = Date.new(2009, 1, 1)
+        person.born_on = Date.new(1932, 7, 8)
+        person.died_on = Date.new(2009, 1, 1)
       end
       it 'is a year range' do
-        expect(@person.dates).to eq('(1932-2009)')
+        expect(person.dates).to eq('(1932-2009)')
       end
     end
 
     context 'with no dates' do
-      before do
-        @person = Person.new
-      end
+      let (:person) { build :person }
       it 'is nil' do
-        expect(@person.dates).to eq(nil)
+        expect(person.dates).to eq(nil)
       end
     end
 
     context 'who died in 2009' do
-      before do
-        @person = Person.new
-        @person.died_on = Date.new(2009, 1, 1)
-      end
+      let (:person) { build :person, died_on: Date.new(2009, 1, 1) }
       it 'is a death year' do
-        expect(@person.dates).to eq('(d.2009)')
+        expect(person.dates).to eq('(d.2009)')
       end
     end
 
     context 'born in 1980 with no date of death' do
-      before do
-        @person = Person.new
-        @person.born_on = Date.new(1980, 1, 1)
-      end
+      let (:person) { build :person, born_on: Date.new(1980, 1, 1) }
       it 'is a range \'([birth year]-present)\'' do
-        expect(@person.dates).to eq('(1980-present)')
+        expect(person.dates).to eq('(1980-present)')
       end
     end
 
     context 'a building built in 1880' do
+      let (:person) { build :person, born_on: Date.new(1880, 1, 1) }
+      let (:role) { build :role, name: 'building', role_type: 'place' }
       before do
-        @person = Person.new
-        @person.born_on = Date.new(1880, 1, 1)
-        @person.roles << Role.new(name: 'building', role_type: 'place')
+        person.roles << role
       end
       it 'is a range \'([construction year]-present)\'' do
-        expect(@person.dates).to eq('(1880-present)')
+        expect(person.dates).to eq('(1880-present)')
       end
     end
   end
 
   describe '#accented_name?' do
     context 'with an accented name' do
+      let (:person) { build :person, name: 'Béla Bartók' }
       before do
-        @person = Person.new
-        @person.name = 'Béla Bartók'
-        @person.aka_accented_name
+        person.aka_accented_name
       end
       it 'is accented' do
-        expect(@person.accented_name?).to be_truthy
+        expect(person.accented_name?).to be_truthy
       end
     end
 
     context 'with an unaccented name' do
+      let (:person) { build :person, name: 'John Smith' }
       before do
-        @person = Person.new
-        @person.name = 'John Smith'
-        @person.aka_accented_name
+        person.aka_accented_name
       end
       it 'is not accented' do
-        expect(@person.accented_name?).to be_falsey
+        expect(person.accented_name?).to be_falsey
       end
     end
   end
 
   describe '#aka_accented_name' do
     context 'with an accented name' do
+      let (:person) { build :person, name: 'Béla Bartók' }
       before do
-        @person = Person.new
-        @person.name = 'Béla Bartók'
-        @person.aka_accented_name
+        person.aka_accented_name
       end
       it 'has an unaccented version as an aka' do
-        expect(@person.aka).to include('Bela Bartok')
+        expect(person.aka).to include('Bela Bartok')
       end
     end
 
     context 'with an accented name and an aka' do
+      let (:person) { build :person, name: 'Béla Bartók' }
       before do
-        @person = Person.new
-        @person.name = 'Béla Bartók'
-        @person.aka.push('womble')
-        @person.aka_accented_name
+        person.aka.push('womble')
+        person.aka_accented_name
       end
       it 'has an unaccented version as an aka' do
-        expect(@person.aka).to include('Bela Bartok')
+        expect(person.aka).to include('Bela Bartok')
       end
     end
 
     context 'with an unaccented name' do
+      let (:person) { build :person, name: 'John Smith' }
       before do
-        @person = Person.new
-        @person.name = 'John Smith'
-        @person.aka_accented_name
+        person.aka_accented_name
       end
       it 'has no aka' do
-        expect(@person.aka).to_not include('Bela Bartok')
+        expect(person.aka).to_not include('Bela Bartok')
       end
     end
   end
