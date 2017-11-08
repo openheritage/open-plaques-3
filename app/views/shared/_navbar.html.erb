@@ -1,11 +1,11 @@
-<banner class="bg-faded container">
-  <nav class="navbar navbar-light">
-    <div class="navbar-header">
-      <%= link_to image_tag("openplaques.png"), root_path, class: 'navbar-brand' %>
-      <div class="pull-right"><%= user_menu %></div>
-    </div>
-    <ul class="nav navbar-nav pull-left">
-      <%= navbar_link_to t('menu.home'), root_path, active_when: { controller: :home } %>
+<nav class="navbar navbar-expand-sm navbar-light bg-light">
+  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <%= link_to image_tag("openplaques.png"), root_path, class: 'navbar-brand' %>
+
+  <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+    <ul class="navbar-nav mr-auto">
       <%= navbar_link_to t('menu.about'), about_path, active_when: { controller: :pages } %>
       <%= navbar_link_to t('menu.people'), people_path, active_when: { controller: :people_by_index } %>
       <%= navbar_link_to t('menu.places'), countries_path, active_when: { controller: :people } %>
@@ -18,12 +18,10 @@
       <% end %>
       <%= navbar_link_to t('menu.contribute'), contribute_path, active_when: { controller: :pages } %>
       <%= navbar_link_to t('menu.data'), about_the_data_path, active_when: { controller: :pages } %>
+      <% if current_user && current_user.is_admin? %>
+          <%= yield :admin_menu %>
+      <% end %>
     </ul>
-    <% if current_user && current_user.is_admin? %>
-      <ul class="nav navbar-nav pull-left">
-        <%= yield :admin_menu %>
-      </ul>
-    <% end %>
-  </nav>
-  <%= render 'shared/search' %>
-</banner>
+    <%= render 'shared/search' %>
+  </div>
+</nav>

@@ -1,6 +1,6 @@
 <div class="card vcard organisation" typeof="foaf:Organization">
   <div class="card-block">
-    <h4 class="card-title">
+    <h4 class="card-title text-center">
       <% if organisation.language_id == nil || organisation.language.alpha2 == 'en-GB' || organisation.language.alpha2 == 'en' %>
         <%= link_to(organisation.name, organisation) %>
       <% else %>
@@ -8,18 +8,6 @@
         <%= link_to(content_tag('span', organisation.name, lang: organisation.language.alpha2), organisation) %>
       <% end %>
     </h4>
-    <span class="label label-default label-pill pull-right"><%= organisation.sponsorships.size %></span>
-    <% if controller.controller_name.eql?('organisations') && controller.action_name.eql?('show')%>
-      <% if !organisation.website.blank? %>
-        <p class="card-text">
-          <small class="text-muted"><%= link_to h(organisation.website), organisation.website, rel: "foaf:homepage vcard:url" %></small>
-        </p>
-      <% end %>
-      <% if !organisation.description.blank? %>
-        <p class="card-text">
-          <small class="text-muted"><%= markdown(organisation.description) %></small>
-        </p>
-      <% end %>
-    <% end %>
+    <span class="badge badge-secondary pull-right"><%= organisation.sponsorships.size %></span>
   </div>
 </div>
