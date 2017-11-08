@@ -17,7 +17,3 @@ $grid-float-breakpoint: 480px;
 
 //$font-family-base: font-family-serif;
 $font-family-base: sans-serif;
-
-// Import bootstrap variables to make all variables available from this file.
-// Useful for situations where only this file is imported.
-@import "bootstrap/variables";

@@ -202,7 +202,7 @@ PLATFORMS
 
 DEPENDENCIES
   bcrypt (~> 3.1.7)
-  bootstrap (~> 4.0.0.alpha3.1)
+  bootstrap
   bullet
   curb
   database_cleaner

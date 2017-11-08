@@ -3,7 +3,7 @@
 .page__footer {
   margin-top: 100px;
   padding: 20px 10px;
-  border-top: 1px solid $gray-lighter;
+  border-top: 1px solid $gray-500;
   text-align: center;
 
   ul {
@@ -15,7 +15,6 @@
     margin: 0 10px;
   }
   a {
-//    color: $navbar-default-link-color;
     &:hover {
       color: $link-color;
     }
