@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require tether
+//= require popper
 //= require bootstrap
 //= require jquery-ui
 //= require jquery_ujs

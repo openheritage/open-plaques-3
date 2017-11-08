@@ -107,7 +107,7 @@ class Role < ActiveRecord::Base
   end
 
   def used_as_a_prefix?
-    "title" == role_type
+    !prefix.blank?
   end
 
   def military_medal?
@@ -115,16 +115,11 @@ class Role < ActiveRecord::Base
   end
 
   def used_as_a_suffix?
-    return true if !suffix.blank?
-    return true if "letters" == role_type
-    return true if military_medal?
-    false
+    !suffix.blank?
   end
 
   def letters
-    return suffix if !suffix.blank?
-    return abbreviation if used_as_a_suffix?
-    ""
+    used_as_a_suffix? ? suffix : ""
   end
 
   def abbreviated?

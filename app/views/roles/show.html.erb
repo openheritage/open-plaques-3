@@ -6,18 +6,16 @@
   <%= icon('building') if @role.place? %>
   <%= icon('map-marker') if @role.thing? %>
   <%= @role.pluralize %>
+  <span class="badge badge-secondary">
+    <%= @role.personal_roles_count %>
+  </span>
 <% end %>
 <% content_for(:page_subhead) do %>
-  <% if !@role.prefix.blank? %>
-    <p>Prefixes the name with <strong><%= @role.prefix %></strong>.</p>
-  <% end %>
-  <% if @role.used_as_a_suffix? %>
-    <p><%= @role.military_medal? ? 'A military medal that confers' : 'Confers' %> the letters <strong><%= @role.letters %></strong> after the name.</p>
-  <% end %>
+  <% if @role.used_as_a_prefix? || @role.used_as_a_suffix? %>
+    <p>e.g. "<% if @role.used_as_a_prefix? %><strong><%= @role.prefix %> </strong><% end %>John Smith<% if @role.used_as_a_suffix? %><strong> <%= @role.letters %></strong><% end %>"</p><% end %>
   <% unless @role.wikipedia_stub.blank? %>
     <%= icon('external-link') %><%= link_to('Wikipedia', @role.wikipedia_url, target: "_blank") %>
   <% end %>
-  <span class="label label-default label-pill pull-right"><%= @role.personal_roles_count %></span>
 <% end %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_role_path(@role)} if @role.id %>
 

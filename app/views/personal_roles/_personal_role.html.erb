@@ -8,9 +8,11 @@
         <%= person.full_name %><br/>
         <small><%= person.dates %></small>
       </span>
-      <%= personal_role.ordinal.ordinalize  if personal_role.ordinal %>
+      <% if personal_role.ordinal %>
+        <span class="badge badge-secondary"><%= personal_role.ordinal.ordinalize %></span>
+      <% end %>
       <% if personal_role.date_range != "" %>
-        <small class="text-muted"><%= personal_role.year_range %></small>
+        <span class="badge badge-secondary"><%= personal_role.year_range %></span>
       <% end %>
     </div>
   </div>
