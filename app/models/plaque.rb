@@ -61,12 +61,12 @@ class Plaque < ActiveRecord::Base
   include ApplicationHelper, ActionView::Helpers::TextHelper
 
   def coordinates
-    geolocated? ? latitude.to_s + "," + longitude.to_s : ""
+    geolocated? ? "#{latitude},#{longitude}" : ""
   end
 
   def full_address
     a = address
-    a += ", " + area.name + ", " + area.country.name if area
+    a += ", " + area.name + ", " + area.country&.name if area
     a
   end
 
@@ -200,12 +200,11 @@ class Plaque < ActiveRecord::Base
   end
 
   def as_wkt()
-    return "" if (self.longitude == nil || self.latitude == nil)
-    "POINT(" + self.longitude + " " + self.latitude + ")"
+    geolocated? ? "POINT(#{self.longitude} #{self.latitude})" : ""
   end
 
   def machine_tag
-    "openplaques:id=" + id.to_s
+    "openplaques:id=#{id}"
   end
 
   def wikimedia_tag

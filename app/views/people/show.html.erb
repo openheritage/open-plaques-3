@@ -108,7 +108,7 @@
       <p>
         <% @person.non_family_relationships.each_with_index do |relationship, index| %>
           <%= relationship.role.name %> of <%= dated_person relationship.related_person %><% if index == @person.non_family_relationships.size - 2 %> and<% elsif index != @person.non_family_relationships.size - 1 %>,<% end %>
-        <% end %>
+        <% end %>x
       </p>
     </div>
   <% end %>

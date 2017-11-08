@@ -5,15 +5,28 @@ class PeopleController < ApplicationController
   before_filter :find, only: [:edit, :update, :destroy]
 
   def index
-    if (params[:filter] && params[:filter]!='')
-      begin
-        @people = Person.send(params[:filter].to_s).paginate(page: params[:page], per_page: 50)
-        @display = params[:filter].to_s
-      rescue # an unrecognised filter method
-        redirect_to(controller: :people_by_index, action: "show", id: "a")
-      end
-    else
-      redirect_to(controller: :people_by_index, action: "show", id: "a")
+    respond_to do |format|
+      format.html {
+        if (params[:filter] && params[:filter]!='')
+          begin
+            @people = Person.send(params[:filter].to_s).paginate(page: params[:page], per_page: 50)
+            @display = params[:filter].to_s
+          rescue # an unrecognised filter method
+            redirect_to(controller: :people_by_index, action: "show", id: "a")
+          end
+        else
+          redirect_to(controller: :people_by_index, action: "show", id: "a")
+        end        
+      }
+      format.csv {
+        @people = Person.all
+        send_data(
+          "\uFEFF#{PersonCsv.new(@people).build}",
+          type: 'text/csv',
+          filename: "open-plaques-subjects-all-#{Date.today.to_s}.csv",
+          disposition: 'attachment'
+        ) and return
+      }
     end
   end
 
@@ -40,6 +53,16 @@ class PeopleController < ApplicationController
       format.html
       format.json { render json: @person }
       format.geojson { render geojson: @person }
+      format.csv {
+        @people = []
+        @people << @person
+        send_data(
+          "\uFEFF#{PersonCsv.new(@people).build}",
+          type: 'text/csv',
+          filename: 'open-plaque-subject-' + @person.id.to_s + '.csv',
+          disposition: 'attachment'
+        )
+      }
     end
   end
 
