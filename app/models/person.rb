@@ -71,7 +71,15 @@ class Person < ActiveRecord::Base
   def primary_roles
     @primary_roles ||= begin
       primary_roles = personal_roles.select { |personal_role| personal_role.primary == true }
+      # if >1 then cannot judge which is the 'best' role
+      if primary_roles == [] && straight_roles.size == 1
+        straight_roles
+      end
     end
+  end
+
+  def primary_role
+    primary_roles&.first
   end
 
   def person?
@@ -469,6 +477,10 @@ class Person < ActiveRecord::Base
     "http://openplaques.org#{Rails.application.routes.url_helpers.person_path(self, format: :json)}"
   end
 
+  def machine_tag
+    "openplaques:subject:id=#{id}"
+  end
+
   def to_s
     self.name
   end
@@ -499,6 +511,7 @@ class Person < ActiveRecord::Base
           :died_in,
           :type,
           :sex,
+          :primary_role,
           :default_wikipedia_url,
           :default_dbpedia_uri
         ]

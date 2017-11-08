@@ -111,7 +111,7 @@ class PlaquesController < ApplicationController
         @plaques = []
         @plaques << @plaque
         send_data(
-          PlaqueCsv.new(@plaques).build,
+          "\uFEFF#{PlaqueCsv.new(@plaques).build}",
           type: 'text/csv',
           filename: 'open-plaque-' + @plaque.id.to_s + '.csv',
           disposition: 'attachment'
