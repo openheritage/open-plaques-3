@@ -6,6 +6,18 @@ class PeopleController < ApplicationController
 
   def index
     respond_to do |format|
+      format.html {
+        if (params[:filter] && params[:filter]!='')
+          begin
+            @people = Person.send(params[:filter].to_s).paginate(page: params[:page], per_page: 50)
+            @display = params[:filter].to_s
+          rescue # an unrecognised filter method
+            redirect_to(controller: :people_by_index, action: "show", id: "a")
+          end
+        else
+          redirect_to(controller: :people_by_index, action: "show", id: "a")
+        end        
+      }
       format.csv {
         @people = Person.all
         send_data(
@@ -15,16 +27,6 @@ class PeopleController < ApplicationController
           disposition: 'attachment'
         ) and return
       }
-    end
-    if (params[:filter] && params[:filter]!='')
-      begin
-        @people = Person.send(params[:filter].to_s).paginate(page: params[:page], per_page: 50)
-        @display = params[:filter].to_s
-      rescue # an unrecognised filter method
-        redirect_to(controller: :people_by_index, action: "show", id: "a")
-      end
-    else
-      redirect_to(controller: :people_by_index, action: "show", id: "a")
     end
   end
 
