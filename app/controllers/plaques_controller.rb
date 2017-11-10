@@ -28,11 +28,10 @@ class PlaquesController < ApplicationController
         conditions[:updated_at] = since..now
       end
     end
-    if params[:limit] && params[:limit].to_i <= 2000
+    if params[:limit] # && params[:limit].to_i <= 2000
       @limit = params[:limit]
     elsif params[:limit]
-#      @limit = 2000
-      @limit = 2000000000
+      @limit = 2000
     else
       @limit = 20
     end

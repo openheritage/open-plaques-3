@@ -2,6 +2,11 @@ class PersonCsv < Julia::Builder
   column :id
   column :machine_tag
   column :full_name
+  column :surname
+  column :type
+  column :born_in
+  column :died_in
+  column :sex
   column 'roles' do |person|
     roles = []
     person.roles.each do |role| roles << role.name end
@@ -21,5 +26,10 @@ class PersonCsv < Julia::Builder
   end
   column 'father_id' do |person|
     person.father&.id
+  end
+  column :default_wikipedia_url
+  column :default_dbpedia_uri
+  column :number_of_plaques do |person|
+    person.plaques.size
   end
 end

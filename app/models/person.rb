@@ -207,28 +207,6 @@ class Person < ActiveRecord::Base
     "/assets/NoPersonSqr.png"
   end
 
-  def populate_from_dbpedia
-    begin
-      graph = RDF::Graph.load(self.dbpedia_ntriples_uri)
-      query = RDF::Query.new({
-        person: {
-          RDF::URI("http://dbpedia.org/ontology/birthDate") => :birthDate,
-          RDF::URI("http://dbpedia.org/ontology/deathDate") => :deathDate,
-          RDF::URI("http://xmlns.com/foaf/0.1/depiction") => :depiction,
-          RDF::URI("http://dbpedia.org/ontology/abstract") => :abstract,
-          RDF::URI("http://www.w3.org/2000/01/rdf-schema#comment") => :comment,
-        }
-      })
-      query.execute(graph).filter { |solution| solution.comment.language == :en }.each do |solution|
-        self.depiction = solution.depiction
-        # need to filter abstract/comment with something like http://rdf.rubyforge.org/RDF/Query/Solutions.html
-        self.abstract = solution.abstract
-        self.comment = solution.comment
-      end
-    rescue
-    end
-  end
-
   def current_roles
     current_roles = []
     personal_roles.each do |pr|

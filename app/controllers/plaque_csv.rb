@@ -28,6 +28,7 @@ class PlaqueCsv < Julia::Builder
   column 'lead_subject_id' do |plaque| plaque.people.first ? plaque.people.first.id : '' end
   column 'lead_subject_machine_tag' do |plaque| plaque.people.first ? plaque.people.first.machine_tag : '' end
   column 'lead_subject_name' do |plaque| plaque.people.first ? plaque.people.first.name : '' end
+  column 'lead_subject_surname' do |plaque| plaque.people.first ? plaque.people.first.name : '' end
   column 'lead_subject_born_in' do |plaque| plaque.people.first ? plaque.people.first.born_in : '' end
   column 'lead_subject_died_in' do |plaque| plaque.people.first ? plaque.people.first.died_in : '' end
   column 'lead_subject_type' do |plaque| plaque.people.first ? plaque.people.first.type : '' end
@@ -38,7 +39,7 @@ class PlaqueCsv < Julia::Builder
     roles
   end
   column 'lead_subject_primary_role' do |plaque|
-    plaque.people.first ? plaque.people.first.primary_role&.role.name : ''
+    plaque.people.first && plaque.people.first.primary_role ? plaque.people.first.primary_role&.role.name : ''
   end
   column 'lead_subject_wikipedia' do |plaque| plaque.people.first ? plaque.people.first.default_wikipedia_url : '' end
   column 'lead_subject_dbpedia' do |plaque| plaque.people.first ? plaque.people.first.default_dbpedia_uri : '' end
