@@ -4,25 +4,25 @@
 <% content_for(:admin_menu) {navbar_link_to(t('.pages'), pages_path, {class: :edit, title: t('.pages')})} %>
 
 <div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-8">
-      <div class="row">
-        <div class="col-sm-4"><%= render partial: "explore" %></div>
-        <div class="col-sm-4"><%= render partial: "open_data" %></div>
-        <div class="col-sm-4"><%= render partial: "news" %></div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12 col-sm-6"><%= render partial: "contribute" %></div>
-        <div class="col-xs-12 col-sm-6"><%= render partial: "plaque_of_the_day" %></div>
-      </div>
+  <div class="col-xs-12 col-sm-12 col-md-8">
+    <div class="row">
+      <div class="col-sm-4"><%= render partial: "explore" %></div>
+      <div class="col-sm-4"><%= render partial: "open_data" %></div>
+      <div class="col-sm-4"><%= render partial: "news" %></div>
     </div>
-    <div class="col-xs-12 col-sm-6 col-md-4">
-        <%= render partial: "special_offer" %>
+    <div class="row">
+      <div class="col-xs-12 col-sm-6"><%= render partial: "contribute" %></div>
+      <div class="col-xs-12 col-sm-6"><%= render partial: "plaque_of_the_day" %></div>
     </div>
+  </div>
+  <div class="col-xs-12 col-sm-6 col-md-4">
+    <%= render partial: "special_offer" %>
+  </div>
 </div>
 
 <% if @recent_plaques %>
 <h2><%= t '.recently_photographed' %></h2>
 <div class="card-columns">
-    <%= render partial: 'plaques/tile', collection: @recent_plaques, as: :plaque %>
+  <%= render partial: 'plaques/tile', collection: @recent_plaques, as: :plaque %>
 </div>
 <% end %>

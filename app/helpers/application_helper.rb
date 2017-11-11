@@ -34,19 +34,6 @@ module ApplicationHelper
     content_tag("span", text, class: :unknown)
   end
 
-  def user_menu
-    if user_signed_in?
-      content_tag("p", ("You are logged in as ".html_safe +
-        current_user.email +
-#        link_to(current_user.email, edit_user_registration_path) +
-        ". " +
-        link_to("Log out", destroy_user_session_path, method: :delete)
-      ), {class: "user_info"})
-    else
-      content_tag("p", link_to("Log in", new_user_session_path), {class: "user_info"})
-    end
-  end
-
   # Outputs an abbreviation tag for 'circa'.
   #
   # ==== Example output:
