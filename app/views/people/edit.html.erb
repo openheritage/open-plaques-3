@@ -176,6 +176,12 @@
   </div>
   <% end %>
 
+  <%= render partial: 'family_tree' %>
+  <% if @person.person? %>
+  <p>Family: people are related to each other via their mother and father where possible.
+    Use brother/sister <strong>very</strong> sparingly</p>
+  <% end %>
+
   <% @person.personal_roles.each do |personal_role| %>
   <div class="row">
     <span class="col-sm-8">

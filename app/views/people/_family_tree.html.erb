@@ -1,0 +1,30 @@
+<% if @person.person? && @person.has_family? %>
+  <h2>Family tree</h2>
+  <div class="row">
+    <div class="tree">
+      <ul>
+        <li>
+          <%= @person.father ? link_to(@person.father.full_name, @person.father) : link_to('father?', '#') %> <%= @person.mother ? link_to(@person.mother.full_name, @person.mother) : link_to('mother?', '#') %>
+          <ul>
+            <li>
+              <%= link_to(@person.full_name, @person) %>
+              <% @person.spouses.each do |spouse| %>
+                <%= link_to(spouse.full_name, spouse) %>
+              <% end %>
+              <% if @person.has_children? %>
+                <ul>
+                  <% @person.children.each do |child| %>
+                    <li><%= link_to(child.full_name, child) %></li>
+                  <% end %>
+                </ul>
+              <% end %>
+            </li>
+            <% @person.siblings.each do |sibling| %>
+              <li><%= link_to(sibling.full_name, sibling) %></li>
+            <% end %>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+<% end %>
