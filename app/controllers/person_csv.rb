@@ -27,8 +27,12 @@ class PersonCsv < Julia::Builder
   column 'father_id' do |person|
     person.father&.id
   end
+  column 'wikidata_id' do |person|
+    person.wikipedia_url&.match /Q[d]*/ ? person.wikipedia_url : ""
+  end
   column :default_wikipedia_url
   column :default_dbpedia_uri
+  column :find_a_grave_url
   column :number_of_plaques do |person|
     person.plaques.size
   end

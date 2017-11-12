@@ -22,7 +22,6 @@
 # * +ancestry_id+ - link to Ancestry.com web site
 require 'rubygems'
 require 'open-uri'
-#require 'rdf/ntriples'
 
 class Person < ActiveRecord::Base
 
@@ -34,10 +33,10 @@ class Person < ActiveRecord::Base
   has_one :death_connection, -> { where('verb_id in (3,49,161,1108)') }, class_name: "PersonalConnection"
   has_one :main_photo, class_name: "Photo"
 
-  attr_accessor :abstract, :comment # dbpedia fields
-
   validates_presence_of :name
-  before_save :update_index, :aka_accented_name
+  before_save :update_index
+  before_save :aka_accented_name
+  before_save :fill_wikidata_id
   scope :roled, -> { where("personal_roles_count > 0").order("id DESC") }
   scope :unroled, -> { where(personal_roles_count: [nil,0]) }
   scope :dated, -> { where("born_on IS NOT NULL or died_on IS NOT NULL") }
@@ -177,11 +176,40 @@ class Person < ActiveRecord::Base
     year - born_in if born_in
   end
 
+  def fill_wikidata_id
+    begin
+      unless wikidata_id&.match /Q\d*$/
+        t = wikipedia_url&.start_with?("http") ? wikipedia_url[/.*wiki\/(.*)/,1] : name
+        t = t.tr("ÀÁÂÃÄÅàáâãäåĀāĂăĄąÇçĆćĈĉĊċČčÐðĎďĐđÈÉÊËèéêëĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħÌÍÎÏìíîïĨĩĪīĬĭĮįİıĴĵĶķĸĹĺĻļĽľĿŀŁłÑñŃńŅņŇňŉŊŋÒÓÔÕÖØòóôõöøŌōŎŏŐőŔŕŖŗŘřŚśŜŝŞşŠšſŢţŤťŦŧÙÚÛÜùúûüŨũŪūŬŭŮůŰűŲųŴŵÝýÿŶŷŸŹźŻżŽž",
+  "AAAAAAaaaaaaAaAaAaCcCcCcCcCcDdDdDdEEEEeeeeEeEeEeEeEeGgGgGgGgHhHhIIIIiiiiIiIiIiIiIiJjKkkLlLlLlLlLlNnNnNnNnnNnOOOOOOooooooOoOoOoRrRrRrSsSsSsSssTtTtTtUUUUuuuuUuUuUuUuUuUuWwYyyYyYZzZzZz")
+        wikidata_api = "https://www.wikidata.org/w/api.php?action=wbgetentities&sites=enwiki&titles=#{t}&format=json"
+        response = open(wikidata_api)
+        resp = response.read
+        parsed_json = JSON.parse(resp)
+        t = parsed_json['entities']
+        self.wikidata_id = t.first[0] unless t['-1']
+      end
+    rescue => e
+      puts e
+    end
+  end
+
   # note that the Wikipedia url is constructed from the person's name
   # unless it is overridden by data in the wikipedia_url field
   # or the wikipedia_url field is set to blank to indicate that there
   # is no Wikipedia record
   def default_wikipedia_url
+    if wikipedia_url&.match /Q[d]*/
+      wikidata_api = "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=#{wikipedia_url}&format=json&props=sitelinks&sitefilter=enwiki"
+      response = open(wikidata_api)
+      resp = response.read
+      parsed_json = JSON.parse(resp)
+      begin
+        t = parsed_json['entities']["#{wikipedia_url}"]['sitelinks']['enwiki']['title']
+        return "https://en.wikipedia.org/wiki/#{t.gsub(" ","_")}"
+      rescue
+      end
+    end
     return wikipedia_url.gsub("http:","https:") if wikipedia_url && wikipedia_url > ""
     untitled_name = name.gsub("Canon ","").gsub("Captain ","").gsub("Cardinal ","").gsub("Dame ","").gsub("Dr ","").gsub('Lord ','').gsub('Sir ','').strip.tr(' ','_')
     "https://en.wikipedia.org/wiki/#{untitled_name}"
@@ -189,10 +217,6 @@ class Person < ActiveRecord::Base
 
   def default_dbpedia_uri
     default_wikipedia_url.gsub("en.wikipedia.org/wiki","dbpedia.org/resource").gsub("https","http")
-  end
-
-  def dbpedia_ntriples_uri
-    default_dbpedia_uri.gsub("resource","data") + ".ntriples"
   end
 
   def name_and_dates
@@ -490,8 +514,10 @@ class Person < ActiveRecord::Base
           :type,
           :sex,
           :primary_role,
+          :wikidata_id,
           :default_wikipedia_url,
-          :default_dbpedia_uri
+          :default_dbpedia_uri,
+          :find_a_grave_url
         ]
       }
     end
