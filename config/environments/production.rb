@@ -1,12 +1,11 @@
 Rails.application.configure do
 
-
   config.cache_classes = true
   config.eager_load = true
   config.consider_all_requests_local = false
   config.action_controller.perform_caching = true
 
-  config.serve_static_assets = true
+  config.serve_static_files = true
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
@@ -17,5 +16,5 @@ Rails.application.configure do
   # Send deprecation notices to registered listeners.
   config.active_support.deprecation = :notify
 
-
+  config.log_level = :info
 end

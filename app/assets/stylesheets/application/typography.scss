@@ -1,0 +1,35 @@
+@import 'font-awesome-sprockets';
+@import 'font-awesome';
+@import 'worcester_serial';
+@import 'flag-icon';
+
+// Bootstrap variables
+
+//$font-family-base: font-family-serif;
+$font-family-base: sans-serif;
+
+@media (min-width: 1em) {
+  h1 {
+    font-size: 1rem;
+  }
+}
+@media (min-width: 34em) {
+  h1 {
+    font-size: 1.5rem;
+  }
+}
+@media (min-width: 48em) {
+  h1 {
+    font-size: 2rem;
+  }
+}
+@media (min-width: 62em) {
+  h1 {
+    font-size: 2.5rem;
+  }
+}
+@media (min-width: 75em) {
+  h1 {
+    font-size: 2.5rem;
+  }
+}
