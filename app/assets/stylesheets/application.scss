@@ -1,12 +1,3 @@
-//
-// Prefer imports over require
-// http://pivotallabs.com/structure-your-sass-files-with-import/
-//
-
-//= require_self
-//= require leaflet
-//= require plaque-map
-
 // Base styles
 @import "base/mixins";
 @import "base/reset";
@@ -14,19 +5,22 @@
 @import "base/spaces";
 @import "base/helper";
 
+// Vendor styles
+@import "leaflet";
+
 // Layout specific styles
-@import "shared/bootstrap";
+@import "application/bootstrap";
 @import "application/typography";
 @import "application/layout";
 
 // Objects
 // @import "application/objects/buttons"
 // @import "application/objects/inputs"
-@import "application/objects/photo";
+@import "application/objects/family-tree";
 @import "application/objects/person";
+@import "application/objects/photo";
+@import "application/objects/plaque-map";
 
 // Modules
 // @import "application/modules/profile"
 // @import "application/modules/dashboard"
-
-@import "more_columns";
