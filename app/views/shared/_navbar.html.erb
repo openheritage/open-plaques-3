@@ -1,6 +1,9 @@
 <nav class="navbar navbar-expand-sm navbar-light bg-light">
   <%= link_to image_tag("openplaques.png"), root_path, class: 'navbar-brand' %>
-  <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarItemsMain" aria-controls="navbarItemsMain" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarItemsMain">
     <ul class="navbar-nav mr-auto">
       <%= navbar_link_to t('menu.about'), about_path, active_when: { controller: :pages } %>
       <%= navbar_link_to t('menu.people'), people_path, active_when: { controller: :people_by_index } %>
@@ -22,7 +25,11 @@
 </nav>
 <% if current_user&.is_admin? %>
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-  <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+  <span class="navbar-brand">Admin</span>
+  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarItemsAdmin" aria-controls="navbarItemsAdmin" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarItemsAdmin">
     <ul class="navbar-nav mr-auto">
       <%= yield :admin_menu %>
     </ul>
