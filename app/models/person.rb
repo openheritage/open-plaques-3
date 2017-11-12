@@ -203,24 +203,21 @@ class Person < ActiveRecord::Base
   # or the wikipedia_url field is set to blank to indicate that there
   # is no Wikipedia record
   def default_wikipedia_url
-    if wikipedia_url&.match /Q[d]*/
-      wikidata_api = "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=#{wikipedia_url}&format=json&props=sitelinks&sitefilter=enwiki"
+    if wikidata_id&.match /Q\d*$/
+      wikidata_api = "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=#{wikidata_id}&format=json&props=sitelinks&sitefilter=enwiki"
       response = open(wikidata_api)
       resp = response.read
       parsed_json = JSON.parse(resp)
       begin
-        t = parsed_json['entities']["#{wikipedia_url}"]['sitelinks']['enwiki']['title']
+        t = parsed_json['entities']["#{wikidata_id}"]['sitelinks']['enwiki']['title']
         return "https://en.wikipedia.org/wiki/#{t.gsub(" ","_")}"
       rescue
       end
     end
-    return wikipedia_url.gsub("http:","https:") if wikipedia_url && wikipedia_url > ""
-    untitled_name = name.gsub("Canon ","").gsub("Captain ","").gsub("Cardinal ","").gsub("Dame ","").gsub("Dr ","").gsub('Lord ','').gsub('Sir ','').strip.tr(' ','_')
-    "https://en.wikipedia.org/wiki/#{untitled_name}"
   end
 
   def default_dbpedia_uri
-    default_wikipedia_url.gsub("en.wikipedia.org/wiki","dbpedia.org/resource").gsub("https","http")
+    default_wikipedia_url&.gsub("en.wikipedia.org/wiki","dbpedia.org/resource")&.gsub("https","http")
   end
 
   def name_and_dates
