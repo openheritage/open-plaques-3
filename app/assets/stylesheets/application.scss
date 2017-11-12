@@ -1,110 +1,26 @@
-//
-// Prefer imports over require
-// http://pivotallabs.com/structure-your-sass-files-with-import/
-//
+// Base styles
+@import "base/mixins";
+@import "base/reset";
+@import "base/grids";
+@import "base/spaces";
+@import "base/helper";
 
-//= require_self
-//= require leaflet
-//= require plaque-map
+// Vendor styles
+@import "leaflet";
 
-// Core
-@import 'variables';
-@import 'bootstrap';
-@import 'more_columns';
-@import 'footer';
+// Layout specific styles
+@import "application/bootstrap";
+@import "application/typography";
+@import "application/layout";
 
-// Model objects
-@import 'person';
-@import 'photo';
+// Objects
+// @import "application/objects/buttons"
+// @import "application/objects/inputs"
+@import "application/objects/family-tree";
+@import "application/objects/person";
+@import "application/objects/photo";
+@import "application/objects/plaque-map";
 
-// Fonts and Icons
-@import 'font-awesome-sprockets';
-@import 'font-awesome';
-@import 'worcester_serial';
-@import 'flag-icon';
-
-//
-// Minor Tweaks
-//
-
-// Padding to clear fixed nav
-body {
-  padding-top: 10px;
-}
-
-// Make sure alerts are nicely formatted
-.alert {
-  a {
-    white-space: nowrap;
-  }
-}
-
-// everything except jumbotron gets a bit of padding
-.header,
-.row,
-.footer {
-  padding-right: 1rem;
-  padding-left: 1rem;
-}
-
-// Postion loading spinner at bottom right
-#nprogress .spinner {
-  bottom: 15px;
-  top: auto;
-}
-
-// Autocomplete
-.ui-autocomplete {
-  list-style-type: none;
-  width: 300px;
-}
-
-.ui-autocomplete .ui-menu-item {
-  background: rgba(255,255,255,.95);
-  border-bottom: dotted 1px #CCC;
-}
-
-html.no-rgba .ui-autocomplete .ui-menu-item {background: #FFF;}
-
-.ui-autocomplete .ui-menu-item a {
-  display: block;
-  font-size: 14px;
-  color: #333;
-  padding: 8px;
-}
-
-.ui-autocomplete .ui-menu-item a.ui-state-hover {
-  color: #FFF;
-  cursor: pointer;
-}
-
-.ui-autocomplete .ui-menu-item a#ui-active-menuitem {
-  background: #4F7CBF;
-  text-shadow: 1px 1px #333;
-}
-
-@media (min-width: 1em) {
-  h1 {
-    font-size: 1rem;
-  }
-}
-@media (min-width: 34em) {
-  h1 {
-    font-size: 1.5rem;
-  }
-}
-@media (min-width: 48em) {
-  h1 {
-    font-size: 2rem;
-  }
-}
-@media (min-width: 62em) {
-  h1 {
-    font-size: 2.5rem;
-  }
-}
-@media (min-width: 75em) {
-  h1 {
-    font-size: 2.5rem;
-  }
-}
+// Modules
+// @import "application/modules/profile"
+// @import "application/modules/dashboard"

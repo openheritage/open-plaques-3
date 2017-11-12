@@ -2,11 +2,23 @@
 <% content_for(:title) do %>
 <div class="vcard person" typeof="<%= if (@person.person?) then " foaf:Person" else " foaf:Agent" end %> vcard:VCard" about="#person">
   <div class="card hovercard">
+    <% if @person.main_photo %>
+    <div class="card-background">
+      <%= image_tag(@person.main_photo.thumbnail_url != nil ? @person.main_photo.thumbnail_url : @person.main_photo.file_url, class: 'card-bkimg') %>
+    </div>
+    <div class="useravatar">
+      <%= image_tag(@person.main_photo.thumbnail_url, class: 'card-bkimg') %>
+    </div>
+  <% else %>
+    <div class="card-background-no-photo"></div>
+    <% end %>
     <div class="card-info">
+      <%= link_to @person do %>
       <span class="card-title fn">
-        <%= link_to @person.full_name, @person %><br/>
+        <%= @person.full_name %><br/>
         <small><%= @person.dates %></small>
       </span>
+      <% end %>
     </div>
   </div>
   <% end %>
@@ -46,6 +58,14 @@
         <% end %>
       </p>
     </div>
+    <% else %>
+    <div class="col-xs-10">
+      <p>We use images from Wikimedia Commons to depict subjects as they are open licenced and free to use.</p>
+      <p>If this image is wrong, click on it, edit and delete it</p>
+      <p>
+        <%= link_to(icon('external-link') + 'Wikipedia', @person.default_wikipedia_url, target: '_blank')  unless @person.default_wikipedia_url.blank? %>
+      </p>
+    </div>
     <% end %>
   </div>
 
@@ -55,8 +75,10 @@
     <%= f.label :name, "#{@person.possessive} name #{@person.existence_word}", class: 'col-form-label col-sm-2' %>
     <div class="col-sm-10">
       <%= f.text_field :name, class: 'form-control' %>
+      <% if @person.name != @person.full_name %>
       <%= t '.display_name' %>
-      "<%= @person.full_name %>"
+      <strong>"<%= @person.full_name %>"</strong>
+      <% end %>
     </div>
   </div>
   <div class="form-group row">
@@ -104,7 +126,7 @@
     <div class="col-form-label col-sm-2">
       <%= "Died aged" if (@person.person? || @person.thing? || @person.animal?) && @person.dead? %><%= "Closed aged" if @person.place? && @person.dead? %><%= "Aged" if @person.alive?%>
     </div>
-    <div class="form-control-static col-sm-2">
+    <div class="form-control-static col-form-label col-sm-2">
       <%= @person.age.to_s %>
     </div>
   </div>
@@ -178,8 +200,9 @@
 
   <%= render partial: 'family_tree' %>
   <% if @person.person? %>
-  <p>Family: people are related to each other via their mother and father where possible.
-    Use brother/sister <strong>very</strong> sparingly</p>
+  <p>Family: people are related to each other via their mother and father where possible. Use brother/sister
+    <strong>very</strong>
+    sparingly</p>
   <% end %>
 
   <% @person.personal_roles.each do |personal_role| %>
