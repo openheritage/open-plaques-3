@@ -7,8 +7,10 @@ class RolesController < ApplicationController
   def index
     respond_to do |format|
       format.html { redirect_to(roles_by_index_path('a')) }
-      @roles = Role.all
-      format.json { render json: @roles }
+      format.json {
+        @roles = Role.all.order("personal_roles_count DESC nulls last")
+        render json: @roles
+      }
     end
   end
 
