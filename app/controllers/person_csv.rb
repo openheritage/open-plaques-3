@@ -27,9 +27,7 @@ class PersonCsv < Julia::Builder
   column 'father_id' do |person|
     person.father&.id
   end
-  column 'wikidata_id' do |person|
-    person.wikipedia_url&.match /Q[d]*/ ? person.wikipedia_url : ""
-  end
+  column :wikidata_id
   column :default_wikipedia_url
   column :default_dbpedia_uri
   column :find_a_grave_url

@@ -194,6 +194,10 @@ class Person < ActiveRecord::Base
     end
   end
 
+  def wikidata_url
+    "https://www.wikidata.org/wiki/#{wikidata_id}"
+  end
+
   # note that the Wikipedia url is constructed from the person's name
   # unless it is overridden by data in the wikipedia_url field
   # or the wikipedia_url field is set to blank to indicate that there

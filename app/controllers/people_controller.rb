@@ -16,7 +16,7 @@ class PeopleController < ApplicationController
           end
         else
           redirect_to(controller: :people_by_index, action: "show", id: "a")
-        end        
+        end
       }
       format.csv {
         @people = Person.all
@@ -139,6 +139,7 @@ class PeopleController < ApplicationController
         :aka,
         :surname_starts_with,
         :introduction,
+        :wikidata_id,
         :wikipedia_url,
         :wikipedia_paras,
         :dbpedia_uri,
