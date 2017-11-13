@@ -9,15 +9,15 @@ class OpenStruct
   end
 
   def qcode
-    self.entities.root_key.to_s
+    self.entities&.root_key&.to_s
   end
 
   def q
-    self.entities.send("#{qcode}")
+    self.entities&.send("#{qcode}")
   end
 
   def not_found?
-    self.qcode == '-1'
+    !self.qcode || self.qcode == '-1'
   end
 
   def disambiguation?
@@ -36,13 +36,14 @@ class Wikidata
   end
 
   def born_in
-    return if !@wikidata
+    return if !@wikidata || @wikidata.not_found?
     t = @wikidata.q&.claims&.P569&.first&.mainsnak&.datavalue&.value&.time
     datetime = t.to_time
     datetime.strftime("%Y")
   end
 
   def died_in
+    return if !@wikidata || @wikidata.not_found?
     t = @wikidata.q&.claims&.P570&.first&.mainsnak&.datavalue&.value&.time
     datetime = t.to_time
     datetime.strftime("%Y")
@@ -57,7 +58,7 @@ class Wikidata
   end
 
   def en_wikipedia_url
-    return if !@wikidata
+    return if !@wikidata || @wikidata.not_found?
     t = @wikidata&.q&.sitelinks&.enwiki&.title
     "https://en.wikipedia.org/wiki/#{t.gsub(" ","_")}"
   end
