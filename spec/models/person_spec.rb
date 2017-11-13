@@ -604,4 +604,49 @@ describe Person, type: :model do
       end
     end
   end
+
+  describe '#fill_wikidata_id' do
+    context 'an unfindable name' do
+      let(:person) { build :person, name: 'zdfgad'}
+      before do
+        person.fill_wikidata_id
+      end
+      it 'has no Wikidata' do
+        expect(person.wikidata_id).to eq(nil)
+      end
+    end
+    context 'an ambiguous name' do
+      let(:person) { build :person, name: 'John Smith'}
+      before do
+        person.fill_wikidata_id
+      end
+      it 'has no Wikidata' do
+        expect(person.wikidata_id).to eq(nil)
+      end
+    end
+    context 'an unambiguous name' do
+      let(:person) { build :person, name: 'Myra Hess'}
+      before do
+        person.fill_wikidata_id
+      end
+      it 'has Wikidata' do
+        expect(person.wikidata_id).to eq("Q269848")
+      end
+    end
+  end
+
+  describe '#default_wikipedia_url' do
+    context 'with no wikidata id' do
+      let(:person) { build :person }
+      it 'has no Wikidata' do
+        expect(person.default_wikipedia_url).to eq(nil)
+      end
+    end
+    context 'with a wikidata id' do
+      let(:person) { build :person, wikidata_id: "Q269848" }
+      it 'has no Wikidata' do
+        expect(person.default_wikipedia_url).to eq("https://en.wikipedia.org/wiki/Myra_Hess")
+      end
+    end
+  end
 end

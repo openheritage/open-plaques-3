@@ -20,9 +20,6 @@
 # * +aka+ - array of names that person is also known as
 # * +find_a_grave_id+ - link to Find A Grave web site
 # * +ancestry_id+ - link to Ancestry.com web site
-require 'rubygems'
-require 'open-uri'
-
 class Person < ActiveRecord::Base
 
   has_many :personal_roles
@@ -177,20 +174,11 @@ class Person < ActiveRecord::Base
   end
 
   def fill_wikidata_id
-    begin
-      unless wikidata_id&.match /Q\d*$/
-        t = wikipedia_url&.start_with?("http") ? wikipedia_url[/.*wiki\/(.*)/,1] : name
-        t = t.tr("ÀÁÂÃÄÅàáâãäåĀāĂăĄąÇçĆćĈĉĊċČčÐðĎďĐđÈÉÊËèéêëĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħÌÍÎÏìíîïĨĩĪīĬĭĮįİıĴĵĶķĸĹĺĻļĽľĿŀŁłÑñŃńŅņŇňŉŊŋÒÓÔÕÖØòóôõöøŌōŎŏŐőŔŕŖŗŘřŚśŜŝŞşŠšſŢţŤťŦŧÙÚÛÜùúûüŨũŪūŬŭŮůŰűŲųŴŵÝýÿŶŷŸŹźŻżŽž",
-  "AAAAAAaaaaaaAaAaAaCcCcCcCcCcDdDdDdEEEEeeeeEeEeEeEeEeGgGgGgGgHhHhIIIIiiiiIiIiIiIiIiJjKkkLlLlLlLlLlNnNnNnNnnNnOOOOOOooooooOoOoOoRrRrRrSsSsSsSssTtTtTtUUUUuuuuUuUuUuUuUuUuWwYyyYyYZzZzZz")
-        wikidata_api = "https://www.wikidata.org/w/api.php?action=wbgetentities&sites=enwiki&titles=#{t}&format=json"
-        response = open(wikidata_api)
-        resp = response.read
-        parsed_json = JSON.parse(resp)
-        t = parsed_json['entities']
-        self.wikidata_id = t.first[0] unless t['-1']
-      end
-    rescue => e
-      puts e
+    unless wikidata_id&.match /Q\d*$/
+      t = wikipedia_url&.start_with?("http") ? wikipedia_url[/.*wiki\/(.*)/,1] : name
+      t = t.tr("ÀÁÂÃÄÅàáâãäåĀāĂăĄąÇçĆćĈĉĊċČčÐðĎďĐđÈÉÊËèéêëĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħÌÍÎÏìíîïĨĩĪīĬĭĮįİıĴĵĶķĸĹĺĻļĽľĿŀŁłÑñŃńŅņŇňŉŊŋÒÓÔÕÖØòóôõöøŌōŎŏŐőŔŕŖŗŘřŚśŜŝŞşŠšſŢţŤťŦŧÙÚÛÜùúûüŨũŪūŬŭŮůŰűŲųŴŵÝýÿŶŷŸŹźŻżŽž",
+"AAAAAAaaaaaaAaAaAaCcCcCcCcCcDdDdDdEEEEeeeeEeEeEeEeEeGgGgGgGgHhHhIIIIiiiiIiIiIiIiIiJjKkkLlLlLlLlLlNnNnNnNnnNnOOOOOOooooooOoOoOoRrRrRrSsSsSsSssTtTtTtUUUUuuuuUuUuUuUuUuUuWwYyyYyYZzZzZz")
+      self.wikidata_id = Wikidata.qcode(t)
     end
   end
 
@@ -198,22 +186,8 @@ class Person < ActiveRecord::Base
     "https://www.wikidata.org/wiki/#{wikidata_id}"
   end
 
-  # note that the Wikipedia url is constructed from the person's name
-  # unless it is overridden by data in the wikipedia_url field
-  # or the wikipedia_url field is set to blank to indicate that there
-  # is no Wikipedia record
   def default_wikipedia_url
-    if wikidata_id&.match /Q\d*$/
-      wikidata_api = "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=#{wikidata_id}&format=json&props=sitelinks&sitefilter=enwiki"
-      response = open(wikidata_api)
-      resp = response.read
-      parsed_json = JSON.parse(resp)
-      begin
-        t = parsed_json['entities']["#{wikidata_id}"]['sitelinks']['enwiki']['title']
-        return "https://en.wikipedia.org/wiki/#{t.gsub(" ","_")}"
-      rescue
-      end
-    end
+    Wikidata.en_wikipedia_url(wikidata_id)
   end
 
   def default_dbpedia_uri
@@ -469,11 +443,11 @@ class Person < ActiveRecord::Base
   end
 
   def find_a_grave_url
-    "http://www.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=#{self.find_a_grave_id}" if find_a_grave_id
+    "http://www.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=#{self.find_a_grave_id}" if !find_a_grave_id&.blank?
   end
 
   def ancestry_url
-    "http://www.ancestry.co.uk/genealogy/records/#{self.ancestry_id}" if ancestry_id
+    "http://www.ancestry.co.uk/genealogy/records/#{self.ancestry_id}" if !ancestry_id&.blank?
   end
 
   def uri
