@@ -26,6 +26,28 @@ class OpenStruct
 end
 
 class Wikidata
+  def initialize(wikidata_id)
+    return if !wikidata_id&.match(/Q\d*$/)
+    @id = wikidata_id
+    api = "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=#{@id}&format=json"
+    response = open(api)
+    resp = response.read
+    @wikidata = JSON.parse(resp, object_class: OpenStruct)
+  end
+
+  def born_in
+    return if !@wikidata
+    t = @wikidata.q&.claims&.P569&.first&.mainsnak&.datavalue&.value&.time
+    datetime = t.to_time
+    datetime.strftime("%Y")
+  end
+
+  def died_in
+    t = @wikidata.q&.claims&.P570&.first&.mainsnak&.datavalue&.value&.time
+    datetime = t.to_time
+    datetime.strftime("%Y")
+  end
+
   def self.qcode(term)
     api = "https://www.wikidata.org/w/api.php?action=wbgetentities&sites=enwiki&titles=#{term}&format=json"
     response = open(api)
@@ -34,16 +56,9 @@ class Wikidata
     wikidata.not_found? || wikidata.disambiguation? ? nil : wikidata.qcode
   end
 
-  def self.en_wikipedia_url(wikidata_id)
-    return if !wikidata_id || !wikidata_id.match(/Q\d*$/)
-    api = "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=#{wikidata_id}&format=json&props=sitelinks&sitefilter=enwiki"
-    response = open(api)
-    resp = response.read
-    parsed_json = JSON.parse(resp)
-    begin
-      t = parsed_json['entities']["#{wikidata_id}"]['sitelinks']['enwiki']['title']
-      return "https://en.wikipedia.org/wiki/#{t.gsub(" ","_")}"
-    rescue
-    end
+  def en_wikipedia_url
+    return if !@wikidata
+    t = @wikidata&.q&.sitelinks&.enwiki&.title
+    "https://en.wikipedia.org/wiki/#{t.gsub(" ","_")}"
   end
 end

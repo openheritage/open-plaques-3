@@ -37,11 +37,13 @@
   <div class="row">
     <div class="col-xs-12">
       <p><%= "Died aged" if (@person.person? || @person.thing? || @person.animal?) && @person.dead? %><%= "Closed aged" if @person.place? && @person.dead? %><%= "Aged" if @person.alive? && @person.age%> <%= @person.age.to_s if @person.age%>
-        <%= link_to(icon('external-link') + "Find A Grave", @person.find_a_grave_url, target: '_blank') unless @person.find_a_grave_id.blank? %>
+
       </p>
       <%= markdown(@person.introduction) if @person.introduction %>
-      <%= content_tag("p", link_to(icon('external-link') + "Wikipedia", @person.default_wikipedia_url, target: '_blank')) unless @person.default_wikipedia_url.blank? %>
-    </div>
+      <%= link_to(icon('external-link') + "Wikidata", @person.wikidata_url, target: '_blank') unless @person.wikidata_url.blank? %>
+      <%= link_to(icon('external-link') + "Wikipedia", @person.default_wikipedia_url, target: '_blank') unless @person.default_wikipedia_url.blank? %>
+      <%= link_to(icon('external-link') + "Find A Grave", @person.find_a_grave_url, target: '_blank') unless @person.find_a_grave_id.blank? %>
+  </div>
   </div>
 
   <%= render partial: 'family_tree' %>

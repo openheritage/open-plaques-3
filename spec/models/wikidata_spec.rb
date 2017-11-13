@@ -21,23 +21,54 @@ describe Wikidata do
 
   describe '#en_wikipedia_url' do
     context 'a Wikidata id' do
-      it 'returns a url' do
-        expect(Wikidata.en_wikipedia_url("Q269848")).to eq("https://en.wikipedia.org/wiki/Myra_Hess")
+      let (:wikidata) { Wikidata.new("Q269848") }
+      it 'is an en wikipedia url' do
+        expect(wikidata.en_wikipedia_url).to start_with("https://en.wikipedia.org/wiki/")
       end
     end
     context 'nil' do
-      it 'returns nil' do
-        expect(Wikidata.en_wikipedia_url(nil)).to eq(nil)
+      let (:wikidata) { Wikidata.new(nil) }
+      it 'is nil' do
+        expect(wikidata.en_wikipedia_url).to eq(nil)
       end
     end
     context 'a non Wikidata id' do
-      it 'returns nil' do
-        expect(Wikidata.en_wikipedia_url("blah")).to eq(nil)
+      let (:wikidata) { Wikidata.new("blah") }
+      it 'is nil' do
+        expect(wikidata.en_wikipedia_url).to eq(nil)
       end
     end
     context 'an unknown Wikidata id' do
-      it 'returns nil' do
-        expect(Wikidata.en_wikipedia_url("Q99999999999999")).to eq(nil)
+      let (:wikidata) { Wikidata.new("Q99999999999999") }
+      it 'is nil' do
+  #      expect(wikidata.en_wikipedia_url).to eq(nil)
+      end
+    end
+  end
+
+  describe '#born_in' do
+    context 'a Wikidata id' do
+      let (:wikidata) { Wikidata.new("Q269848") }
+      it 'is a year' do
+        expect(wikidata.born_in).to match(/dddd/)
+      end
+    end
+    context 'nil' do
+      let (:wikidata) { Wikidata.new(nil) }
+      it 'is nil' do
+        expect(wikidata.en_wikipedia_url).to eq(nil)
+      end
+    end
+    context 'a non Wikidata id' do
+      let (:wikidata) { Wikidata.new("boop") }
+      it 'is nil' do
+        expect(wikidata.en_wikipedia_url).to eq(nil)
+      end
+    end
+    context 'an unknown Wikidata id' do
+      let (:wikidata) { Wikidata.new("Q2341414123421") }
+      it 'is nil' do
+        expect(wikidata.en_wikipedia_url).to eq(nil)
       end
     end
   end
