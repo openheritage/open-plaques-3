@@ -406,7 +406,7 @@ class Person < ActiveRecord::Base
       "Jane","Janet","Jacqueline","Jeanne","Jenny","Jennifer","Johanna","Josephine","Judith","Julia","Julie",
       "Kate","Käte","Käthe","Kathleen","Klara",
       "Laura","Letitia","Lidia","Lina","Liz","Lotte","Louise","Louisa","Lucie","Lucy","Luise",
-      "Mabel","Mala","Margaret","Margery","Margot","Marianne","Marie","Martha","Mary","Mathilde","May","Mercy","Meta","Minna","Monica","Monika",
+      "Mabel","Mala","Margaret","Margery","Margot","Maria","Marianne","Marie","Martha","Mary","Mathilde","May","Mercy","Meta","Minna","Monica","Monika",
       "Nancy, Nelly",
       "Olga",
       "Paloma","Paula","Pauline","Peggy","Priscilla",
