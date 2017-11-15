@@ -17,11 +17,11 @@ class OpenStruct
   end
 
   def not_found?
-    !self.qcode || self.qcode == '-1'
+    "-1" == self.qcode
   end
 
   def disambiguation?
-    q.descriptions&.en&.value&.to_s == "Wikimedia disambiguation page"
+    q.descriptions&.en&.value&.to_s&.include? "disambiguation page"
   end
 end
 
@@ -35,31 +35,72 @@ class Wikidata
     @wikidata = JSON.parse(resp, object_class: OpenStruct)
   end
 
+  def qcode
+    @wikidata.qcode
+  end
+
+  def disambiguation?
+    @wikidata.disambiguation?
+  end
+
+  def not_found?
+    @wikidata.not_found?
+  end
+
   def born_in
     return if !@wikidata || @wikidata.not_found?
     t = @wikidata.q&.claims&.P569&.first&.mainsnak&.datavalue&.value&.time
-    datetime = t.to_time
-    datetime.strftime("%Y")
+    # can by +1600-00-00 for 'unknown month and day' which breaks datetime
+    t&.match(/\+(\d\d\d\d)/)[1] if t&.match(/\+(\d\d\d\d)/)
   end
 
   def died_in
     return if !@wikidata || @wikidata.not_found?
     t = @wikidata.q&.claims&.P570&.first&.mainsnak&.datavalue&.value&.time
-    datetime = t.to_time
-    datetime.strftime("%Y")
+    t&.match(/\+(\d\d\d\d)/)[1] if t&.match(/\+(\d\d\d\d)/)
+  end
+
+  def dates?(born, died)
+    born_in && died_in && born_in == born && died_in == died
   end
 
   def self.qcode(term)
-    api = "https://www.wikidata.org/w/api.php?action=wbgetentities&sites=enwiki&titles=#{term}&format=json"
+    api_root = "https://www.wikidata.org/w/api.php?action="
+    name_and_dates = term.match /(.*)\((\d\d\d\d)-(\d\d\d\d)\)/
+    if name_and_dates
+      name = name_and_dates[1]
+      born = name_and_dates[2]
+      died = name_and_dates[3]
+    else
+      name = term
+    end
+    api = "#{api_root}wbgetentities&sites=enwiki&titles=#{name}&format=json"
     response = open(api)
     resp = response.read
     wikidata = JSON.parse(resp, object_class: OpenStruct)
-    wikidata.not_found? || wikidata.disambiguation? ? nil : wikidata.qcode
+    if (wikidata.not_found? || wikidata.disambiguation?) && born && died
+      api = "#{api_root}query&list=search&srsearch=#{name}&format=json"
+      response = open(api)
+      resp = response.read
+      search_wikidata = JSON.parse(resp, object_class: OpenStruct)
+      search_wikidata.query.search.each do |search_result|
+        w = Wikidata.new(search_result.title)
+        return w.qcode if w.dates?(born, died)
+      end
+    end
+    if wikidata.not_found? || wikidata.disambiguation?
+      nil
+    elsif born
+      w = Wikidata.new(wikidata.qcode)
+      w.qcode if w.dates?(born, died)
+    else
+      wikidata.qcode
+    end
   end
 
   def en_wikipedia_url
     return if !@wikidata || @wikidata.not_found?
     t = @wikidata&.q&.sitelinks&.enwiki&.title
-    "https://en.wikipedia.org/wiki/#{t.gsub(" ","_")}"
+    "https://en.wikipedia.org/wiki/#{t.gsub(" ","_")}" if t
   end
 end

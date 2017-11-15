@@ -12,9 +12,19 @@ describe Wikidata do
         expect(Wikidata.qcode('John Smith')).to eq(nil)
       end
     end
+    context 'an ambiguous name with dates' do
+      it 'returns someone with the right name and dates' do
+        expect(Wikidata.qcode('James Duffy (1889-1969)')).to eq("Q4155328")
+      end
+    end
     context 'an unambiguous name' do
       it 'returns a Wikidata id' do
         expect(Wikidata.qcode('Myra Hess')).to eq("Q269848")
+      end
+    end
+    context 'an unambiguous name with the right dates' do
+      it 'returns a Wikidata id' do
+        expect(Wikidata.qcode('Myra Hess (1890-1965)')).to eq("Q269848")
       end
     end
   end
