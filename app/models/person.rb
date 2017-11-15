@@ -183,7 +183,7 @@ class Person < ActiveRecord::Base
   end
 
   def wikidata_url
-    "https://www.wikidata.org/wiki/#{wikidata_id}" if wikidata_id && !wikidata_id&.blank?
+    "https://www.wikidata.org/wiki/#{wikidata_id}" if wikidata_id && !wikidata_id&.blank? && !wikidata == "Q"
   end
 
   def default_wikipedia_url
