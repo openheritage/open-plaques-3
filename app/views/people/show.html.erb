@@ -80,7 +80,7 @@
     <div class="row">
       <p>
         <% @person.non_family_relationships.each_with_index do |relationship, index| %>
-          <%= relationship.role.name %> of <%= dated_person relationship.related_person %><% if index == @person.non_family_relationships.size - 2 %> and<% elsif index != @person.non_family_relationships.size - 1 %>,<% end %>
+          <%= relationship.role.name %> of <%= link_to relationship.related_person %> <%= relationship.year_range %><% if index == @person.non_family_relationships.size - 2 %> and<% elsif index != @person.non_family_relationships.size - 1 %>,<% end %>
         <% end %>
       </p>
     </div>
