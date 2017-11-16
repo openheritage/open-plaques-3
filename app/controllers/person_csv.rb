@@ -28,8 +28,10 @@ class PersonCsv < Julia::Builder
     person.father&.id
   end
   column :wikidata_id
-  column :default_wikipedia_url
-  column :default_dbpedia_uri
+  column 'en_wikipedia_url' do |person|
+    person.default_wikipedia_url
+  end
+  column :dbpedia_uri
   column :find_a_grave_url
   column :number_of_plaques do |person|
     person.plaques.size

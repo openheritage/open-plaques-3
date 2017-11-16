@@ -190,7 +190,7 @@ class Person < ActiveRecord::Base
     Wikidata.new(wikidata_id).en_wikipedia_url
   end
 
-  def default_dbpedia_uri
+  def dbpedia_uri
     default_wikipedia_url&.gsub("en.wikipedia.org/wiki","dbpedia.org/resource")&.gsub("https","http")
   end
 
@@ -491,7 +491,7 @@ class Person < ActiveRecord::Base
           :primary_role,
           :wikidata_id,
           :default_wikipedia_url,
-          :default_dbpedia_uri,
+          :dbpedia_uri,
           :find_a_grave_url
         ]
       }
