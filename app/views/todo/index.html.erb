@@ -3,32 +3,37 @@
 
 <div class="row">
   <p>Open Plaques are pioneering a process of collecting and enhancing geographical and historical data.</p>
-  <p>A record of a plaque could be initiated via a variety of sources: a mention in a book; a magazine article; a listing on a civic society's web page.
-     We then verify and clean the information by finding photos on the web, reading articles, and getting people to visit the site in person and give us proof by taking a photograph. At the same time, modern phone technology often includes a GPS meaning that we can get a closer geolocation.
-     All these activities add to and refine the data, so all of our information is in a state of flux, constantly improving.</p>
-  <p>Encouraged by thoughts of Amazon Mechanical Turk, we are exploring the concept of 'micro tasks' whereby anyone can assist in the improvement process. I can see a time when a mobile Open Plaques app whilst telling you facts about what you can see, also asks you to improve or verify what it is telling you. If these questions are minimal then the general public can be actively engaged not only in consuming, but also in producing heritage data.</p>
+  <p>A record of a plaque could be initiated via a variety of sources: a mention in a book; a magazine article; a listing on a civic society's web page. We then verify and clean the information by finding photos on the web, reading articles, and
+    getting people to visit the site in person and give us proof by taking a photograph. At the same time, modern phone technology often includes a GPS meaning that we can get a closer geolocation. All these activities add to and refine the data, so all
+    of our information is in a state of flux, constantly improving.</p>
+  <p>Encouraged by thoughts of Amazon Mechanical Turk, we are exploring the concept of 'micro tasks' whereby anyone can assist in the improvement process. I can see a time when a mobile Open Plaques app whilst telling you facts about what you can see,
+    also asks you to improve or verify what it is telling you. If these questions are minimal then the general public can be actively engaged not only in consuming, but also in producing heritage data.</p>
 </div>
 
 <h2>Micro tasks</h2>
 <div class="row">
-  <p>Why not attempt a <%= link_to "random micro task", todo_path('microtask') %> yourself?</p>
+  <p>Why not attempt a
+    <%= link_to "random micro task", todo_path('microtask') %>
+    yourself?</p>
 </div>
 
 <h2>All todos</h2>
 <div class="row">
   <ul>
-    <li><%= link_to(pluralize(@unassigned_photo_count, "geolocated photos") +  " aren't linked to a plaque", todo_path('unassigned_photo')) %></li>
-    <li><%= link_to(pluralize(@unassigned_ungeolocated_photo_count, "ungeolocated photos") +  " aren't linked to a plaque", todo_path('unassigned_ungeolocated_photo')) %></li>
+    <li><%= link_to(pluralize(@unassigned_photo_count, "geolocated photo") +  " aren't linked to a plaque", todo_path('unassigned_photo')) %></li>
+    <li><%= link_to(pluralize(@unassigned_ungeolocated_photo_count, "ungeolocated photo") + " aren't linked to a plaque", todo_path('unassigned_ungeolocated_photo')) %></li>
+    <li><%= link_to("#{pluralize(@no_connection_count, 'UK plaque')} have no connections", todo_path('no_connection')) %>
+      ==
+      <%= "#{@no_connection_percentage}%" %></li>
     <li><%= link_to(pluralize(@lists_to_datacapture, "list") +  " with plaques to be datacaptured", todo_path('lists_to_datacapture')) %></li>
-    <li><%= link_to(pluralize(@photographed_not_coloured_plaques_count, "plaque") +  " with photos but no colour identified", todo_path('colours_from_photos')) %></li>
-    <li><%= link_to(pluralize(@geo_no_location_plaques_count, "geolocated plaque") +  " with no location name assigned", todo_path('locations_from_geolocations')) %></li>
-    <li><%= link_to(pluralize(@location_no_area_plaques_count.to_i, "location") +  " with no area", todo_path('areas_from_locations')) %></li>
+    <li><%= link_to(pluralize(@photographed_not_coloured_plaques_count, "plaque") +  " with photos have no colour identified", todo_path('colours_from_photos')) %></li>
+    <li><%= link_to(pluralize(@geo_no_location_plaques_count, "geolocated plaque") +  " have no location name", todo_path('locations_from_geolocations')) %></li>
+    <li><%= link_to(pluralize(@location_no_area_plaques_count.to_i, "location") +  " have no area", todo_path('areas_from_locations')) %></li>
     <li><%= link_to(pluralize(@plaques_to_add_count, "plaque") +  " to add from external sources", todo_path('plaques_to_add')) %></li>
     <% # <li><%= link_to(pluralize(@detailed_address_no_geo_count, "plaque") +  " with detailed location but no latitude / longitude", todo_path('detailed_address_no_geo')) </li> %>
-    <li><%= link_to(pluralize(@no_connection_count, "plaque") +  " with no connections", todo_path('no_connection')) %></li>
-    <li><%= link_to(pluralize(@partial_inscription_photo_count, "plaque") +  " with photos needing full inscription" , todo_path('partial_inscription_photo')) %></li>
-    <li><%= link_to(pluralize(@partial_inscription_count, "plaque") +  " needing full inscription" , todo_path('partial_inscription')) %></li>
-    <li><%= link_to(pluralize(@no_roles_count, "people") +  " needing roles" , todo_path('no_roles')) %></li>
+    <li><%= link_to(pluralize(@partial_inscription_photo_count, "plaque") +  " with photos have a partial inscription" , todo_path('partial_inscription_photo')) %></li>
+    <li><%= link_to(pluralize(@partial_inscription_count, "plaque") +  " have partial inscription" , todo_path('partial_inscription')) %></li>
+    <li><%= link_to(pluralize(@no_roles_count, "people") +  " need a role" , todo_path('no_roles')) %></li>
     <li><%= link_to(pluralize(@needs_geolocating_count, "plaque") +  " need geolocating", todo_path('needs_geolocating')) %></li>
     <% # <li><%= link_to(pluralize(@no_description_count, "plaque") +  " have no description", todo_path('needs_description')) </li> %>
     <li><%= link_to(pluralize(@unphotographed_plaque_count, "plaques") +  " don't have a photo", todo_path('unphotographed')) %></li>
