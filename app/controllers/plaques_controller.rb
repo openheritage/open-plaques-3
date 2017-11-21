@@ -145,6 +145,9 @@ class PlaquesController < ApplicationController
     # early intervention to reject spam messages
     redirect_to plaques_url and return if params[:plaque][:inscription].include? "http"
     redirect_to plaques_url and return if params[:plaque][:inscription].include? "href"
+    redirect_to plaques_url and return if params[:plaque][:inscription].blank?
+    redirect_to plaques_url and return if params[:plaque][:inscription].start_with?("1") && params[:plaque][:inscription].to_s.size < 10
+    redirect_to plaques_url and return if params[:plaque][:inscription].to_s.size < 8
     redirect_to plaques_url and return if params[:area] == "New York" && params[:plaque][:country] != "13"
 
     country = Country.find(params[:plaque][:country].blank? ? 1 : params[:plaque][:country])
