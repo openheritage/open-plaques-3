@@ -44,6 +44,16 @@ class Person < ActiveRecord::Base
   scope :unconnected, -> { where(personal_connections_count: [nil,0]).order("id DESC") }
   scope :name_starts_with, lambda { |term| where(["lower(name) LIKE ?", term.downcase + "%"]) }
   scope :name_contains, lambda { |term| where(["lower(name) LIKE ?", "%" + term.downcase + "%"]) }
+  scope :with_counts, -> {
+    select <<~SQL
+      people.*,
+      (
+        select count(distinct plaque_id)
+          FROM personal_connections
+          WHERE personal_connections.person_id = people.id
+      ) as plaques_count
+    SQL
+  }
 
   DATE_REGEX = /c?[\d]{4}/
   DATE_RANGE_REGEX = /(?:\(#{DATE_REGEX}-#{DATE_REGEX}\)|#{DATE_REGEX}-#{DATE_REGEX})/

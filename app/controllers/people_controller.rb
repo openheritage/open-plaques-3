@@ -19,7 +19,7 @@ class PeopleController < ApplicationController
         end
       }
       format.csv {
-        @people = Person.all
+        @people = Person.with_counts.all
         send_data(
           "\uFEFF#{PersonCsv.new(@people).build}",
           type: 'text/csv',
@@ -45,7 +45,7 @@ class PeopleController < ApplicationController
 
   def show
     if params[:id] =~ /\A\d+\Z/
-      @person = Person.find(params[:id])
+      @person = Person.with_counts.find(params[:id])
     else
       redirect_to(controller: :people, action: "index", filter: params[:id]) and return
     end

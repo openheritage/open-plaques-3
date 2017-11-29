@@ -6,6 +6,7 @@ class PersonCsv < Julia::Builder
   column :type
   column :born_in
   column :died_in
+  column :age
   column :sex
   column 'roles' do |person|
     roles = []
@@ -15,6 +16,7 @@ class PersonCsv < Julia::Builder
   column :primary_role do |person|
     person.primary_role&.role&.name
   end
+  column :clergy?
   column 'mother' do |person|
     person.mother&.full_name
   end
@@ -33,7 +35,5 @@ class PersonCsv < Julia::Builder
   end
   column :dbpedia_uri
   column :find_a_grave_url
-  column :number_of_plaques do |person|
-    person.plaques.size
-  end
+  column :plaques_count
 end
