@@ -150,24 +150,18 @@ class Photo < ActiveRecord::Base
     end
     if geograph?
       query_url = "http://api.geograph.org.uk/api/oembed?&&url=#{self.url}&output=json"
-      begin
-        ch = Curl::Easy.perform(query_url) do |curl|
-          curl.headers["User-Agent"] = "openplaques"
-          curl.verbose = true
-        end
-        parsed_json = JSON.parse(ch.body_str)
-        self.photographer = parsed_json['author_name']
-        self.photographer_url = parsed_json['author_url']
-        self.thumbnail = parsed_json['thumbnail_url']
-        self.file_url = parsed_json['url']
-        self.licence = Licence.find_by_url(parsed_json['license_url'])
-        self.subject = parsed_json['title'][0,255] if parsed_json['title']
-        self.description = parsed_json['description'][0,255] if parsed_json['description']
-        self.latitude = parsed_json['geo']['lat'] if parsed_json['geo']
-        self.longitude = parsed_json['geo']['long'] if parsed_json['geo']
-      rescue
-        puts 'Geograph Curl call failed'
-      end
+      response = open(query_url)
+      resp = response.read
+      parsed_json = JSON.parse(resp)
+      self.photographer = parsed_json['author_name']
+      self.photographer_url = parsed_json['author_url'].gsub("http:","https:")
+      self.thumbnail = parsed_json['thumbnail_url'].gsub("http:","https:")
+      self.file_url = parsed_json['url'].gsub("http:","https:")
+      self.licence = Licence.find_by_url(parsed_json['license_url'])
+      self.subject = parsed_json['title'][0,255] if parsed_json['title']
+      self.description = parsed_json['description'][0,255] if parsed_json['description']
+      self.latitude = parsed_json['geo']['lat'] if parsed_json['geo']
+      self.longitude = parsed_json['geo']['long'] if parsed_json['geo']
     end
     if flickr?
       flickr_photo_id = Photo.flickr_photo_id(url)

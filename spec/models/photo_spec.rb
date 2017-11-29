@@ -121,6 +121,17 @@ describe Photo, type: :model do
     end
   end
 
+  describe 'setting Geograph data' do
+    context 'of a Geograph photo' do
+      before do
+        @photo = Photo.new(url: 'https://www.geograph.org.uk/photo/5561265')
+       @photo.wikimedia_data
+      end
+      it 'has a file url' do
+        expect(@photo.file_url).to eq('https://s0.geograph.org.uk/geophotos/05/56/12/5561265_bc74db7d.jpg')
+      end
+    end
+  end
 #  describe 'setting Flickr data' do
 #    context 'of a Flickr photo' do
 #      before do

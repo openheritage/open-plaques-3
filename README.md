@@ -14,9 +14,6 @@ This project requires:
 
 ## Installation
 
-* Windows may be slightly more difficult
-* gem install curb --version 0.8.6 --platform=ruby -- -- --with-curl-lib="C:/curl-7.24.0-devel-mingw32/bin" --with-curl-include="C:/curl-7.24.0-devel-mingw32/include"
-
 * Copy `example.env` to `.env` – this file is used for configuring environment variables.
 * Add a random value for `SECRET_KEY_BASE` in the `.env` file. You can generate this by running
 `bundle exec rake secret` on the command line.
