@@ -1,6 +1,6 @@
 class OrganisationPlaquesController < ApplicationController
 
-  before_filter :find, only: [:show]
+  before_action :find, only: [:show]
 
   def show
     zoom = params[:zoom].to_i

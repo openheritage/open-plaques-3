@@ -5,7 +5,7 @@
 # * +started_at+ - when the person started doing what they did at the place
 # * +ended_at+ - when the person stopped doing what they did at the place
 # * +plaque_connections_count+ - Cached count of plaques
-class PersonalConnection < ActiveRecord::Base
+class PersonalConnection < ApplicationRecord
 
   belongs_to :person, counter_cache: true
   belongs_to :plaque, counter_cache: true

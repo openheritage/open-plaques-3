@@ -1,6 +1,6 @@
 class AreaPlaquesController < ApplicationController
 
-  before_filter :find, only: [:show]
+  before_action :find, only: [:show]
   respond_to :html, :json, :csv
 
   def show

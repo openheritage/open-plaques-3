@@ -18,7 +18,7 @@
 # * +latitude+ - mean location of plaques
 # * +longitude+ - mean location of plaques
 # * +plaques_count+ - cached count of plaques
-class Area < ActiveRecord::Base
+class Area < ApplicationRecord
   belongs_to :country, counter_cache: true
   has_many :plaques
 

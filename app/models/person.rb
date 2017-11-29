@@ -20,7 +20,7 @@
 # * +aka+ - array of names that person is also known as
 # * +find_a_grave_id+ - link to Find A Grave web site
 # * +ancestry_id+ - link to Ancestry.com web site
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
 
   has_many :personal_roles
   has_many :personal_connections
@@ -453,11 +453,11 @@ class Person < ActiveRecord::Base
   end
 
   def find_a_grave_url
-    "http://www.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=#{self.find_a_grave_id}" if !find_a_grave_id&.blank?
+    "http://www.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=#{self.find_a_grave_id}" if find_a_grave_id && !find_a_grave_id&.blank?
   end
 
   def ancestry_url
-    "http://www.ancestry.co.uk/genealogy/records/#{self.ancestry_id}" if !ancestry_id&.blank?
+    "http://www.ancestry.co.uk/genealogy/records/#{self.ancestry_id}" if ancestry_id && !ancestry_id&.blank?
   end
 
   def uri
@@ -481,12 +481,14 @@ class Person < ActiveRecord::Base
           personal_roles: {
             only: [],
             include: {
-              role: {only: :name},
+              role: {
+                only: :name,
+                methods: [:uri]
+              },
               related_person: {
                 only: [], methods: [:uri, :full_name]
               }
-            },
-            methods: [:uri]
+            }
           }
         },
         methods: [

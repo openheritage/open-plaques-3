@@ -7,7 +7,7 @@
 # * +dbpedia_uri+ - uri to link to DBPedia record
 # * +common+ - whether this is a commonly used colour
 # * +slug+ - textual identifier, usually equivalent to its name in lower case, with spaces replaced by underscores. Used in URLs.
-class Colour < ActiveRecord::Base
+class Colour < ApplicationRecord
 
   has_many :plaques
 

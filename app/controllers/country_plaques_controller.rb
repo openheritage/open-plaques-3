@@ -1,6 +1,6 @@
 class CountryPlaquesController < ApplicationController
 
-  before_filter :find, only: [:show]
+  before_action :find, only: [:show]
 
   def show
     @display = 'all'

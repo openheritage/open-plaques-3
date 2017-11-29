@@ -1,8 +1,8 @@
 class PeopleController < ApplicationController
 
-  before_filter :authenticate_admin!, only: :destroy
-  before_filter :authenticate_user!, except: [:autocomplete, :index, :show, :update]
-  before_filter :find, only: [:edit, :update, :destroy]
+  before_action :authenticate_admin!, only: :destroy
+  before_action :authenticate_user!, except: [:autocomplete, :index, :show, :update]
+  before_action :find, only: [:edit, :update, :destroy]
 
   def index
     respond_to do |format|

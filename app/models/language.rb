@@ -3,7 +3,7 @@
 # * +name+ - the language's common name
 # * +plaques_count+ - cached count of plaques
 # * +alpha2+ - 2-letter code as defined by the ISO standard. Used in URLs.
-class Language < ActiveRecord::Base
+class Language < ApplicationRecord
 
   has_many :plaques
   has_many :organisations

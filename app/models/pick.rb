@@ -9,7 +9,7 @@
 # * +created_at+
 # * +updated_at+
 # * +proposer+ - person who proposed it
-class Pick < ActiveRecord::Base
+class Pick < ApplicationRecord
 
   belongs_to :plaque
 
@@ -43,7 +43,7 @@ class Pick < ActiveRecord::Base
   end
 
   def title
-    "Pick ##{self.id.to_s} #{self.plaque.title}" 
+    "Pick ##{self.id.to_s} #{self.plaque.title}"
   end
 
   def longitude

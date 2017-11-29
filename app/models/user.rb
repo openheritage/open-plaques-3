@@ -20,9 +20,9 @@
 # * +is_verified+ - [used by Devise]
 # * +opted_in+ - [used by Devise]
 # * +reset_password_sent_at+ - [used by Devise]
-class User < ActiveRecord::Base
+class User < ApplicationRecord
 
-  belongs_to :todo_item
+  belongs_to :todo_item, optional: true
 
   devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable
   # :registerable, :token_authenticatable, :confirmable, :lockable and :timeoutable

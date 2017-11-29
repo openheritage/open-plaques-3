@@ -3,7 +3,7 @@
 # === Attributes
 # * +created_at+
 # * +updated_at+
-class Sponsorship < ActiveRecord::Base
+class Sponsorship < ApplicationRecord
 
   belongs_to :plaque
   belongs_to :organisation, counter_cache: true

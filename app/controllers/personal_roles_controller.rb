@@ -1,8 +1,8 @@
 class PersonalRolesController < ApplicationController
 
-  before_filter :authenticate_admin!, only: :destroy
-  before_filter :authenticate_user!
-  before_filter :find, only: [:destroy, :update, :edit]
+  before_action :authenticate_admin!, only: :destroy
+  before_action :authenticate_user!
+  before_action :find, only: [:destroy, :update, :edit]
 
   def create
     @personal_role = PersonalRole.new
