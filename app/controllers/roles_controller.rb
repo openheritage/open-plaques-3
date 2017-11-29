@@ -1,8 +1,8 @@
 class RolesController < ApplicationController
 
-  before_filter :authenticate_admin!, only: :destroy
-  before_filter :authenticate_user!, except: [:index, :show]
-  before_filter :find, only: [:edit, :update]
+  before_action :authenticate_admin!, only: :destroy
+  before_action :authenticate_user!, except: [:index, :show]
+  before_action :find, only: [:edit, :update]
 
   def index
     respond_to do |format|

@@ -4,7 +4,7 @@
 # * +created_at+
 # * +updated_at+
 # * +personal_connections_count+ - cached count of people connected to this verb
-class Verb < ActiveRecord::Base
+class Verb < ApplicationRecord
 
   has_many :personal_connections
   has_many :people, through: :personal_connections

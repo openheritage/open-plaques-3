@@ -1,9 +1,9 @@
 class AreasController < ApplicationController
 
-  before_filter :authenticate_admin!, only: :destroy
-  before_filter :authenticate_user!, except: [:autocomplete, :index, :show, :update]
-  before_filter :find_country, only: [:index, :new, :show, :create, :edit, :update, :destroy]
-  before_filter :find, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_admin!, only: :destroy
+  before_action :authenticate_user!, except: [:autocomplete, :index, :show, :update]
+  before_action :find_country, only: [:index, :new, :show, :create, :edit, :update, :destroy]
+  before_action :find, only: [:show, :edit, :update, :destroy]
 
   def index
     @areas = @country.areas.all

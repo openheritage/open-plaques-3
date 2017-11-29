@@ -1,9 +1,9 @@
 class OrganisationsController < ApplicationController
 
-  before_filter :authenticate_admin!, only: :destroy
-  before_filter :authenticate_user!, except: [:autocomplete, :index, :show]
-  before_filter :find, only: [:edit, :update]
-  before_filter :find_languages, only: [:edit, :create]
+  before_action :authenticate_admin!, only: :destroy
+  before_action :authenticate_user!, except: [:autocomplete, :index, :show]
+  before_action :find, only: [:edit, :update]
+  before_action :find_languages, only: [:edit, :create]
 
   def index
     @organisations = Organisation.all.select(:name, :slug, :sponsorships_count, :language_id).order("name ASC")

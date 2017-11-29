@@ -1,6 +1,6 @@
 class PicksController < ApplicationController
 
-  before_filter :find, only: [:edit, :update, :show, :destroy]
+  before_action :find, only: [:edit, :update, :show, :destroy]
 
   def index
     @picks = Pick.all

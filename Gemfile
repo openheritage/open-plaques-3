@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.3.4'
 
-gem 'rails', '4.2.0'
+gem 'rails', '5.1.4'
 gem 'pg'
 
 gem 'bcrypt', '~> 3.1.7'
@@ -36,12 +36,14 @@ group :development do
   gem 'spring'
   gem 'bullet'
   gem 'meta_request'
+  gem 'listen'
 end
 
 group :test do
   gem 'rspec-rails',        group: :development
   gem 'factory_bot_rails'
   gem 'database_cleaner'
+  gem 'rails-controller-testing'
 end
 
 gem 'tzinfo-data'

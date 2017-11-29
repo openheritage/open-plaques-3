@@ -5,7 +5,7 @@
 # * +url+ - a permanent URL at which the licence.
 # * +allows_commercial_reuse+ - commercial usage rights
 # * +photos_count+ - cached count of photos
-class Licence < ActiveRecord::Base
+class Licence < ApplicationRecord
 
   has_many :photos
 

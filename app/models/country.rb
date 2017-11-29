@@ -8,7 +8,7 @@
 # * +created_at+
 # * +updated_at+
 # * +description+ - commentary on how this region commemorates subjects
-class Country < ActiveRecord::Base
+class Country < ApplicationRecord
 
   has_many :areas
   has_many :plaques, through: :areas

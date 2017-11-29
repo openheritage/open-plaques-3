@@ -8,7 +8,7 @@
 # * +plaques_count+
 # * +latitude+
 # * +longitude+
-class Series < ActiveRecord::Base
+class Series < ApplicationRecord
 
   has_many :plaques
 

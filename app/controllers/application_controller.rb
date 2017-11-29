@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
-  around_filter :global_request_logging
+  around_action :global_request_logging
   before_action :set_locale, :set_global_meta_tags
 
   def authenticate_admin!

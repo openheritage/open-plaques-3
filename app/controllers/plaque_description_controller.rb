@@ -1,6 +1,6 @@
 class PlaqueDescriptionController < PlaqueDetailsController
 
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
   layout 'plaque_edit', only: :edit
 
   def edit

@@ -4,7 +4,7 @@
 # * +slug+ - An identifier for the organisation, usually equivalent to its name in lower case, with spaces replaced by underscores. Used in URLs.
 # * +strapline+ - A sub heading
 # * +body+ - The content
-class Page < ActiveRecord::Base
+class Page < ApplicationRecord
 
   before_validation :make_slug_not_war
   validates_presence_of :name, :slug, :body

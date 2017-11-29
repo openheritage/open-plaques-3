@@ -16,7 +16,7 @@ describe OrganisationsController do
   describe 'GET #show' do
     let (:organisation) { create :organisation }
     it 'should render the page' do
-      get :show, id: organisation.name
+      get :show, params: { id: organisation.name }
       expect(response).to be_success
     end
   end

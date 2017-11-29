@@ -18,11 +18,11 @@
 # * +thumbnail+ - A link to a thumbnail image if there is one
 require 'wikimedia/commoner'
 
-class Photo < ActiveRecord::Base
+class Photo < ApplicationRecord
 
-  belongs_to :plaque, counter_cache: true
-  belongs_to :person
-  belongs_to :licence, counter_cache: true
+  belongs_to :plaque, counter_cache: true, optional: true
+  belongs_to :person, optional: true
+  belongs_to :licence, counter_cache: true, optional: true
 
   attr_accessor :photo_url, :accept_cc_by_licence
 

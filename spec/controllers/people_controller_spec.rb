@@ -11,12 +11,12 @@ describe PeopleController do
   describe 'GET #show' do
     it 'should render the page' do
       @jez = Person.create(name: 'Jez Nicholson')
-      get :show, id: @jez.id, format: :html
+      get :show, params: { id: @jez.id }, format: :html
       expect(response).to render_template(:show)
     end
     it 'should render the page' do
       @jez = Person.create(name: 'Jez Nicholson')
-      get :show, id: @jez.id, format: :json
+      get :show, params: { id: @jez.id }, format: :json
       expect(response.content_type).to eq 'application/json'
     end
   end

@@ -11,11 +11,11 @@
 # * +sponsorships_count+ - equivalent of number of plaques
 # * +latitude+ - mean location of plaques
 # * +longitude+ - mean location of plaques
-class Organisation < ActiveRecord::Base
+class Organisation < ApplicationRecord
 
   has_many :sponsorships
   has_many :plaques, through: :sponsorships
-  belongs_to :language
+  belongs_to :language, optional: true
 
   before_validation :make_slug_not_war, :find_centre
   validates_presence_of :name, :slug

@@ -12,7 +12,7 @@
 # * +user_id+ - [not used]
 # * +created_at+
 # * +updated_at+
-class TodoItem < ActiveRecord::Base
+class TodoItem < ApplicationRecord
 
   validates_presence_of :action, :description
   scope :to_add, -> { where(action: 'add').where.not(url: nil) }

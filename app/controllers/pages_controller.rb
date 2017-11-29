@@ -1,8 +1,8 @@
 class PagesController < ApplicationController
 
-  before_filter :authenticate_admin!, only: :destroy
-  before_filter :authenticate_user!, except: [:show]
-  before_filter :find, only: [:show, :edit, :update]
+  before_action :authenticate_admin!, only: :destroy
+  before_action :authenticate_user!, except: [:show]
+  before_action :find, only: [:show, :edit, :update]
   respond_to :html, :json
 
   def about

@@ -13,7 +13,7 @@
 # * +prefix+ - word(s) to display as part of a title in a name
 # * +suffix+ - word(s) to display as part of letters after a name
 # * +description+
-class Role < ActiveRecord::Base
+class Role < ApplicationRecord
 
   has_many :personal_roles, -> { order('started_at') }
   has_many :people, -> { order("name") }, through: :personal_roles

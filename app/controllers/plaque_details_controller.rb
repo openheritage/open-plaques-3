@@ -1,6 +1,6 @@
 class PlaqueDetailsController < ApplicationController
 
-  before_filter :find, only: [:edit,:show]
+  before_action :find, only: [:edit,:show]
 
   protected
 

@@ -23,12 +23,12 @@
 # * +inscription_in_english+ - Manual translation
 # * +series_ref+ - if part of a series does it have a reference number/id?
 # * +address+ - the physical street address
-class Plaque < ActiveRecord::Base
+class Plaque < ApplicationRecord
 
-  belongs_to :area, counter_cache: true
-  belongs_to :colour, counter_cache: true
-  belongs_to :language, counter_cache: true
-  belongs_to :series, counter_cache: true
+  belongs_to :area, counter_cache: true, optional: true
+  belongs_to :colour, counter_cache: true, optional: true
+  belongs_to :language, counter_cache: true, optional: true
+  belongs_to :series, counter_cache: true, optional: true
   has_many :personal_connections
   has_many :photos, -> { where(of_a_plaque: true).order('shot ASC')}, inverse_of: :plaque
   has_many :sponsorships
@@ -177,7 +177,7 @@ class Plaque < ActiveRecord::Base
           methods: [:uri]
         }
       },
-      methods: [:uri, :title, :address, :subjects, :colour_name, :machine_tag, :geolocated?, :photographed?, :photo_url, :thumbnail_url]
+      methods: [:uri, :title, :address, :subjects, :colour_name, :machine_tag, :geolocated?, :photographed?, :thumbnail_url]
     } if !options || !options[:only]
     super options
   end
