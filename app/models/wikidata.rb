@@ -21,7 +21,7 @@ class OpenStruct
   end
 
   def disambiguation?
-    q.descriptions&.en&.value&.to_s&.include? "disambiguation page"
+    q&.descriptions&.en&.value&.to_s&.include? "disambiguation page"
   end
 end
 
@@ -36,15 +36,17 @@ class Wikidata
   end
 
   def qcode
+    return if !@wikidata || @wikidata.not_found?
     @wikidata.qcode
   end
 
   def disambiguation?
+    return if !@wikidata || @wikidata.not_found?
     @wikidata.disambiguation?
   end
 
   def not_found?
-    @wikidata.not_found?
+    @wikidata&.not_found?
   end
 
   def born_in

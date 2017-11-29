@@ -82,4 +82,37 @@ describe Wikidata do
       end
     end
   end
+
+  describe '#disambiguation?' do
+    context 'a Wikidata id' do
+      let (:wikidata) { Wikidata.new("Q269848") }
+      it 'is not ambiguous' do
+        expect(wikidata.disambiguation?).to be_falsy
+      end
+    end
+    context 'a disambiguation page Wikidata id' do
+      let (:wikidata) { Wikidata.new("Q255563") }
+      it 'is ambiguous' do
+        expect(wikidata.disambiguation?).to be_truthy
+      end
+    end
+    context 'nil' do
+      let (:wikidata) { Wikidata.new(nil) }
+      it 'is not ambiguous' do
+        expect(wikidata.disambiguation?).to be_falsy
+      end
+    end
+    context 'a non Wikidata id' do
+      let (:wikidata) { Wikidata.new("boop") }
+      it 'is not ambiguous' do
+        expect(wikidata.disambiguation?).to be_falsy
+      end
+    end
+    context 'an unknown Wikidata id' do
+      let (:wikidata) { Wikidata.new("Q2341414123421") }
+      it 'is not ambiguous' do
+        expect(wikidata.disambiguation?).to be_falsy
+      end
+    end
+  end
 end
