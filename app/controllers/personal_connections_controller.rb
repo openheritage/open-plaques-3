@@ -8,7 +8,7 @@ class PersonalConnectionsController < ApplicationController
 
   def destroy
     @personal_connection.destroy
-    redirect_to :back
+    redirect_back(fallback_location: root_path)
   end
 
   def new
@@ -24,7 +24,7 @@ class PersonalConnectionsController < ApplicationController
     @personal_connection.person_id = params[:personal_connection][:person_id]
     @personal_connection.verb_id = params[:personal_connection][:verb_id]
     if @personal_connection.save
-      redirect_to :back
+      redirect_back(fallback_location: root_path)
     else
       # can we just redirect to new?
       list_people_and_verbs

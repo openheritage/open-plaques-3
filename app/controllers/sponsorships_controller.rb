@@ -20,7 +20,7 @@ class SponsorshipsController < ApplicationController
     @plaque = Plaque.find(params[:sponsorship][:plaque_id])
     @sponsorship = @plaque.sponsorships.new(sponsorship_params)
     @sponsorship.save
-    redirect_to :back
+    redirect_back(fallback_location: root_path)
   end
 
   def index

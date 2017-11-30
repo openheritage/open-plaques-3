@@ -33,7 +33,7 @@ class PhotosController < ApplicationController
     respond_to do |format|
       if @photo.update_attributes(photo_params)
         flash[:notice] = 'Photo was successfully updated.'
-        format.html { redirect_to :back }
+        format.html { redirect_back(fallback_location: root_path) }
       else
         flash[:notice] = @photo.errors
         format.html { render "edit" }
@@ -58,7 +58,7 @@ class PhotosController < ApplicationController
     else
       flash[:notice] = @photo.errors.full_messages.to_sentence
     end
-    redirect_to :back
+    redirect_back(fallback_location: root_path)
   end
 
   def edit
