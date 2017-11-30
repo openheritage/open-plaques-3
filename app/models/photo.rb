@@ -33,6 +33,7 @@ class Photo < ApplicationRecord
   before_save :https_flickr_urls
   before_save :merge_known_photographer_names
   after_save :geolocate_plaque
+  after_save :opposite_clone
   scope :reverse_detail_order, -> { order('shot DESC') }
   scope :detail_order, -> { order('shot ASC') }
   scope :unassigned, -> { where(plaque_id: nil, of_a_plaque: true) }
@@ -289,5 +290,15 @@ class Photo < ApplicationRecord
       self.photographer = "Nick Harrison" if self.photographer == "nick.harrisonfli"
       self.photographer = "Elliott Brown" if self.photographer == "ell brown"
       self.photographer = "Jez Nicholson" if self.photographer == "J'Roo"
+    end
+
+    def opposite_clone
+      if self.clone_id && self.clone_id > 0
+        opposite = Photo.find(self.clone_id)
+        if opposite.clone_id != self.id
+          opposite.clone_id = self.id
+          opposite.save
+        end
+      end
     end
 end
