@@ -32,3 +32,6 @@ Cemetery_Salem.csv
 /public/assets
 /node_modules
 yarn.lock
+/public/packs
+/public/packs-test
+/node_modules

@@ -3,6 +3,8 @@ ruby '2.3.4'
 
 gem 'rails', '5.1.4'
 gem 'pg'
+gem 'webpacker'
+gem 'uglifier'
 
 gem 'bcrypt', '~> 3.1.7'
 
