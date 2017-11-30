@@ -102,20 +102,21 @@ class PhotosController < ApplicationController
 
   	def photo_params
       params.require(:photo).permit(
-        :of_a_plaque,
-        :subject,
+        :clone_id,
         :description,
-        :url,
         :file_url,
-        :thumbnail,
+        :latitude,
+        :licence_id,
+        :longitude,
+        :of_a_plaque,
+        :person_id,
         :photographer,
         :photographer_url,
-        :licence_id,
         :plaque_id,
-        :person_id,
         :shot,
-        :latitude,
-        :longitude,
-        :streetview_url)
+        :streetview_url,
+        :subject,
+        :thumbnail,
+        :url)
     end
 end
