@@ -291,7 +291,7 @@ en-GB:
       display_name: with titles and letters (from roles) this is displayed as
       introduction: Introduction
       wikipedia_url: Wikipedia url
-      wikipedia_comment: overrides the default generated one if it's incorrect. Set it to blank if there is no Wikipedia page.
+      wikipedia_comment: overrides the default generated one if it's incorrect. Set it to 'Q' if there is no Wikipedia page.
       conferring_the_letters: conferring the letters
       conferring_the_title: conferring the title
       add_a_role: add a role

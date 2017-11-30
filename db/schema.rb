@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171112162914) do
+ActiveRecord::Schema.define(version: 20171130103522) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -70,16 +70,6 @@ ActiveRecord::Schema.define(version: 20171112162914) do
     t.string "abbreviation", limit: 255
   end
 
-  create_table "locations", id: :serial, force: :cascade do |t|
-    t.string "name", limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer "personal_connections_count"
-    t.integer "plaques_count"
-    t.integer "area_id"
-    t.integer "country_id"
-  end
-
   create_table "organisations", id: :serial, force: :cascade do |t|
     t.string "name", limit: 255
     t.string "website", limit: 255
@@ -116,9 +106,6 @@ ActiveRecord::Schema.define(version: 20171112162914) do
     t.string "index", limit: 255
     t.boolean "born_on_is_circa"
     t.boolean "died_on_is_circa"
-    t.string "wikipedia_url", limit: 255
-    t.string "dbpedia_uri", limit: 255
-    t.string "wikipedia_paras", limit: 255
     t.string "surname_starts_with", limit: 255
     t.text "introduction"
     t.string "gender", limit: 255, default: "u"

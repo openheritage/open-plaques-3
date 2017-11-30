@@ -31,7 +31,7 @@ class PersonCsv < Julia::Builder
   end
   column :wikidata_id
   column 'en_wikipedia_url' do |person|
-    person.default_wikipedia_url
+    person.wikipedia_url
   end
   column :dbpedia_uri
   column :find_a_grave_url

@@ -41,7 +41,7 @@ class PlaqueCsv < Julia::Builder
   column 'lead_subject_primary_role' do |plaque|
     plaque.people.first && plaque.people.first.primary_role ? plaque.people.first.primary_role&.role.name : ''
   end
-  column 'lead_subject_wikipedia' do |plaque| plaque.people.first ? plaque.people.first.default_wikipedia_url : '' end
+  column 'lead_subject_wikipedia' do |plaque| plaque.people.first ? plaque.people.first.wikipedia_url : '' end
   column 'lead_subject_dbpedia' do |plaque| plaque.people.first ? plaque.people.first.dbpedia_uri : '' end
   column 'lead_subject_image' do |plaque|
     plaque.people.first ? plaque.people.first.main_photo ? plaque.people.first.main_photo.file_url : '' : ''

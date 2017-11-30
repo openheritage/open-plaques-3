@@ -635,18 +635,34 @@ describe Person, type: :model do
     end
   end
 
-  describe '#default_wikipedia_url' do
+  describe '#wikipedia_url' do
     context 'with no wikidata id' do
       let(:person) { build :person }
       it 'has no Wikidata' do
-        expect(person.default_wikipedia_url).to eq(nil)
+        expect(person.wikipedia_url).to eq(nil)
       end
     end
     context 'with a wikidata id' do
       let(:person) { build :person, wikidata_id: "Q269848" }
       it 'has no Wikidata' do
-        expect(person.default_wikipedia_url).to eq("https://en.wikipedia.org/wiki/Myra_Hess")
+        expect(person.wikipedia_url).to eq("https://en.wikipedia.org/wiki/Myra_Hess")
       end
     end
   end
+
+  describe '#dbpedia_abstract' do
+    context 'with no wikidata id' do
+      let(:person) { build :person }
+      it 'has no Wikidata' do
+        expect(person.dbpedia_abstract).to eq(nil)
+      end
+    end
+    context 'with a wikidata id' do
+      let(:person) { build :person, wikidata_id: "Q2063684" }
+      it 'has no Wikidata' do
+        expect(person.dbpedia_abstract).to include("Matilda Alice Powles")
+      end
+    end
+  end
+
 end

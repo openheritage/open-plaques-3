@@ -196,12 +196,24 @@ class Person < ApplicationRecord
     "https://www.wikidata.org/wiki/#{wikidata_id}" if wikidata_id && !wikidata_id&.blank? && wikidata_id != "Q"
   end
 
-  def default_wikipedia_url
+  def wikipedia_url
     Wikidata.new(wikidata_id).en_wikipedia_url
   end
 
   def dbpedia_uri
-    default_wikipedia_url&.gsub("en.wikipedia.org/wiki","dbpedia.org/resource")&.gsub("https","http")
+    wikipedia_url&.gsub("en.wikipedia.org/wiki","dbpedia.org/resource")&.gsub("https","http")
+  end
+
+  def dbpedia_abstract
+    return nil if dbpedia_uri.blank?
+    api = "#{dbpedia_uri.gsub("resource","data")}.json"
+    begin
+      response = open(api)
+      resp = response.read
+      parsed_json = JSON.parse(resp)
+      parsed_json["#{dbpedia_uri}"]['http://dbpedia.org/ontology/abstract'].find {|abstract| abstract['lang']=='en'}['value']
+    rescue
+    end
   end
 
   def name_and_dates
@@ -502,7 +514,7 @@ class Person < ApplicationRecord
           :sex,
           :primary_role,
           :wikidata_id,
-          :default_wikipedia_url,
+          :wikipedia_url,
           :dbpedia_uri,
           :find_a_grave_url
         ]
