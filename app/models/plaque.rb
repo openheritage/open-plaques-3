@@ -251,7 +251,7 @@ class Plaque < ApplicationRecord
   def other_photos
     others = []
     clones = []
-    clones << main_photo.clone_id if main_photo.clone_id
+    clones << main_photo.clone_id if main_photo&.clone_id
     photos.each do |p|
       if !clones.include?(p.id)
         clones << p.clone_id if p.clone_id
