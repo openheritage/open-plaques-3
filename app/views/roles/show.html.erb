@@ -13,11 +13,14 @@
 <% content_for(:page_subhead) do %>
   <% if @role.used_as_a_prefix? || @role.used_as_a_suffix? %>
     <p>e.g. "<% if @role.used_as_a_prefix? %><strong><%= @role.prefix %> </strong><% end %>John Smith<% if @role.used_as_a_suffix? %><strong> <%= @role.letters %></strong><% end %>"</p><% end %>
-  <% unless @role.wikipedia_stub.blank? %>
-    <%= icon('external-link') %><%= link_to('Wikipedia', @role.wikipedia_url, target: "_blank") %>
-  <% end %>
 <% end %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_role_path(@role)} if @role.id %>
+
+<p><%= @role.description %>
+  - <%= link_to(icon('external-link') + "DbPedia", @role.dbpedia_uri, target: '_blank') unless @role.dbpedia_uri.blank? %>
+</p>
+<%= link_to(icon('external-link') + "Wikidata", @role.wikidata_url, target: '_blank') unless @role.wikidata_url.blank? %>
+<%= link_to(icon('external-link') + "Wikipedia", @role.wikipedia_url, target: '_blank') unless @role.wikipedia_url.blank? %>
 
 <% if @role.personal_roles.count < 3 %>
   <div class="row">
