@@ -75,15 +75,16 @@ class RolesController < ApplicationController
 
     def role_params
       params.require(:role).permit(
-        :name,
         :abbreviation,
-        :prefix,
-        :suffix,
-        :priority,
-        :slug,
-        :wikipedia_stub,
-        :role_type,
         :commit,
-        :id)
+        :description,
+        :id,
+        :name,
+        :prefix,
+        :priority,
+        :role_type,
+        :suffix,
+        :slug,
+        :wikidata_id)
     end
 end
