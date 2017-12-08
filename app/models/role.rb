@@ -1,25 +1,28 @@
 # A role ascribed to a subject.
 # These can be professions (eg 'doctor'), occupations ('artist'), or activities ('inventor').
 # === Attributes
-# * +name+ - what the role is called
-# * +created_at+
-# * +updated_at+
-# * +personal_roles_count+ - number of people with this role
-# * +index+ - letter indexed on
-# * +slug+ -
-# * +wikipedia_stub+ - url of a relevant Wikipedia page
-# * +role_type+ - The classification of the role (see self.types for choice)
 # * +abbreviation+ - acronym etc. when a role is commonly abbreviated, especially awards, e.g. Victoria Cross == VC
-# * +prefix+ - word(s) to display as part of a title in a name
-# * +suffix+ - word(s) to display as part of letters after a name
+# * +created_at+
 # * +description+
+# * +index+ - letter indexed on
+# * +name+ - what the role is called
+# * +personal_roles_count+ - number of people with this role
+# * +prefix+ - word(s) to display as part of a title in a name
+# * +priority+ -
+# * +role_type+ - The classification of the role (see self.types for choice)
+# * +slug+ -
+# * +suffix+ - word(s) to display as part of letters after a name
+# * +updated_at+
+# * +wikidata_id+ - calculated Qnnnnn code, set to 'Q' if not found
 class Role < ApplicationRecord
 
   has_many :personal_roles, -> { order('started_at') }
   has_many :people, -> { order("name") }, through: :personal_roles
 
   before_validation :make_slug_not_war
-  before_save :update_index, :filter_name
+  before_save :update_index
+  before_save :filter_name
+  before_save :fill_wikidata_id
   validates_presence_of :name, :slug
   validates_uniqueness_of :name, :slug
   scope :by_popularity, -> { order("personal_roles_count DESC nulls last") }
@@ -84,17 +87,38 @@ class Role < ApplicationRecord
 	  return "?"
   end
 
-  # work it out from the name unless override value stored in the db
-  def wikipedia_stub
-    self[:wikipedia_stub] ? self[:wikipedia_stub] : self.name.capitalize.strip.tr(' ','_')
+  def fill_wikidata_id
+    unless wikidata_id&.match /Q\d*$/
+      t = name.tr("’ß#ÀÁÂÃÄÅàáâãäåĀāĂăĄąÇçĆćĈĉĊċČčÐðĎďĐđÈÉÊËèéêëĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħÌÍÎÏìíîïĨĩĪīĬĭĮįİıĴĵĶķĸĹĺĻļĽľĿŀŁłÑñŃńŅņŇňŉŊŋÒÓÔÕÖØòóôõöøŌōŎŏŐőŔŕŖŗŘřŚśŜŝŞşŠšſŢţŤťŦŧÙÚÛÜùúûüŨũŪūŬŭŮůŰűŲųŴŵÝýÿŶŷŸŹźŻżŽž",
+"'s AAAAAAaaaaaaAaAaAaCcCcCcCcCcDdDdDdEEEEeeeeEeEeEeEeEeGgGgGgGgHhHhIIIIiiiiIiIiIiIiIiJjKkkLlLlLlLlLlNnNnNnNnnNnOOOOOOooooooOoOoOoRrRrRrSsSsSsSssTtTtTtUUUUuuuuUuUuUuUuUuUuWwYyyYyYZzZzZz")
+      self.wikidata_id = Wikidata.qcode(t)
+      dbpedia_abstract
+    end
   end
 
-  def dbpedia_url
-    'http://dbpedia.org/resource/' + wikipedia_stub
+  def wikidata_url
+    "https://www.wikidata.org/wiki/#{wikidata_id}" if wikidata_id && !wikidata_id&.blank? && wikidata_id != "Q"
   end
 
   def wikipedia_url
-    'https://en.wikipedia.org/wiki/' + wikipedia_stub
+    Wikidata.new(wikidata_id).en_wikipedia_url
+  end
+
+  def dbpedia_uri
+    wikipedia_url&.gsub("en.wikipedia.org/wiki","dbpedia.org/resource")&.gsub("https","http")
+  end
+
+  def dbpedia_abstract
+    return description if !description.blank?
+    return nil if dbpedia_uri.blank?
+    api = "#{dbpedia_uri.gsub("resource","data")}.json"
+    begin
+      response = open(api)
+      resp = response.read
+      parsed_json = JSON.parse(resp)
+      self.description = parsed_json["#{dbpedia_uri}"]['http://dbpedia.org/ontology/abstract'].find {|abstract| abstract['lang']=='en'}['value']
+    rescue
+    end
   end
 
   def relationship?

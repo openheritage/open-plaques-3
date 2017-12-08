@@ -76,7 +76,9 @@ class Wikidata
     else
       name = term
     end
+    name = name[0].upcase + name[1..-1]
     api = "#{api_root}wbgetentities&sites=enwiki&titles=#{name}&format=json"
+    puts "#{api}"
     response = open(api)
     resp = response.read
     wikidata = JSON.parse(resp, object_class: OpenStruct)

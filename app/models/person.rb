@@ -13,7 +13,6 @@
 # * +died_on_is_circa+ - true or false. Whether the +died_on+ date is 'circa' or not [Optional]
 # * +wikipedia_url+ - override link to the person's Wikipedia page (if they have one and it isn't linked to via their name).
 # * +dbpedia_uri+ - link to the DBpedia resource representing the person (if one exists).
-# * +wikipedia_paras+ - which paragraphs in Wikipedia to use as description
 # * +surname_starts_with+ - letter to index this person on
 # * +introduction+ -
 # * +gender+ - (u)nkown, (n)ot applicable, (m)ale, (f)emale
