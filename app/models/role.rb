@@ -94,6 +94,9 @@ class Role < ApplicationRecord
       self.wikidata_id = Wikidata.qcode(t)
       dbpedia_abstract
     end
+    if wikidata_id&.match(/Q\d*$/) && description.blank?
+      dbpedia_abstract
+    end
   end
 
   def wikidata_url
