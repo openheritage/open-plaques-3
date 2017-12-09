@@ -83,8 +83,8 @@ class PersonalRolesController < ApplicationController
         opposite = Role.find_by_name 'creation' if @personal_role.role.name == 'creator'
         opposite = Role.find_by_name 'founder' if @personal_role.role.name == 'foundation'
         opposite = Role.find_by_name 'foundation' if @personal_role.role.name == 'founder'
-        opposite = Role.find_by_name 'battle' if @personal_role.role.name == 'war_veteran'
-        opposite = Role.find_by_name 'war_veteran' if @personal_role.role.name == 'battle'
+        opposite = Role.find_by_name 'battle' if @personal_role.role.name == 'battle veteran'
+        opposite = Role.find_by_name 'battle veteran' if @personal_role.role.name == 'battle'
       end
       if opposite != nil
         it_exists = false
