@@ -27,7 +27,23 @@ describe Wikidata do
         expect(Wikidata.qcode('Myra Hess (1890-1965)')).to eq("Q269848")
       end
     end
+    context 'a name which Wikidata do not match' do
+      it 'returns a Wikidata id' do
+        expect(Wikidata.qcode('abolitionist')).to eq(nil)
+      end
+    end
+    context 'a name which Wikidata hold starting with uppercase' do
+      it 'returns a Wikidata id' do
+        expect(Wikidata.qcode('anchorite')).to eq("Q1146843")
+      end
+    end
+    context 'a name with an unusual character' do
+      it 'returns nil' do
+        expect(Wikidata.qcode('Discoverer of the variation of δ CEPHEI and other stars')).to eq(nil)
+      end
+    end
   end
+
 
   describe '#en_wikipedia_url' do
     context 'a Wikidata id' do

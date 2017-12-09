@@ -67,6 +67,8 @@ class Wikidata
   end
 
   def self.qcode(term)
+    term = term.tr("’ß#ÀÁÂÃÄÅàáâãäåĀāĂăĄąÇçĆćĈĉĊċČčÐðĎďĐđÈÉÊËèéêëĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħÌÍÎÏìíîïĨĩĪīĬĭĮįİıĴĵĶķĸĹĺĻļĽľĿŀŁłÑñŃńŅņŇňŉŊŋÒÓÔÕÖØòóôõöøŌōŎŏŐőŔŕŖŗŘřŚśŜŝŞşŠšſŢţŤťŦŧÙÚÛÜùúûüŨũŪūŬŭŮůŰűŲųŴŵÝýÿŶŷŸŹźŻżŽž",
+"'s AAAAAAaaaaaaAaAaAaCcCcCcCcCcDdDdDdEEEEeeeeEeEeEeEeEeGgGgGgGgHhHhIIIIiiiiIiIiIiIiIiJjKkkLlLlLlLlLlNnNnNnNnnNnOOOOOOooooooOoOoOoRrRrRrSsSsSsSssTtTtTtUUUUuuuuUuUuUuUuUuUuWwYyyYyYZzZzZz")
     api_root = "https://www.wikidata.org/w/api.php?action="
     name_and_dates = term.match /(.*)\((\d\d\d\d)-(\d\d\d\d)\)/
     if name_and_dates
@@ -76,29 +78,41 @@ class Wikidata
     else
       name = term
     end
-    name = name[0].upcase + name[1..-1]
-    api = "#{api_root}wbgetentities&sites=enwiki&titles=#{name}&format=json"
-    puts "#{api}"
-    response = open(api)
-    resp = response.read
-    wikidata = JSON.parse(resp, object_class: OpenStruct)
-    if (wikidata.not_found? || wikidata.disambiguation?) && born && died
-      api = "#{api_root}query&list=search&srsearch=#{name}&format=json"
+    begin
+      api = "#{api_root}wbgetentities&sites=enwiki&titles=#{name}&format=json"
+      puts "#{api}"
       response = open(api)
       resp = response.read
-      search_wikidata = JSON.parse(resp, object_class: OpenStruct)
-      search_wikidata.query.search.each do |search_result|
-        w = Wikidata.new(search_result.title)
-        return w.qcode if w.dates?(born, died)
+      wikidata = JSON.parse(resp, object_class: OpenStruct)
+      if (wikidata.not_found?)
+        #  try again with first letter in uppercase
+        name = name[0].upcase + name[1..-1]
+        api = "#{api_root}wbgetentities&sites=enwiki&titles=#{name}&format=json"
+        puts "#{api}"
+        response = open(api)
+        resp = response.read
+        wikidata = JSON.parse(resp, object_class: OpenStruct)
       end
-    end
-    if wikidata.not_found? || wikidata.disambiguation?
-      nil
-    elsif born
-      w = Wikidata.new(wikidata.qcode)
-      w.qcode if w.dates?(born, died)
-    else
-      wikidata.qcode
+      if (wikidata.not_found? || wikidata.disambiguation?) && born && died
+        api = "#{api_root}query&list=search&srsearch=#{name}&format=json"
+        response = open(api)
+        resp = response.read
+        search_wikidata = JSON.parse(resp, object_class: OpenStruct)
+        search_wikidata.query.search.each do |search_result|
+          w = Wikidata.new(search_result.title)
+          return w.qcode if w.dates?(born, died)
+        end
+      end
+      if wikidata.not_found? || wikidata.disambiguation?
+        nil
+      elsif born
+        w = Wikidata.new(wikidata.qcode)
+        w.qcode if w.dates?(born, died)
+      else
+        wikidata.qcode
+      end
+    rescue URI::InvalidURIError
+      puts "nasty char in there"
     end
   end
 
