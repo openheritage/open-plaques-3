@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Area, type: :model do
   it 'has a valid factory' do
     expect(create(:area)).to be_valid

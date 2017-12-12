@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Plaque, type: :model do
   it 'has a valid factory' do
     expect(create(:plaque)).to be_valid

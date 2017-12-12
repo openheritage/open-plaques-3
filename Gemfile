@@ -39,6 +39,7 @@ group :development do
   gem 'bullet'
   gem 'meta_request'
   gem 'listen'
+  gem 'fuubar'
 end
 
 group :test do

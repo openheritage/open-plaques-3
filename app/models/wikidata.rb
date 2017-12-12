@@ -35,6 +35,10 @@ class Wikidata
     @wikidata = JSON.parse(resp, object_class: OpenStruct)
   end
 
+  def self.logger
+    Rails.logger
+  end
+
   def qcode
     return if !@wikidata || @wikidata.not_found?
     @wikidata.qcode
@@ -80,7 +84,7 @@ class Wikidata
     end
     begin
       api = "#{api_root}wbgetentities&sites=enwiki&titles=#{name}&format=json"
-      puts "#{api}"
+      logger.debug "#{api}"
       response = open(api)
       resp = response.read
       wikidata = JSON.parse(resp, object_class: OpenStruct)
@@ -88,7 +92,7 @@ class Wikidata
         #  try again with first letter in uppercase
         name = name[0].upcase + name[1..-1]
         api = "#{api_root}wbgetentities&sites=enwiki&titles=#{name}&format=json"
-        puts "#{api}"
+        logger.debug "#{api}"
         response = open(api)
         resp = response.read
         wikidata = JSON.parse(resp, object_class: OpenStruct)
@@ -112,7 +116,7 @@ class Wikidata
         wikidata.qcode
       end
     rescue URI::InvalidURIError
-      puts "nasty char in there"
+      logger.error "nasty char in there"
     end
   end
 

@@ -40,4 +40,7 @@ class PersonalRole < ApplicationRecord
     n
   end
 
+  def current?
+    role.sticky? || ended_at == nil or ended_at == '' or (ended_at && ended_at.year.to_s == person.died_on.to_s)
+  end
 end

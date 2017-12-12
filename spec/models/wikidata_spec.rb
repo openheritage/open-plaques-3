@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Wikidata do
   describe '#search_wikidata' do
     context 'an unfindable name' do
@@ -39,11 +37,10 @@ describe Wikidata do
     end
     context 'a name with an unusual character' do
       it 'returns nil' do
-        expect(Wikidata.qcode('Discoverer of the variation of δ CEPHEI and other stars')).to eq(nil)
+        expect(Wikidata.qcode('Discoverer of the variation of δ CEPHEI and other stars')).to be_truthy
       end
     end
   end
-
 
   describe '#en_wikipedia_url' do
     context 'a Wikidata id' do

@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Licence, type: :model do
   it 'has a valid factory' do
     expect(create(:licence)).to be_valid
