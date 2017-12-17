@@ -8,16 +8,16 @@
 
   <% photo = plaque.main_photo %>
   <div class="row card">
-    <% if photo == nil %>
-      <div class="col-xs-4 col-sm-4">
-        <%= link_to plaque_path(plaque) do %>
-          <%= image_tag("NoPhotoSqr.png", { class: 'card-img-top img-thumbnail w-100' }) %>
-        <% end %>
-      </div>
-    <% else %>
+    <% if photo&.thumbnail_url %>
       <div class="col-xs-12 col-sm-4">
         <%= link_to plaque_path(plaque) do %>
           <%= image_tag(photo.thumbnail_url, { class: 'card-img-top img-thumbnail w-100' }) %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="col-xs-4 col-sm-4">
+        <%= link_to plaque_path(plaque) do %>
+          <%= image_tag("NoPhotoSqr.png", { class: 'card-img-top img-thumbnail w-100' }) %>
         <% end %>
       </div>
     <% end %>
