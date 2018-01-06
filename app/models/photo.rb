@@ -144,8 +144,8 @@ class Photo < ApplicationRecord
             end
           end
           self.licence = licence if licence != nil
-          self.latitude = wikimedia[:latitude].to_f.to_s if wikimedia[:latitude]
-          self.longitude = wikimedia[:longitude].to_f.to_s if wikimedia[:longitude]
+          self.latitude = wikimedia[:latitude] if wikimedia[:latitude]
+          self.longitude = wikimedia[:longitude] if wikimedia[:longitude]
         end
       rescue
         errors.add :file_url, 'Commoner errored'
