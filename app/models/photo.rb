@@ -138,12 +138,14 @@ class Photo < ApplicationRecord
           if (licence == nil)
             wikimedia[:licence_url] += "/" if !wikimedia[:licence_url].ends_with? '/'
             licence = Licence.find_by_url wikimedia[:licence_url]
-            if (licence==nil)
+            if (licence == nil)
               licence = Licence.new(name: wikimedia[:licence], url: wikimedia[:licence_url])
               licence.save
             end
           end
           self.licence = licence if licence != nil
+          self.latitude = wikimedia[:latitude].to_f.to_s if wikimedia[:latitude]
+          self.longitude = wikimedia[:longitude].to_f.to_s if wikimedia[:longitude]
         end
       rescue
         errors.add :file_url, 'Commoner errored'
