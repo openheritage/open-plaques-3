@@ -173,7 +173,11 @@ class Photo < ApplicationRecord
         key = "86c115028094a06ed5cd19cfe72e8f8b"
         q_url = "https://api.flickr.com/services/rest/?api_key=#{key}&format=json&nojsoncallback=1&method=flickr.photos.getInfo&photo_id=#{flickr_photo_id}"
         puts "Flickr: #{q_url}"
-        response = open(q_url)
+        begin
+          response = open(q_url)
+        rescue # random 502 bad gateway from Flickr
+          response = open(q_url)
+        end
         resp = response.read
         parsed_json = JSON.parse(resp)
         if parsed_json['stat'] == 'fail'
@@ -189,7 +193,7 @@ class Photo < ApplicationRecord
         p_id = parsed_json['owner']['path_alias'] ? parsed_json['owner']['path_alias'] : parsed_json['owner']['nsid']
         self.photographer_url = "https://www.flickr.com/photos/#{p_id}/"
         self.licence = Licence.find_by_flickr_licence_id(parsed_json['license'])
-        self.subject = parsed_json['title']['_content'][0,255]
+        self.subject = parsed_json['title']['_content'].tr("TxHM","").tr("Historical Marker","").tr("Marker","")[0,255]
         self.description = parsed_json['description']['_content']
         self.latitude = parsed_json['location']['latitude'] if parsed_json['location']
         self.longitude = parsed_json['location']['longitude'] if parsed_json['location']

@@ -91,64 +91,31 @@ module PlaquesHelper
     end
   end
 
-  # pass null to search all photos on Flickr
+  # when you are pretty sure a group contains plaques
   def crawl_flickr(group_id='74191472@N00')
+    return if !group_id
     key = "86c115028094a06ed5cd19cfe72e8f8b"
     flickr_url = "https://api.flickr.com/services/rest/"
-    black = Colour.find_by_name('black')
-    english = Language.find_by_name('English')
-    19.times do |page|
+    913.times do |page|
       puts page.to_s
-      url = "#{flickr_url}?api_key=#{key}&method=flickr.photos.search&page=#{page.to_s}&per_page=5&content_type=1&extras=date_taken,owner_name,license,geo,description"
-      if group_id
-        url += "&group_id=#{group_id}"
+      q_url = "#{flickr_url}?api_key=#{key}&method=flickr.photos.search&page=#{page.to_s}&per_page=10&content_type=1&extras=date_taken,owner_name,license,geo,description&group_id=#{group_id}"
+      begin
+        response = open(q_url)
+      rescue # random 502 bad gateway from Flickr
+        response = open(q_url)
       end
-      response = open(url)
       doc = REXML::Document.new(response.read)
       doc.elements.each('//rsp/photos/photo') do |photo|
         print "."
         $stdout.flush
-        @photo = nil
-        file_url = "https://farm#{photo.attributes['farm']}.staticflickr.com/#{photo.attributes['server']}/#{photo.attributes['id']}_#{photo.attributes['secret']}_z.jpg"
         photo_url = "https://www.flickr.com/photos/#{photo.attributes['owner']}/#{photo.attributes['id']}/"
-        @photo = Photo.find_by_url(photo_url) || Photo.find_by_url(photo_url.sub("https:","http:"))
-        inscription_is_stub = true
-        if photo.attributes['title']!=nil
-          subject = photo.attributes['title'].split(",")[0].split("()")[0].rstrip.lstrip + "."
-          inscription = subject
+        @photo = Photo.new(url: photo_url)
+        @photo.wikimedia_data
+        nearest = @photo.nearest_plaque
+        if (nearest && (@photo.nearest_plaques&.count == 1 || nearest.inscription.downcase.include?(@photo.subject)))
+          @photo.plaque_id = nearest.id
         end
-        if photo.elements['description'].text != nil && photo.elements['description'].text.length > 50
-          inscription << " " + photo.elements['description'].text
-        end
-        if @photo
-          puts "photo already exists in Open Plaques"
-        else
-          # Plaque find by location and name if already exists.....
-#            32.76696, -94.348526
-#            32.766955, -94.348472
-          # Plaque.find_or_create_by_???
-          @plaque = Plaque.new(
-            inscription: inscription,
-            inscription_is_stub: inscription_is_stub,
-            colour: black,
-            language: english
-          )
-          @plaque.location = Location.new(name: 'somewhere in Texas')
-          # the Flickr woeids appear to be at town level, so can only create an area from them
-          woeid = photo.attributes["woeid"]
-          @plaque.location.area = Area.find_or_create_by_woeid(woeid) if woeid != nil
-          @photo = Photo.new(url: photo_url, plaque: @plaque)
-          if @plaque.save
-            puts "New plaque and photo added"
-          else
-            puts "Error adding plaque " + @plaque.errors.full_messages.to_s
-          end
-          if @photo.save
-            puts "New photo found and saved"
-          else
-            puts "Error saving photo" + @photo.errors.each_full{|msg| puts msg }
-          end
-        end
+        @photo.save
       end
     end
   end
