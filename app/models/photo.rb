@@ -176,6 +176,7 @@ class Photo < ApplicationRecord
         begin
           response = open(q_url)
         rescue # random 502 bad gateway from Flickr
+          sleep(5)
           response = open(q_url)
         end
         resp = response.read

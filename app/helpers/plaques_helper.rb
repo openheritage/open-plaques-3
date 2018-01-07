@@ -96,12 +96,13 @@ module PlaquesHelper
     return if !group_id
     key = "86c115028094a06ed5cd19cfe72e8f8b"
     flickr_url = "https://api.flickr.com/services/rest/"
-    913.times do |page|
+    (480..913).each do |page|
       puts page.to_s
       q_url = "#{flickr_url}?api_key=#{key}&method=flickr.photos.search&page=#{page.to_s}&per_page=10&content_type=1&extras=date_taken,owner_name,license,geo,description&group_id=#{group_id}"
       begin
         response = open(q_url)
       rescue # random 502 bad gateway from Flickr
+        sleep(5)
         response = open(q_url)
       end
       doc = REXML::Document.new(response.read)
