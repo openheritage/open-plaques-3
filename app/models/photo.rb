@@ -190,7 +190,7 @@ class Photo < ApplicationRecord
         self.photographer_url = "https://www.flickr.com/photos/#{p_id}/"
         self.licence = Licence.find_by_flickr_licence_id(parsed_json['license'])
         self.subject = parsed_json['title']['_content'][0,255]
-        self.description = parsed_json['description']['_content'][0,255]
+        self.description = parsed_json['description']['_content']
         self.latitude = parsed_json['location']['latitude'] if parsed_json['location']
         self.longitude = parsed_json['location']['longitude'] if parsed_json['location']
         self.taken_at = parsed_json['dates']['taken'] if parsed_json['dates']
@@ -291,9 +291,7 @@ class Photo < ApplicationRecord
     end
 
     def unique_file_url
-      if Photo.find_by_file_url(file_url) || Photo.find_by_file_url(file_url.gsub("https","http"))
-        errors.add(:file_url, "already exists")
-      end
+      errors.add(:file_url, "already exists") if Photo.find_by_file_url(file_url) || Photo.find_by_file_url(file_url.gsub("https","http"))
     end
 
     def reset_plaque_photo_count
