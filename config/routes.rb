@@ -99,6 +99,7 @@ Rails.application.routes.draw do
   resources :series do
     resource :plaques, controller: :series_plaques, only: :show
     match 'plaques/tiles/:zoom/:x/:y' => 'series_plaques#show', constraints: { zoom: /\d{2}/, x: /\d+/, y: /\d+/ }, via: [:get]
+    match ':series_ref' => 'series#show', via: [:get]
   end
   resources :todo
   resources :picks
