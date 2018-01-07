@@ -88,7 +88,7 @@ class TodoController < ApplicationController
         render :needs_description
 
       when 'unassigned_photo'
-        @photos = Photo.unassigned.geolocated.order(:updated_at).paginate(page: params[:page], per_page: 100)
+        @photos = Photo.unassigned.geolocated.order(:distance_to_nearest_plaque).paginate(page: params[:page], per_page: 100)
         render :unassigned_photo
 
       when 'unassigned_ungeolocated_photo'

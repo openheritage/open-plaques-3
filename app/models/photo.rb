@@ -32,6 +32,7 @@ class Photo < ApplicationRecord
   before_save :geograph_data
   before_save :https_flickr_urls
   before_save :merge_known_photographer_names
+  before_save :nearest_plaque
   after_save :geolocate_plaque
   after_save :opposite_clone
   scope :reverse_detail_order, -> { order('shot DESC') }
@@ -203,12 +204,42 @@ class Photo < ApplicationRecord
     end
   end
 
+  def unlinked?
+    plaque.nil? || person.nil?
+  end
+
   def linked?
-    !(plaque.nil?) || !(person.nil?)
+    !unlinked?
+  end
+
+  def ungeolocated?
+    latitude.nil?
   end
 
   def geolocated?
-    !(latitude.nil?)
+    !ungeolocated?
+  end
+
+  def nearest_plaques
+    if (unlinked? && geolocated?)
+      distance = 0.01
+      @plaques = Plaque.where(
+        longitude: (longitude.to_f - distance)..(longitude.to_f + distance),
+        latitude: (latitude.to_f - distance)..(latitude.to_f + distance)
+      )
+      @plaques.to_a.sort! { |a,b| a.distance_to(self) <=> b.distance_to(self) }
+    end
+  end
+
+  def nearest_plaque
+    if (unlinked? && geolocated?)
+      p = nearest_plaques.first
+      if (p)
+        self.nearest_plaque_id = p.id
+        self.distance_to_nearest_plaque = p.distance_to(self)
+      end
+      p
+    end
   end
 
   def as_json(options={})

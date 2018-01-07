@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171208071417) do
+ActiveRecord::Schema.define(version: 20180107092748) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -166,6 +166,8 @@ ActiveRecord::Schema.define(version: 20171208071417) do
     t.string "thumbnail", limit: 255
     t.integer "person_id"
     t.integer "clone_id"
+    t.integer "nearest_plaque_id"
+    t.integer "distance_to_nearest_plaque"
     t.index ["licence_id"], name: "index_photos_on_licence_id"
     t.index ["person_id"], name: "index_photos_on_person_id"
     t.index ["photographer"], name: "index_photos_on_photographer"
