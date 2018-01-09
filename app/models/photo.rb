@@ -211,7 +211,7 @@ class Photo < ApplicationRecord
 
   def match
     if !plaque_id
-      nearest_plaques.each do |nearest|
+      nearest_plaques&.each do |nearest|
         if !plaque_id && nearest.inscription.downcase.include?(subject.downcase)
           self.plaque_id = nearest.id
           break
