@@ -131,7 +131,7 @@ class Photo < ApplicationRecord
           errors.add :file_url, "cannot find File:#{wikimedia_filename} on Wikimedia Commons"
         else
           self.url = wikimedia[:page_url]
-          self.subject = wikimedia[:description]
+          self.subject = wikimedia[:description].gsub("English: ","")
           self.photographer = wikimedia[:author]
           self.photographer_url = wikimedia[:author_url]
           self.file_url = wikimedia_special
@@ -194,7 +194,7 @@ class Photo < ApplicationRecord
         p_id = parsed_json['owner']['path_alias'] ? parsed_json['owner']['path_alias'] : parsed_json['owner']['nsid']
         self.photographer_url = "https://www.flickr.com/photos/#{p_id}/"
         self.licence = Licence.find_by_flickr_licence_id(parsed_json['license'])
-        self.subject = parsed_json['title']['_content'].tr("TxHM","").tr("Historical Marker","").tr("Marker","")[0,255]
+        self.subject = parsed_json['title']['_content'].gsub("TxHM","").gsub("Historical Marker","").gsub("Marker","")[0,255]
         self.description = parsed_json['description']['_content']
         self.latitude = parsed_json['location']['latitude'] if parsed_json['location']
         self.longitude = parsed_json['location']['longitude'] if parsed_json['location']
@@ -204,6 +204,17 @@ class Photo < ApplicationRecord
             machine_tag_id = tag['raw'].match(/openplaques:id=(\d*)/)
             self.plaque_id = machine_tag_id[1] if machine_tag_id
           end
+        end
+      end
+    end
+  end
+
+  def match
+    if !plaque_id
+      nearest_plaques.each do |nearest|
+        if !plaque_id && nearest.inscription.downcase.include?(subject.downcase)
+          self.plaque_id = nearest.id
+          break
         end
       end
     end

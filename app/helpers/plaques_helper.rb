@@ -99,6 +99,7 @@ module PlaquesHelper
     (480..913).each do |page|
       puts page.to_s
       q_url = "#{flickr_url}?api_key=#{key}&method=flickr.photos.search&page=#{page.to_s}&per_page=10&content_type=1&extras=date_taken,owner_name,license,geo,description&group_id=#{group_id}"
+      puts q_url
       begin
         response = open(q_url)
       rescue # random 502 bad gateway from Flickr
@@ -112,10 +113,7 @@ module PlaquesHelper
         photo_url = "https://www.flickr.com/photos/#{photo.attributes['owner']}/#{photo.attributes['id']}/"
         @photo = Photo.new(url: photo_url)
         @photo.wikimedia_data
-        nearest = @photo.nearest_plaque
-        if (nearest && (@photo.nearest_plaques&.count == 1 || nearest.inscription.downcase.include?(@photo.subject)))
-          @photo.plaque_id = nearest.id
-        end
+        @photo.match
         @photo.save
       end
     end
