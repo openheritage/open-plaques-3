@@ -162,7 +162,7 @@ class Photo < ApplicationRecord
       self.thumbnail = parsed_json['thumbnail_url'].gsub("http:","https:")
       self.file_url = parsed_json['url'].gsub("http:","https:")
       self.licence = Licence.find_by_url(parsed_json['license_url'])
-      self.subject = parsed_json['title'][0,255] if parsed_json['title']
+      self.subject = parsed_json['title'] if parsed_json['title']
       self.description = parsed_json['description'][0,255] if parsed_json['description']
       self.latitude = parsed_json['geo']['lat'] if parsed_json['geo']
       self.longitude = parsed_json['geo']['long'] if parsed_json['geo']
