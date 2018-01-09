@@ -41,7 +41,7 @@ class Photo < ApplicationRecord
   scope :undecided, -> { where(plaque_id: nil, of_a_plaque: nil) }
   scope :wikimedia, -> { where("file_url like '%commons%'") }
   scope :flickr, -> { where("url like '%flickr.com%'") }
-  scope :geograph, -> { where("url like '%geograph.org%'") }
+  scope :geograph, -> { where("photographer_url like 'https://www.geograph.org.uk/profile/%'") }
   scope :geolocated, -> { where(["latitude IS NOT NULL"]) }
   scope :ungeolocated, -> { where(["latitude IS NULL"]) }
 
