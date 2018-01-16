@@ -91,6 +91,71 @@ module PlaquesHelper
     end
   end
 
+  def crawl_kentucky()
+    agent = Mechanize.new
+    page = agent.get('http://migration.kentucky.gov/kyhs/hmdb/MarkerSearch.aspx')
+    form = page.form('aspnetForm')
+    field = form.field_with(name: 'ctl00$MainContentPlaceHolder$searchCriteriaControl$numberTextBox')
+    submit_button = form.button_with(name: 'ctl00$MainContentPlaceHolder$searchCriteriaControl$searchByNumberButton')
+
+    kentucky_historical_society = Organisation.find_by_slug("kentucky_historical_society")
+    kentucky_highways_department = Organisation.find_by_slug("kentucky_highways_department")
+    kentucky_historical_marker = Series.find_by_name("Kentucky Historical Marker")
+    usa = Country.find_by_name("United States")
+    black = Colour.find_by_name("black")
+    (1..2533).each do |id|
+      field.value = id
+      output = agent.submit(form, submit_button)
+      marker_number = output.search('.//tr[contains(th,"Marker Number")]/td/text()').text.strip
+      if marker_number == ""
+        puts "#{id} does not exist"
+      else
+        location = output.search('.//tr[contains(th,"Location")]/td/text()').text.strip
+        inscription = output.search('.//tr[contains(th,"Description")]/td').text.strip
+        puts "#{marker_number} #{location} #{inscription}"
+        plaque = Plaque.new(address: location, inscription: inscription, colour: black)
+        plaque.series = kentucky_historical_marker
+        plaque.series_ref = marker_number
+        known_names = [
+          "Athens","Augusta",
+          "Bardstown",
+          "Brandenburg","Brownsville",
+          "Cloverport",
+          "Danville",
+          "Elizabethtown","Elkhorn City",
+          "Frankfort",
+          "Georgetown","Glasgow","Grants Lick","Greensburg","Greenville",
+          "Hopkinsville",
+          "Lebanon","Lexington","Louisville",
+          "Monticello",
+          "Paducah",
+          "Radcliff","Russellville",
+          "Sulphur Well",
+          "Williamsburg"
+        ]
+        known_names.each do |known_name|
+          if (location.include?(known_name))
+            area = Area.find_or_create_by(name: "#{known_name}, KY")
+            if (!area.country)
+              area.country = usa
+              area.save
+            end
+            plaque.area = area
+            if plaque.address.end_with?(", #{known_name}")
+              plaque.address = plaque.address.reverse.sub(", #{known_name}".reverse, "").reverse
+            end
+            break
+          end
+        end
+        plaque.save
+        s = Sponsorship.new(plaque_id: plaque.id, organisation: kentucky_historical_society)
+        s.save
+        s = Sponsorship.new(plaque_id: plaque.id, organisation: kentucky_highways_department)
+        s.save
+      end
+    end
+  end
+
   # when you are pretty sure a group contains plaques
   def crawl_flickr(group_id='74191472@N00')
     return if !group_id
