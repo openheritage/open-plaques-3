@@ -180,7 +180,7 @@ module PlaquesHelper
         @photo.match
         @photo.save
       end
-      break if page >= pages
+      break if page.to_i >= pages.to_i
     end
   end
 
