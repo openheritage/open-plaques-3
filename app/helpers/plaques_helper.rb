@@ -160,10 +160,8 @@ module PlaquesHelper
   def crawl_flickr(group_id='74191472@N00')
     return if !group_id
     key = "86c115028094a06ed5cd19cfe72e8f8b"
-    flickr_url = "https://api.flickr.com/services/rest/"
-    (480..913).each do |page|
-      puts page.to_s
-      q_url = "#{flickr_url}?api_key=#{key}&method=flickr.photos.search&page=#{page.to_s}&per_page=10&content_type=1&extras=date_taken,owner_name,license,geo,description&group_id=#{group_id}"
+    (1..1000).each do |page|
+      q_url = "https://api.flickr.com/services/rest/?api_key=#{key}&method=flickr.photos.search&page=#{page.to_s}&per_page=10&content_type=1&group_id=#{group_id}"
       puts q_url
       begin
         response = open(q_url)
@@ -172,8 +170,9 @@ module PlaquesHelper
         response = open(q_url)
       end
       doc = REXML::Document.new(response.read)
+      pages = doc.root.elements['photos'].attributes['pages']
+      puts "#{page} of #{pages}"
       doc.elements.each('//rsp/photos/photo') do |photo|
-        print "."
         $stdout.flush
         photo_url = "https://www.flickr.com/photos/#{photo.attributes['owner']}/#{photo.attributes['id']}/"
         @photo = Photo.new(url: photo_url)
@@ -181,6 +180,7 @@ module PlaquesHelper
         @photo.match
         @photo.save
       end
+      break if page >= pages
     end
   end
 
