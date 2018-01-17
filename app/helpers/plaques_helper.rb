@@ -103,17 +103,24 @@ module PlaquesHelper
     kentucky_historical_marker = Series.find_by_name("Kentucky Historical Marker")
     usa = Country.find_by_name("United States")
     black = Colour.find_by_name("black")
-    (1..2533).each do |id|
-      field.value = id
+    english = Language.find_by_name("English")
+    (1..2533).each do |series_ref|
+      field.value = series_ref
       output = agent.submit(form, submit_button)
       marker_number = output.search('.//tr[contains(th,"Marker Number")]/td/text()').text.strip
       if marker_number == ""
-        puts "#{id} does not exist"
+        puts "#{series_ref} does not exist"
       else
+        title = output.search('.//caption').text.strip
         location = output.search('.//tr[contains(th,"Location")]/td/text()').text.strip
         inscription = output.search('.//tr[contains(th,"Description")]/td').text.strip
         puts "#{marker_number} #{location} #{inscription}"
-        plaque = Plaque.new(address: location, inscription: inscription, colour: black)
+        plaque = Plaque.where(series_id: kentucky_historical_marker.id, series_ref: series_ref).first
+        plaque = Plaque.new() if !plaque
+        plaque.address = location
+        plaque.inscription = "#{title}. #{inscription}"
+        plaque.colour = black
+        plaque.language = english
         plaque.series = kentucky_historical_marker
         plaque.series_ref = marker_number
         known_names = [
@@ -127,7 +134,7 @@ module PlaquesHelper
           "Georgetown","Glasgow","Grants Lick","Greensburg","Greenville",
           "Hopkinsville",
           "Lebanon","Lexington","Louisville",
-          "Monticello",
+          "Maysville","Monticello",
           "Paducah",
           "Radcliff","Russellville",
           "Sulphur Well",
@@ -148,9 +155,9 @@ module PlaquesHelper
           end
         end
         plaque.save
-        s = Sponsorship.new(plaque_id: plaque.id, organisation: kentucky_historical_society)
+        s = Sponsorship.find_or_create_by(plaque_id: plaque.id, organisation_id: kentucky_historical_society.id)
         s.save
-        s = Sponsorship.new(plaque_id: plaque.id, organisation: kentucky_highways_department)
+        s = Sponsorship.find_or_create_by(plaque_id: plaque.id, organisation_id: kentucky_highways_department.id)
         s.save
       end
     end
