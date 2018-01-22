@@ -35,13 +35,12 @@
 
   <div class="row">
     <div class="col-xs-12">
-      <p><%= "Died aged" if (@person.person? || @person.thing? || @person.animal?) && @person.dead? %><%= "Closed aged" if @person.place? && @person.dead? %><%= "Aged" if @person.alive? && @person.age%> <%= @person.age.to_s if @person.age%>
-
-      </p>
+      <p><%= "Died aged" if (@person.person? || @person.thing? || @person.animal?) && @person.dead? %><%= "Closed aged" if @person.place? && @person.dead? %><%= "Aged" if @person.alive? && @person.age%> <%= @person.age.to_s if @person.age%></p>
       <%= markdown(@person.introduction) if @person.introduction %>
-      <p><%= @person.dbpedia_abstract %>
-        - <%= link_to(icon('external-link') + "DbPedia", @person.dbpedia_uri, target: '_blank') unless @person.dbpedia_uri.blank? %>
-      </p>
+      <blockquote class="quote-card blue-card">
+        <p><%= @person.dbpedia_abstract %></p>
+        <cite><%= link_to(icon('external-link') + "DbPedia", @person.dbpedia_uri, target: '_blank') unless @person.dbpedia_uri.blank? %></cite>
+      </blockquote>
       <%= link_to(icon('external-link') + "Wikidata", @person.wikidata_url, target: '_blank') unless @person.wikidata_url.blank? %>
       <%= link_to(icon('external-link') + "Wikipedia", @person.wikipedia_url, target: '_blank') unless @person.wikipedia_url.blank? %>
       <%= link_to(icon('external-link') + "Find A Grave", @person.find_a_grave_url, target: '_blank') unless @person.find_a_grave_id.blank? %>
