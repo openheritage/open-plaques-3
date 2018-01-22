@@ -205,7 +205,7 @@ class Person < ApplicationRecord
   def dbpedia_abstract
     return nil if dbpedia_uri.blank?
     api = "#{dbpedia_uri.gsub("resource","data")}.json"
-    begin
+    @dbpedia_abstract ||= begin
       response = open(api)
       resp = response.read
       parsed_json = JSON.parse(resp)
