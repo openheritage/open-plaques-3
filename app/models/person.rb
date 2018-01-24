@@ -33,6 +33,7 @@ class Person < ApplicationRecord
   before_save :update_index
   before_save :aka_accented_name
   before_save :fill_wikidata_id
+  after_save :depiction_from_dbpedia
   scope :roled, -> { where("personal_roles_count > 0").order("id DESC") }
   scope :unroled, -> { where(personal_roles_count: [nil,0]) }
   scope :dated, -> { where("born_on IS NOT NULL or died_on IS NOT NULL") }
@@ -203,14 +204,31 @@ class Person < ApplicationRecord
   end
 
   def dbpedia_abstract
-    return @dbpedia_abstract if defined? @dbpedia_abstract
-    return nil if dbpedia_uri.blank?
-    api = "#{dbpedia_uri.gsub("resource","data")}.json"
-    @dbpedia_abstract = begin
+    return nil if !dbpedia_json
+    begin
+    dbpedia_json["#{dbpedia_uri}"]['http://dbpedia.org/ontology/abstract'].find {|abstract| abstract['lang']=='en'}['value']
+    rescue
+    end
+  end
+
+  def dbpedia_depiction
+    return nil if !dbpedia_json
+    begin
+    dbpedia_json["#{dbpedia_uri}"]['http://xmlns.com/foaf/0.1/depiction'].first['value']
+    rescue
+    end
+  end
+
+  def dbpedia_json
+    # call DBpedia and cache the response
+    return @dbpedia_json if defined? @dbpedia_json
+    @dbpedia_json = nil
+    return @dbpedia_json if dbpedia_uri.blank?
+    @dbpedia_json = begin
+      api = "#{dbpedia_uri.gsub("resource","data")}.json"
       response = open(api)
       resp = response.read
-      parsed_json = JSON.parse(resp)
-      parsed_json["#{dbpedia_uri}"]['http://dbpedia.org/ontology/abstract'].find {|abstract| abstract['lang']=='en'}['value']
+      JSON.parse(resp)
     rescue
     end
   end
@@ -545,6 +563,17 @@ class Person < ApplicationRecord
       if accented_name? && !aka.include?(unaccented_name)
         self.aka_will_change!
         self.aka.push(unaccented_name)
+      end
+    end
+
+    def depiction_from_dbpedia
+      if !self.main_photo && dbpedia_depiction
+        begin
+          photo = Photo.new(url: dbpedia_depiction, person: self)
+          photo.wikimedia_data
+          photo.save
+        rescue
+        end
       end
     end
 

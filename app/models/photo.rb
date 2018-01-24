@@ -33,6 +33,7 @@ class Photo < ApplicationRecord
   before_save :https_flickr_urls
   before_save :merge_known_photographer_names
   before_save :nearest_plaque
+  before_save :set_of_a_plaque
   after_save :geolocate_plaque
   after_save :opposite_clone
   scope :reverse_detail_order, -> { order('shot DESC') }
@@ -307,13 +308,13 @@ class Photo < ApplicationRecord
     end
 
     def unique_file_url
-      errors.add(:file_url, "already exists") if Photo.find_by_file_url(file_url) || Photo.find_by_file_url(file_url.gsub("https","http"))
+      errors.add(:file_url, "already exists") if Photo.find_by_file_url(file_url) || Photo.find_by_file_url(file_url&.gsub("https","http"))
     end
 
     def reset_plaque_photo_count
-      if plaque_id_changed?
-        Plaque.reset_counters(plaque_id_was, :photos) unless plaque_id_was == nil || plaque_id_was == 0
-        Plaque.reset_counters(plaque.id, :photos) unless plaque == nil || plaque_id_was == 0
+      if saved_change_to_plaque_id?
+        Plaque.reset_counters(plaque_id_before_last_save, :photos) unless plaque_id_before_last_save == nil || plaque_id_before_last_save == 0
+        Plaque.reset_counters(plaque.id, :photos) unless plaque == nil || plaque_id_before_last_save == 0
       end
     end
 
@@ -348,4 +349,10 @@ class Photo < ApplicationRecord
         end
       end
     end
+
+    def set_of_a_plaque
+      self.of_a_plaque = false if person_id != nil
+      self.of_a_plaque = true if plaque_id != nil
+    end
+
 end
