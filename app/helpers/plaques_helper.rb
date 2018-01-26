@@ -164,8 +164,12 @@ module PlaquesHelper
   end
 
   def north_carolina(state, series, series_ref, colour, sponsors = [])
-    output = Nokogiri::HTML(open("http://www.ncmarkers.com/Markers.aspx?MarkerId=#{series_ref}"))
-    # will it error with a 404?
+    begin
+      output = Nokogiri::HTML(open("http://www.ncmarkers.com/Markers.aspx?MarkerId=#{series_ref}"))
+    rescue OpenURI::HTTPError
+      puts "ref #{series_ref} not found"
+      return
+    end
     marker_number = output.search('.//input[@name="txtID"]/@value').text.strip
     if marker_number == ""
       puts "#{series_ref} does not exist"
