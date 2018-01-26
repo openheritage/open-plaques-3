@@ -174,7 +174,7 @@ module PlaquesHelper
     if marker_number == ""
       puts "#{series_ref} does not exist"
     else
-      title = output.search('.//input[@name="txtTitle"]/@value').text.strip
+      title = output.search('.//input[@name="txtTitle"]/@value').text.titlecase.strip
       inscription = output.search('.//textarea[@name="txtMarkerText"]').text.strip
       location = output.search('.//textarea[@name="txtLocation"]').text.strip
       location += ", #{state}"
