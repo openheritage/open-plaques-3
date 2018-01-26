@@ -112,8 +112,8 @@ module PlaquesHelper
         puts "#{series_ref} does not exist"
       else
         title = output.search('.//caption').text.strip
-        location = output.search('.//tr[contains(th,"Location")]/td/text()').text.strip
         inscription = output.search('.//tr[contains(th,"Description")]/td').text.strip
+        location = output.search('.//tr[contains(th,"Location")]/td/text()').text.strip
         puts "#{marker_number} #{location} #{inscription}"
         plaque = Plaque.where(series_id: kentucky_historical_marker.id, series_ref: series_ref).first
         plaque = Plaque.new() if !plaque
@@ -158,6 +158,36 @@ module PlaquesHelper
         s = Sponsorship.find_or_create_by(plaque_id: plaque.id, organisation_id: kentucky_historical_society.id)
         s.save
         s = Sponsorship.find_or_create_by(plaque_id: plaque.id, organisation_id: kentucky_highways_department.id)
+        s.save
+      end
+    end
+  end
+
+  def north_carolina(state, series, series_ref, colour, sponsors = [])
+    output = Nokogiri::HTML(open("http://www.ncmarkers.com/Markers.aspx?MarkerId=#{series_ref}"))
+    # will it error with a 404?
+    marker_number = output.search('.//input[@name="txtID"]/@value').text.strip
+    if marker_number == ""
+      puts "#{series_ref} does not exist"
+    else
+      title = output.search('.//input[@name="txtTitle"]/@value').text.strip
+      inscription = output.search('.//textarea[@name="txtMarkerText"]').text.strip
+      location = output.search('.//textarea[@name="txtLocation"]').text.strip
+      location += ", #{state}"
+      created = output.search('.//input[@name="txtYear"]/@value').text.strip
+      puts "#{series.name} number #{marker_number} at #{location} == #{title}"
+
+      plaque = Plaque.find_or_create_by(series_id: series.id, series_ref: series_ref)
+      plaque.address = location
+      plaque.force_us_state = state
+      plaque.inscription = "#{title}. #{inscription}"
+      plaque.colour = colour
+      plaque.language = Language.find_by_name('English')
+      plaque.series = series
+      plaque.series_ref = marker_number
+      plaque.save
+      sponsors.each do |sponsor|
+        s = Sponsorship.find_or_create_by(plaque_id: plaque.id, organisation_id: sponsor.id)
         s.save
       end
     end

@@ -10,8 +10,8 @@
 # * +longitude+ - location (as a decimal in WSG-84 projection). Optional.
 # * +created_at+
 # * +updated_at+
-# * +inscription+ - The text inscription on the plaque.
-# * +reference+ - An official reference number or identifier for the plaque. Sometimes marked on the actual plaque itself, sometimes only in promotional material. Optional.
+# * +inscription+ - The text inscription on the self.
+# * +reference+ - An official reference number or identifier for the self. Sometimes marked on the actual plaque itself, sometimes only in promotional material. Optional.
 # * +notes+ - A general purpose notes field for internal admin and data-collection purposes.
 # * +parsed_inscription+ - (not used?)
 # * +photos_count+ -
@@ -35,11 +35,12 @@ class Plaque < ApplicationRecord
   has_many :organisations, through: :sponsorships
   has_one :pick
 
-  attr_accessor :country, :other_colour_id
+  attr_accessor :country, :other_colour_id, :force_us_state
   delegate :name, to: :colour, prefix: true, allow_nil: true
   delegate :name, :alpha2, to: :language, prefix: true, allow_nil: true
 
   before_save :use_other_colour_id
+  before_save :usa_townify
   accepts_nested_attributes_for :photos, reject_if: proc { |attributes| attributes['photo_url'].blank? }
   scope :current, -> { where(is_current: true).order('id desc') }
   scope :geolocated, ->  { where(["plaques.latitude IS NOT NULL"]) }
@@ -318,7 +319,7 @@ class Plaque < ApplicationRecord
     end
   end
 
-  def Plaque.tile(zoom, xtile, ytile, options)
+  def self.tile(zoom, xtile, ytile, options)
     top_left = get_lat_lng_for_number(zoom, xtile, ytile)
     bottom_right = get_lat_lng_for_number(zoom, xtile + 1, ytile + 1)
     lat_min = bottom_right[:lat_deg].to_s
@@ -333,9 +334,9 @@ class Plaque < ApplicationRecord
     puts "Rails query " + tile
 #    Rails.cache.fetch(tile, expires_in: 5.minutes) do
       if options == "unphotographed"
-        Plaque.unphotographed.select(:id, :inscription, :latitude, :longitude, :is_accurate_geolocation).where(latitude: latitude, longitude: longitude)
+        self.unphotographed.select(:id, :inscription, :latitude, :longitude, :is_accurate_geolocation).where(latitude: latitude, longitude: longitude)
       else
-        Plaque.select(:id, :inscription, :latitude, :longitude, :is_accurate_geolocation).where(latitude: latitude, longitude: longitude)
+        self.select(:id, :inscription, :latitude, :longitude, :is_accurate_geolocation).where(latitude: latitude, longitude: longitude)
       end
 #    end
   end
@@ -352,6 +353,31 @@ class Plaque < ApplicationRecord
     a = Math.sin((lat2_rad - lat1_rad) / 2) ** 2 + Math.cos(lat1_rad) * Math.cos(lat2_rad) * Math.sin((lon2_rad - lon1_rad) / 2) ** 2
     c = 2 * Math::atan2(Math::sqrt(a), Math::sqrt(1 - a))
     (rm * c).round # Delta in meters
+  end
+
+  def us_state
+    return area.us_state if area
+    return force_us_state if force_us_state
+    matches = /(.*), ([A-Z][A-Z]\z)/.match(address)
+    matches[2] if matches
+  end
+
+  def usa_townify
+    if (area == nil && us_state)
+      usa = Country.find_by_alpha2("us")
+      state_towns = Area.where("country_id = #{usa.id} and name like '%, #{us_state}'")
+      state_towns.each do |town|
+        # match any address that includes a town name from the state
+        if town.name != ", #{us_state}" && self.address.include?(town.us_town)
+          self.area = town
+          self.address = self.address.reverse.sub(", #{town.name}".reverse, "").reverse.strip
+          self.address = self.address.reverse.sub("#{town.name}".reverse, "").reverse.strip
+          self.address = self.address.reverse.sub("in #{town.us_town}".reverse, "").reverse.strip
+          self.address = self.address.reverse.sub(", #{town.us_town}".reverse, "").reverse.strip
+          break
+        end
+      end
+    end
   end
 
   def uri
@@ -371,7 +397,7 @@ class Plaque < ApplicationRecord
     end
 
     # from OpenStreetMap documentation
-    def Plaque.get_lat_lng_for_number(zoom, xtile, ytile)
+    def self.get_lat_lng_for_number(zoom, xtile, ytile)
       n = 2.0 ** zoom
       lon_deg = xtile / n * 360.0 - 180.0
       lat_rad = Math::atan(Math::sinh(Math::PI * (1 - 2 * ytile / n)))
@@ -380,7 +406,7 @@ class Plaque < ApplicationRecord
     end
 
     # from OpenStreetMap documentation
-    def Plaque.get_tile_number(lat_deg, lng_deg, zoom)
+    def self.get_tile_number(lat_deg, lng_deg, zoom)
       lat_rad = lat_deg/180 * Math::PI
       n = 2.0 ** zoom
       x = ((lng_deg + 180.0) / 360.0 * n).to_i
