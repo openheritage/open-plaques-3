@@ -81,7 +81,7 @@
   </div>
 <% end %>
 
-<h2>New connection</h2>
+<h2><%= t '.page_heading' %></h2>
 <%= form_for @personal_connection, url: plaque_connections_path(@plaque) do |f| %>
   <p><%= t '.from_which_we_can_establish' %></p>
   <div class="form-group">
