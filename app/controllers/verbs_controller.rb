@@ -26,6 +26,7 @@ class VerbsController < ApplicationController
 
   def show
     @verb = Verb.find_by_name(params[:id].tr('_',' '))
+    @personal_connections = @verb.personal_connections.paginate(page: params[:page], per_page: 50)
     respond_to do |format|
       format.html
       format.json { render json: @verb }

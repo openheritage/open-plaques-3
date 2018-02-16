@@ -22,7 +22,9 @@
     <% end %>
   </div>
 <% else %>
+  <%= will_paginate @personal_connections %>
   <div class="card-columns">
-    <%= render @verb.personal_connections %>
+    <%= render @personal_connections %>
   </div>
+  <%= will_paginate @personal_connections %>
 <% end %>

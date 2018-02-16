@@ -1,6 +1,6 @@
  <div class="card">
   <div class="card-block">
-    <%= render personal_connection.person %>
+    <%= render personal_connection.person if personal_connection.person %>
     <p class="card-text">
       <%= personal_connection.verb.name %>
       <%= "at " unless personal_connection.verb.name.ends_with?(' near') %>

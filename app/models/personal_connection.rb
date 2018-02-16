@@ -30,7 +30,7 @@ class PersonalConnection < ApplicationRecord
   end
 
   def full_address
-    plaque.full_address
+    plaque&.full_address
   end
 
   def single_year?
