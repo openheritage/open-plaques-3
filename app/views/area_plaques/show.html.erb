@@ -18,6 +18,15 @@
   <% else %>
     <strong><%= t 'buttons.unphotographed' %></strong>
   <% end %>
+
+  <% if current_user&.is_admin? %>
+    <%= t 'buttons.or' %>
+    <% if @display!='ungeolocated' %>
+      <%= link_to t('buttons.ungeolocated'), area_ungeolocated_path(@area) %>
+    <% else %>
+      <strong><%= t 'buttons.ungeolocated' %></strong>
+    <% end %>
+  <% end %>
 </div>
 
 <% if @display!='ungeolocated' %>
