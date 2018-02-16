@@ -30,7 +30,7 @@
       <% if controller.controller_name.eql?('series') && !plaque.series_ref.to_s.empty? %>
         <span class="tag tag-success">#<%= plaque.series_ref %> </span>
       <% end %>
-      <%= plaque.inscription %>
+      <%= simple_inscription(plaque) %>
     </h7>
     <% if plaque.foreign? && plaque.inscription_in_english %>
       <p id="inscription-in-english" class="card-text"><small><%= plaque.inscription_in_english %></small></p>
@@ -38,6 +38,7 @@
     <p class="card-text">
       <small>
         <%= plaque.address %>, <%= link_to(plaque.area.name, area_path(plaque.area)) if plaque.area %>, <%= plaque.area.country.name if plaque.area %>
+        <%= icon('compass') if plaque.geolocated? %>
         <% if @person %> where <%= @person.personal_pronoun %> <%= verbs(@person,plaque).to_sentence.html_safe %><% end %>
         <% '. As far as we know, it is not currently on display.' if !plaque.is_current %>
       </small>

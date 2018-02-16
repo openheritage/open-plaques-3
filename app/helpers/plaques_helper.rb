@@ -286,6 +286,13 @@ module PlaquesHelper
     return inscription.html_safe
   end
 
+  def simple_inscription(plaque)
+    inscription = plaque.inscription.split.join(' ').strip.gsub('  ',' ')
+    inscription += " [full inscription unknown]" if plaque.inscription_is_stub
+    inscription += " [has not been erected yet]" if !plaque.erected?
+    return inscription.html_safe
+  end
+
   # given a set of plaques, or a thing that has plaques (like an organisation) tell me what the mean point is
   def find_mean(things)
     begin
