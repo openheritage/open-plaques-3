@@ -31,7 +31,7 @@ Rails.application.routes.draw do
   end
   # map tiles are numbered using the convention at http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
   match 'plaques/tiles/:zoom/:x/:y' => 'plaques#index', constraints: { zoom: /\d{2}/, x: /\d+/, y: /\d+/ }, via: [:get]
-  match 'plaques/unphotographed/tiles/:zoom/:x/:y' => 'plaques#index', id: 'unphotographed', constraints: { zoom: /\d{2}/, x: /\d+/, y: /\d+/ }, via: [:get]
+  match 'plaques/:filter/tiles/:zoom/:x/:y' => 'plaques#index', id: :filter, constraints: { zoom: /\d{2}/, x: /\d+/, y: /\d+/ }, via: [:get]
 
   resources :places, controller: :countries, as: :countries do
     collection do
@@ -54,6 +54,7 @@ Rails.application.routes.draw do
     end
     resource :plaques, controller: :organisation_plaques, only: :show
     match 'plaques/tiles/:zoom/:x/:y' => 'organisation_plaques#show', constraints: { zoom: /\d{2}/, x: /\d+/, y: /\d+/ }, via: [:get]
+    match 'plaques/:filter/tiles/:zoom/:x/:y' => 'organisation_plaques#show', id: :filter, constraints: { zoom: /\d{2}/, x: /\d+/, y: /\d+/ }, via: [:get]
     match 'plaques/:filter' => 'organisation_plaques#show', via: [:get]
   end
 

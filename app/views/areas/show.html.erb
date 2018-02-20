@@ -1,10 +1,10 @@
-<% content_for(:page_title) {t '.page_title_unphotographed', area: @area.name + ", " + @area.country.name} %>
+<% content_for(:page_title) {t '.page_title', area: @area.name + ", " + @area.country.name} %>
 <% content_for(:title) {@area.name} %>
-<% content_for(:page_subhead) {'This area is centred on the geographical point ' + @area.longitude.to_s + ',' + @area.latitude.to_s} %>
+<% content_for(:page_subhead) {t '.page_subhead', latlon: "#{@area.latitude},#{@area.longitude}"} %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_area_path(@area)} %>
 
 <h2>Has <%= @area.plaques_count %>+ <%= link_to 'plaques', area_plaques_path(@area) %></h2>
-<h2>Has plaques about <%= pluralize(@area.people.count, 'subject') %></h2>
+<h2>About <%= pluralize(@area.people.count, 'subject') %></h2>
 <div class="card-columns">
   <%= render @area.people %>
 </div>

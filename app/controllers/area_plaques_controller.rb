@@ -39,7 +39,7 @@ class AreaPlaquesController < ApplicationController
     rescue
     end
     respond_with @plaques do |format|
-      format.html
+      format.html { render "areas/plaques/show" }
       format.json { render json: @plaques }
       format.geojson { render geojson: @plaques.geolocated, parent: @area }
       format.csv {

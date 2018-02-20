@@ -17,7 +17,7 @@ class PeopleBornOnController < ApplicationController
     @people = @subjects.to_a
     @people.reject! {|subject| !subject.person? }
     respond_to do |format|
-      format.html
+      format.html { render "people/born_on/show" }
       format.json { render json: @people }
     end
   end

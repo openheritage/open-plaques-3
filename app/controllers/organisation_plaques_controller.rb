@@ -23,9 +23,7 @@ class OrganisationPlaquesController < ApplicationController
 
     @display = 'plaques'
     if zoom > 0
-      x = params[:x].to_i
-      y = params[:y].to_i
-      @plaques = @organisation.plaques.tile(zoom, x, y, '')
+      @plaques = @organisation.plaques.tile(zoom, params[:x].to_i, params[:y].to_i, params[:filter])
     elsif params[:data] && params[:data] == "simple"
       @plaques = @organisation.plaques.all(conditions: conditions, order: "created_at DESC", limit: limit)
     elsif params[:data] && params[:data] == "basic"

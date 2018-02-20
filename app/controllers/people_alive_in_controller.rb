@@ -21,7 +21,7 @@ class PeopleAliveInController < ApplicationController
       .to_a
     @people.reject! {|subject| !subject.person? }
     respond_to do |format|
-      format.html
+      format.html { render "people/alive_in/show" }
       format.json { render json: @people }
     end
   end

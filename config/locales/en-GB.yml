@@ -141,17 +141,6 @@ en-GB:
       like_us_on_Facebook: us on Facebook for features and trivia.
       recently_photographed: recently photographed plaques
 
-  area_plaques:
-    show:
-      page_title: Plaques in %{area}
-      page_title_unphotographed: Unphotographed plaques in %{area}
-      plaques: plaques
-
-  area_ungeolocated_plaques:
-    show:
-      page_title: xx
-      page_heading: yy
-
   areas:
     edit:
       page_title: Edit %{area}
@@ -165,9 +154,14 @@ en-GB:
       page_heading_html: New area in %{country}
       must_be_underscored: must be lowercase with underscores
     show:
-      page_title: Plaques in %{area}
-      page_title_unphotographed: Unphotographed plaques in %{area}
+      page_title: Area %{area}
       page_heading_html: Show %{area}
+      page_subhead: This area is centred on the geographical point %{latlon}
+    plaques:
+      show:
+        page_title: Plaques in %{area}
+        page_title_unphotographed: Unphotographed plaques in %{area}
+        plaques: plaques
 
   colours:
     index:
@@ -192,9 +186,6 @@ en-GB:
     show:
       page_title: Historical plaques in %{country}
       page_heading: Historical plaques in %{country}
-
-  country_plaques:
-    show:
 
   errors:
     not_found:
@@ -234,21 +225,10 @@ en-GB:
       quantity: in Open Plaques have been made available under the %{licence}.
       more_information: More information about this licence can be found at
 
-  locations:
-    edit:
-      page_title: Edit %{location}
-      page_heading: Edit %{location}
-      plaque_at_location: The plaque at this location is...
-    show:
-      page_title: Location %{location}
-      page_heading: Location %{location}
-      add_an_area: Add a new area in
-
   organisations:
     edit:
       page_title: Edit %{organisation}
       page_heading: Edit %{organisation}
-
     index:
       page_title: Organisations erecting historical plaques
       page_heading: Organisations erecting plaques
@@ -264,6 +244,10 @@ en-GB:
     show:
       page_title: Organisation %{organisation}
       page_heading: Organisation - %{organisation}
+    plaques:
+      show:
+        page_title: Organisation %{organisation}
+        page_heading: Organisation - %{organisation}
 
   pages:
     edit:
@@ -305,32 +289,28 @@ en-GB:
         one: Commemorated on %{count} plaque
         other: Commemorated on %{count} plaques
       not_commemorated: Is not commemorated on any plaques in our database (yet)
-
-  people_alive_in:
-    show:
-      page_title: Commemorated people who were alive in %{year}
-      page_heading: Commemorated people who were alive in %{year}
-
-  people_born_on:
-    index:
-      page_title: Commemorated people who were born in
-      page_heading: Commemorated people who were born in
-    show:
-      page_title: Commemorated people who were born in %{year}
-      page_heading: Commemorated people who were born in %{year}
-
-  people_by_index:
-    show:
-      page_title: Subjects of historical plaques - %{letter}
-      page_heading: Subjects of historical plaques - %{letter}
-
-  people_died_on:
-    index:
-      page_title: Commemorated people who died in
-      page_heading: Commemorated people who died in
-    show:
-      page_title: Commemorated people who died in %{year}
-      page_heading: Commemorated people who died in %{year}
+    alive_in:
+      show:
+        page_title: Commemorated people who were alive in %{year}
+        page_heading: Commemorated people who were alive in %{year}
+    born_on:
+      index:
+        page_title: Commemorated people who were born in
+        page_heading: Commemorated people who were born in
+      show:
+        page_title: Commemorated people who were born in %{year}
+        page_heading: Commemorated people who were born in %{year}
+    by_index:
+      show:
+        page_title: Subjects of historical plaques - %{letter}
+        page_heading: Subjects of historical plaques - %{letter}
+    died_on:
+      index:
+        page_title: Commemorated people who died in
+        page_heading: Commemorated people who died in
+      show:
+        page_title: Commemorated people who died in %{year}
+        page_heading: Commemorated people who died in %{year}
 
   personal_connections:
     edit:
@@ -503,17 +483,15 @@ en-GB:
       page_heading: Commemorated %{role}
       read_more_html: Read more about what %{link} is on Wikipedia
       related_roles: Related roles
-
-  roles_by_index:
-    show:
-      page_title: Roles - %{letter}
-      page_heading: Roles - %{letter}
-
-  roles_by_precedence:
-    index:
-      page_title: Roles by precedence
-      page_heading: Roles by precedence
-      page_subhead: Shown in the order that letters are displayed after the name with 3 examples
+    by_index:
+      show:
+        page_title: Roles - %{letter}
+        page_heading: Roles - %{letter}
+    by_precedence:
+      index:
+        page_title: Roles by precedence
+        page_heading: Roles by precedence
+        page_subhead: Shown in the order that letters are displayed after the name with 3 examples
 
   search:
     index:
@@ -537,6 +515,10 @@ en-GB:
     show:
       page_title: Series '%{series}'
       page_heading: Series '%{series}'
+    plaques:
+      show:
+        page_title: Series '%{series}'
+        page_heading: Series '%{series}'
 
   users:
     index:
@@ -561,7 +543,6 @@ en-GB:
     show:
       page_title: '%{verb}'
       page_heading: '%{verb}'
-
 
   # Used in array.to_sentence.
   support:

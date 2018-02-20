@@ -38,7 +38,7 @@ function addPlaque(geojson)
       if (allow_popups===true)
       {
         var plaque_description = '<div class="inscription">' + truncate(plaque.inscription, 255) + '</div><div class="info">' +
-          '<a class="link" href="http://openplaques.org/plaques/' + plaque.id + '">Plaque ' + plaque.id + '</a>';
+          '<a class="link" href="https://openplaques.org/plaques/' + plaque.id + '">Plaque ' + plaque.id + '</a>';
         plaque_marker.bindPopup(plaque_description);
       }
       clusterer.addLayer(plaque_marker)
@@ -94,8 +94,8 @@ function initmap()
     }
     else
     {
-      // start the map in London
-      map.setView(L.latLng(51.5428,-0.1678),zoom_level);
+      let london = L.latLng(51.5428,-0.1678)
+      map.setView(london, zoom_level);
     }
 
     clusterer = new L.MarkerClusterGroup(
@@ -123,9 +123,9 @@ function initmap()
     else
     {
   		var data_path = plaque_map.attr("data-path");
-      var geojsonURL = "/plaques/tiles/{z}/{x}/{y}.geojson";
+      var geojsonURL = "/tiles/{z}/{x}/{y}.geojson";
       if (data_view === "unphotographed") {
-        geojsonURL = "/plaques/unphotographed/tiles/{z}/{x}/{y}.geojson";
+        geojsonURL = "/unphotographed/tiles/{z}/{x}/{y}.geojson";
         data_view = "all"
       };
       if (plaque_map.attr("context"))

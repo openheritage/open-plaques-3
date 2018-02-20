@@ -320,6 +320,7 @@ class Plaque < ApplicationRecord
   end
 
   def self.tile(zoom, xtile, ytile, options)
+    puts("options #{options}")
     top_left = get_lat_lng_for_number(zoom, xtile, ytile)
     bottom_right = get_lat_lng_for_number(zoom, xtile + 1, ytile + 1)
     lat_min = bottom_right[:lat_deg].to_s
@@ -329,7 +330,7 @@ class Plaque < ApplicationRecord
     latitude = lat_min..lat_max
     longitude = lon_max..lon_min
     tile = "/plaques/"
-    tile+= options + "/" if options != 'all'
+    tile+= options + "/" if options && options != '' && options != 'all'
     tile+= "tiles" + "/" + zoom.to_s + "/" + xtile.to_s + "/" + ytile.to_s
     puts "Rails query " + tile
 #    Rails.cache.fetch(tile, expires_in: 5.minutes) do

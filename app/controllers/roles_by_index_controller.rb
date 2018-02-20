@@ -7,7 +7,7 @@ class RolesByIndexController < ApplicationController
     end
     @roles = Role.where(index: @index).order("personal_roles_count DESC nulls last")
     respond_to do |format|
-      format.html
+      format.html { render "roles/by_index/show" }
       format.json { render json: @roles }
     end
   end

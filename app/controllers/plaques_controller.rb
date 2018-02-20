@@ -36,13 +36,12 @@ class PlaquesController < ApplicationController
       @limit = 20
     end
     select = "all"
-    select = "unphotographed" if params[:id] == "unphotographed"
+    select = "unphotographed" if params[:filter] == "unphotographed"
     zoom = params[:zoom].to_i
     if zoom > 0
       # or map tile http://0.0.0.0:3000/plaques/12/2046/1374.json
-      x = params[:x].to_i
-      y = params[:y].to_i
-      @plaques = Plaque.tile(zoom, x, y, select)
+
+      @plaques = Plaque.tile(zoom, params[:x].to_i, params[:y].to_i, select)
     elsif params[:data] && params[:data] == "simple"
       @plaques = Plaque.where(conditions).order("created_at DESC").limit(@limit)
     elsif params[:data] && params[:data] == "basic"
