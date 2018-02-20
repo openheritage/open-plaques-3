@@ -3,6 +3,22 @@ class OrganisationPlaquesController < ApplicationController
   before_action :find, only: [:show]
 
   def show
+    begin
+      set_meta_tags open_graph: {
+        title: "Open Plaques Organisation #{@organisation.name}",
+        description: @organisation.description,
+      }
+      @main_photo = @organisation.main_photo
+      set_meta_tags twitter: {
+        title: "Open Plaques Organisation #{@organisation.name}",
+        image: {
+          _: @main_photo ? @main_photo.file_url : view_context.root_url[0...-1] + view_context.image_path("openplaques.png"),
+          width: 100,
+          height: 100,
+        }
+      }
+    rescue
+    end
     zoom = params[:zoom].to_i
 
     @display = 'plaques'
@@ -31,7 +47,7 @@ class OrganisationPlaquesController < ApplicationController
         : @plaques = @organisation.plaques
     end
     respond_to do |format|
-      format.html { render "organisations/show" }
+      format.html { render "organisations/plaques/show" }
       format.json { render json: @plaques }
       format.geojson { render geojson: @plaques, parent: @organisation }
       format.csv {

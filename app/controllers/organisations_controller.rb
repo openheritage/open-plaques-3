@@ -11,7 +11,10 @@ class OrganisationsController < ApplicationController
     respond_to do |format|
       format.html
       format.json { render json: @organisations }
-      format.geojson { render geojson: @organisations }
+      format.geojson {
+        @organisations = Organisation.all.order("name ASC")
+        render geojson: @organisations
+      }
     end
   end
 
@@ -28,40 +31,8 @@ class OrganisationsController < ApplicationController
   end
 
   def show
-    begin
-      if (params[:id]=="oxfordshire_blue_plaques_scheme")
-        params[:id] = "oxfordshire_blue_plaques_board"
-        redirect_to(organisation_path(params[:id])) and return
-      end
-      @organisation = Organisation.find_by_slug!(params[:id])
-    rescue
-      @organisation = Organisation.find(params[:id])
-      redirect_to(organisation_path(@organisation.slug), status: :moved_permanently) and return
-    end
-    @sponsorships = @organisation.sponsorships.paginate(page: params[:page], per_page: 50)
-    @mean = @organisation
-    @zoom = @organisation.zoom
-    begin
-      set_meta_tags open_graph: {
-        title: "Open Plaques Organisation #{@organisation.name}",
-        description: @organisation.description,
-      }
-      @main_photo = @organisation.main_photo
-      set_meta_tags twitter: {
-        title: "Open Plaques Organisation #{@organisation.name}",
-        image: {
-          _: @main_photo ? @main_photo.file_url : view_context.root_url[0...-1] + view_context.image_path("openplaques.png"),
-          width: 100,
-          height: 100,
-        }
-      }
-    rescue
-    end
-    respond_to do |format|
-      format.html
-      format.json { render json: @organisation }
-      format.geojson { render geojson: @organisation }
-    end
+    params[:id] = "oxfordshire_blue_plaques_board" if (params[:id]=="oxfordshire_blue_plaques_scheme")
+    redirect_to(organisation_plaques_path(params[:id])) and return
   end
 
   def new
