@@ -1,5 +1,5 @@
 ActionController::Renderers.add :geojson do |object, options|
-  self.content_type ||= Mime::JSON
+  self.content_type ||= Mime[:json]
   '{}'
   if object.respond_to? :each_with_index
     geojson  = '{"type": "FeatureCollection","features": ['
