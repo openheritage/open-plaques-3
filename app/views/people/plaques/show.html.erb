@@ -1,0 +1,52 @@
+<% content_for(:page_title) {t '.page_title', person: @person.name } %>
+<% content_for(:title) { } %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_person_path(@person)} %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_person_path} %>
+
+<div class="vcard person" typeof="<%= if (@person.person?) then "foaf:Person" else "foaf:Agent" end %> vcard:VCard" about="#person">
+  <div class="card hovercard">
+    <% if @person.main_photo %>
+      <div class="card-background">
+        <%= image_tag(@person.main_photo.thumbnail_url != nil ? @person.main_photo.thumbnail_url : @person.main_photo.file_url, class: 'card-bkimg') %>
+      </div>
+      <div class="useravatar">
+        <%= image_tag(@person.main_photo.thumbnail_url, class: 'card-bkimg') %>
+      </div>
+    <% else %>
+      <div class="card-background-no-photo">
+      </div>
+    <% end %>
+    <div class="card-info">
+      <span class="card-title fn">
+        <%= link_to(@person.full_name, @person) %><br/>
+        <small><%= @person.dates %></small>
+      </span>
+    </div>
+  </div>
+</div>
+
+<% if @person.plaques.size > 0 %>
+  <h2><%= t '.commemorated_on', count: @person.plaques.size %></h2>
+<% else %>
+  <h2><%= t '.not_commemorated'%></h2>
+<% end %>
+
+<% if @person.plaques.count < 3 %>
+  <div class="row">
+    <% @person.plaques.each do |plaque| %>
+      <div class="col-xs-6 col-sm-4 col-md-3"><%= render partial: 'plaques/tile', object: plaque, as: :plaque %></div>
+    <% end %>
+  </div>
+<% elsif @person.plaques.count < 11 %>
+  <div class="row">
+    <% cols = (12 / @person.plaques.count).ceil %>
+    <% cols = [cols,2].max %>
+    <% @person.plaques.each do |plaque| %>
+      <div class="col-xs-6 col-sm-<%= cols %>"><%= render partial: 'plaques/tile', object: plaque, as: :plaque %></div>
+    <% end %>
+  </div>
+<% else %>
+  <div class="card-columns">
+    <%= render partial: 'plaques/tile', collection: @person.plaques, as: :plaque %>
+  </div>
+<% end %>
