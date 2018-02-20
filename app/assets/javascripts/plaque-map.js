@@ -94,7 +94,7 @@ function initmap()
     }
     else
     {
-      let london = L.latLng(51.5428,-0.1678)
+      var london = L.latLng(51.5428,-0.1678);
       map.setView(london, zoom_level);
     }
 
