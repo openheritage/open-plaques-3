@@ -56,6 +56,7 @@ Rails.application.routes.draw do
     match 'plaques/tiles/:zoom/:x/:y' => 'organisation_plaques#show', constraints: { zoom: /\d{2}/, x: /\d+/, y: /\d+/ }, via: [:get]
     match 'plaques/:filter/tiles/:zoom/:x/:y' => 'organisation_plaques#show', id: :filter, constraints: { zoom: /\d{2}/, x: /\d+/, y: /\d+/ }, via: [:get]
     match 'plaques/:filter' => 'organisation_plaques#show', via: [:get]
+    resource :people, controller: :organisation_people, only: :show
   end
 
   scope '/unveilings' do
