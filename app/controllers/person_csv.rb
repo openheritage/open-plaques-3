@@ -6,7 +6,9 @@ class PersonCsv < Julia::Builder
   column :type
   column :born_in
   column :died_in
-  column :age
+  column :age do |person|
+    person.age.to_s.gsub('c. ','')
+  end
   column :sex
   column 'roles' do |person|
     roles = []
