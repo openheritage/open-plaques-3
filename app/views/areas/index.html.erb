@@ -3,8 +3,10 @@
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_country_path(@country)} %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_country_area_path(@country.alpha2)} %>
 
-<% @country.areas.group_by(&:state).each do |state, areas| %>
-  State: <%= state %>
+<% @country.areas.sort { |a,b| a.state.to_s <=> b.state.to_s }.group_by(&:state).each do |state, areas| %>
+  <% if !state.blank? %>
+    <h2>Region: <%= state %></h2>
+  <% end %>
   <div class="card-columns">
     <%= render areas %>
   </div>
