@@ -19,12 +19,4 @@
   <div id="plaque-map" data-latitude="<%= @organisation.latitude %>" data-longitude="<%= @organisation.longitude %>" data-view="all" context="<%= request.path %>"></div>
 <% end %>
 
-<% if @display=='all' %>
-  <%= will_paginate @plaques %>
-  <%= render @plaques %>
-  <%= will_paginate @plaques %>
-<% else %>
-  <%= will_paginate @plaques %>
-  <%= render partial: 'plaques/plaque_row', collection: @plaques, as: :plaque %>
-  <%= will_paginate @plaques %>
-<% end %>
+<%= render partial: 'plaques/tabbed' %>

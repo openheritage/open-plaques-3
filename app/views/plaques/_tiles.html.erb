@@ -1,0 +1,21 @@
+<% if @plaques.count < 3 %>
+  <div id="plaque-tiles" class="row">
+    <% @plaques.each do |plaque| %>
+      <div class="col-xs-6 col-sm-4 col-md-3"><%= render partial: 'plaques/tile', object: plaque, as: :plaque %></div>
+    <% end %>
+  </div>
+<% elsif @plaques.count < 11 %>
+  <div id="plaque-tiles" class="row">
+    <% cols = (12 / @plaques.count).ceil %>
+      <% cols = [cols,2].max %>
+        <% @plaques.each do |plaque| %>
+          <div class="col-xs-6 col-sm-<%= cols %>"><%= render partial: 'plaques/tile', object: plaque, as: :plaque %></div>
+        <% end %>
+  </div>
+<% else %>
+  <div id="plaque-tiles" class="card-columns">
+    <%= will_paginate @plaques if @plaques.respond_to?(:total_pages) %>
+    <%= render partial: 'plaques/tile', collection: @plaques, as: :plaque %>
+    <%= will_paginate @plaques if @plaques.respond_to?(:total_pages) %>
+  </div>
+<% end %>

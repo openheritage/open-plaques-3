@@ -97,22 +97,5 @@
   <h2><%= t '.not_commemorated'%></h2>
 <% end %>
 
-<% if @person.plaques.count < 3 %>
-  <div class="row">
-    <% @person.plaques.each do |plaque| %>
-      <div class="col-xs-6 col-sm-4 col-md-3"><%= render partial: 'plaques/tile', object: plaque, as: :plaque %></div>
-    <% end %>
-  </div>
-<% elsif @person.plaques.count < 11 %>
-  <div class="row">
-    <% cols = (12 / @person.plaques.count).ceil %>
-    <% cols = [cols,2].max %>
-    <% @person.plaques.each do |plaque| %>
-      <div class="col-xs-6 col-sm-<%= cols %>"><%= render partial: 'plaques/tile', object: plaque, as: :plaque %></div>
-    <% end %>
-  </div>
-<% else %>
-  <div class="card-columns">
-    <%= render partial: 'plaques/tile', collection: @person.plaques, as: :plaque %>
-  </div>
-<% end %>
+<% @plaques = @person.plaques %>
+<%= render partial: 'plaques/tabbed' %>

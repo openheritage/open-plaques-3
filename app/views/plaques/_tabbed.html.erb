@@ -1,0 +1,16 @@
+<ul class="nav nav-tabs" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" href="#tiles" role="tab" data-toggle="tab">tiles</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#list" role="tab" data-toggle="tab">list</a>
+  </li>
+</ul>
+<div class="tab-content">
+  <div role="tabpanel" class="tab-pane fade in active show" id="tiles">
+    <%= render partial: 'plaques/tiles' %>
+  </div>
+  <div role="tabpanel" class="tab-pane fade" id="list">
+    <%= render partial: 'plaques/collection' %>
+  </div>
+</div>
