@@ -6,7 +6,34 @@
     <%= link_to(content_tag('span', @organisation.name, lang: @organisation.language.alpha2), @organisation) %>
   <% end %>
 <% end %>
-<% content_for(:page_subhead) { markdown(@organisation.description) } if !@organisation.description.blank? %>
+<% content_for(:page_subhead) do %>
+  <% markdown(@organisation.description) if !@organisation.description.blank? %>
+  <% if @display!='all' %>
+    <%= link_to t('buttons.all'), organisation_path(@organisation) %>
+  <% else %>
+    <strong><%= t 'buttons.all' %></strong>
+  <% end %>
+  <%= t 'buttons.or' %>
+  <% if @display!='unphotographed' %>
+    <%= link_to t('buttons.unphotographed'), organisation_unphotographed_path(@organisation) %>
+  <% else %>
+    <strong><%= t 'buttons.unphotographed' %></strong>
+  <% end %>
+  <% if current_user&.is_admin? %>
+    <%= t 'buttons.or' %>
+    <% if @display!='ungeolocated' %>
+      <%= link_to t('buttons.ungeolocated'), organisation_ungeolocated_path(@organisation) %>
+    <% else %>
+      <strong><%= t 'buttons.ungeolocated' %></strong>
+    <% end %>
+    <%= t 'buttons.or' %>
+    <% if @display!='unconnected' %>
+      <%= link_to t('buttons.unconnected'), organisation_unconnected_path(@organisation) %>
+    <% else %>
+      <strong><%= t 'buttons.unconnected' %></strong>
+    <% end %>
+  <% end %>
+<% end %>
 <% content_for(:admin_menu) { navbar_link_to t('buttons.edit'), edit_organisation_path(@organisation) } %>
 
 <% if !@organisation.website.blank? %>
@@ -15,8 +42,10 @@
   </p>
 <% end %>
 
-<% if @organisation.geolocated? %>
-  <div id="plaque-map" data-latitude="<%= @organisation.latitude %>" data-longitude="<%= @organisation.longitude %>" data-view="all" context="<%= request.path %>"></div>
+<% if @display!='ungeolocated' %>
+  <% if @organisation.geolocated? %>
+    <div id="plaque-map" data-latitude="<%= @organisation.latitude %>" data-longitude="<%= @organisation.longitude %>" data-view="all" context="<%= request.path %>"></div>
+  <% end %>
 <% end %>
 
 <%= render partial: 'plaques/tabbed' %>

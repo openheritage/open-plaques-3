@@ -18,7 +18,6 @@
   <% else %>
     <strong><%= t 'buttons.unphotographed' %></strong>
   <% end %>
-
   <% if current_user&.is_admin? %>
     <%= t 'buttons.or' %>
     <% if @display!='ungeolocated' %>
@@ -26,12 +25,18 @@
     <% else %>
       <strong><%= t 'buttons.ungeolocated' %></strong>
     <% end %>
+    <%= t 'buttons.or' %>
+    <% if @display!='unconnected' %>
+      <%= link_to t('buttons.unconnected'), area_unconnected_path(@area) %>
+    <% else %>
+      <strong><%= t 'buttons.unconnected' %></strong>
+    <% end %>
   <% end %>
 </div>
 
 <% if @display!='ungeolocated' %>
   <% if @area.geolocated? %>
-    <div id="plaque-map" class="full" data-latitude="<%= @area.latitude %>" data-longitude="<%= @area.longitude %>" data-view="<%= @display %>"></div>
+    <div id="plaque-map" class="full" data-latitude="<%= @area.latitude %>" data-longitude="<%= @area.longitude %>" data-view="all" context="<%= request.path %>"></div>
   <% else %>
     <%= form_for(@area, url: country_area_path(@area.country, @area)) do |f| %>
       <div class="edit_lat_long panel clearfix">

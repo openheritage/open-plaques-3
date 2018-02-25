@@ -40,6 +40,8 @@ Rails.application.routes.draw do
     resource :plaques, controller: :country_plaques, only: :show
     resources :areas do
       resource :plaques, controller: :area_plaques, only: :show
+      match 'plaques/tiles/:zoom/:x/:y' => 'area_plaques#show', constraints: { zoom: /\d{2}/, x: /\d+/, y: /\d+/ }, via: [:get]
+      match 'plaques/:filter/tiles/:zoom/:x/:y' => 'area_plaques#show', id: :filter, constraints: { zoom: /\d{2}/, x: /\d+/, y: /\d+/ }, via: [:get]
       match 'plaques/:filter' => 'area_plaques#show', via: [:get]
     end
   end
@@ -100,6 +102,8 @@ Rails.application.routes.draw do
   resources :colours, only: [:index, :new, :create]
   resources :series do
     resource :plaques, controller: :series_plaques, only: :show
+    match 'plaques/tiles/:zoom/:x/:y' => 'series_plaques#show', constraints: { zoom: /\d{2}/, x: /\d+/, y: /\d+/ }, via: [:get]
+    match 'plaques/:filter/tiles/:zoom/:x/:y' => 'series_plaques#show', id: :filter, constraints: { zoom: /\d{2}/, x: /\d+/, y: /\d+/ }, via: [:get]
     match 'plaques/tiles/:zoom/:x/:y' => 'series_plaques#show', constraints: { zoom: /\d{2}/, x: /\d+/, y: /\d+/ }, via: [:get]
   end
   get 'series/:id/:series_ref', to: 'series#show'

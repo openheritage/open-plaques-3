@@ -106,6 +106,7 @@ en-GB:
     save: save
     unphotographed: unphotographed
     ungeolocated: ungeolocated
+    unconnected: unconnected
     or: or
 
   data_about_thing_as: Data available about this as

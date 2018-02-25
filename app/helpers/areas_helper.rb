@@ -28,4 +28,8 @@ module AreasHelper
     url_for(options.merge(controller: :area_plaques, action: :show, country_id: area.country.alpha2, area_id: area.slug, filter: :ungeolocated))
   end
 
+  def area_unconnected_path(area, options = {})
+    url_for(options.merge(controller: :area_plaques, action: :show, country_id: area.country.alpha2, area_id: area.slug, filter: :unconnected))
+  end
+
 end

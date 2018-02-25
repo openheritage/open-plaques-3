@@ -336,6 +336,8 @@ class Plaque < ApplicationRecord
 #    Rails.cache.fetch(tile, expires_in: 5.minutes) do
       if options == "unphotographed"
         self.unphotographed.select(:id, :inscription, :latitude, :longitude, :is_accurate_geolocation).where(latitude: latitude, longitude: longitude)
+      elsif options == "unconnected"
+        self.unconnected.select(:id, :inscription, :latitude, :longitude, :is_accurate_geolocation).where(latitude: latitude, longitude: longitude)
       else
         self.select(:id, :inscription, :latitude, :longitude, :is_accurate_geolocation).where(latitude: latitude, longitude: longitude)
       end
