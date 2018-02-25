@@ -105,12 +105,12 @@ class Area < ApplicationRecord
     random_plaque ? random_plaque.main_photo : nil
   end
 
-  def us_state
+  def state
     matches = /(.*), ([A-Z][A-Z]\z)/.match(name)
     matches[2] if matches
   end
 
-  def us_town
+  def town
     matches = /(.*), ([A-Z][A-Z]\z)/.match(name)
     matches[1] if matches
   end
