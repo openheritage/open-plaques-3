@@ -49,7 +49,7 @@
 
 <% if @plaques.count > 0 %>
   <h2><%= pluralize @plaques.count,'plaque' %>  matching "<%= @original_phrase %>"</h2>
-  <%= render partial: 'plaques/plaque_row', collection: @plaques, as: :plaque %>
+  <%= render partial: 'plaques/row', collection: @plaques, as: :plaque %>
 <% end %>
 
 <% if params[:from] && params[:from] == "submission" %>

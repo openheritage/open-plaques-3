@@ -1,0 +1,11 @@
+<%= link_to(person) do %>
+  <div class="card card-inverse vcard person" typeof="<%= if (person.person?) then "foaf:Person" else "foaf:Agent" end %> vcard:VCard" about="#person" style="min-height: 8rem; background-color: #999;">
+    <%= image_tag(person.main_photo.thumbnail_url, {class: 'card-img w-100'}) if person.main_photo&.thumbnail_url %>
+    <div class="card-info">
+      <span class="card-title fn">
+        <%= person.full_name %><br/>
+        <small><%= person.dates %></small>
+      </span>
+    </div>
+  </div>
+<% end %>

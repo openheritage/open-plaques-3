@@ -3,8 +3,4 @@
 <% content_for(:page_subhead) { @display } %>
 <% content_for(:admin_menu) { navbar_link_to t('buttons.add'), new_person_path } %>
 
-<%= will_paginate @people if @people.respond_to?(:total_pages) %>
-<div class="card-columns">
-  <%= render @people %>
-</div>
-<%= will_paginate @people if @people.respond_to?(:total_pages) %>
+<%= render partial: 'people/tiles' %>

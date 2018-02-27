@@ -1,0 +1,21 @@
+<% if @people.count < 3 %>
+  <div id="person-tiles" class="row">
+    <% @people.each do |person| %>
+      <div class="col-xs-6 col-sm-4 col-md-3"><%= render partial: 'people/tile', object: person, as: :person %></div>
+    <% end %>
+  </div>
+<% elsif @people.count < 11 %>
+  <div id="person-tiles" class="row">
+    <% cols = (12 / @people.count).ceil %>
+      <% cols = [cols,2].max %>
+        <% @people.each do |person| %>
+          <div class="col-xs-6 col-sm-<%= cols %>"><%= render partial: 'people/tile', object: person, as: :person %></div>
+        <% end %>
+  </div>
+<% else %>
+  <div id="person-tiles" class="card-columns">
+    <%= will_paginate @people if @people.respond_to?(:total_pages) %>
+    <%= render partial: 'people/tile', collection: @people, as: :person %>
+    <%= will_paginate @people if @people.respond_to?(:total_pages) %>
+  </div>
+<% end %>

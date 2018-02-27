@@ -1,5 +1,5 @@
 <% if sponsorship.plaque != nil %>
-  <%= render partial: 'plaques/plaque_row', object: sponsorship.plaque, as: :plaque %>
+  <%= render partial: 'plaques/row', object: sponsorship.plaque, as: :plaque %>
 <% else %>
   <div class="row">*** broken sponsorship: <%= sponsorship.id %></div>
 <% end %>

@@ -1,0 +1,25 @@
+<div class="row card card-inverse vcard personx" typeof="<%= if (person.person?) then "foaf:Person" else "foaf:Agent" end %> vcard:VCard" about="#person">
+  <div class="col-xs-12 col-sm-4" style="min-height: 8rem; background-color: #999;">
+    <%= link_to(person) do %>
+      <%= image_tag(person.main_photo.thumbnail_url, {class: 'card-img w-100'}) if person.main_photo&.thumbnail_url %>
+    <% end %>
+  </div>
+  <div class="col-xs-12 col-sm-4">
+    <div class="card-info">
+      <%= link_to(person) do %>
+      <h2 class="card-title fn">
+        <%= person.full_name %> <%= person.dates %></small>
+      </h2>
+      <% end %>
+      <%= icon('user') if person.person?%>
+      <%= icon('paw') if person.animal? %>
+      <%= icon('users') if person.group? %>
+      <%= icon('building') if person.place? %>
+      <%= icon('map-marker') if person.thing? %>
+      <%= roles_list(person) %>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-4">
+    <%= person.dbpedia_abstract %>
+  </div>
+</div>
