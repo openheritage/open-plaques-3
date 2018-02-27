@@ -24,7 +24,7 @@ class Area < ApplicationRecord
 
   delegate :alpha2, to: :country, prefix: true
 
-  before_validation :make_slug_not_war, :find_centre
+  before_validation :make_slug_not_war #, :find_centre
   validates_presence_of :name, :slug, :country_id
   validates_uniqueness_of :slug, scope: :country_id
   default_scope { order('name ASC') }
@@ -35,6 +35,7 @@ class Area < ApplicationRecord
   include PlaquesHelper
 
   def find_centre
+    puts("** #{latitude} #{longitude}")
     return nil unless geolocated?
     @mean = find_mean(plaques.geolocated)
     self.latitude = @mean.latitude

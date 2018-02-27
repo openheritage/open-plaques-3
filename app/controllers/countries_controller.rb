@@ -48,6 +48,7 @@ class CountriesController < ApplicationController
   def show
     begin
       @country = Country.find_by_alpha2!(params[:id])
+      @areas = @country.areas #.select(:id,:name,:country_id,:slug,:plaques_count)
     rescue
       @country = Country.find(params[:id])
       redirect_to(country_url(@country), status: :moved_permanently) and return

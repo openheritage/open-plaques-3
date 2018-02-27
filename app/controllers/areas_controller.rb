@@ -73,17 +73,14 @@ class AreasController < ApplicationController
     if (params[:streetview_url])
       point = help.geolocation_from params[:streetview_url]
       if !point.latitude.blank? && !point.longitude.blank?
-        @area.latitude = point.latitude
-        @area.longitude = point.longitude
+        params[:area][:latitude] = point.latitude.to_s
+        params[:area][:longitude] = point.longitude.to_s
       end
     end
-    if @area.update_attributes(area_params)
+    if @area.update!(area_params)
       flash[:notice] = 'Area was successfully updated.'
-      redirect_to country_path(@country)
-    else
-      @countries = Country.all.select(:id, :name)
-      render "edit"
     end
+    redirect_back(fallback_location: root_path)
   end
 
   def help
@@ -116,7 +113,8 @@ class AreasController < ApplicationController
         :name,
         :slug,
         :country_id,
-        :latitude,:longitude,
+        :latitude,
+        :longitude,
         :streetview_url,
         :country_id)
 	   end
