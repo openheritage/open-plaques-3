@@ -7,7 +7,8 @@
       <%= series.description %>
     </p>
   <div class="card-block">
-    <%= render partial: 'plaques/tile', collection: series.plaques.photographed.limit(5), as: :plaque %>
+    <% @plaques = series.plaques.photographed.limit(5) %>
+    <%= render partial: 'plaques/tiles' %>
   </div>
   </div>
 </div>

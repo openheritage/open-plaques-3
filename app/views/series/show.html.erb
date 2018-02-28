@@ -9,6 +9,4 @@
 <% if @series.geolocated? %>
   <div class="row" id="plaque-map" data-latitude="<%= @series.latitude %>" data-longitude="<%= @series.longitude %>" data-view="all" context="<%= request.path %>"></div>
 <% end %>
-<%= will_paginate @plaques %>
-<%= render partial: 'plaques/row', collection: @plaques, as: :plaque %>
-<%= will_paginate @plaques %>
+<%= render partial: 'plaques/tabbed' %>
