@@ -14,7 +14,7 @@
             <%= image_tag('NoPhotoSqr.png', {class: 'card-img-top img-responsive w-100'}) %>
             <div class="card-img-overlay">
                 <% unless photo && photo.thumbnail_url %>
-                    <h7 class="card-title"><%= plaque.inscription %></h7>
+                    <h7 class="card-title"><%= plaque.inscription.truncate(90) %></h7>
                 <% end %>
             </div>
         <% end %>
