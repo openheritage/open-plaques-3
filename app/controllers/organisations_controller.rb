@@ -6,7 +6,7 @@ class OrganisationsController < ApplicationController
   before_action :find_languages, only: [:edit, :create]
 
   def index
-    @organisations = Organisation.all.select(:name, :slug, :sponsorships_count, :language_id).order("name ASC")
+    @organisations = Organisation.all.select(:name, :slug, :sponsorships_count, :language_id).order("name ASC").paginate(page: params[:page], per_page: 50)
     @top_10 = Organisation.all.select(:name, :slug, :sponsorships_count).order("sponsorships_count DESC").limit(10)
     respond_to do |format|
       format.html

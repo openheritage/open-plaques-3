@@ -5,3 +5,10 @@ Disallow: *.geojson
 Disallow: *.json
 Disallow: *.kml
 Disallow: *.xml
+Disallow: /plaques/*/*
+Disallow: /people/*/plaques
+Disallow: /photos/*
+Disallow: /photographers/*
+Disallow: /roles/*
+Disallow: /verbs
+Disallow: /verbs/*

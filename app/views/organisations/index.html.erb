@@ -11,9 +11,11 @@
 </div>
 
 <h2>In alphabetical order</h2>
-<div class="card-columns">
+<%= will_paginate @organisations if @organisations.respond_to?(:total_pages) %>
+  <div id="organisation-tiles" class="card-columns">
   <%= render @organisations %>
 </div>
+<%= will_paginate @organisations if @organisations.respond_to?(:total_pages) %>
 
 <script>
   window.onload = function ()
