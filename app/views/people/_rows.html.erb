@@ -1,5 +1,5 @@
+<%= will_paginate @people if @people.respond_to?(:total_pages) %>
 <div id="plaque-collection">
-  <%= will_paginate @people if @people.respond_to?(:total_pages) %>
   <%= render partial: 'people/row', collection: @people, as: :person %>
-  <%= will_paginate @people if @people.respond_to?(:total_pages) %>
 </div>
+<%= will_paginate @people if @people.respond_to?(:total_pages) %>

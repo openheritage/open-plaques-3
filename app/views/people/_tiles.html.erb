@@ -13,9 +13,9 @@
         <% end %>
   </div>
 <% else %>
+  <%= will_paginate @people if @people.respond_to?(:total_pages) %>
   <div id="person-tiles" class="card-columns">
-    <%= will_paginate @people if @people.respond_to?(:total_pages) %>
     <%= render partial: 'people/tile', collection: @people, as: :person %>
-    <%= will_paginate @people if @people.respond_to?(:total_pages) %>
   </div>
+  <%= will_paginate @people if @people.respond_to?(:total_pages) %>
 <% end %>

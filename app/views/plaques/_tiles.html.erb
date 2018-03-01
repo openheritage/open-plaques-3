@@ -13,9 +13,9 @@
         <% end %>
   </div>
 <% else %>
+  <%= will_paginate @plaques if @plaques.respond_to?(:total_pages) %>
   <div id="plaque-tiles" class="card-columns">
-    <%= will_paginate @plaques if @plaques.respond_to?(:total_pages) %>
     <%= render partial: 'plaques/tile', collection: @plaques, as: :plaque %>
-    <%= will_paginate @plaques if @plaques.respond_to?(:total_pages) %>
   </div>
+  <%= will_paginate @plaques if @plaques.respond_to?(:total_pages) %>
 <% end %>
