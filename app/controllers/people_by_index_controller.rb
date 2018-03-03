@@ -5,9 +5,11 @@ class PeopleByIndexController < ApplicationController
     if @index =~ /^[A-Z]$/
       redirect_to people_by_index_path(@index.downcase), status: :moved_permanently
     elsif @index =~ /^[a-z]$/
+      # roles used by person.full_name
       @people = Person
         .where(surname_starts_with: @index)
         .where('personal_connections_count > 0')
+        .paginate(page: params[:page], per_page: 50)
         .preload(:personal_roles, :roles, :main_photo)
         .to_a.sort! { |a,b| a.surname.downcase <=> b.surname.downcase }
       respond_to do |format|
