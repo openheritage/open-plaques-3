@@ -84,11 +84,6 @@ Rails.application.routes.draw do
 
   scope '/people' do
     resources 'a-z', controller: :people_by_index, as: 'people_by_index', only: :show
-    resources :born_on, controller: :people_born_on, as: 'people_born_on', only: [:index, :show]
-    resources :died_on, controller: :people_died_on, as: 'people_died_on', only: [:index, :show]
-    resources :born_in, controller: :people_born_on, as: 'people_born_in', only: [:index, :show]
-    resources :died_in, controller: :people_died_on, as: 'people_died_in', only: [:index, :show]
-    resources :alive_in, controller: :people_alive_in, as: 'people_alive_in', only: [:index, :show]
   end
   resources :people do
     collection do
@@ -119,9 +114,7 @@ Rails.application.routes.draw do
   resources :pages
   resource :about, controller: :pages, id: 'about', only: :show
   resource :contact, controller: :pages, id: 'contact', only: :show
-#  scope '/about' do
   resource :data, controller: :pages, id: 'data', as: 'about_the_data', only: :show
-#  end
   resource :contribute, controller: :pages, id: 'contribute', as: 'contribute', only: :show
   resource :explore, controller: :explore, only: :show
 

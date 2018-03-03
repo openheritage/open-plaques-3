@@ -290,28 +290,10 @@ en-GB:
         one: Commemorated on %{count} plaque
         other: Commemorated on %{count} plaques
       not_commemorated: Is not commemorated on any plaques in our database (yet)
-    alive_in:
-      show:
-        page_title: Commemorated people who were alive in %{year}
-        page_heading: Commemorated people who were alive in %{year}
-    born_on:
-      index:
-        page_title: Commemorated people who were born in
-        page_heading: Commemorated people who were born in
-      show:
-        page_title: Commemorated people who were born in %{year}
-        page_heading: Commemorated people who were born in %{year}
     by_index:
       show:
         page_title: Subjects of historical plaques - %{letter}
         page_heading: Subjects of historical plaques - %{letter}
-    died_on:
-      index:
-        page_title: Commemorated people who died in
-        page_heading: Commemorated people who died in
-      show:
-        page_title: Commemorated people who died in %{year}
-        page_heading: Commemorated people who died in %{year}
 
   personal_connections:
     edit:

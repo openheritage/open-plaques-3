@@ -29,12 +29,10 @@ class RolesController < ApplicationController
   end
 
   def show
-#    @role = Role.includes(personal_roles: :person).find_by_slug(params[:id])
     @role = Role.find_by_slug(params[:id])
     @role = Role.new(name: params[:id]) if !@role #dummy role
     @personal_roles = @role.personal_roles
       .paginate(page: params[:page], per_page: 20)
-#      .preload(:people)
     @pluralized_role = @role.pluralize
     respond_to do |format|
       format.html
