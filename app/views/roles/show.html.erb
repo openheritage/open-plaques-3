@@ -7,7 +7,7 @@
   <%= icon('map-marker') if @role.thing? %>
   <%= @role.pluralize %>
   <span class="badge badge-secondary">
-    <%= @role.personal_roles_count %>
+    <%= @personal_roles.total_entries %>
   </span>
 <% end %>
 <% content_for(:page_subhead) do %>
@@ -16,50 +16,26 @@
 <% end %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_role_path(@role)} if @role.id %>
 
-<p><%= @role.description %>
-  - <%= link_to(icon('external-link') + "DbPedia", @role.dbpedia_uri, target: '_blank') unless @role.dbpedia_uri.blank? %>
-</p>
+<% if @role.description %>
+  <blockquote class="quote-card blue-card">
+    <p><%= @role.description %></p>
+    <cite><%= link_to(icon('external-link') + "DbPedia", @role.dbpedia_uri, target: '_blank') unless @role.dbpedia_uri.blank? %></cite>
+  </blockquote>
+<% end %>
 <%= link_to(icon('external-link') + "Wikidata", @role.wikidata_url, target: '_blank') unless @role.wikidata_url.blank? %>
 <%= link_to(icon('external-link') + "Wikipedia", @role.wikipedia_url, target: '_blank') unless @role.wikipedia_url.blank? %>
 
-<% if @role.personal_roles.count < 3 %>
-  <div class="row">
-    <% @role.personal_roles.each do |personal_role| %>
-      <div class="col-xs-6 col-sm-4 col-md-3">
-        <%= render personal_role %>
-      </div>
-    <% end %>
-  </div>
-<% elsif @role.personal_roles.count < 11 %>
-  <div class="row">
-    <% cols = (12 / @role.personal_roles.count).ceil %>
-    <% cols = [cols,2].max %>
-    <% @role.personal_roles.each do |personal_role| %>
-      <div class="col-xs-6 col-sm-<%= cols %>">
-        <%= render personal_role %>
-      </div>
-    <% end %>
-  </div>
-<% else %>
-  <div class="card-columns">
-    <%= render @role.personal_roles %>
-  </div>
-<% end %>
+<%= render partial:'personal_roles/tiles' %>
 
 <% if @role.related_roles.size > 0 %>
   <div class="row">
     <h2><%= t '.related_roles'%></h2>
   </div>
-  <% @role.related_roles.each do |related_role| %>
-    <div class="row">
+  <div class="card-columns">
+    <% @role.related_roles.each do |related_role| %>
       <%= link_to related_role do %>
         <%= render related_role %>
       <% end %>
-    </div>
-    <div class="container-fluid">
-      <div class="card-columns">
-        <%= render related_role.personal_roles %>
-      </div>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
 <% end %>

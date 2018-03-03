@@ -1,0 +1,25 @@
+<% if @personal_roles.count < 3 %>
+  <div class="row">
+    <% @personal_roles.each do |personal_role| %>
+      <div class="col-xs-6 col-sm-4 col-md-3">
+        <%= render personal_role %>
+      </div>
+    <% end %>
+  </div>
+<% elsif @personal_roles.count < 11 %>
+  <div class="row">
+    <% cols = (12 / @personal_roles.count).ceil %>
+    <% cols = [cols,2].max %>
+    <% @personal_roles.each do |personal_role| %>
+      <div class="col-xs-6 col-sm-<%= cols %>">
+        <%= render personal_role %>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <%= will_paginate @personal_roles if @personal_roles.respond_to?(:total_pages) %>
+  <div class="card-columns">
+    <%= render @personal_roles %>
+  </div>
+  <%= will_paginate @personal_roles if @personal_roles.respond_to?(:total_pages) %>
+<% end %>
