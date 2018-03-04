@@ -7,71 +7,54 @@
   <% if plaque %>
 
   <% photo = plaque.main_photo %>
-  <div class="row card">
-    <% if photo&.thumbnail_url %>
-      <div class="col-xs-12 col-sm-4">
+  <div class="row">
+    <div class="col-xs-12 col-sm-4">
+      <% if photo&.thumbnail_url %>
         <%= link_to plaque_path(plaque) do %>
           <%= image_tag(photo.thumbnail_url, { class: 'card-img-top img-thumbnail w-100' }) %>
         <% end %>
-      </div>
-    <% else %>
-      <div class="col-xs-4 col-sm-4">
+      <% else %>
         <%= link_to plaque_path(plaque) do %>
           <%= image_tag("NoPhotoSqr.png", { class: 'card-img-top img-thumbnail w-100' }) %>
         <% end %>
-      </div>
-    <% end %>
-    <% if photo == nil %>
-      <div class="col-xs-8 col-sm-8">
-    <% else %>
-      <div class="col-xs-12 col-sm-8">
-    <% end %>
-    <h7 class="card-title">
-      <% if controller.controller_name.eql?('series') && !plaque.series_ref.to_s.empty? %>
-        <span class="tag tag-success">#<%= plaque.series_ref %> </span>
       <% end %>
-      <%= simple_inscription(plaque) %>
-    </h7>
-    <% if plaque.foreign? && plaque.inscription_in_english %>
-      <p id="inscription-in-english" class="card-text"><small><%= plaque.inscription_in_english %></small></p>
-    <% end %>
-    <p class="card-text">
-      <small>
-        <%= plaque.address %>, <%= link_to(plaque.area.name, area_path(plaque.area)) if plaque.area %>, <%= plaque.area.country.name if plaque.area %>
-        <%= icon('compass') if plaque.geolocated? %>
-        <% if @person %> where <%= @person.personal_pronoun %> <%= verbs(@person,plaque).to_sentence.html_safe %><% end %>
-        <% '. As far as we know, it is not currently on display.' if !plaque.is_current %>
-      </small>
-    </p>
-    <% if !controller.controller_name.eql?('people') && plaque.people.count > 0 %>
-      <style media="screen" type="text/css">
-        .subjects .card-columns .card-info .card-title {
-          font-size: 12px;
-        }
-      </style>
-      <h5>Subjects</h5>
-      <div class="subjects">
-        <% if plaque.people.count < 3 %>
-          <div class="row">
-            <% plaque.people.each do |person| %>
-              <div class="col-xs-6 col-sm-4 col-md-3"><%= render person %></div>
-            <% end %>
-          </div>
-        <% elsif plaque.people.count < 11 %>
-          <div class="row">
-            <% cols = (12 / plaque.people.count).ceil %>
-            <% cols = [cols,2].max %>
-            <% plaque.people.each do |person| %>
-              <div class="col-xs-6 col-sm-<%= cols %>"><%= render person %></div>
-            <% end %>
-          </div>
-        <% else %>
-          <div class="card-columns">
-            <%= render plaque.people %>
-          </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-8">
+      <h7 class="card-title">
+        <% if !plaque.series_ref.to_s.empty? %>
+          <span class="tag tag-success">#<%= plaque.series_ref %> </span>
         <% end %>
+        <%= simple_inscription(plaque) %>
+      </h7>
+      <% if plaque.foreign? && plaque.inscription_in_english %>
+        <p id="inscription-in-english" class="card-text"><small><%= plaque.inscription_in_english %></small></p>
+      <% end %>
+      <p class="card-text">
+        <small>
+          <%= plaque.address %>, <%= link_to(plaque.area.name, area_path(plaque.area)) if plaque.area %>, <%= plaque.area.country.name if plaque.area %>
+          <%= icon('compass') if plaque.geolocated? %>
+          <% if @person %> where <%= @person.personal_pronoun %> <%= verbs(@person,plaque).to_sentence.html_safe %><% end %>
+          <% '. As far as we know, it is not currently on display.' if !plaque.is_current %>
+        </small>
+      </p>
+      <% if !controller.controller_name.eql?('people') && plaque.people.count > 0 %>
+        <style media="screen" type="text/css">
+          .subjects .card-columns .card-info .card-title {
+            font-size: 12px;
+          }
+        </style>
+        <h5>Subjects</h5>
+        <div class="container">
+        <% @people = plaque.people %>
+        <%= will_paginate @people if @people.respond_to?(:total_pages) %>
+        <div id="person-tiles" class="card-columns">
+          <%= render partial: 'people/tile', collection: @people, as: :person %>
+        </div>
+        <%= will_paginate @people if @people.respond_to?(:total_pages) %>
       </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
 </div>
 
