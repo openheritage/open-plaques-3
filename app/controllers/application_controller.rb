@@ -10,14 +10,14 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
-  around_action :global_request_logging
+  around_action :bot_blocker
   before_action :set_locale, :set_global_meta_tags
 
   def authenticate_admin!
     raise UnAuthorised, "NotAuthorised" unless current_user.try(:is_admin?)
   end
 
-  def global_request_logging
+  def bot_blocker
     is_a_bot = request.env["HTTP_USER_AGENT"]&.downcase&.include?('bot') ||
       request.env["HTTP_USER_AGENT"]&.downcase&.include?('spider') ||
       request.env["HTTP_USER_AGENT"]&.downcase&.include?('bingpreview') ||
@@ -35,10 +35,9 @@ class ApplicationController < ActionController::Base
       /\/verbs/.match?(request.path) ||
       /\/todo/.match?(request.path) ||
       /\/series/.match?(request.path) ||
-      /\/photos/.match?(request.path) ) {
+      /\/photos/.match?(request.path) )
         puts "BLOCKED: #{is_a_bot ? 'bot' : 'not-bot'} #{request.format} #{request.path} #{request.headers['HTTP_USER_AGENT']}"
         render json: {error: "no-bots"}.to_json, status: 406 and return
-      }
     end
     begin
       yield
