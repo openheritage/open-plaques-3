@@ -35,8 +35,10 @@ class ApplicationController < ActionController::Base
       /\/verbs/.match?(request.path) ||
       /\/todo/.match?(request.path) ||
       /\/series/.match?(request.path) ||
-      /\/photos/.match?(request.path) )
+      /\/photos/.match?(request.path) ) {
+        puts "BLOCKED: #{is_a_bot ? 'bot' : 'not-bot'} #{request.format} #{request.path} #{request.headers['HTTP_USER_AGENT']}"
         render json: {error: "no-bots"}.to_json, status: 406 and return
+      }
     end
     begin
       yield
