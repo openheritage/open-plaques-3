@@ -97,6 +97,7 @@ function initmap()
       var london = L.latLng(51.5428,-0.1678);
       map.setView(london, zoom_level);
     }
+    map.setMinZoom(13);
 
     clusterer = new L.MarkerClusterGroup(
     {

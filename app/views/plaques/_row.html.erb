@@ -1,62 +1,55 @@
-<% if plaque %>
-  <% begin %>
-    <% if plaque.inscription %><% end %>
-  <% rescue %>
-    <% plaque = plaque.plaque %>
-  <% end %>
-  <% if plaque %>
+<% begin %>
+  <% if plaque&.inscription %><% end %>
+<% rescue %>
+  <% plaque = plaque.plaque %>
+<% end %>
 
-  <% photo = plaque.main_photo %>
-  <div class="row">
-    <div class="col-xs-12 col-sm-4">
+<% photo = plaque.main_photo %>
+<div class="row">
+  <div class="col-xs-12 col-sm-4">
+    <%= link_to plaque_path(plaque) do %>
       <% if photo&.thumbnail_url %>
-        <%= link_to plaque_path(plaque) do %>
-          <%= image_tag(photo.thumbnail_url, { class: 'card-img-top img-thumbnail w-100' }) %>
-        <% end %>
+        <%= image_tag(photo.thumbnail_url, { class: 'card-img-top img-thumbnail w-100' }) %>
       <% else %>
-        <%= link_to plaque_path(plaque) do %>
-          <%= image_tag("NoPhotoSqr.png", { class: 'card-img-top img-thumbnail w-100' }) %>
-        <% end %>
+        <%= image_tag("NoPhotoSqr.png", { class: 'card-img-top img-thumbnail w-100' }) %>
       <% end %>
-    </div>
+    <% end %>
+  </div>
 
-    <div class="col-xs-12 col-sm-8">
-      <h7 class="card-title">
-        <% if !plaque.series_ref.to_s.empty? %>
-          <span class="tag tag-success">#<%= plaque.series_ref %> </span>
-        <% end %>
-        <%= simple_inscription(plaque) %>
-      </h7>
-      <% if plaque.foreign? && plaque.inscription_in_english %>
-        <p id="inscription-in-english" class="card-text"><small><%= plaque.inscription_in_english %></small></p>
+  <div class="col-xs-12 col-sm-8">
+    <h5 class="card-title">
+      <% if !plaque.series_ref.to_s.empty? %>
+        <%= plaque.series.name  %>
+        <span class="tag tag-success">#<%= plaque.series_ref %></span>
       <% end %>
-      <p class="card-text">
-        <small>
-          <%= plaque.address %>, <%= link_to(plaque.area.name, area_path(plaque.area)) if plaque.area %>, <%= plaque.area.country.name if plaque.area %>
-          <%= icon('compass') if plaque.geolocated? %>
-          <% if @person %> where <%= @person.personal_pronoun %> <%= verbs(@person,plaque).to_sentence.html_safe %><% end %>
-          <% '. As far as we know, it is not currently on display.' if !plaque.is_current %>
-        </small>
-      </p>
-      <% if !controller.controller_name.eql?('people') && plaque.people.count > 0 %>
-        <style media="screen" type="text/css">
-          .subjects .card-columns .card-info .card-title {
-            font-size: 12px;
-          }
-        </style>
-        <h5>Subjects</h5>
-        <div class="container">
-        <% @people = plaque.people %>
-        <%= will_paginate @people if @people.respond_to?(:total_pages) %>
-        <div id="person-tiles" class="card-columns">
-          <%= render partial: 'people/tile', collection: @people, as: :person %>
-        </div>
-        <%= will_paginate @people if @people.respond_to?(:total_pages) %>
+    </h5>
+    <p><%= simple_inscription(plaque) %></p>
+    <% if plaque.foreign? && plaque.inscription_in_english %>
+      <p id="inscription-in-english" class="card-text"><small><%= plaque.inscription_in_english %></small></p>
+    <% end %>
+    <p class="card-text">
+      <small>
+        <%= plaque.address %>, <%= link_to(plaque.area.name, area_path(plaque.area)) if plaque.area %>, <%= plaque.area.country.name if plaque.area %>
+        <%= icon('compass') if plaque.geolocated? %>
+        <% if @person %> where <%= @person.personal_pronoun %> <%= verbs(@person,plaque).to_sentence.html_safe %><% end %>
+        <% '. As far as we know, it is not currently on display.' if !plaque.is_current %>
+      </small>
+    </p>
+    <% if !controller.controller_name.eql?('people') && plaque.people.count > 0 %>
+      <style media="screen" type="text/css">
+        .subjects .card-columns .card-info .card-title {
+          font-size: 12px;
+        }
+      </style>
+      <h5>Subjects</h5>
+      <div class="container">
+      <% @people = plaque.people %>
+      <%= will_paginate @people if @people.respond_to?(:total_pages) %>
+      <div id="person-tiles" class="card-columns">
+        <%= render partial: 'people/tile', collection: @people, as: :person %>
       </div>
-      <% end %>
+      <%= will_paginate @people if @people.respond_to?(:total_pages) %>
     </div>
+    <% end %>
   </div>
 </div>
-
-<% end %>
-<% end %>
