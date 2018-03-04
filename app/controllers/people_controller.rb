@@ -49,6 +49,26 @@ class PeopleController < ApplicationController
     else
       redirect_to(controller: :people, action: "index", filter: params[:id]) and return
     end
+    begin
+      set_meta_tags open_graph: {
+        type: :website,
+        url: url_for(:only_path=>false),
+        image: @person.main_photo ? @person.main_photo.file_url : view_context.root_url[0...-1] + view_context.image_path("openplaques.png"),
+        title: "Historical plaques about #{@person.full_name}",
+        description: @person.full_name,
+      }
+      set_meta_tags twitter: {
+        card: "summary_large_image",
+        site: "@openplaques",
+        title: "Historical plaques about #{@person.full_name}",
+        image: {
+          _: @person.main_photo ? @person.main_photo.file_url : view_context.root_url[0...-1] + view_context.image_path("openplaques.png"),
+          width: 100,
+          height: 100,
+        }
+      }
+    rescue
+    end
     respond_to do |format|
       format.html
       format.json { render json: @person }
