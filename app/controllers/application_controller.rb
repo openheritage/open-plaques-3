@@ -20,8 +20,8 @@ class ApplicationController < ActionController::Base
   def global_request_logging
     is_a_bot = request.env["HTTP_USER_AGENT"]&.downcase&.include?('bot') ||
       request.env["HTTP_USER_AGENT"]&.downcase&.include?('spider') ||
-      request.env["HTTP_USER_AGENT"]&.downcase&.include?('BingPreview') ||
-      request.env["HTTP_USER_AGENT"]&.downcase&.include?('BUbiNG') ||
+      request.env["HTTP_USER_AGENT"]&.downcase&.include?('bingpreview') ||
+      request.env["HTTP_USER_AGENT"]&.downcase&.include?('bubing') ||
       request.env["HTTP_USER_AGENT"]&.downcase&.include?('slurp')
     is_a_data_request = ['application/json', 'application/xml', 'application/kml'].include?(request.format)
     puts "USERAGENT: #{is_a_bot ? 'bot' : 'not-bot'} #{request.format} #{request.path} #{request.headers['HTTP_USER_AGENT']}"
