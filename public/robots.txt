@@ -27,3 +27,7 @@ Disallow: /series/*
 Disallow: /people/*/plaques
 Disallow: /photos
 Disallow: /photos/*
+User-agent: SemrushBot
+Disallow: /
+User-agent: SemrushBot-SA
+Disallow: /

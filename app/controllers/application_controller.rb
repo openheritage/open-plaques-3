@@ -23,9 +23,10 @@ class ApplicationController < ActionController::Base
       request.env["HTTP_USER_AGENT"]&.downcase&.include?('bingpreview') ||
       request.env["HTTP_USER_AGENT"]&.downcase&.include?('bubing') ||
       request.env["HTTP_USER_AGENT"]&.downcase&.include?('slurp')
+    is_semrush = request.env["HTTP_USER_AGENT"]&.downcase&.include?('semrush')
     is_a_data_request = ['application/json', 'application/xml', 'application/kml'].include?(request.format)
     puts "USERAGENT: #{is_a_bot ? 'bot' : 'not-bot'} #{request.format} #{request.path} #{request.headers['HTTP_USER_AGENT']}"
-  	if is_a_bot && (is_a_data_request ||
+    is_not_following_robots_txt = is_a_data_request ||
       request.path.end_with?("/new") ||
       request.path.end_with?("/edit") ||
       /\/places/.match?(request.path) ||
@@ -35,9 +36,10 @@ class ApplicationController < ActionController::Base
       /\/verbs/.match?(request.path) ||
       /\/todo/.match?(request.path) ||
       /\/series/.match?(request.path) ||
-      /\/photos/.match?(request.path) )
-        puts "BLOCKED: #{is_a_bot ? 'bot' : 'not-bot'} #{request.format} #{request.path} #{request.headers['HTTP_USER_AGENT']}"
-        render json: {error: "no-bots"}.to_json, status: 406 and return
+      /\/photos/.match?(request.path)
+    if is_semrush || (is_a_bot && is_not_following_robots_txt)
+      puts "BLOCKED: #{is_a_bot ? 'bot' : 'not-bot'} #{request.format} #{request.path} #{request.headers['HTTP_USER_AGENT']}"
+      render json: {error: "no-bots"}.to_json, status: 406 and return
     end
     begin
       yield
