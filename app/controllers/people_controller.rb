@@ -54,13 +54,13 @@ class PeopleController < ApplicationController
         type: :website,
         url: url_for(:only_path=>false),
         image: @person.main_photo ? @person.main_photo.file_url : view_context.root_url[0...-1] + view_context.image_path("openplaques.png"),
-        title: "Historical plaques about #{@person.full_name}",
+        title: "#{@person.full_name} historical plaques and markers",
         description: @person.full_name,
       }
       set_meta_tags twitter: {
         card: "summary_large_image",
         site: "@openplaques",
-        title: "Historical plaques about #{@person.full_name}",
+        title: "#{@person.full_name} historical plaques and markers",
         image: {
           _: @person.main_photo ? @person.main_photo.file_url : view_context.root_url[0...-1] + view_context.image_path("openplaques.png"),
           width: 100,

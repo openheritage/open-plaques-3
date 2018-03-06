@@ -85,6 +85,10 @@ Rails.application.routes.draw do
   scope '/people' do
     resources 'a-z', controller: :people_by_index, as: 'people_by_index', only: :show
   end
+
+  scope '/women' do
+    resources 'a-z', controller: :women_by_index, as: 'women_by_index', only: :show
+  end
   resources :people do
     collection do
       get 'autocomplete'

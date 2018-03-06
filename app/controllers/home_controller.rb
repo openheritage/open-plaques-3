@@ -1,7 +1,16 @@
 class HomeController < ApplicationController
   def index
     @plaques_count = Plaque.count
-    @recent_plaques = Plaque.photographed.order("random()").limit(12)
+    @plaques = Plaque.photographed.order('random()').limit(12)
+    if Date.today == "2018-03-08".to_date
+      @famous_women = Person
+        .connected
+        .female
+        .random
+        .non_holocaust
+        .limit(12)
+        .preload(:personal_roles, :roles, :main_photo)
+    end
     @todays = Pick.todays
     begin
       set_meta_tags open_graph: {

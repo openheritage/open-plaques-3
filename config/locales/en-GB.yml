@@ -294,6 +294,11 @@ en-GB:
       show:
         page_title: Subjects of historical plaques - %{letter}
         page_heading: Subjects of historical plaques - %{letter}
+  women:
+    by_index:
+      show:
+        page_title: Women with historical plaques - %{letter}
+        page_heading: Women with historical plaques - %{letter}
 
   personal_connections:
     edit:

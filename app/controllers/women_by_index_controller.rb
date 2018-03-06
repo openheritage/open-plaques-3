@@ -1,4 +1,4 @@
-class PeopleByIndexController < ApplicationController
+class WomenByIndexController < ApplicationController
 
   def show
     @index = params[:id]
@@ -9,6 +9,7 @@ class PeopleByIndexController < ApplicationController
       @people = Person
         .where(surname_starts_with: @index)
         .connected
+        .female
         .paginate(page: params[:page], per_page: 50)
         .preload(:personal_roles, :roles, :main_photo)
         .to_a.sort! { |a,b| a.surname.downcase <=> b.surname.downcase }

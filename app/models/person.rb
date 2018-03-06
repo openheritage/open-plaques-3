@@ -34,14 +34,14 @@ class Person < ApplicationRecord
   before_save :aka_accented_name
   before_save :fill_wikidata_id
   after_save :depiction_from_dbpedia
-  scope :roled, -> { where("personal_roles_count > 0").order("id DESC") }
+  scope :roled, -> { where("personal_roles_count > 0") }
   scope :unroled, -> { where(personal_roles_count: [nil,0]) }
   scope :dated, -> { where("born_on IS NOT NULL or died_on IS NOT NULL") }
   scope :undated, -> { where("born_on IS NULL and died_on IS NULL") }
   scope :photographed, -> { joins(:main_photo) }
-  scope :unphotographed, -> { where("id not in (select person_id from photos)").order("id DESC") }
-  scope :connected, -> { where("personal_connections_count > 0").order("id DESC") }
-  scope :unconnected, -> { where(personal_connections_count: [nil,0]).order("id DESC") }
+  scope :unphotographed, -> { where("id not in (select person_id from photos)") }
+  scope :connected, -> { where("personal_connections_count > 0") }
+  scope :unconnected, -> { where(personal_connections_count: [nil,0]) }
   scope :name_starts_with, lambda { |term| where(["lower(name) LIKE ?", term.downcase + "%"]) }
   scope :name_contains, lambda { |term| where(["lower(name) LIKE ?", "%" + term.downcase + "%"]) }
   scope :with_counts, -> {
@@ -54,6 +54,9 @@ class Person < ApplicationRecord
       ) as plaques_count
     SQL
   }
+  scope :female, -> { where ("gender = 'f'") }
+  scope :random, -> { order('random()') }
+  scope :non_holocaust, -> { joins(:personal_roles).where('personal_roles.role_id != 5375') }
 
   DATE_REGEX = /c?[\d]{4}/
   DATE_RANGE_REGEX = /(?:\(#{DATE_REGEX}-#{DATE_REGEX}\)|#{DATE_REGEX}-#{DATE_REGEX})/
