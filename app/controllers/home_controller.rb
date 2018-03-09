@@ -37,7 +37,7 @@ class HomeController < ApplicationController
   def gc
     puts '*** run garbage collection'
     heap_live_slots_before = GC.stat(:heap_live_slots)
-    total_allocated_object_before = GC.stat(:total_allocated_object)
+    total_allocated_object_before = GC.stat(:total_allocated_objects)
     GC.start
     heap_live_slots_after = GC.stat(:heap_live_slots)
     difference = heap_live_slots_before - heap_live_slots_after
@@ -48,7 +48,7 @@ class HomeController < ApplicationController
       'heap_live_slots after' => heap_live_slots_after.to_s,
       'difference' => difference.to_s,
       'total_allocated_object before' => total_allocated_object_before.to_s,
-      'total_allocated_object after' => GC.stat(:total_allocated_object).to_s
+      'total_allocated_object after' => GC.stat(:total_allocated_objects).to_s
     }, status: :ok
   end
 end
