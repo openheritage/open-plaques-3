@@ -351,8 +351,8 @@ class Photo < ApplicationRecord
     end
 
     def set_of_a_plaque
-      self.of_a_plaque = false if person_id != nil
-      self.of_a_plaque = true if plaque_id != nil
+      self.of_a_plaque = false if person_id != nil && person_id != 0
+      self.of_a_plaque = true if plaque_id != nil && plaque_id != 0
     end
 
 end
