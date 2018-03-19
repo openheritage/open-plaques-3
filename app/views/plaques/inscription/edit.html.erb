@@ -12,18 +12,18 @@
 
 <%= form_for @plaque do |f| %>
   <div class="form-group">
+    <%= f.label :language_id, t('.language') %>
+    <%= f.collection_select :language_id, @languages, :id, :name, {class: 'form-control'} %>
+  </div>
+  <div class="form-group">
     <%= f.label :inscription, t('.the_words') %>
     <%= f.text_area :inscription, {class: 'form-control', rows: 6, placeholder: t('.placeholder'), autofocus: true} %>
   </div>
-  <div class="form-group">
+  <div class="form-check">
     <label class="form-check-label">
       <%= f.check_box :inscription_is_stub, class: 'form-check-input' %>
       <%= t('.exact_wording') %>
     </label>
-  </div>
-  <div class="form-group">
-    <%= f.label :language_id, t('.language') %>
-    <%= f.collection_select :language_id, @languages, :id, :name, {class: 'form-control'} %>
   </div>
   <div class="form-group">
     <%= f.label :inscription_in_english, t('.inscription_in_english') %>

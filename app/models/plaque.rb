@@ -67,8 +67,10 @@ class Plaque < ApplicationRecord
   end
 
   def full_address
-    a = address
-    a += ", " + area.name + ", " + area.country&.name if area
+    a = address ||+ ''
+    puts "#{area.name}"
+    a += ", " + area&.name if area
+    a += ", " + area.country&.name if area
     a
   end
 
