@@ -197,6 +197,63 @@ module PlaquesHelper
     end
   end
 
+  def crawl_nevada
+    j = JSON.parse(open("http://shpo.nv.gov/historical-markers-json").read)
+    j.each do |js|
+      nevada(js['marker_number'], js['slug'], js['latitude'], js['longitude'], js['city'], js['county'])
+    end
+  end
+
+  # http://shpo.nv.gov/historical-markers-json
+  def nevada(marker_number, slug, latitude, longitude, city, county)
+    begin
+      output = Nokogiri::HTML(open("http://shpo.nv.gov/nevadas-historical-markers/historical-markers/#{slug}"))
+    rescue OpenURI::HTTPError
+      puts "slug #{slug} not found"
+      return
+    end
+    not_found = output.search('.//h1').text.strip
+    if not_found == "404"
+      puts "#{slug} does not exist"
+    else
+      sponsors = []
+      series = Series.find 59
+      state = "NV"
+      title = output.search('.//article/h1').text.titlecase.strip
+      inscription = output.search('.//article/p').text.strip
+      inscription += output.search('.//article/h3').text.strip
+      usa = Country.find_by_alpha2('us')
+      area = Area.find_or_create_by(country: usa, name: "#{city}, #{state}")
+      puts "#{series.name} number #{marker_number} at #{area.name} == #{title}"
+      plaque = Plaque.find_by(series_id: series.id, series_ref: marker_number)
+      if (plaque)
+        puts "#{series.name} number #{marker_number} already exists"
+      else
+        plaque = Plaque.new(series_id: series.id, series_ref: marker_number, area: area, latitude: latitude, longitude: longitude) if !plaque
+        if /MARKER/.match(inscription)
+          matches = /([\w\W]*)([\bNEVADA\b\s]*[\bSTATE OF NEVADA\b\s]*[STATE\b\s]*[\bCENTENNIAL\b\s]*[\bHISTORIC[AL]*\b\s]*MA[R]*KER)\s(NO[.]*|number|NUMBER)\W*(\d*)\W*(.*)\W*(.*)\W*(.*)\W*(.*)\W*(.*)\W*/i.match(inscription)
+          plaque.inscription = "#{title}."
+          if (matches && matches[1])
+            plaque.inscription += " #{matches[1].gsub('NEVADA CENTENNIAL','').gsub('CENTENNIAL','').gsub('STATE HISTORICAL','')}"
+          else
+            plaque.inscription += inscription
+          end
+          if (matches && matches[5])
+            extra_sponsors = matches[5].gsub(/STATE HISTORIC PRESERVATION OFFICE/i,'').strip
+            sponsors << Organisation.find_or_create_by(name: extra_sponsors.titleize) unless extra_sponsors.blank?
+          end
+          sponsors << Organisation.find_or_create_by(name: 'Nevada State Historic Preservation Office')
+          plaque.language = Language.find_by_name('English')
+          plaque.save
+          sponsors.each do |sponsor|
+            s = Sponsorship.find_or_create_by(plaque_id: plaque.id, organisation_id: sponsor.id)
+            s.save
+          end
+        end
+      end
+    end
+  end
+
   # when you are pretty sure a group contains plaques
   def crawl_flickr(group_id='74191472@N00')
     return if !group_id
