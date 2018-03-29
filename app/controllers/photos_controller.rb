@@ -42,6 +42,7 @@ class PhotosController < ApplicationController
     @photo.wikimedia_data
     if @photo.errors.empty?
       @already_existing_photo = Photo.find_by_file_url @photo.file_url
+      @already_existing_photo = Photo.find_by_file_url(@photo.file_url.gsub("https","http")) if !@already_existing_photo
       if @already_existing_photo
         @photo = @already_existing_photo
         @photo.update_attributes(photo_params)
