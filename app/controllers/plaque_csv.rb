@@ -25,10 +25,23 @@ class PlaqueCsv < Julia::Builder
   column 'number_of_subjects' do |plaque|
     plaque.people.count
   end
+  column 'number_of_male_subjects' do |plaque|
+    men = plaque.people.select { |subject| subject.male? }
+    men.count
+  end
+  column 'number_of_female_subjects' do |plaque|
+    men = plaque.people.select { |subject| subject.female? }
+    men.count
+  end
+  column 'number_of_inanimate_subjects' do |plaque|
+    men = plaque.people.select { |subject| subject.inanimate_object? }
+    men.count
+  end
   column 'lead_subject_id' do |plaque| plaque.people.first ? plaque.people.first.id : '' end
   column 'lead_subject_machine_tag' do |plaque| plaque.people.first ? plaque.people.first.machine_tag : '' end
   column 'lead_subject_name' do |plaque| plaque.people.first ? plaque.people.first.name : '' end
-  column 'lead_subject_surname' do |plaque| plaque.people.first ? plaque.people.first.name : '' end
+  column 'lead_subject_surname' do |plaque| plaque.people.first ? plaque.people.first.surname : '' end
+  column 'lead_subject_sex' do |plaque| plaque.people.first ? plaque.people.first.sex : '' end
   column 'lead_subject_born_in' do |plaque| plaque.people.first ? plaque.people.first.born_in : '' end
   column 'lead_subject_died_in' do |plaque| plaque.people.first ? plaque.people.first.died_in : '' end
   column 'lead_subject_type' do |plaque| plaque.people.first ? plaque.people.first.type : '' end
@@ -55,5 +68,5 @@ class PlaqueCsv < Julia::Builder
     end
     subjects
   end
-#    column 'Full name', -> { "#{ name.capitalize } #{ last_name.capitalize }" }
+  #    column 'Full name', -> { "#{ name.capitalize } #{ last_name.capitalize }" }
 end

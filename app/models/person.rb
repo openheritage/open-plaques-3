@@ -436,7 +436,7 @@ class Person < ApplicationRecord
   def female?
     if self.gender == 'u'
       self.gender = 'f' if roles.any?{|role| role.female?}
-      self.gender = 'f' if self.name.start_with?(
+      self.gender = 'f' if name.split(" ").first.in(
       "Abigail","Adelaide","Adele","Ada","Agnes","Alice","Alison","Amalie","Amelia","Anastasia","Anna","Anne","Annie","Antoinette",
       "Beatriz","Bertha","Betty",
       "Caroline","Cäcilie","Charlotte","Clara","Constance",
