@@ -436,8 +436,8 @@ class Person < ApplicationRecord
   def female?
     if self.gender == 'u'
       self.gender = 'f' if roles.any?{|role| role.female?}
-      self.gender = 'f' if name.split(" ").first.in(
-      "Abigail","Adelaide","Adele","Ada","Agnes","Alice","Alison","Amalie","Amelia","Anastasia","Anna","Anne","Annie","Antoinette",
+      self.gender = 'f' if
+      ["Abigail","Adelaide","Adele","Ada","Agnes","Alice","Alison","Amalie","Amelia","Anastasia","Anna","Anne","Annie","Antoinette",
       "Beatriz","Bertha","Betty",
       "Caroline","Cäcilie","Charlotte","Clara","Constance",
       "Daisy","Deborah","Diana","Dolly","Doris","Dorothea","Dorothy",
@@ -458,8 +458,7 @@ class Person < ApplicationRecord
       "Toni","Therese",
       "Ursula",
       "Vera","Victoria","Violet","Virginia",
-      "Wilhelmina","Winifred")
-      self.gender = 'm' if self.name.start_with?("Reginald")
+      "Wilhelmina","Winifred"].include?(name.split(" ").first)
     end
     self.gender == 'f'
   end
