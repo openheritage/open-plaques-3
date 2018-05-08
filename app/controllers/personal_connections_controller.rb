@@ -1,3 +1,5 @@
+require 'aws-sdk-comprehend'
+
 class PersonalConnectionsController < ApplicationController
 
   before_action :authenticate_admin!, only: :destroy
@@ -13,6 +15,19 @@ class PersonalConnectionsController < ApplicationController
 
   def new
     @personal_connection = @plaque.personal_connections.new
+
+    begin
+      client = Aws::Comprehend::Client.new(region: 'eu-west-1')
+      @entities = client.detect_entities({
+        text: @plaque.inscription_preferably_in_english,
+        language_code: :en,
+      })
+      @entities = @entities['entities']
+    rescue
+      @entities = []
+    end
+
+    puts(@entities)
   end
 
   def create

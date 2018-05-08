@@ -35,6 +35,8 @@ gem 'rails_12factor'
 
 gem 'julia_builder'
 
+gem 'aws-sdk-comprehend'
+
 group :development do
   gem 'spring'
   gem 'bullet'

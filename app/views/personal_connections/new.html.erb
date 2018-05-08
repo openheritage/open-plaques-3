@@ -81,6 +81,20 @@
   </div>
 <% end %>
 
+<% if @entities != [] %>
+  <h2>AWS suggests...</h2>
+<% end %>
+<% for entity in @entities %>
+  <div>
+  <% if ['PERSON', 'ORGANIZATION'].include?(entity.type) %>
+    <%= icon('user') if entity.type == 'PERSON' %>
+    <%= icon('building') if entity.type == 'ORGANIZATION' %>
+    <%= entity.text %>
+    <span class="badge badge-success"><%= (entity.score * 100).round(1) %>%</span>
+  <% end %>
+  </div>
+<% end %>
+
 <h2><%= t '.page_heading' %></h2>
 <%= form_for @personal_connection, url: plaque_connections_path(@plaque) do |f| %>
   <p><%= t '.from_which_we_can_establish' %></p>
