@@ -4,9 +4,9 @@ describe PersonalRole, type: :model do
   end
 
   describe '#name' do
-    context 'a person with role of "duck"' do
+    context 'a subject with role of "duck"' do
       let (:roger) { build :person, name: 'Roger'}
-      let (:is_a_duck) { build :role, name: 'duck'}
+      let (:is_a_duck) { build :role, name: 'duck', role_type: 'animal'}
       let (:personal_role) { build :personal_role, person: roger, role: is_a_duck }
       it 'is a duck' do
         expect(personal_role.name).to eq('duck')
@@ -19,6 +19,16 @@ describe PersonalRole, type: :model do
       let (:personal_role) { build :personal_role, person: roger, role: is_a_husband, related_person: of_sarah }
       it 'is a husband of' do
         expect(personal_role.name).to eq('husband of Sarah')
+      end
+    end
+    context 'a place that was founded' do
+      let (:the_royal_marsden) { create :person, name: 'Royal Marsden'}
+      let (:is_a_hospital) { create :role, name: 'hospital', role_type: 'place'}
+      let (:is_a_foundation) { create :role, name: 'foundation', role_type: 'group'}
+      it 'is just a place' do
+        the_royal_marsden.roles << is_a_hospital
+        the_royal_marsden.roles << is_a_foundation
+        expect(the_royal_marsden.type).to eql 'place'
       end
     end
   end

@@ -117,8 +117,8 @@ class Person < ApplicationRecord
     return "person" if person?
     return "animal" if animal?
     return "thing" if thing?
-    return "group" if group?
     return "place" if place?
+    return "group" if group?
     return "?"
   end
 
