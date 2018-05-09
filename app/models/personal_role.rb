@@ -42,11 +42,11 @@ class PersonalRole < ApplicationRecord
 
   def suffix
     s = role.suffix
-    if s.include?('{ordinal}')
+    if s.include?('#{ordinal}')
       if ordinal
-        s = s.sub!('{ordinal}', ordinal.ordinalize)
+        s = s.sub!('#{ordinal}', ordinal.ordinalize)
       else
-        s = s.sub!('{ordinal} ', '')
+        s = s.sub!('#{ordinal} ', '')
       end
     end
     s
