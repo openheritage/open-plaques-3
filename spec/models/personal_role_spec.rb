@@ -66,7 +66,7 @@ describe PersonalRole, type: :model do
         build :role,
         name: 'Hereditary Baronet',
         role_type: 'title',
-        suffix: '{ordinal} Baronet'
+        suffix: '#{ordinal} Baronet'
       }
       let (:personal_role) {
         build :personal_role,
