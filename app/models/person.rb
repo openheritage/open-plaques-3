@@ -248,22 +248,30 @@ class Person < ApplicationRecord
     "/assets/NoPersonSqr.png"
   end
 
-  def current_roles
-    current_roles = []
+  def current_personal_roles
+    current = []
     personal_roles.each do |pr|
-      current_roles << pr.role if pr.current?
+      current << pr if pr.current?
     end
-    current_roles.sort! { |b,a| a.priority && b.priority ? a.priority <=> b.priority : (a.priority ? 1 : -1) }
-    current_roles
+    current.sort! { |b,a| a.role.priority && b.role.priority ? a.role.priority <=> b.role.priority : (a.role.priority ? 1 : -1) }
+    current
+  end
+
+  def current_roles
+    current = []
+    current_personal_roles.each do |pr|
+      current << pr.role
+    end
+    current
   end
 
   def title
     title = ""
-    current_roles.each do |role|
-      if !role.prefix.blank?
+    current_personal_roles.each do |pr|
+      if !pr.role.prefix.blank?
         # NB a clergyman or Commonwealth citizen does not get called 'Sir'
-        title << "#{role.prefix} " if !title.include?(role.prefix) && !(role.prefix == "Sir" && clergy?)
-      elsif role.used_as_a_prefix? and !title.include?(role.display_name)
+        title << "#{pr.role.prefix} " if !title.include?(pr.role.prefix) && !(pr.role.prefix == "Sir" && clergy?)
+      elsif pr.role.used_as_a_prefix? and !title.include?(pr.role.display_name)
         title << "#{role.display_name} "
       end
     end
@@ -280,8 +288,11 @@ class Person < ApplicationRecord
 
   def letters
     letters = ""
-    current_roles.each do |role|
-      letters << " #{role.suffix}" if !role.suffix.blank? && !letters.include?(role.suffix)
+    current_personal_roles.each do |pr|
+      if !pr.role.suffix.blank? && !letters.include?(pr.role.suffix)
+        s = pr.suffix
+        letters << " #{pr.suffix}"
+      end
     end
     letters.strip
   end

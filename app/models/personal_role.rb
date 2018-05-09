@@ -40,6 +40,18 @@ class PersonalRole < ApplicationRecord
     n
   end
 
+  def suffix
+    s = role.suffix
+    if s.include?('{ordinal}')
+      if ordinal
+        s = s.sub!('{ordinal}', ordinal.ordinalize)
+      else
+        s = s.sub!('{ordinal} ', '')
+      end
+    end
+    s
+  end
+
   def current?
     role.sticky? || ended_at == nil or ended_at == '' or (ended_at && ended_at.year.to_s == person.died_on.to_s)
   end

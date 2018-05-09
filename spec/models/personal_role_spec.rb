@@ -58,4 +58,26 @@ describe PersonalRole, type: :model do
       end
     end
   end
+
+  describe '#suffix' do
+    context 'a Hereditary Baronet' do
+      let (:roger) { build :person, name: 'Roger'}
+      let (:is_a_hereditary_baronet) {
+        build :role,
+        name: 'Hereditary Baronet',
+        role_type: 'title',
+        suffix: '{ordinal} Baronet'
+      }
+      let (:personal_role) {
+        build :personal_role,
+        person: roger,
+        role: is_a_hereditary_baronet,
+        ordinal: 1
+      }
+      it 'includes an ordinal in their suffix' do
+        expect(personal_role.suffix).to eq('1st Baronet')
+      end
+    end
+  end
+
 end
