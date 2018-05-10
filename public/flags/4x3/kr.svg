@@ -1,42 +1,24 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Sodipodi ("http://www.sodipodi.com/") -->
-<svg id="svg378" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="480" width="640" version="1" y="0" x="0" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
- <metadata id="metadata3014">
-  <rdf:RDF>
-   <cc:Work rdf:about="">
-  <dc:format>image/svg+xml</dc:format>
-  <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-   </cc:Work>
-  </rdf:RDF>
- </metadata>
- <defs id="defs380">
-  <clipPath id="clipPath4409" clipPathUnits="userSpaceOnUse">
-   <rect id="rect4411" fill-opacity="0.67" height="512" width="682.67" y="-.43991" x="-95.808"/>
-  </clipPath>
- </defs>
- <g id="flag" fill-rule="evenodd" clip-path="url(#clipPath4409)" transform="matrix(.9375 0 0 .9375 89.82 .41242)">
-  <rect id="rect149" transform="scale(-1)" height="512" width="730.17" y="-511.56" x="-610.61" fill="#fff"/>
-  <path id="path607" d="m495.86 1148c0 90.46-73.332 163.79-163.79 163.79-90.46 0-163.79-73.332-163.79-163.79 0-90.46 73.332-163.79 163.79-163.79 90.46 0 163.79 73.332 163.79 163.79z" transform="matrix(.68690 0 0 .68690 -88.735 -532.54)" fill="#fff"/>
-  <path id="path635" d="m733.7 381.73c0 125.78-101.96 227.74-227.74 227.74s-227.74-101.96-227.74-227.74 101.96-227.74 227.74-227.74 227.74 101.96 227.74 227.74z" transform="matrix(.63784 0 0 .64461 -74.972 16.483)" fill="#c70000"/>
-  <rect id="rect636" transform="rotate(-49.156)" height="26.201" width="127.92" y="45.309" x="-127.97" stroke-width="1pt"/>
-  <rect id="rect637" transform="rotate(-49.156)" height="26.201" width="127.92" y="81.527" x="-127.97" stroke-width="1pt"/>
-  <rect id="rect638" transform="rotate(-49.156)" height="26.201" width="127.92" y="45.309" x="-127.97" stroke-width="1pt"/>
-  <rect id="rect639" transform="rotate(-49.156)" height="26.201" width="127.92" y="45.309" x="-127.97" stroke-width="1pt"/>
-  <rect id="rect640" transform="rotate(-49.156)" height="26.201" width="127.92" y="118.52" x="-127.97" stroke-width="1pt"/>
-  <rect id="rect641" transform="rotate(-49.156)" height="26.201" width="127.92" y="45.309" x="-127.97" stroke-width="1pt"/>
-  <rect id="rect643" transform="rotate(-49.156)" height="26.201" width="127.92" y="45.309" x="-127.97" stroke-width="1pt"/>
-  <rect id="rect644" transform="matrix(.64886 .76090 -.76090 .64886 0 0)" height="26.201" width="127.92" y="-330.34" x="320.65" stroke-width="1pt"/>
-  <rect id="rect645" transform="matrix(.64886 .76090 -.76090 .64886 0 0)" height="26.201" width="127.92" y="-257.13" x="320.65" stroke-width="1pt"/>
-  <path id="path649" d="m417.55 133.19 78.602-67.814 14.641 16.953-83.996 75.519-9.2471-24.659z" fill="#fff"/>
-  <rect id="rect646" transform="matrix(-.64282 .76602 -.76881 -.63948 0 0)" height="25.644" width="125.1" y="-633.05" x="-42.832" stroke-width="1pt"/>
-  <rect id="rect642" transform="matrix(.64886 .76090 -.76090 .64886 0 0)" height="26.201" width="127.92" y="-294.12" x="320.65" stroke-width="1pt"/>
-  <rect id="rect647" transform="matrix(-.64282 .76602 -.76881 -.63948 0 0)" height="25.644" width="125.1" y="-668.49" x="-42.832" stroke-width="1pt"/>
-  <rect id="rect648" transform="matrix(-.64282 .76602 -.76881 -.63948 0 0)" height="25.644" width="125.1" y="-596.84" x="-42.832" stroke-width="1pt"/>
-  <path id="path653" d="m104.6 236.68c4.5919 36.974 11.297 78.175 68.199 82.455 21.328 1.2776 62.817-5.0735 77.061-63.19 18.688-55.829 74.975-71.88 113.28-41.613 21.718 14.166 27.727 36.666 29.283 53.557-1.7386 54.243-32.874 101.2-72.823 122.14-45.93 27.3-109.56 27.87-165.3-13.49-25.12-23.57-60.219-67.02-49.7-139.86z" fill="#3d5897"/>
-  <path id="path654" d="m435.91 370.59 78.734 67.661-14.591 16.997-87.156-71.851 23.013-12.807z" fill="#fff"/>
-  <rect id="rect658" transform="matrix(.64886 .76090 -.76090 .64886 0 0)" height="26.201" width="127.92" y="233.21" x="270.57" stroke-width="1pt"/>
-  <path id="path657" d="m-16.188 437.25 78.602-67.814 14.641 16.953-83.996 75.519-9.2471-24.659z" stroke-width="1pt" fill="#fff"/>
-  <rect id="rect655" transform="matrix(.64886 .76090 -.76090 .64886 0 0)" height="26.201" width="127.92" y="196.99" x="270.57" stroke-width="1pt"/>
-  <rect id="rect656" transform="matrix(.64886 .76090 -.76090 .64886 0 0)" height="26.201" width="127.92" y="270.2" x="270.57" stroke-width="1pt"/>
- </g>
+<svg xmlns="http://www.w3.org/2000/svg" id="flag-icon-css-kr" width="640" height="480">
+  <defs>
+    <clipPath id="a">
+      <path fill-opacity=".7" d="M-95.8-.4h682.7v512H-95.8z"/>
+    </clipPath>
+  </defs>
+  <g fill-rule="evenodd" clip-path="url(#a)" transform="translate(89.8 .4) scale(.9375)">
+    <path fill="#fff" d="M610.6 511.6h-730.2V-.4h730.2z"/>
+    <path fill="#fff" d="M251.9 256a112.5 112.5 0 1 1-225 0 112.5 112.5 0 0 1 225 0z"/>
+    <path fill="#c70000" d="M393 262.6c0 81-65 146.8-145.3 146.8s-145.2-65.8-145.2-146.8 65-146.9 145.3-146.9S393 181.6 393 262.6z"/>
+    <path d="M-49.4 126.4l83.6-96.7 19.9 17.1-83.7 96.8zm27.4 23.7l83.6-96.7 19.9 17-83.7 96.9z"/>
+    <path d="M-49.4 126.4l83.6-96.7 19.9 17.1-83.7 96.8z"/>
+    <path d="M-49.4 126.4l83.6-96.7 19.9 17.1-83.7 96.8zm55.4 48l83.6-96.9 19.9 17.2-83.7 96.8z"/>
+    <path d="M-49.4 126.4l83.6-96.7 19.9 17.1-83.7 96.8z"/>
+    <path d="M-49.4 126.4l83.6-96.7 19.9 17.1-83.7 96.8zm508.8-96.8l83 97.4-20 17-83-97.4zm-55.7 47.5l83 97.4-20 17-83-97.4z"/>
+    <path fill="#fff" d="M417.6 133.2L496 65.4l14.7 17-84 75.4-9.3-24.6z"/>
+    <path d="M514.2 372l-80.4 95.8-19.7-16.4 80.4-95.8zM431.8 53.1l83 97.4-19.9 17L412 70zm109.7 341.6L461 490.5l-19.8-16.4 80.5-95.8zm-55.1-45.8L406 444.7l-19.7-16.4 80.4-95.8z"/>
+    <path fill="#3d5897" d="M104.6 236.7c4.6 37 11.3 78.2 68.2 82.4 21.3 1.3 62.8-5 77-63.2 18.8-55.8 75-71.8 113.3-41.6C385 228.5 391 251 392.4 268 390.7 322 359.5 369 319.6 390c-46 27.3-109.6 27.9-165.3-13.5-25.1-23.5-60.2-67-49.7-139.8z"/>
+    <path fill="#fff" d="M436 370.6l78.6 67.6-14.6 17-87.1-71.8 23-12.8z"/>
+    <path d="M-1.9 357.2l83 97.3-20 17-83-97.3z"/>
+    <path fill="#fff" d="M-16.2 437.3l78.6-67.9 14.7 17-84 75.5-9.3-24.7z"/>
+    <path d="M25.7 333.7l83 97.3-20 17-83-97.3zM-30 381.2l83 97.3-20 17-83-97.3z"/>
+  </g>
 </svg>

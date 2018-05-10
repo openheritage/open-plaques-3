@@ -1,6 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" height="512" width="512">
-  <path fill-rule="evenodd" fill="#fff001" d="M341.33 0H512v512H341.33z"/>
-  <path fill-rule="evenodd" fill="#009811" d="M0 0h169.61v512H0z"/>
-  <path fill-rule="evenodd" fill="#c20000" d="M169.61 0H342.4v512H169.61z"/>
-  <path d="M308.99 327.55l-46.9-35.456-51.386 36.542 19.528-60.826-53.25-36.098 63.956-1.115 16.813-59.148 19.982 59.392 62.655-.84-52.363 38.53z" fill="#fff001"/>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="flag-icon-css-cm" width="512" height="512">
+  <path fill="#007a5e" d="M0 0h170.7v512H0z"/>
+  <path fill="#ce1126" d="M170.7 0h170.6v512H170.7z"/>
+  <path fill="#fcd116" d="M341.3 0H512v512H341.3z"/>
+  <g fill="#fcd116" transform="translate(256 256) scale(5.6889)">
+    <g id="b">
+      <path id="a" d="M0-8L-2.5-.4 1.3.9z"/>
+      <use width="100%" height="100%" transform="scale(-1 1)" xlink:href="#a"/>
+    </g>
+    <use width="100%" height="100%" transform="rotate(72)" xlink:href="#b"/>
+    <use width="100%" height="100%" transform="rotate(144)" xlink:href="#b"/>
+    <use width="100%" height="100%" transform="rotate(-144)" xlink:href="#b"/>
+    <use width="100%" height="100%" transform="rotate(-72)" xlink:href="#b"/>
+  </g>
 </svg>
