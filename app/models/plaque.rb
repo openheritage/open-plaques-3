@@ -307,14 +307,17 @@ class Plaque < ApplicationRecord
 
   def translate
     if foreign? && inscription_in_english.blank?
-      client = Aws::Translate::Client.new(region: 'eu-west-1')
-      resp = client.translate_text({
-        text: "#{inscription}",
-        source_language_code: "#{language.alpha2}",
-        target_language_code: "en",
-      })
-      self.inscription_in_english = "#{resp.translated_text} [AWS Translate]"
-      puts(inscription_in_english)
+      begin
+        client = Aws::Translate::Client.new(region: 'eu-west-1')
+        resp = client.translate_text({
+          text: "#{inscription}",
+          source_language_code: "#{language.alpha2}",
+          target_language_code: "en",
+        })
+        self.inscription_in_english = "#{resp.translated_text} [AWS Translate]"
+      rescue ex
+        puts(ex)
+      end
     end
   end
 
