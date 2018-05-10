@@ -315,8 +315,8 @@ class Plaque < ApplicationRecord
           target_language_code: "en",
         })
         self.inscription_in_english = "#{resp.translated_text} [AWS Translate]"
-      rescue ex
-        puts(ex)
+      rescue
+        puts("plaque #{id} failed to translate")
       end
     end
   end
