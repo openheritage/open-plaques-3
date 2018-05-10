@@ -23,6 +23,8 @@
 # * +inscription_in_english+ - Manual translation
 # * +series_ref+ - if part of a series does it have a reference number/id?
 # * +address+ - the physical street address
+require 'aws-sdk-translate'
+
 class Plaque < ApplicationRecord
 
   belongs_to :area, counter_cache: true, optional: true
@@ -41,6 +43,7 @@ class Plaque < ApplicationRecord
 
   before_save :use_other_colour_id
   before_save :usa_townify
+  before_save :translate
   accepts_nested_attributes_for :photos, reject_if: proc { |attributes| attributes['photo_url'].blank? }
   scope :current, -> { where(is_current: true).order('id desc') }
   scope :geolocated, ->  { where(["plaques.latitude IS NOT NULL"]) }
@@ -303,21 +306,15 @@ class Plaque < ApplicationRecord
   end
 
   def translate
-    if foreign? && inscription_in_english.blank? && language.alpha2 == "de"
-      in_english = inscription
-      in_english = in_english.gsub('Hier wohnte','Here lived')
-      in_english = in_english.gsub('jg.','born')
-      in_english = in_english.gsub('deportiert','deported')
-      in_english = in_english.gsub('Deportiert','deported')
-      in_english = in_english.gsub('ermordet','murdered')
-      in_english = in_english.gsub('Ermordet','murdered')
-      in_english = in_english.gsub('geb.','nee')
-      in_english = in_english.gsub('geb.','nee')
-      in_english = in_english.gsub('geb.','nee')
-      in_english = in_english.gsub('geb.','nee')
-      in_english = in_english.gsub('flucht','escaped')
-      in_english = in_english.gsub('interniert','interned')
-      self.inscription_in_english = in_english
+    if foreign? && inscription_in_english.blank?
+      client = Aws::Translate::Client.new(region: 'eu-west-1')
+      resp = client.translate_text({
+        text: "#{inscription}",
+        source_language_code: "#{language.alpha2}",
+        target_language_code: "en",
+      })
+      self.inscription_in_english = "#{resp.translated_text} [AWS Translate]"
+      puts(inscription_in_english)
     end
   end
 
