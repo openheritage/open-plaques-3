@@ -152,6 +152,11 @@ class PeopleController < ApplicationController
 
   private
 
+    def aka_to_a
+      cords = params.dig(:person, :aka).presence || "[]"
+      JSON.parse cords
+    end
+
     def person_params
       params.require(:person).permit(
         :name,
@@ -166,6 +171,6 @@ class PeopleController < ApplicationController
         :born_on,
         :died_on,
         :find_a_grave_id,
-        :ancestry_id)
+        :ancestry_id).merge({aka: aka_to_a})
     end
 end
