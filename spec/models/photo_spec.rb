@@ -51,7 +51,7 @@ describe Photo, type: :model do
     context 'of a Commons photo' do
       before do
         @photo = Photo.new(url: 'https://commons.wikimedia.org/wiki/File:Goderich_BCATP_Historical_Plaque.JPG')
-        @photo.wikimedia_data
+        @photo.populate
       end
       it 'includes a commons licence statement' do
         expect(@photo.attribution).to eq(
@@ -65,7 +65,7 @@ describe Photo, type: :model do
     context 'of a Commons photo' do
       before do
         @photo = Photo.new(url: 'https://commons.wikimedia.org/wiki/File:Goderich_BCATP_Historical_Plaque.JPG')
-        @photo.wikimedia_data
+        @photo.populate
       end
       it 'has a file_url' do
         expect(@photo.file_url).to eq('https://commons.wikimedia.org/wiki/Special:FilePath/Goderich_BCATP_Historical_Plaque.JPG?width=640')
@@ -74,7 +74,7 @@ describe Photo, type: :model do
     context 'of a Commons photo wiki page' do
       before do
         @photo = Photo.new(url: 'https://commons.wikimedia.org/wiki/Dog#/media/File:DogDewClawTika1_wb.jpg')
-        @photo.wikimedia_data
+        @photo.populate
       end
       it 'has a file_url' do
         expect(@photo.file_url).to eq('https://commons.wikimedia.org/wiki/Special:FilePath/DogDewClawTika1_wb.jpg?width=640')
@@ -83,7 +83,7 @@ describe Photo, type: :model do
     context 'a Commons upload photo' do
       before do
         @photo = Photo.new(url: 'https://upload.wikimedia.org/wikipedia/commons/4/49/DogDewClawTika1_wb.jpg')
-        @photo.wikimedia_data
+        @photo.populate
       end
       it 'has a file_url' do
         expect(@photo.file_url).to eq('https://commons.wikimedia.org/wiki/Special:FilePath/DogDewClawTika1_wb.jpg?width=640')
@@ -123,7 +123,7 @@ describe Photo, type: :model do
     context 'of a Geograph photo' do
       before do
         @photo = Photo.new(url: 'https://www.geograph.org.uk/photo/5561265')
-       @photo.wikimedia_data
+       @photo.populate
       end
       it 'has a file url' do
         expect(@photo.file_url).to eq('https://s0.geograph.org.uk/geophotos/05/56/12/5561265_bc74db7d.jpg')
@@ -134,7 +134,7 @@ describe Photo, type: :model do
 #    context 'of a Flickr photo' do
 #      before do
 #        @photo = Photo.new(url: 'https://www.flickr.com/photos/josemoya/36584194011/in/album-72157667474637461/')
-#        @photo.wikimedia_data
+#        @photo.populate
 #      end
 #      it 'has a file url' do
 #        expect(@photo.file_url).to eq('http://farm5.staticflickr.com/4396/36584194011_8178d33349_z.jpg')
