@@ -23,7 +23,7 @@
           <%= f.number_field :plaque_id, maxlength: "5", class: 'form-control' %>
         </div>
         <% if @photo.plaque %>
-          <div class="col-sm-2">
+          <div class="col-sm-5">
             <%= render partial: 'plaques/tile', object: @photo.plaque, as: :plaque %>
           </div>
         <% end %>
