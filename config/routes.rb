@@ -48,7 +48,7 @@ Rails.application.routes.draw do
 
   resources :photos
   resources :photographers, as: :photographers, only: [:create, :index, :show, :new]
-  resources :licences, only: [:index, :show]
+  resources :licences, only: [:index]
 
   resources :organisations do
     collection do
