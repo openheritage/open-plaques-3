@@ -39,7 +39,7 @@ class PhotosController < ApplicationController
 
   def create
     @photo = Photo.new(photo_params)
-    @photo.wikimedia_data
+    @photo.populate
     if @photo.errors.empty?
       @already_existing_photo = Photo.find_by_file_url @photo.file_url
       @already_existing_photo = Photo.find_by_file_url(@photo.file_url.gsub("https","http")) if !@already_existing_photo
