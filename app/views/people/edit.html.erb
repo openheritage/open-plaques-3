@@ -7,7 +7,7 @@
       <%= image_tag(@person.main_photo.thumbnail_url != nil ? @person.main_photo.thumbnail_url : @person.main_photo.file_url, class: 'card-bkimg') %>
     </div>
     <div class="useravatar">
-      <%= image_tag(@person.main_photo.thumbnail_url, class: 'card-bkimg') %>
+      <%= image_tag(@person.main_photo.thumbnail_url != nil ? @person.main_photo.thumbnail_url : @person.main_photo.file_url, class: 'card-bkimg') %>
     </div>
   <% else %>
     <div class="card-background-no-photo"></div>
