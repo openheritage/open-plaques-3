@@ -19,7 +19,7 @@
   <div class="col-xs-12 col-sm-8">
     <h5 class="card-title">
       <% if !plaque.series_ref.to_s.empty? %>
-        <%= plaque.series.name  %>
+        <%= plaque.series&.name  %>
         <span class="tag tag-success">#<%= plaque.series_ref %></span>
       <% end %>
     </h5>
