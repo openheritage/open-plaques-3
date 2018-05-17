@@ -49,7 +49,7 @@ module PlaquesHelper
 #        puts "we've already got #{photo_url}"
       else
         @photo = Photo.new(url: photo_url, plaque: plaque)
-        @photo.wikimedia_data
+        @photo.populate
         @photo.save
       end
     end
@@ -81,7 +81,7 @@ module PlaquesHelper
           @plaque = Plaque.find_by_id(plaque_id)
           if @plaque
             @photo = Photo.new(url: photo_url, plaque: @plaque)
-            @photo.wikimedia_data
+            @photo.populate
             @photo.save
           else
             puts "Photo's machine tag doesn't match a plaque."
@@ -274,7 +274,7 @@ module PlaquesHelper
         $stdout.flush
         photo_url = "https://www.flickr.com/photos/#{photo.attributes['owner']}/#{photo.attributes['id']}/"
         @photo = Photo.new(url: photo_url)
-        @photo.wikimedia_data
+        @photo.populate
         @photo.match
         @photo.save
       end

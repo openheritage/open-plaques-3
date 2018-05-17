@@ -583,7 +583,7 @@ class Person < ApplicationRecord
       if !self.main_photo && dbpedia_depiction
         begin
           photo = Photo.new(url: dbpedia_depiction, person: self)
-          photo.wikimedia_data
+          photo.populate
           photo.save
         rescue
         end
