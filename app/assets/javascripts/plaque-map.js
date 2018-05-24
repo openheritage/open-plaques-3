@@ -86,7 +86,7 @@ function initmap()
     });
     map.addLayer(basemap);
     var latitude = plaque_map.attr("data-latitude"), longitude = plaque_map.attr("data-longitude"), zoom = plaque_map.attr("data-zoom");
-    var zoom_level = 13;
+    var zoom_level = 14;
     if (zoom)
     {
       zoom_level = parseInt(zoom);
