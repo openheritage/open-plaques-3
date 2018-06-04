@@ -37,6 +37,7 @@ gem 'julia_builder'
 
 gem 'aws-sdk-comprehend'
 gem 'aws-sdk-translate'
+gem 'google-cloud-translate'
 
 group :development do
   gem 'spring'
