@@ -31,8 +31,21 @@ class RolesController < ApplicationController
   def show
     @role = Role.find_by_slug(params[:id])
     @role = Role.new(name: params[:id]) if !@role #dummy role
-    @personal_roles = @role.personal_roles
-      .paginate(page: params[:page], per_page: 20)
+    if @role.name.starts_with?("monarch")
+      @monarchs = Role.where(:slug => [@role.name.gsub('monarch','king'), @role.name.gsub('monarch','queen')])
+puts @monarchs
+#      @king = Role.find_by_slug(@role.name.gsub('monarch','king'))
+#      @queen = Role.find_by_slug(@role.name.gsub('monarch','queen'))
+      @personal_roles = @role.personal_roles
+      @monarchs.each {|m| @personal_roles << m.personal_roles}
+      @personal_roles = @personal_roles.sort { |a,b| a.started_at.to_s <=> b.started_at.to_s }
+#        .paginate(page: params[:page], per_page: 20)
+#      @personal_roles << @king&.personal_roles if @king
+#      @personal_roles << @queen&.personal_roles if @queen
+    else
+      @personal_roles = @role.personal_roles
+        .paginate(page: params[:page], per_page: 20)
+    end
     @pluralized_role = @role.pluralize
     respond_to do |format|
       format.html

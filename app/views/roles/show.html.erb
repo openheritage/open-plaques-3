@@ -7,7 +7,8 @@
   <%= icon('map-marker') if @role.thing? %>
   <%= @role.pluralize %>
   <span class="badge badge-secondary">
-    <%= @personal_roles.total_entries %>
+    <%= @personal_roles.total_entries if @personal_roles.respond_to?(:total_entries) %>
+    <%= @personal_roles.size unless @personal_roles.respond_to?(:total_entries) %>
   </span>
 <% end %>
 <% content_for(:page_subhead) do %>
