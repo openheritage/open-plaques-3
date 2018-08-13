@@ -14,5 +14,12 @@
       <%= f.text_field :description, class: 'form-control' %>
     </div>
   </div>
+  <div class="form-group row">
+    <%= label_tag(nil, t('.geolocation'), class: 'form-control-label col-sm-2') %>
+    <div class="col-sm-10">
+      <%= f.label :latitude %> <%= f.text_field :latitude %>
+      <%= f.label :longitude %> <%= f.text_field :longitude %>
+    </div>
+  </div>
   <%= f.submit t('buttons.update'), class: 'btn btn-primary' %>
 <% end %>

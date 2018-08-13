@@ -12,6 +12,7 @@ class SeriesPlaquesController < ApplicationController
       @plaques = @series.plaques
     end
     respond_to do |format|
+      format.html { render "series/plaques/show" }
       format.json { render json: @plaques }
       format.geojson { render geojson: @plaques.geolocated, parent: @series }
       format.csv {

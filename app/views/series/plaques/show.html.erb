@@ -1,0 +1,39 @@
+<% content_for(:page_title) { t '.page_title', series: @series.name } %>
+<% content_for(:title) do %>
+  <%= link_to(@series.name, @series) %>
+<% end %>
+<% content_for(:page_subhead) do %>
+  <% markdown(@series.description) if !@series.description.blank? %>
+  <% if @display!='all' %>
+    <%= link_to t('buttons.all'), series_path(@series) %>
+  <% else %>
+    <strong><%= t 'buttons.all' %></strong>
+  <% end %>
+  <%= t 'buttons.or' %>
+  <% if @display!='unphotographed' %>
+    <%= link_to t('buttons.unphotographed'), series_unphotographed_path(@series) %>
+  <% else %>
+    <strong><%= t 'buttons.unphotographed' %></strong>
+  <% end %>
+  <% if current_user&.is_admin? %>
+    <%= t 'buttons.or' %>
+    <% if @display!='ungeolocated' %>
+      <%= link_to t('buttons.ungeolocated'), series_ungeolocated_path(@series) %>
+    <% else %>
+      <strong><%= t 'buttons.ungeolocated' %></strong>
+    <% end %>
+    <%= t 'buttons.or' %>
+    <% if @display!='unconnected' %>
+      <%= link_to t('buttons.unconnected'), series_unconnected_path(@series) %>
+    <% else %>
+      <strong><%= t 'buttons.unconnected' %></strong>
+    <% end %>
+  <% end %>
+<% end %>
+<% content_for(:admin_menu) { navbar_link_to t('buttons.edit'), edit_series_path(@series) } %>
+
+<% if @display!='ungeolocated' %>
+  <div id="plaque-map" data-latitude="<%= @series.latitude %>" data-longitude="<%= @series.longitude %>" data-view="all" context="<%= request.path %>"></div>
+<% end %>
+
+<%= render partial: 'plaques/tabbed' %>
