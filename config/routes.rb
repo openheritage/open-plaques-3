@@ -38,6 +38,7 @@ Rails.application.routes.draw do
       get 'autocomplete', controller: :areas
     end
     resource :plaques, controller: :country_plaques, only: :show
+    match 'plaques/:filter' => 'country_plaques#show', via: [:get]
     resources :areas do
       resource :plaques, controller: :area_plaques, only: :show
       match 'plaques/tiles/:zoom/:x/:y' => 'area_plaques#show', constraints: { zoom: /\d{2}/, x: /\d+/, y: /\d+/ }, via: [:get]

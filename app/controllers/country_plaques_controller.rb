@@ -16,7 +16,7 @@ class CountryPlaquesController < ApplicationController
       request.format == 'html' ? @plaques = @country.plaques.paginate(page: params[:page], per_page: 50) : @plaques = @country.plaques
     end
     respond_to do |format|
-      format.html
+      format.html { render "countries/plaques/show" }
       format.json { render json: @plaques }
       format.geojson { render geojson: @plaques, parent: @country }
       format.csv {

@@ -1,0 +1,55 @@
+<% if @display!='unphotographed' %>
+  <% content_for(:page_title) {t '.page_title', country: @country.name } %>
+<% else %>
+  <% content_for(:page_title) {t '.page_title_unphotographed', country: @country.name } %>
+<% end %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_country_path(@country)} %>
+
+<div class="jumbotron">
+  <h1><span class="flag-icon flag-icon-<%= @country.alpha2 %>"></span> <%= link_to(@country.name, @country) %></h1>
+  <% if @display!='all' %>
+    <%= link_to t('buttons.all'), country_path(@country) %>
+  <% else %>
+    <strong><%= t 'buttons.all' %></strong>
+  <% end %>
+  <%= t 'buttons.or' %>
+  <% if @display!='unphotographed' %>
+    <%= link_to t('buttons.unphotographed'), country_unphotographed_path(@country) %>
+  <% else %>
+    <strong><%= t 'buttons.unphotographed' %></strong>
+  <% end %>
+  <% if current_user&.is_admin? %>
+    <%= t 'buttons.or' %>
+    <% if @display!='ungeolocated' %>
+      <%= link_to t('buttons.ungeolocated'), country_ungeolocated_path(@country) %>
+    <% else %>
+      <strong><%= t 'buttons.ungeolocated' %></strong>
+    <% end %>
+    <%= t 'buttons.or' %>
+    <% if @display!='unconnected' %>
+      <%= link_to t('buttons.unconnected'), country_unconnected_path(@country) %>
+    <% else %>
+      <strong><%= t 'buttons.unconnected' %></strong>
+    <% end %>
+  <% end %>
+</div>
+
+<% if @display!='ungeolocated' %>
+  <% if @country.geolocated? %>
+    <div id="plaque-map" class="full" data-latitude="<%= @country.latitude %>" data-longitude="<%= @country.longitude %>" data-view="all" context="<%= request.path %>"></div>
+  <% else %>
+    <%= form_for(@country, url: country_path(@country)) do |f| %>
+      <div class="edit_lat_long panel clearfix">
+        <h2>Area is not geolocated yet</h2>
+        <p>Open Plaques is quite smart. When a few plaques have been geolocated it will use the average to define where this area is.</p>
+        <p>If you would like to see the map a bit sooner then you could help us.</p>
+        <p>Just find '<%= @country.name %>' <a href="https://maps.google.com/maps?q=<%= @country.name %>&z=18" target="_new">on Google Maps</a> and tell us the <%= label_tag(:streetview_url, "web url:") %> <%= text_field_tag(:streetview_url, ' ', size: 100) %>.</p>
+        <p>We will extract the geolocation. Probably.</p>
+        <%= f.hidden_field :name %>
+        <p><%= f.submit t('buttons.update'), class: 'btn btn-primary' %></p>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>
+
+<%= render partial: 'plaques/tabbed' %>
