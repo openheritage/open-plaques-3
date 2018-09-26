@@ -23,9 +23,14 @@
         <span class="tag tag-success">#<%= plaque.series_ref %></span>
       <% end %>
     </h5>
-    <p><%= simple_inscription(plaque) %></p>
+    <p>
+      <% if plaque.foreign? %>
+        <span class="flag-icon <%= plaque.language.flag_icon %>"></span>
+      <% end %>
+      <%= simple_inscription(plaque) %>
+    </p>
     <% if plaque.foreign? && plaque.inscription_in_english %>
-      <p id="inscription-in-english" class="card-text"><small><%= plaque.inscription_in_english %></small></p>
+      <p id="inscription-in-english" class="card-text"><small>English translation: <%= plaque.inscription_in_english %></small></p>
     <% end %>
     <p class="card-text">
       <small>
