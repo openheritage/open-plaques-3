@@ -18,7 +18,7 @@
     <% end %>
   <% end %>
   <div class="card-block">
-    <h7 class="card-title"><%= linked_inscription(plaque) %></h7>
+    <h7 class="card-title"><% if plaque.foreign? %><span class="flag-icon <%= @plaque.language.flag_icon %>"></span><% end %><%= linked_inscription(plaque) %></h7>
     <% if plaque.foreign? && plaque.inscription_in_english %>
       <p id="inscription-in-english" class="card-text"><small><%= plaque.inscription_in_english %></small></p>
     <% end %>
