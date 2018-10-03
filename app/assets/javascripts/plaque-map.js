@@ -79,7 +79,7 @@ function initmap()
     L.Icon.Default.imagePath = '/assets';
     map = L.map('plaque-map');
     map.scrollWheelZoom.disable();
-    var basemap = L.tileLayer('https://maps.tilehosting.com/styles/basic/{z}/{x}/{y}.png?key=M5lrAPmDi6lsainU7g5h', {
+    var basemap = L.tileLayer('https://maps.tilehosting.com/styles/basic/{z}/{x}/{y}.png?key=qSorA16cJhhBZEhqDisF', {
     	maxZoom: 19,
     	attribution: '&copy; <a href="http://www.openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
     });
