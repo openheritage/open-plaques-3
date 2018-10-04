@@ -1,0 +1,7 @@
+<% content_for(:page_title) {t '.page_title'} %>
+<% content_for(:title) {t '.page_heading'} %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_person_path} %>
+
+<%= @area.plaques.unconnected.count %> <%= @area.plaques.count %>
+
+<%= render partial: 'people/tiles' %>

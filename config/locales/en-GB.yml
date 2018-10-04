@@ -163,6 +163,10 @@ en-GB:
         page_title: Plaques in %{area}
         page_title_unphotographed: Unphotographed plaques in %{area}
         plaques: plaques
+    subjects:
+      show:
+        page_title: Subjects in %{area}
+        page_heading: Subjects in %{area}
 
   colours:
     index:
