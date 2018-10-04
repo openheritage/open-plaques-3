@@ -2,7 +2,7 @@
 <% content_for(:title) {t '.page_heading', area: @area.name } %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_person_path} %>
 
-<%= @area.plaques.unconnected.count %> out of <%= @area.plaques.count %> (<%= ((@area.plaques.unconnected.count.to_f / @area.plaques.count.to_f) * 100).to_i %>%) plaques have been curated
+<%= @area.plaques.connected.count %> out of <%= @area.plaques.count %> (<%= ((@area.plaques.connected.count.to_f / @area.plaques.count.to_f) * 100).to_i %>%) plaques have been curated
 
 <%= will_paginate @plaques if @plaques.respond_to?(:total_pages) %>
 <%= render partial: 'people/tiles' %>
