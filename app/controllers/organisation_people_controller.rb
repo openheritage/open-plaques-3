@@ -15,7 +15,7 @@ class OrganisationPeopleController < ApplicationController
     end
     @people.uniq!
     respond_to do |format|
-      format.html { render "people/index" }
+      format.html { render 'people/index' }
       format.json { render json: @people }
       format.geojson { render geojson: @people }
       format.csv {

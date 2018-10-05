@@ -23,6 +23,7 @@ class Organisation < ApplicationRecord
   validates :name, exclusion: { in: %w(unknown unkown Unknown Unknown), message: "just leave it blank" }
   scope :name_starts_with, lambda { |term| where(["lower(name) LIKE ?", term.downcase + "%"]) }
   scope :name_contains, lambda { |term| where(["lower(name) LIKE ?", "%" + term.downcase + "%"]) }
+  scope :in_alphabetical_order, -> { order('name ASC') }
 
   include ApplicationHelper
   include PlaquesHelper

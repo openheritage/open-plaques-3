@@ -26,7 +26,7 @@ class AreasController < ApplicationController
         @areas = Area.select(:id,:name,:country_id).where(country_id: country_id).name_starts_with(params[:starts_with]).includes(:country).limit(limit)
       end
     else
-      @areas = "{}"
+      @areas = '{}'
     end
     render json: @areas.as_json(
       only: [:id,:name,:country_id],

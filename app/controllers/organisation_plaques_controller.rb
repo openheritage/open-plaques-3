@@ -12,7 +12,7 @@ class OrganisationPlaquesController < ApplicationController
       set_meta_tags twitter: {
         title: "Open Plaques Organisation #{@organisation.name}",
         image: {
-          _: @main_photo ? @main_photo.file_url : view_context.root_url[0...-1] + view_context.image_path("openplaques.png"),
+          _: @main_photo ? @main_photo.file_url : view_context.root_url[0...-1] + view_context.image_path('openplaques.png'),
           width: 100,
           height: 100,
         }
@@ -24,9 +24,9 @@ class OrganisationPlaquesController < ApplicationController
     @display = 'plaques'
     if zoom > 0
       @plaques = @organisation.plaques.tile(zoom, params[:x].to_i, params[:y].to_i, params[:filter])
-    elsif params[:data] && params[:data] == "simple"
-      @plaques = @organisation.plaques.all(conditions: conditions, order: "created_at DESC", limit: limit)
-    elsif params[:data] && params[:data] == "basic"
+    elsif params[:data] && params[:data] == 'simple'
+      @plaques = @organisation.plaques.all(conditions: conditions, order: 'created_at DESC', limit: limit)
+    elsif params[:data] && params[:data] == 'basic'
       @plaques = @organisation.plaques.all(select: [:id, :latitude, :longitude, :inscription])
     elsif (params[:filter] && params[:filter]!='')
       begin
@@ -45,7 +45,7 @@ class OrganisationPlaquesController < ApplicationController
         : @plaques = @organisation.plaques
     end
     respond_to do |format|
-      format.html { render "organisations/plaques/show" }
+      format.html { render 'organisations/plaques/show' }
       format.json { render json: @plaques }
       format.geojson { render geojson: @plaques, parent: @organisation }
       format.csv {
