@@ -6,8 +6,12 @@ class AreaSubjectsController < ApplicationController
   def show
     respond_to do |format|
       format.html {
+        @uncurated_count = @area.plaques.unconnected.count
         @plaques = @area.plaques.connected#.paginate(page: params[:page], per_page: 20)
         @people = people(@plaques)
+        @total = @people.count + @uncurated_count
+        @type_counts = @people.map {|p| p.type }.group_by(&:itself).map {|k,v| [k, v.size] }
+        @type_counts << ['uncurated', @uncurated_count]
         render 'areas/subjects/show'
       }
       format.csv {
@@ -27,7 +31,7 @@ class AreaSubjectsController < ApplicationController
 
   def people(plaques)
     @people = []
-    @plaques.each do |p|
+    plaques.each do |p|
       p.people.each do |per|
         per.define_singleton_method(:plaques_count) do
           1
@@ -35,7 +39,7 @@ class AreaSubjectsController < ApplicationController
         @people << per
       end
     end
-    @people.uniq!
+    @people.uniq
   end
 
   def find_country

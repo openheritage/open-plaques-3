@@ -165,8 +165,8 @@ en-GB:
         plaques: plaques
     subjects:
       show:
-        page_title: Subjects in %{area}
-        page_heading: Subjects in %{area}
+        page_title: Plaque subjects in %{area}
+        page_heading: subjects
 
   colours:
     index:

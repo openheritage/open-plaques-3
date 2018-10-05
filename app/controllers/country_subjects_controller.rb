@@ -23,8 +23,8 @@ class CountrySubjectsController < ApplicationController
         render 'countries/subjects/top'
       end
       format.csv do
-        @people = people(@plaques)
         @plaques = @country.plaques.connected
+        @people = people(@plaques)
         send_data(
           "\uFEFF#{PersonCsv.new(@people).build}",
           type: 'text/csv',
@@ -37,9 +37,9 @@ class CountrySubjectsController < ApplicationController
 
   protected
 
-    def people(_plaques)
+    def people(plaques)
       @people = []
-      @plaques.each do |p|
+      plaques.each do |p|
         p.people.each do |per|
           per.define_singleton_method(:plaques_count) do
             1
@@ -47,7 +47,7 @@ class CountrySubjectsController < ApplicationController
           @people << per
         end
       end
-      @people.uniq!
+      @people.uniq
     end
 
     def find
