@@ -1,0 +1,33 @@
+<% content_for(:page_title) {t '.page_title', country: @country.name} %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_person_path} %>
+
+<style>
+  .list-group {
+  	list-style: decimal inside;
+  }
+
+  .list-group-item {
+  	display: list-item;
+  }
+</style>
+
+<div class="jumbotron">
+  <h1>
+    <span class="flag-icon flag-icon-<%= @country.alpha2 %>"></span>
+    <%= link_to(@country.name, @country) %>
+    <%= t '.page_heading' %>
+  </h1>
+  <p>
+    <%= @country.plaques.connected.count %> out of <%= @country.plaques.count %>
+    (<%= ((@country.plaques.connected.count.to_f / @country.plaques.count.to_f) * 100).to_i %>%)
+    plaques in <%= @country.name %> have been curated.
+  </p>
+</div>
+
+<div class="row">
+  <ol class="list-group">
+  <% @top.each do |t| %>
+    <li class="list-group-item"><%= link_to t.name, person_url(t.id) %> <span class="badge badge-primary"><%= t.plaques_count %></span></li>
+  <% end %>
+  </ol>
+</div>

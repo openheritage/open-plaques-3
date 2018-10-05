@@ -13,7 +13,7 @@ class PeopleByIndexController < ApplicationController
         .preload(:personal_roles, :roles, :main_photo)
         .to_a.sort! { |a,b| a.surname.downcase <=> b.surname.downcase }
       respond_to do |format|
-        format.html { render "people/by_index/show" }
+        format.html { render 'people/by_index/show' }
         format.xml
         format.json { render json: @people }
       end

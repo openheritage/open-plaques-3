@@ -6,13 +6,13 @@ class OrganisationsController < ApplicationController
   before_action :find_languages, only: [:edit, :create]
 
   def index
-    @organisations = Organisation.all.select(:name, :slug, :sponsorships_count, :language_id).order("name ASC").paginate(page: params[:page], per_page: 50)
-    @top_10 = Organisation.all.select(:name, :slug, :sponsorships_count).order("sponsorships_count DESC").limit(10)
+    @organisations = Organisation.all.select(:name, :slug, :sponsorships_count, :language_id).in_alphabetical_order.paginate(page: params[:page], per_page: 50)
+    @top_10 = Organisation.all.select(:name, :slug, :sponsorships_count).order('sponsorships_count DESC').limit(10)
     respond_to do |format|
       format.html
       format.json { render json: @organisations }
       format.geojson {
-        @organisations = Organisation.all.order("name ASC")
+        @organisations = Organisation.all.in_alphabetical_order
         render geojson: @organisations
       }
     end

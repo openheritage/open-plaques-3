@@ -12,10 +12,10 @@ class PeopleController < ApplicationController
             @people = Person.send(params[:filter].to_s).paginate(page: params[:page], per_page: 50)
             @display = params[:filter].to_s
           rescue # an unrecognised filter method
-            redirect_to(controller: :people_by_index, action: "show", id: "a")
+            redirect_to(controller: :people_by_index, action: :show, id: :a)
           end
         else
-          redirect_to(controller: :people_by_index, action: "show", id: "a")
+          redirect_to(controller: :people_by_index, action: :show, id: :a)
         end
       }
       format.csv {
@@ -58,11 +58,11 @@ class PeopleController < ApplicationController
         description: @person.full_name,
       }
       set_meta_tags twitter: {
-        card: "summary_large_image",
-        site: "@openplaques",
+        card: 'summary_large_image',
+        site: '@openplaques',
         title: "#{@person.full_name} historical plaques and markers",
         image: {
-          _: @person.main_photo ? @person.main_photo.file_url : view_context.root_url[0...-1] + view_context.image_path("openplaques.png"),
+          _: @person.main_photo ? @person.main_photo.file_url : view_context.root_url[0...-1] + view_context.image_path('openplaques.png'),
           width: 100,
           height: 100,
         }
@@ -100,8 +100,8 @@ class PeopleController < ApplicationController
   end
 
   def create
-    params[:person][:born_on] += "-01-01" if params[:person][:born_on] =~/\d{4}/
-    params[:person][:died_on] += "-01-01" if params[:person][:died_on] =~/\d{4}/
+    params[:person][:born_on] += '-01-01' if params[:person][:born_on] =~/\d{4}/
+    params[:person][:died_on] += '-01-01' if params[:person][:died_on] =~/\d{4}/
     @person = Person.new(person_params)
     respond_to do |format|
       if @person.save
@@ -115,22 +115,22 @@ class PeopleController < ApplicationController
         format.html { redirect_to(@person) }
         format.xml  { render xml: @person, status: :created, location: @person }
       else
-        format.html { render "new" }
+        format.html { render 'new' }
         format.xml  { render xml: @person.errors, status: :unprocessable_entity }
       end
     end
   end
 
   def update
-    params[:person][:born_on] += "-01-01" if params[:person][:born_on] =~/\d{4}/
-    params[:person][:died_on] += "-01-01" if params[:person][:died_on] =~/\d{4}/
+    params[:person][:born_on] += '-01-01' if params[:person][:born_on] =~/\d{4}/
+    params[:person][:died_on] += '-01-01' if params[:person][:died_on] =~/\d{4}/
     respond_to do |format|
       if @person.update_attributes(person_params)
         flash[:notice] = 'Person was successfully updated.'
         format.html { redirect_to(@person) }
         format.xml  { head :ok }
       else
-        format.html { render "edit" }
+        format.html { render 'edit' }
         format.xml  { render xml: @person.errors, status: :unprocessable_entity }
       end
     end

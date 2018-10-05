@@ -191,6 +191,14 @@ en-GB:
     show:
       page_title: Historical plaques in %{country}
       page_heading: Historical plaques in %{country}
+    plaques:
+      show:
+        page_title: "%{country} plaques"
+        page_heading: plaques
+    subjects:
+      top:
+        page_title: "%{country} subjects"
+        page_heading: subjects
 
   errors:
     not_found:

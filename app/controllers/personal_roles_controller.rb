@@ -8,15 +8,15 @@ class PersonalRolesController < ApplicationController
     @personal_role = PersonalRole.new
     @personal_role.role = Role.find(params[:personal_role][:role])
     @personal_role.person = Person.find(params[:personal_role][:person_id])
-    if params[:personal_role][:started_at] > ""
+    if params[:personal_role][:started_at] > ''
       started_at = params[:personal_role][:started_at]
-      started_at = started_at + "-01-01" if started_at =~/\d{4}/
+      started_at = started_at + '-01-01' if started_at =~/\d{4}/
       started_at = Date.parse(started_at)
       @personal_role.started_at = started_at
     end
-    if params[:personal_role][:ended_at] > ""
+    if params[:personal_role][:ended_at] > ''
       ended_at = params[:personal_role][:ended_at]
-      ended_at = ended_at + "-01-01" if ended_at =~/\d{4}/
+      ended_at = ended_at + '-01-01' if ended_at =~/\d{4}/
       ended_at = Date.parse(ended_at)
       @personal_role.ended_at = ended_at
     end
@@ -25,7 +25,7 @@ class PersonalRolesController < ApplicationController
       redirect_to(edit_person_path(@personal_role.person))
     else
       @roles = Role.all.order(:name)
-      render "people/edit"
+      render 'people/edit'
     end
   end
 

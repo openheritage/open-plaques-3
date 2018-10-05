@@ -64,7 +64,7 @@ class Country < ApplicationRecord
   end
 
   def uri
-    "http://openplaques.org" + Rails.application.routes.url_helpers.country_path(self, format: :json) if id
+    "http://openplaques.org#{Rails.application.routes.url_helpers.country_path(self, format: :json)}" if id
   end
 
   def to_s
