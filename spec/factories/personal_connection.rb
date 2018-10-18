@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :personal_connection do
     person
-    verb
+    association :verb, factory: :lived
     plaque
   end
 end

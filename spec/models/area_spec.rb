@@ -1,6 +1,6 @@
 describe Area, type: :model do
   it 'has a valid factory' do
-    expect(create(:area)).to be_valid
+    expect(create :area).to be_valid
   end
   describe '#full_name' do
     context 'with name set' do

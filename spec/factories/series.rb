@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :series do
-    name 'sdgdfgd'
+    name {'sdgdfgd'}
   end
 end

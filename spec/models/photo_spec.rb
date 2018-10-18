@@ -1,6 +1,6 @@
 describe Photo, type: :model do
   it 'has a valid factory' do
-    expect(create(:photo)).to be_valid
+    expect(create :photo).to be_valid
   end
   describe '#title' do
     context 'with nothing set' do

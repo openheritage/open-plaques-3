@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :colour do
-    name 'wibble'
+    name {'blue'}
   end
 end

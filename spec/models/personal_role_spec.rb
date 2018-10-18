@@ -1,22 +1,20 @@
 describe PersonalRole, type: :model do
   it 'has a valid factory' do
-    expect(create(:personal_role)).to be_valid
+    expect(create :personal_role).to be_valid
   end
 
   describe '#name' do
     context 'a subject with role of "duck"' do
-      let (:roger) { build :person, name: 'Roger'}
-      let (:is_a_duck) { build :role, name: 'duck', role_type: 'animal'}
-      let (:personal_role) { build :personal_role, person: roger, role: is_a_duck }
+      let (:duck) { build :animal, name: 'duck' }
+      let (:personal_role) { build :personal_role, role: duck }
       it 'is a duck' do
         expect(personal_role.name).to eq('duck')
       end
     end
     context 'a husband' do
-      let (:roger) { build :person, name: 'Roger'}
-      let (:is_a_husband) { build :role, name: 'husband'}
-      let (:of_sarah) { build :person, name: 'Sarah'}
-      let (:personal_role) { build :personal_role, person: roger, role: is_a_husband, related_person: of_sarah }
+      let (:husband) { build :role, name: 'husband'}
+      let (:sarah) { build :person, name: 'Sarah'}
+      let (:personal_role) { build :personal_role, role: husband, related_person: sarah }
       it 'is a husband of' do
         expect(personal_role.name).to eq('husband of Sarah')
       end

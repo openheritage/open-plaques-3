@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :area do
     country
-    name 'somewhere'
+    name {'somewhere'}
   end
 end

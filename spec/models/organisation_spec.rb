@@ -1,6 +1,6 @@
 describe Organisation, type: :model do
   it 'has a valid factory' do
-    expect(create(:organisation)).to be_valid
+    expect(create :organisation).to be_valid
   end
 
   describe '#to_s' do

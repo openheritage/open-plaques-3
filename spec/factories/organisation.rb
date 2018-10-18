@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :organisation do
-    name 'orga'
+    name {'orga'}
   end
 end

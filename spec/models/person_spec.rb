@@ -1,35 +1,29 @@
 describe Person, type: :model do
-  it 'has a valid factory' do
-    expect(create(:person)).to be_valid
-  end
+  let (:john_smith) { build :person }
 
-  let (:john_smith) { build :person, name: 'John Smith' }
-  let (:is_a_vicar) { build :role, name: 'Vicar', role_type: 'clergy', prefix: 'Revd' }
-  let (:is_a_baronet) { build :role, name: 'Baronet', role_type: 'title', prefix: 'Sir' }
-  let (:is_a_farmer) { build :role, name: 'Farmer' }
-  let (:is_an_actor) { build :role, name: 'Actor' }
-  let (:is_an_dog) { build :role, name: 'Dog', role_type: 'animal' }
-  let (:is_a_building) { build :role, name: 'building', role_type: 'place' }
+  it 'has a valid factory' do
+    expect(create :person).to be_valid
+  end
 
   describe '#full_name' do
     context 'a person' do
       it 'has their name displayed as-is' do
-        expect(john_smith.full_name).to eq('John Smith')
+        expect(john_smith.full_name).to eq 'John Smith'
       end
     end
 
     context 'a Baronet' do
       before do
-        john_smith.roles << is_a_baronet
+        john_smith.roles << (build :baronet)
       end
       it 'is referred to as a Sir' do
-        expect(john_smith.full_name).to eq('Sir John Smith')
+        expect(john_smith.full_name).to eq 'Sir John Smith'
       end
     end
 
     context 'a vicar' do
       before do
-        john_smith.roles << is_a_vicar
+        john_smith.roles << (build :vicar)
       end
       it 'is referred to as a Revd' do
         expect(john_smith.full_name).to eq('Revd John Smith')
@@ -38,8 +32,8 @@ describe Person, type: :model do
 
     context 'a member of the clergy who has been ennobled' do
       before do
-        john_smith.roles << is_a_vicar
-        john_smith.roles << is_a_baronet
+        john_smith.roles << (build :vicar)
+        john_smith.roles << (build :baronet)
       end
       it 'does not get called a Sir' do
         expect(john_smith.full_name).to eq('Revd John Smith')
@@ -51,9 +45,9 @@ describe Person, type: :model do
     end
 
     context 'with a title' do
-      let (:is_a_smiter) { build :role, name: 'Smiter', role_type: 'title' }
+      let (:smiter) { build :role, name: 'Smiter', role_type: 'title' }
       before do
-        john_smith.roles << is_a_smiter
+        john_smith.roles << smiter
       end
       it 'does not automatically get it displayed before their name' do
         expect(john_smith.full_name).to eq('John Smith')
@@ -61,9 +55,9 @@ describe Person, type: :model do
     end
 
     context 'with a title that has a prefix' do
-      let (:is_a_smiter) { build :role, name: 'Smiter', prefix: 'Smt', role_type: 'title' }
+      let (:smiter) { build :role, name: 'Smiter', prefix: 'Smt', role_type: 'title' }
       before do
-        john_smith.roles << is_a_smiter
+        john_smith.roles << smiter
       end
       it 'has the abbreviated title displayed before their name' do
         expect(john_smith.full_name).to eq('Smt John Smith')
@@ -71,11 +65,11 @@ describe Person, type: :model do
     end
 
     context 'with two different titles confering the same prefix' do
-      let (:is_a_smiter) { build :role, name: 'Smiter', prefix: 'Smt', role_type: 'title' }
-      let (:is_a_wolverine) { build :role, name: 'Wolverine', prefix: 'Smt', role_type: 'title' }
+      let (:smiter) { build :role, name: 'Smiter', prefix: 'Smt', role_type: 'title' }
+      let (:wolverine) { build :role, name: 'Wolverine', prefix: 'Smt', role_type: 'title' }
       before do
-        john_smith.roles << is_a_smiter
-        john_smith.roles << is_a_wolverine
+        john_smith.roles << smiter
+        john_smith.roles << wolverine
       end
       it 'has the title displayed once' do
         expect(john_smith.full_name).to eq('Smt John Smith')
@@ -83,9 +77,9 @@ describe Person, type: :model do
     end
 
     context 'with higher education qualifications' do
-      let (:is_a_toodle) { build :role, name: 'Toodle', suffix: 'Td', role_type: 'letters' }
+      let (:toodle) { build :role, name: 'Toodle', suffix: 'Td', role_type: 'letters' }
       before do
-        john_smith.roles << is_a_toodle
+        john_smith.roles << toodle
       end
       it 'has letters after their name' do
         expect(john_smith.full_name).to eq('John Smith Td')
@@ -93,11 +87,11 @@ describe Person, type: :model do
     end
 
     context 'with multiple higher education qualifications' do
-      let (:is_a_toodle) { build :role, name: 'Toodle', suffix: 'Td', role_type: 'letters' }
-      let (:is_a_pip) { build :role, name: 'Pip', suffix: 'P', role_type: 'letters' }
+      let (:toodle) { build :role, name: 'Toodle', suffix: 'Td', role_type: 'letters' }
+      let (:pip) { build :role, name: 'Pip', suffix: 'P', role_type: 'letters' }
       before do
-        john_smith.roles << is_a_toodle
-        john_smith.roles << is_a_pip
+        john_smith.roles << toodle
+        john_smith.roles << pip
       end
       it 'has multiple letters after their name in the order they were added' do
         expect(john_smith.full_name).to eq('John Smith Td P')
@@ -106,13 +100,13 @@ describe Person, type: :model do
 
     context 'a princess who became queen' do
       let (:victoria) { build :person, name: 'Victoria' }
-      let (:is_a_princess) { build :role, name: 'Princess', role_type: 'title', prefix: 'Princess' }
+      let (:princess) { build :role, name: 'Princess', role_type: 'title', prefix: 'Princess' }
       let (:is_queen) { build :role, name: 'Queen of the United Kingdom', role_type: 'title', prefix: 'Queen' }
       before do
         victoria.roles << is_queen
-        victoria.roles << is_a_princess
-        victoria_is_a_princess = victoria.personal_roles.last
-        victoria_is_a_princess.ended_at = '1902-01-01'
+        victoria.roles << princess
+        victoria_princess = victoria.personal_roles.last
+        victoria_princess.ended_at = '1902-01-01'
       end
       it 'is called \'Queen\' and not \'Princess Queen\'' do
         expect(victoria.full_name).to eq('Queen Victoria')
@@ -128,13 +122,13 @@ describe Person, type: :model do
     end
 
     context 'a person with no role with a suffix' do
-      let (:is_a_boodle) { build :role, name: 'Boodle' }
-      let (:is_a_toodle) { build :role, name: 'Toodle' }
-      let (:is_a_pip) { build :role, name: 'Pip' }
+      let (:boodle) { build :role, name: 'Boodle' }
+      let (:toodle) { build :role, name: 'Toodle' }
+      let (:pip) { build :role, name: 'Pip' }
       before do
-        john_smith.roles << is_a_boodle
-        john_smith.roles << is_a_toodle
-        john_smith.roles << is_a_pip
+        john_smith.roles << boodle
+        john_smith.roles << toodle
+        john_smith.roles << pip
       end
       it 'has no letters after their name' do
         expect(john_smith.letters).to eq('')
@@ -142,13 +136,13 @@ describe Person, type: :model do
     end
 
     context 'a person with a mix of roles with and without suffix' do
-      let (:is_a_boodle) { build :role, name: 'Boodle', prefix: 'Boo' }
-      let (:is_a_toodle) { build :role, name: 'Toodle', suffix: 'Td' }
-      let (:is_a_pip) { build :role, name: 'Pip' }
+      let (:boodle) { build :role, name: 'Boodle', prefix: 'Boo' }
+      let (:toodle) { build :role, name: 'Toodle', suffix: 'Td' }
+      let (:pip) { build :role, name: 'Pip' }
       before do
-        john_smith.roles << is_a_boodle
-        john_smith.roles << is_a_toodle
-        john_smith.roles << is_a_pip
+        john_smith.roles << boodle
+        john_smith.roles << toodle
+        john_smith.roles << pip
       end
       it 'has letters after their name' do
         expect(john_smith.letters).to eq('Td')
@@ -156,13 +150,13 @@ describe Person, type: :model do
     end
 
     context 'multiple roles with a suffix' do
-      let (:is_a_boodle) { build :role, name: 'Boodle', suffix: 'Boo' }
-      let (:is_a_toodle) { build :role, name: 'Toodle', suffix: 'Td' }
-      let (:is_a_pip) { build :role, name: 'Pip' }
+      let (:boodle) { build :role, name: 'Boodle', suffix: 'Boo' }
+      let (:toodle) { build :role, name: 'Toodle', suffix: 'Td' }
+      let (:pip) { build :role, name: 'Pip' }
       before do
-        john_smith.roles << is_a_boodle
-        john_smith.roles << is_a_toodle
-        john_smith.roles << is_a_pip
+        john_smith.roles << boodle
+        john_smith.roles << toodle
+        john_smith.roles << pip
       end
       it 'lists suffixed roles as letters' do
         expect(john_smith.letters).to eq('Boo Td')
@@ -170,15 +164,15 @@ describe Person, type: :model do
     end
 
     context 'same suffix twice' do
-      let (:is_a_boodle) { build :role, name: 'Boodle', suffix: 'Boo', priority: 5 }
-      let (:is_a_poodle) { build :role, name: 'Poodle', suffix: 'Boo', priority: 5 }
-      let (:is_a_toodle) { build :role, name: 'Toodle', suffix: 'Td', priority: 4 }
-      let (:is_a_pip) { build :role, name: 'Pip' }
+      let (:boodle) { build :role, name: 'Boodle', suffix: 'Boo', priority: 5 }
+      let (:poodle) { build :role, name: 'Poodle', suffix: 'Boo', priority: 5 }
+      let (:toodle) { build :role, name: 'Toodle', suffix: 'Td', priority: 4 }
+      let (:pip) { build :role, name: 'Pip' }
       before do
-        john_smith.roles << is_a_boodle
-        john_smith.roles << is_a_poodle
-        john_smith.roles << is_a_toodle
-        john_smith.roles << is_a_pip
+        john_smith.roles << boodle
+        john_smith.roles << poodle
+        john_smith.roles << toodle
+        john_smith.roles << pip
       end
       it 'lists suffixed roles as letters' do
         expect(john_smith.letters).to eq('Boo Td')
@@ -221,7 +215,7 @@ describe Person, type: :model do
   describe '#clergy?' do
     context 'a vicar' do
       before do
-        john_smith.roles << is_a_vicar
+        john_smith.roles << (build :vicar)
       end
       it 'is in the clergy' do
         expect(john_smith).to be_clergy
@@ -230,7 +224,7 @@ describe Person, type: :model do
 
     context 'a farmer' do
       before do
-        john_smith.roles << is_a_farmer
+        john_smith.roles << (build :farmer)
       end
       it 'is not in the clergy' do
         expect(john_smith).to_not be_clergy
@@ -239,8 +233,8 @@ describe Person, type: :model do
 
     context 'a farmer who is also a vicar' do
       before do
-        john_smith.roles << is_a_farmer
-        john_smith.roles << is_a_vicar
+        john_smith.roles << (build :farmer)
+        john_smith.roles << (build :vicar)
       end
       it 'is in the clergy' do
         expect(john_smith).to be_clergy
@@ -257,7 +251,7 @@ describe Person, type: :model do
 
     context 'an actor' do
       before do
-        john_smith.roles << is_an_actor
+        john_smith.roles << (build :actor)
       end
       it 'is a person' do
         expect(john_smith.type).to eq('man')
@@ -266,7 +260,7 @@ describe Person, type: :model do
 
     context 'a dog' do
       before do
-        john_smith.roles << is_an_dog
+        john_smith.roles << (build :dog)
       end
       it 'is an animal' do
         expect(john_smith.type).to eq('animal')
@@ -275,8 +269,8 @@ describe Person, type: :model do
 
     context 'a dog that acts' do
       before do
-        john_smith.roles << is_an_dog
-        john_smith.roles << is_an_actor
+        john_smith.roles << (build :dog)
+        john_smith.roles << (build :actor)
       end
       it 'is an animal' do
         expect(john_smith.type).to eq('animal')
@@ -284,12 +278,13 @@ describe Person, type: :model do
     end
 
     context 'an actor that is a dog' do
+      let(:lassie){ build :person }
       before do
-        john_smith.roles << is_an_actor
-        john_smith.roles << is_an_dog
+        lassie.roles << (build :actor)
+        lassie.roles << (build :dog)
       end
       it 'is an animal' do
-        expect(john_smith.type).to eq('animal')
+        expect(lassie.type).to eq('animal')
       end
     end
   end
@@ -350,7 +345,7 @@ describe Person, type: :model do
     context 'a building built before 1900' do
       before do
         john_smith.born_on = Date.new(1880, 1, 1)
-        john_smith.roles << is_a_building
+        john_smith.roles << (build :building)
       end
       it 'is still standing' do
         expect(john_smith).to be_alive
@@ -425,7 +420,7 @@ describe Person, type: :model do
     context 'a building built in 1880' do
       before do
         john_smith.born_on = Date.new(1880, 1, 1)
-        john_smith.roles << is_a_building
+        john_smith.roles << (build :building)
       end
       it 'is over a hundred years old' do
         expect(john_smith.age).to be > 100
@@ -471,7 +466,7 @@ describe Person, type: :model do
     context 'a building built in 1880' do
       before do
         john_smith.born_on = Date.new(1980, 1, 1)
-        john_smith.roles << is_a_building
+        john_smith.roles << (build :building)
       end
       it 'is a range \'([construction year]-present)\'' do
         expect(john_smith.dates).to eq('(1980-present)')

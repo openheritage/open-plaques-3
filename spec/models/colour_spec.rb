@@ -1,6 +1,6 @@
 describe Colour, type: :model do
   it 'has a valid factory' do
-    expect(create(:colour)).to be_valid
+    expect(create :colour).to be_valid
   end
   describe '#full_name' do
     context 'with nothing set' do
