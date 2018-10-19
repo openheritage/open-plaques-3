@@ -7,7 +7,7 @@
   <% end %>
 <% end %>
 <% content_for(:page_subhead) do %>
-  <% markdown(@organisation.description) if !@organisation.description.blank? %>
+  <%= markdown(@organisation.description) if !@organisation.description.blank? %>
   <% if @display!='all' %>
     <%= link_to t('buttons.all'), organisation_path(@organisation) %>
   <% else %>
