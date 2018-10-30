@@ -9,7 +9,6 @@ gem 'uglifier'
 gem 'bcrypt', '~> 3.1.7'
 
 gem 'nokogiri'
-gem 'mechanize'
 gem 'sanitize'
 
 gem 'sass-rails'
@@ -45,6 +44,7 @@ group :development do
   gem 'meta_request'
   gem 'listen'
   gem 'fuubar'
+  gem 'mechanize'
 end
 
 group :test do
