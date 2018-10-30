@@ -17,14 +17,14 @@
 <% end %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_role_path(@role)} if @role.id %>
 
-<% if @role.description %>
+<% unless @role.description.blank? %>
   <blockquote class="quote-card blue-card">
     <p><%= @role.description %></p>
-    <cite><%= link_to(icon('external-link') + "DbPedia", @role.dbpedia_uri, target: '_blank') unless @role.dbpedia_uri.blank? %></cite>
+    <cite><%= link_to(icon('external-link') + 'DbPedia', @role.dbpedia_uri, target: '_blank') unless @role.dbpedia_uri.blank? %></cite>
   </blockquote>
 <% end %>
-<%= link_to(icon('external-link') + "Wikidata", @role.wikidata_url, target: '_blank') unless @role.wikidata_url.blank? %>
-<%= link_to(icon('external-link') + "Wikipedia", @role.wikipedia_url, target: '_blank') unless @role.wikipedia_url.blank? %>
+<%= link_to(icon('external-link') + 'Wikidata', @role.wikidata_url, target: '_blank') unless @role.wikidata_url.blank? %>
+<%= link_to(icon('external-link') + 'Wikipedia', @role.wikipedia_url, target: '_blank') unless @role.wikipedia_url.blank? %>
 
 <%= render partial:'personal_roles/tiles' %>
 
