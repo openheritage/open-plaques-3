@@ -23,7 +23,8 @@ class ApplicationController < ActionController::Base
       request.env["HTTP_USER_AGENT"]&.downcase&.include?('bingpreview') ||
       request.env["HTTP_USER_AGENT"]&.downcase&.include?('bubing') ||
       request.env["HTTP_USER_AGENT"]&.downcase&.include?('slurp') ||
-      request.env["HTTP_USER_AGENT"]&.downcase&.include?('Java/1.7.0_79')
+      request.env["HTTP_USER_AGENT"]&.downcase&.include?('java/1.7.0_79') ||
+      request.env["HTTP_USER_AGENT"]&.downcase&.include?('the knowledge ai')
     is_semrush = request.env["HTTP_USER_AGENT"]&.downcase&.include?('semrush')
     is_a_data_request = ['application/json', 'application/xml', 'application/kml'].include?(request.format)
     puts "USERAGENT: #{is_a_bot ? 'bot' : 'not-bot'} #{request.format} #{request.path} #{request.headers['HTTP_USER_AGENT']}"
