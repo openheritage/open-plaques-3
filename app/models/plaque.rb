@@ -24,7 +24,6 @@
 # * +series_ref+ - if part of a series does it have a reference number/id?
 # * +address+ - the physical street address
 require 'aws-sdk-translate'
-require 'google/cloud/translate'
 
 class Plaque < ApplicationRecord
 
@@ -316,20 +315,6 @@ class Plaque < ApplicationRecord
           target_language_code: "en",
         })
         self.inscription_in_english = "#{resp.translated_text} [AWS Translate]"
-      rescue
-        puts("plaque #{id} failed to translate")
-        google_translate
-      end
-    end
-  end
-
-  def google_translate
-    # export TRANSLATE_KEY="....."
-    if foreign? && inscription_in_english.blank?
-      begin
-        translate = Google::Cloud::Translate.new(project_id: 'openplaques')
-        translation = translate.translate "#{inscription}", to: "en"
-        self.inscription_in_english = "#{translation.text} [Google Translate]"
       rescue
         puts("plaque #{id} failed to translate")
       end
