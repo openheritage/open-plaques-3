@@ -36,13 +36,13 @@
   <div class="row">
     <div class="col-xs-12">
       <p><%= "Died aged" if (@person.person? || @person.thing? || @person.animal?) && @person.dead? %><%= "Closed aged" if @person.place? && @person.dead? %><%= "Aged" if @person.alive? && @person.age%> <%= @person.age.to_s if @person.age%></p>
-      <% unless @person.introduction.empty? || @person.introduction.blank? %>
+      <% unless !@person.introduction || @person.introduction.empty? || @person.introduction.blank? %>
         <blockquote class="quote-card blue-card">
           <p><%= markdown(@person.introduction) %></p>
           <cite>OpenPlaques</cite>
         </blockquote>
       <% end %>
-      <% unless @person.dbpedia_abstract.empty? %>
+      <% unless !@person.dbpedia_abstract || @person.dbpedia_abstract.empty? %>
         <blockquote class="quote-card blue-card">
           <p><%= @person.dbpedia_abstract %></p>
           <cite><%= link_to(icon('external-link') + 'DbPedia', @person.dbpedia_uri, target: '_blank') unless @person.dbpedia_uri.blank? %></cite>

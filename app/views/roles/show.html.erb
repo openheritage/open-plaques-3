@@ -17,7 +17,7 @@
 <% end %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_role_path(@role)} if @role.id %>
 
-<% unless @role.description.blank? %>
+<% unless !@role.description || @role.description.blank? %>
   <blockquote class="quote-card blue-card">
     <p><%= @role.description %></p>
     <cite><%= link_to(icon('external-link') + 'DbPedia', @role.dbpedia_uri, target: '_blank') unless @role.dbpedia_uri.blank? %></cite>
