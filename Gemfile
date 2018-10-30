@@ -40,6 +40,7 @@ gem 'aws-sdk-translate'
 gem 'google-cloud-translate'
 
 group :development do
+  gem 'derailed_benchmarks'
   gem 'spring'
   gem 'bullet'
   gem 'meta_request'
