@@ -44,6 +44,7 @@ class Person < ApplicationRecord
   scope :unconnected, -> { where(personal_connections_count: [nil,0]) }
   scope :name_starts_with, lambda { |term| where(['lower(name) LIKE ?', term.downcase + '%']) }
   scope :name_contains, lambda { |term| where(['lower(name) LIKE ?', '%' + term.downcase + '%']) }
+  scope :name_is, lambda { |term| where(['lower(name) = ?', term.downcase]) }
   scope :with_counts, -> {
     select <<~SQL
       people.*,
