@@ -164,7 +164,7 @@ class PlaquesController < ApplicationController
     end
     @plaque.area = area
 
-    unless params[:organisation_name].empty?
+    unless params[:organisation_name].empty? || params[:organisation_name].downcase == "none" || params[:organisation_name].downcase == "unknown"
       organisation = Organisation.where(name: params[:organisation_name]).first_or_create
       @plaque.organisations << organisation if organisation.valid?
     end
