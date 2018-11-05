@@ -67,20 +67,32 @@ class Wikidata
   end
 
   def dates?(born, died)
-    born_in && died_in && born_in == born && died_in == died
+    (born && born_in ? born_in == born : true) && (died && died_in ? died_in == died : true)
   end
 
   def self.qcode(term)
     term = term.tr("’ß#ÀÁÂÃÄÅàáâãäåĀāĂăĄąÇçĆćĈĉĊċČčÐðĎďĐđÈÉÊËèéêëĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħÌÍÎÏìíîïĨĩĪīĬĭĮįİıĴĵĶķĸĹĺĻļĽľĿŀŁłÑñŃńŅņŇňŉŊŋÒÓÔÕÖØòóôõöøŌōŎŏŐőŔŕŖŗŘřŚśŜŝŞşŠšſŢţŤťŦŧÙÚÛÜùúûüŨũŪūŬŭŮůŰűŲųŴŵÝýÿŶŷŸŹźŻżŽž",
 "'s AAAAAAaaaaaaAaAaAaCcCcCcCcCcDdDdDdEEEEeeeeEeEeEeEeEeGgGgGgGgHhHhIIIIiiiiIiIiIiIiIiJjKkkLlLlLlLlLlNnNnNnNnnNnOOOOOOooooooOoOoOoRrRrRrSsSsSsSssTtTtTtUUUUuuuuUuUuUuUuUuUuWwYyyYyYZzZzZz")
     api_root = "https://www.wikidata.org/w/api.php?action="
-    name_and_dates = term.match /(.*)\((\d\d\d\d)-(\d\d\d\d)\)/
+    name_and_dates = term.match /(.*) \((\d\d\d\d)\s*-*\s*(\d\d\d\d)\)/
     if name_and_dates
       name = name_and_dates[1]
       born = name_and_dates[2]
       died = name_and_dates[3]
     else
-      name = term
+      name_and_dates = term.match /(.*) \(d.\s*-*\s*(\d\d\d\d)\)/
+      if name_and_dates
+        name = name_and_dates[1]
+        died = name_and_dates[2]
+      else
+        name_and_dates = term.match /(.*) \(b.\s*-*\s*(\d\d\d\d)\)/
+        if name_and_dates
+          name = name_and_dates[1]
+          born = name_and_dates[2]
+        else
+          name = term
+        end
+      end
     end
     begin
       api = "#{api_root}wbgetentities&sites=enwiki&titles=#{name}&format=json"
@@ -97,7 +109,7 @@ class Wikidata
         resp = response.read
         wikidata = JSON.parse(resp, object_class: OpenStruct)
       end
-      if (wikidata.not_found? || wikidata.disambiguation?) && born && died
+      if (wikidata.not_found? || wikidata.disambiguation?) && (born || died)
         api = "#{api_root}query&list=search&srsearch=#{name}&format=json"
         response = open(api)
         resp = response.read
@@ -109,7 +121,7 @@ class Wikidata
       end
       if wikidata.not_found? || wikidata.disambiguation?
         nil
-      elsif born
+      elsif (born || died)
         w = Wikidata.new(wikidata.qcode)
         w.qcode if w.dates?(born, died)
       else

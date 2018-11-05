@@ -15,6 +15,16 @@ describe Wikidata do
         expect(Wikidata.qcode('James Duffy (1889-1969)')).to eq("Q4155328")
       end
     end
+    context 'an ambiguous name with only death date' do
+      it 'returns someone with the right name and dates' do
+        expect(Wikidata.qcode('James Duffy (d.1969)')).to eq("Q4155328")
+      end
+    end
+    context 'an ambiguous name with only birth date' do
+      it 'returns someone with the right name and dates' do
+        expect(Wikidata.qcode('James Duffy (b.1889)')).to eq("Q4155328")
+      end
+    end
     context 'an unambiguous name' do
       it 'returns a Wikidata id' do
         expect(Wikidata.qcode('Myra Hess')).to eq("Q269848")
