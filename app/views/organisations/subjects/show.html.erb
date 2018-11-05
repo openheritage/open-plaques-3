@@ -1,0 +1,23 @@
+<% content_for(:page_title) {t '.page_title', organisation: @organisation.name } %>
+<% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_person_path} %>
+
+<div class="jumbotron">
+  <h1>
+    <%= link_to(@organisation.name, organisation_path(@organisation)) %>
+    <%= t '.page_heading' %>
+  </h1>
+  <p>
+    <%= @organisation.plaques.connected.count %> out of <%= @organisation.plaques.count %>
+    (<%= ((@organisation.plaques.connected.count.to_f / @organisation.plaques.count.to_f) * 100).to_i %>%)
+    plaques have been curated
+  </p>
+  <ul>
+    <% @type_counts.each do |t| %>
+      <li><%= t[0] %> <%= t[1] %> (<%= ((t[1].to_f/@total) * 100).to_i %>%)</li>
+    <% end %>
+  </ul>
+</div>
+
+<%= will_paginate @plaques if @plaques.respond_to?(:total_pages) %>
+<%= render partial: 'people/tiles' %>
+<%= will_paginate @plaques if @plaques.respond_to?(:total_pages) %>

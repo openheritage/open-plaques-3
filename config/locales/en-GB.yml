@@ -261,6 +261,10 @@ en-GB:
       show:
         page_title: Organisation %{organisation}
         page_heading: Organisation - %{organisation}
+    subjects:
+      show:
+        page_title: Plaque subjects from %{organisation}
+        page_heading: subjects
 
   pages:
     edit:
