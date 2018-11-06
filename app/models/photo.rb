@@ -179,6 +179,14 @@ class Photo < ApplicationRecord
     end
   end
 
+  def cloned?
+    self.clone_id && self.clone_id > 0
+  end
+
+  def preferred_clone?
+    cloned? ? !flickr? : true
+  end
+
   def as_json(options={})
     options =
     {

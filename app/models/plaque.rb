@@ -251,20 +251,15 @@ class Plaque < ApplicationRecord
   end
 
   def main_photo
-    @main_photo ||= photos.first
+    @main_photo ||= photos.first.preferred_clone? ? photos.first : photos.second
   end
 
   def other_photos
     others = []
-    clones = []
-    clones << main_photo.clone_id if main_photo&.clone_id
     photos.each do |p|
-      if !clones.include?(p.id)
-        clones << p.clone_id if p.clone_id
-        others << p if p != main_photo
-      end
+      others << p if p != main_photo && p.preferred_clone?
     end
-    others
+    others.uniq
   end
 
   def main_photo_reverse
