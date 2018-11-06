@@ -251,7 +251,7 @@ class Plaque < ApplicationRecord
   end
 
   def main_photo
-    @main_photo ||= photos.first.preferred_clone? ? photos.first : photos.second
+    @main_photo ||= photos.first&.preferred_clone? ? photos.first : photos.second
   end
 
   def other_photos
