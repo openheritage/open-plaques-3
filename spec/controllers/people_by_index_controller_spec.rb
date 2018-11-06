@@ -33,7 +33,7 @@ describe PeopleByIndexController do
     context 'with lowercase index letter' do
       before { get :show, params: { id: 'a' } }
       it 'should return 200' do
-        expect(response).to be_success
+        expect(response).to be_successful
       end
       it 'should assign to @people' do
         expect(assigns(:people)).to eql([a_person])
