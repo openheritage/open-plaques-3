@@ -11,19 +11,9 @@ module OpenPlaques
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.1
 
-    config.secret_key_base = ENV['SECRET_KEY_BASE']
-    config.time_zone = 'London'
-    config.logger = Logger.new(STDOUT)
-    config.action_mailer.default_url_options = { host: ENV['HOST'] || "http://localhost:#{ENV['PORT']}"  }
-    config.assets.version = '1.0'
- #   config.i18n.enforce_available_locales = false
-#    config.i18n.available_locales = [:'en-GB', :fr, :en, :ru]
-    config.i18n.available_locales = [:'en-GB', :en]
-    config.i18n.default_locale = :'en-GB'
-    config.i18n.fallbacks = [:en]
-
     # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration should go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded.
+    # Application configuration can go into files in config/initializers
+    # -- all .rb files in that directory are automatically loaded after loading
+    # the framework and any gems in your application.
   end
 end
