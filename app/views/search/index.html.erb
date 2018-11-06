@@ -1,6 +1,29 @@
 <% content_for(:page_title) {t '.page_title', phrase: @original_phrase} %>
 <% content_for(:title) {t '.page_heading', phrase: @original_phrase} %>
 
+<% if @organisations.count > 0 %>
+  <h2><%= pluralize @organisations.count,'organisation' %> matching "<%= @original_phrase %>"</h2>
+  <% if @organisations.count < 3 %>
+    <div class="row">
+      <% @organisations.each do |organisation| %>
+        <div class="col-xs-6 col-sm-4 col-md-3"><%= render organisation %></div>
+      <% end %>
+    </div>
+  <% elsif @organisations.count < 11 %>
+    <div class="row">
+      <% cols = (12 / @organisations.count).ceil %>
+      <% cols = [cols,2].max %>
+      <% @organisations.each do |organisation| %>
+        <div class="col-xs-6 col-sm-<%= cols %>"><%= render organisation %></div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="card-columns">
+      <%= render @organisations %>
+    </div>
+  <% end %>
+<% end %>
+
 <% if @places.count > 0 %>
   <h2><%= pluralize @places.count,'place' %> matching "<%= @original_phrase %>"</h2>
   <% if @places.count < 3 %>

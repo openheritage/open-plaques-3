@@ -5,6 +5,7 @@ class SearchController < ApplicationController
     @original_phrase = params[:phrase]
     @phrase = @original_phrase
     @phrase = "" if @phrase == nil
+    @organisations = []
     @people = []
     @places = []
     @plaques = []
@@ -15,6 +16,8 @@ class SearchController < ApplicationController
       full_phrase_like = "%#{@phrase}%"
       phrase_like = "%#{@phrase.tr(" ","%").tr(".","%")}%"
       unaccented_phrase_like = "%#{unaccented_phrase.tr(" ","%").tr(".","%")}%"
+
+      @organisations += Organisation.where(["name ILIKE ?", full_phrase_like]).limit(cap)
 
       @people += Person.where(["name ILIKE ?", full_phrase_like]).limit(cap)
       @people += Person.where(["name ILIKE ?", phrase_like]).limit(cap)
@@ -42,9 +45,11 @@ class SearchController < ApplicationController
           @plaques += Plaque.where(["inscription ILIKE ?", "%#{aka}%"]).limit(cap).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
         end
       end
+      @organisations.uniq!
       @people.uniq!
       @places.uniq!
       @plaques.uniq!
+      @search_results += @organisations
       @search_results += @people
       @search_results += @places
       @search_results += @plaques
