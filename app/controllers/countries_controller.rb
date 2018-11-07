@@ -3,6 +3,7 @@ class CountriesController < ApplicationController
   before_action :authenticate_admin!, only: :destroy
   before_action :authenticate_user!, except: [:index, :show]
   before_action :find, only: [:edit, :update]
+  before_action :streetview_to_params, only: :update
 
   def index
     @countries = Country.all.to_a
@@ -74,12 +75,31 @@ class CountriesController < ApplicationController
       @country = Country.find_by_alpha2!(params[:id])
     end
 
+    class Helper
+      include Singleton
+      include PlaquesHelper
+    end
+
+    def streetview_to_params
+      if (params[:streetview_url])
+        point = Helper.instance.geolocation_from params[:streetview_url]
+        if !point.latitude.blank? && !point.longitude.blank?
+          params[:country][:latitude] = point.latitude.to_s
+          params[:country][:longitude] = point.longitude.to_s
+        end
+      end
+    end
+
   private
 
     def country_params
       params.require(:country).permit(
         :alpha2,
+        :dbpedia_uri,
+        :latitude,
+        :longitude,
         :name,
-        :dbpedia_uri)
+        :streetview_url,
+      )
     end
 end

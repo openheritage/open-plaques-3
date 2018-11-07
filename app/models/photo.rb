@@ -1,21 +1,18 @@
 # -*- encoding : utf-8 -*-
 # A photograph of a plaque or a subject.
-#
 # === Attributes
-# * +photographer+ - The name of the photographer
-# * +url+ - The primary stable webpage for the photo
-# * +created_at+
-# * +updated_at+
+# * +description+ - Extra information about what this is a photo of (used if not linked to a plaque)
 # * +file_url+ - A link to the actual digital photo file.
-# * +photographer_url+ - A link to a webpage for the photographer
-# * +taken_at+ - Date and time if known
-# * +shot+ - Types of framing technique. One of "extreme close up", "close up", "medium close up", "medium shot", "long shot", "establishing shot"
-# * +of_a_plaque+ - whether this is actually a photo of a plaque (and not, for example, mistakenly labelled on Wikimedia as one)
 # * +latitude+ - Optional
 # * +longitude+ - Optional
+# * +of_a_plaque+ - whether this is actually a photo of a plaque (and not, for example, mistakenly labelled on Wikimedia as one)
+# * +photographer+ - The name of the photographer
+# * +photographer_url+ - A link to a webpage for the photographer
+# * +shot+ - Types of framing technique. One of "extreme close up", "close up", "medium close up", "medium shot", "long shot", "establishing shot"
 # * +subject+ - What we think this is a photo of (used if not linked to a plaque)
-# * +description+ - Extra information about what this is a photo of (used if not linked to a plaque)
+# * +taken_at+ - Date and time if known
 # * +thumbnail+ - A link to a thumbnail image if there is one
+# * +url+ - The primary stable webpage for the photo
 require 'wikimedia/commoner'
 
 class Photo < ApplicationRecord

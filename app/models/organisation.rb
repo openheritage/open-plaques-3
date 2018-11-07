@@ -1,18 +1,15 @@
 # An organisation involved in erecting commemorative plaques.
 # Famous examples include 'English Heritage' - other examples may be civic societies or local councils.
 # === Attributes
-# * +name+ - The official name of the organisation
-# * +website+ - official web site
-# * +created_at+
-# * +updated_at+
-# * +notes+ - textual set of notes
-# * +slug+ - an identifier for the organisation, usually equivalent to its name in lower case, with spaces replaced by underscores. Used in URLs.
 # * +description+ - a textual description
-# * +sponsorships_count+ - equivalent of number of plaques
 # * +latitude+ - mean location of plaques
 # * +longitude+ - mean location of plaques
+# * +name+ - The official name of the organisation
+# * +notes+ - textual set of notes
+# * +slug+ - an identifier for the organisation, usually equivalent to its name in lower case, with spaces replaced by underscores. Used in URLs.
+# * +sponsorships_count+ - equivalent of number of plaques
+# * +website+ - official web site
 class Organisation < ApplicationRecord
-
   has_many :sponsorships
   has_many :plaques, through: :sponsorships
   belongs_to :language, optional: true

@@ -3,14 +3,11 @@
 # on the home page to something topical and/or interesting
 # === Attributes
 # * +description+ - a short blurb on why this one was chosen
+# * +featured_count+ - number of times the plaque has been featured
 # * +feature_on+ - (optional) a specific date to show this plaque, e.g. someone's birthday
 # * +last_featured+ - when the plaque was last featured
-# * +featured_count+ - number of times the plaque has been featured
-# * +created_at+
-# * +updated_at+
 # * +proposer+ - person who proposed it
 class Pick < ApplicationRecord
-
   belongs_to :plaque
 
   validates_presence_of :plaque_id

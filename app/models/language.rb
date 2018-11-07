@@ -1,10 +1,9 @@
 # A natural language, as defined by the ISO code.
 # === Attributes
+# * +alpha2+ - 2-letter code as defined by the ISO standard. Used in URLs.
 # * +name+ - the language's common name
 # * +plaques_count+ - cached count of plaques
-# * +alpha2+ - 2-letter code as defined by the ISO standard. Used in URLs.
 class Language < ApplicationRecord
-
   has_many :plaques
   has_many :organisations
 

@@ -1,15 +1,12 @@
 # A series of commemorative plaques
 # This is often marked on the plaque itself
 # === Attributes
-# * +name+ - The name of the series (as it appears on the plaques).
 # * +description+ - A description of when amd why a series was erected.
-# * +created_at+
-# * +updated_at+
-# * +plaques_count+
 # * +latitude+
 # * +longitude+
+# * +name+ - The name of the series (as it appears on the plaques).
+# * +plaques_count+
 class Series < ApplicationRecord
-
   has_many :plaques
 
   attr_accessor :latitude, :longitude

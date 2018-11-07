@@ -1,26 +1,23 @@
 # A subject commemorated on a plaque
 # === Attributes
-# * +name+ - common full name of the person
+# * +aka+ - array of names that person is also known as
+# * +ancestry_id+ - link to Ancestry.com web site
 # * +born_on+ - date on which the person was born [Optional]
+# * +born_on_is_circa+ - true or false. Whether the +born_on+ date is 'circa' or not [Optional]
+# * +dbpedia_uri+ - link to the DBpedia resource representing the person (if one exists).
 # * +died_on+ - The date on which the person died [Optional]
-# * +plaques_count+ - cached count of plaques
-# * +created_at+
-# * +updated_at+
+# * +died_on_is_circa+ - true or false. Whether the +died_on+ date is 'circa' or not [Optional]
+# * +find_a_grave_id+ - link to Find A Grave web site
+# * +gender+ - (u)nkown, (n)ot applicable, (m)ale, (f)emale
+# * +index+
+# * +introduction+ -
+# * +name+ - common full name of the person
 # * +personal_connections_count+ - cached count of associations with plaques, i.e. places and times
 # * +personal_roles_count+ - cached count of roles
-# * +index+
-# * +born_on_is_circa+ - true or false. Whether the +born_on+ date is 'circa' or not [Optional]
-# * +died_on_is_circa+ - true or false. Whether the +died_on+ date is 'circa' or not [Optional]
-# * +wikipedia_url+ - override link to the person's Wikipedia page (if they have one and it isn't linked to via their name).
-# * +dbpedia_uri+ - link to the DBpedia resource representing the person (if one exists).
+# * +plaques_count+ - cached count of plaques
 # * +surname_starts_with+ - letter to index this person on
-# * +introduction+ -
-# * +gender+ - (u)nkown, (n)ot applicable, (m)ale, (f)emale
-# * +aka+ - array of names that person is also known as
-# * +find_a_grave_id+ - link to Find A Grave web site
-# * +ancestry_id+ - link to Ancestry.com web site
+# * +wikipedia_url+ - override link to the person's Wikipedia page (if they have one and it isn't linked to via their name).
 class Person < ApplicationRecord
-
   has_many :personal_roles
   has_many :personal_connections
   has_many :roles, -> { distinct }, through: :personal_roles

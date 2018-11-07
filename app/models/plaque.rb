@@ -3,26 +3,23 @@
 # was once installed on a building, site or monument. Our definition of plaques is quite wide,
 # encompassing 'traditional' blue plaques that commemorate a historic person's connection to a
 # place, as well as plaques that commemorate buildings, events, and so on.
-#
 # === Attributes
+# * +address+ - the physical street address
+# * +description+ - additional information
 # * +erected_at+ - The date on which the plaque was erected. Optional.
-# * +latitude+ - location (as a decimal in WSG-84 projection). Optional.
-# * +longitude+ - location (as a decimal in WSG-84 projection). Optional.
-# * +created_at+
-# * +updated_at+
 # * +inscription+ - The text inscription on the self.
-# * +reference+ - An official reference number or identifier for the self. Sometimes marked on the actual plaque itself, sometimes only in promotional material. Optional.
-# * +notes+ - A general purpose notes field for internal admin and data-collection purposes.
-# * +parsed_inscription+ - (not used?)
-# * +photos_count+ -
-# * +description+ -
+# * +inscription_in_english+ - Manual translation
 # * +inscription_is_stub+ - The inscription is incomplete and needs entering.
-# * +personal_connections_count+ -
 # * +is_accurate_geolocation+ -
 # * +is_current+ - Whether the plaque is currently on display (or has it been stolen!)
-# * +inscription_in_english+ - Manual translation
+# * +latitude+ - location (as a decimal in WSG-84 projection). Optional.
+# * +longitude+ - location (as a decimal in WSG-84 projection). Optional.
+# * +notes+ - A general purpose notes field for internal admin and data-collection purposes.
+# * +parsed_inscription+ - (not used?)
+# * +personal_connections_count+ -
+# * +photos_count+ -
+# * +reference+ - An official reference number or identifier for the self. Sometimes marked on the actual plaque itself, sometimes only in promotional material. Optional.
 # * +series_ref+ - if part of a series does it have a reference number/id?
-# * +address+ - the physical street address
 require 'aws-sdk-translate'
 
 class Plaque < ApplicationRecord

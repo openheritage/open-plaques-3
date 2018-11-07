@@ -113,6 +113,8 @@ en-GB:
   data_about_this_thing_as: Data available about this %{thing} as
   data_about_things_as: Data available about these as
   unphotographed_plaques: unphotographed plaques
+  find_on_google_maps_html: <a href="http://maps.google.co.uk/maps?q=%{q}&z=18" target="_new">Google Street View</a> url
+  must_be_underscored: lowercase with underscores (will autogenerate given blank)
 
   home:
     contribute:
@@ -146,14 +148,11 @@ en-GB:
     edit:
       page_title: Edit %{area}
       page_heading_html: Edit %{area}
-      find_on_google_maps_html: Find on <a href="http://maps.google.co.uk/maps?q=%{area}&z=18" target="_new">Google Maps</a>
       geolocation: Geolocation
       google_streetview_url: Google Streetview url
-      must_be_underscored: must be lowercase with underscores
     new:
       page_title: New area in %{country}
       page_heading_html: New area in %{country}
-      must_be_underscored: must be lowercase with underscores
     show:
       page_title: Area %{area}
       page_heading_html: Show %{area}
