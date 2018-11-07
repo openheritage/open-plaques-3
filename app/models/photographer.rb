@@ -1,5 +1,4 @@
 class Photographer
-
   attr_accessor :id, :photos_count, :photos, :url
 
   def photos

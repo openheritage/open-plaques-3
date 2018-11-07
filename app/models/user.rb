@@ -21,7 +21,6 @@
 # * +opted_in+ - [used by Devise]
 # * +reset_password_sent_at+ - [used by Devise]
 class User < ApplicationRecord
-
   belongs_to :todo_item, optional: true
 
   devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable

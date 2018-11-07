@@ -21,5 +21,8 @@
       <%= f.text_field :dbpedia_uri, class: 'form-control' %>
     </div>
   </div>
+
+  <%= render 'geolocate', {f: f, object: @country, q: @country.name} %>
+
   <%= f.submit t('buttons.update'), class: 'btn btn-primary' %>
 <% end %>

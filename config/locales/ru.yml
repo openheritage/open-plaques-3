@@ -111,6 +111,8 @@ ru:
   data_about_this_thing_as: Data available about this %{thing} as
   data_about_things_as: Data available about these as
   unphotographed_plaques: таблички без фотографии
+  find_on_google_maps_html: <a href="http://maps.google.co.uk/maps?q=%{q}&z=18" target="_new">Google Street View</a>
+  must_be_underscored: в нижнем регистре с подчеркиваниями
 
   home:
     index:
@@ -141,14 +143,11 @@ ru:
     edit:
       page_title: Изменить %{area}
       page_heading_html: Изменить %{area}
-      find_on_google_maps_html: Найти на <a href="http://maps.google.co.uk/maps?q=%{area}&z=18" target="_new">Картах Google</a>
       geolocation: Местоположение
       google_streetview_url: Ссылка на Просмотр улиц Google
-      must_be_underscored: в нижнем регистре с подчеркиваниями
     new:
       page_title: Новое место в %{country}
       page_heading_html: Новое место в %{country}
-      must_be_underscored: в нижнем регистре с подчеркиваниями
     show:
       page_title: Таблички в %{area}
       page_title_unphotographed: Таблички без фотографии в %{area}

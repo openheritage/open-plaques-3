@@ -1,5 +1,5 @@
 <% content_for(:page_title) {t '.page_title', area: @area.name + ", " + @area.country.name} %>
-<% content_for(:title) {@area.name} %>
+<% content_for(:title) {render @area} %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_area_path(@area)} %>
 
 <%= form_for @area, url: { action: "update" } do |f| %>
@@ -13,7 +13,7 @@
     <%= f.label :slug, class: 'form-control-label col-sm-2' %>
     <div class="col-sm-10">
       <%= f.text_field :slug, class: 'form-control' %>
-      <small class="text-muted"><%= t '.must_be_underscored' %></small>
+      <small class="text-muted"><%= t 'must_be_underscored' %></small>
     </div>
   </div>
   <div class="form-group row">
@@ -22,83 +22,13 @@
       <%= f.collection_select :country_id, @countries, :id, :name, class: 'form-control' %>
     </div>
   </div>
-  <p><%= t '.find_on_google_maps_html', area: @area.name + ', ' + @area.country.name %></p>
-  <div class="form-group row">
-    <%= label_tag(nil, t('.geolocation'), class: 'form-control-label col-sm-2') %>
-    <div class="col-sm-10">
-      <%= f.label :latitude %> <%= f.text_field :latitude %>
-      <%= f.label :longitude %> <%= f.text_field :longitude %>
-    </div>
-  </div>
-  <div class="form-group row">
-    <%= label_tag(:streetview_url, t('.google_streetview_url'), class: 'form-control-label col-sm-2') %>
-    <div class="col-sm-10">
-      <%= text_field_tag(:streetview_url, nil, class: 'form-control') %>
-    </div>
-  </div>
+
+  <%= render 'geolocate', {f: f, object: @area, q: "#{@area.name}, #{@area.country.name}"} %>
+
   <%= f.submit t('buttons.update'), class: 'btn btn-primary' %>
 <% end %>
-
-<div id="map" style="height: 400px; width: 100%; margin-top: 15px;"></div>
-
 <br/>
 
 <div class="container">
   <%= button_delete(area_path(@area)) %>
 </div>
-
-<script>
-  var map = null;
-  var lat_element = null;
-  var lon_element = null;
-  var geolocation = new L.LatLng(52, 0);
-  var view = 5;
-
-  document.addEventListener("DOMContentLoaded", function()
-  {
-    lat_element = document.getElementById('area_latitude');
-    lon_element = document.getElementById('area_longitude');
-
-    lat_element.addEventListener('blur', update_map);
-    lon_element.addEventListener('blur', update_map);
-
-    update_geolocation_from_text_fields();
-
-    var plaque_icon = new L.DivIcon({ className: 'plaque-marker', html: '', iconSize : 16 });
-
-    map = L.map('map').setView(geolocation, view);
-    map.scrollWheelZoom.disable();
-//    var basemap = new L.StamenTileLayer("toner"); // toner, terrain, or watercolor
-    var basemap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    	maxZoom: 19,
-    	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    });
-    map.addLayer(basemap);
-    marker = L.marker(geolocation, {draggable: true, icon: plaque_icon});
-    marker.on('dragend', update_text_fields_from_marker);
-    marker.addTo(map);
-
-    function update_geolocation_from_text_fields()
-    {
-      if (lat_element && lat_element.value != '' && lon_element && lon_element.value != '')
-      {
-        geolocation.lat = lat_element.value;
-        geolocation.lng = lon_element.value;
-        view = 18;
-      }
-    }
-
-    function update_map()
-    {
-      update_geolocation_from_text_fields();
-      marker.setLatLng(geolocation);
-      map.setView(geolocation, view);
-    }
-
-    function update_text_fields_from_marker()
-    {
-      lat_element.value = marker.getLatLng().lat;
-      lon_element.value = marker.getLatLng().lng;
-    }
-  });
-</script>
