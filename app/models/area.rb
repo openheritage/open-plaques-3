@@ -91,7 +91,7 @@ class Area < ApplicationRecord
   end
 
   def main_photo
-    random_plaque = plaques.photographed.order('random()').limit(1).first
+    random_plaque = plaques.photographed.order(Arel.sql('random()')).limit(1).first
     random_plaque ? random_plaque.main_photo : nil
   end
 

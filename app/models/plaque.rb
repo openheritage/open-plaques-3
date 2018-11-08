@@ -58,7 +58,7 @@ class Plaque < ApplicationRecord
   scope :partial_inscription, -> { where(inscription_is_stub: true).order("id DESC") }
   scope :partial_inscription_photo, -> { where(photos_count: 1..99999, inscription_is_stub: true).order("id DESC") }
   scope :no_english_version, -> { where("language_id > 1").where(inscription_is_stub: false, inscription_in_english: nil) }
-  scope :random, -> { order('random()') }
+  scope :random, -> { order(Arel.sql('random()')) }
 
   include ApplicationHelper, ActionView::Helpers::TextHelper
 

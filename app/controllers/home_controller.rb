@@ -1,7 +1,7 @@
 class HomeController < ApplicationController
   def index
     @plaques_count = Plaque.count
-    @plaques = Plaque.photographed.order('random()').limit(12)
+    @plaques = Plaque.photographed.order(Arel.sql('random()')).limit(12)
     if Date.today == '2019-03-08'.to_date
       @famous_women = Person
         .connected

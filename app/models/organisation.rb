@@ -76,7 +76,7 @@ class Organisation < ApplicationRecord
   end
 
   def main_photo
-    random_photographed_plaque = plaques.photographed.order("random()").limit(1).first
+    random_photographed_plaque = plaques.photographed.order(Arel.sql('random()')).limit(1).first
     random_photographed_plaque ? random_photographed_plaque.main_photo : nil
   end
 end

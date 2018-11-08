@@ -53,7 +53,7 @@ class Person < ApplicationRecord
     SQL
   }
   scope :female, -> { where ("gender = 'f'") }
-  scope :random, -> { order('random()') }
+  scope :random, -> { order(Arel.sql('random()')) }
   scope :non_holocaust, -> { joins(:personal_roles).where('personal_roles.role_id != 5375') }
 
   DATE_REGEX = /c?[\d]{4}/
