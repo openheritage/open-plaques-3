@@ -42,7 +42,6 @@ class AreaPlaquesController < ApplicationController
         : @plaques = @area.plaques.paginate(page: params[:page], per_page: 5000000)
       @display = 'all'
     end
-    @area.find_centre if !@area.geolocated?
     respond_with @plaques do |format|
       format.html { render 'areas/plaques/show' }
       format.json { render json: @plaques }

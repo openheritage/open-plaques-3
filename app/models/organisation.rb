@@ -14,7 +14,7 @@ class Organisation < ApplicationRecord
   has_many :plaques, through: :sponsorships
   belongs_to :language, optional: true
 
-  before_validation :make_slug_not_war, :find_centre
+  before_validation :make_slug_not_war
   validates_presence_of :name, :slug
   validates_uniqueness_of :slug
   validates :name, exclusion: { in: %w(unknown unkown Unknown Unknown), message: "just leave it blank" }

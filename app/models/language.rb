@@ -17,6 +17,7 @@ class Language < ApplicationRecord
     fi = 'flag-icon-es-ct' if alpha2 == 'ca'
     fi = 'flag-icon-ie' if alpha2 == 'ga'
     fi = 'flag-icon-by' if alpha2 == 'be'
+    fi = 'flag-icon-gb-wls' if alpha2 == 'wl'
     fi
   end
 
