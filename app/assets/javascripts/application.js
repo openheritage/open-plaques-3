@@ -17,6 +17,7 @@
 //= require jquery-ui
 //= require jquery_ujs
 //= require leaflet
+//= require leaflet.ajax
 //= require leaflet.markercluster
 //= require tile.stamen
 //= require RGraph.hbar.js

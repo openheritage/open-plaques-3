@@ -3,10 +3,47 @@
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_country_path(@country)} %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_country_area_path(@country.alpha2)} %>
 
+  <% if @country.geolocated? %>
+    <div id="map" class="mini"></div>
+    <script>
+      var map = L.map('map', {maxZoom: 11})
+      map.setView([<%= @country.latitude %>, <%= @country.longitude %>], 6)
+      L.tileLayer('https://maps.tilehosting.com/styles/basic/{z}/{x}/{y}.png?key=qSorA16cJhhBZEhqDisF', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+      }).addTo(map)
+      var blueIcon = new L.Icon({
+        iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
+        shadowUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+      })
+      new L.GeoJSON.AJAX(
+        ["<%= @country.alpha2 %>/areas.geojson"],
+        {
+          pointToLayer: function(feature, latlng) {
+            var number_icon = new L.DivIcon({
+              className: 'plaque-marker',
+              html: `<span class="badge badge-secondary">${feature.properties['plaques_count']}</span>`,
+              iconSize: [20, 20],
+              popupAnchor: [3, -40]
+            })
+            var marker = new L.Marker(latlng, {icon: number_icon, opacity: 0.6})
+            marker.bindTooltip(feature.properties['name']).openTooltip()
+            return marker
+          }
+        }
+      ).addTo(map)
+    </script>
+  <% end %>
+
 <% @areas.sort { |a,b| a.state.to_s <=> b.state.to_s }.group_by(&:state).each do |state, areas| %>
   <% if !state.blank? %>
     <h2>Region: <%= state %></h2>
   <% end %>
+
   <div class="card-columns">
     <%= render areas %>
   </div>
