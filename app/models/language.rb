@@ -14,10 +14,16 @@ class Language < ApplicationRecord
 
   def flag_icon
     fi = "flag-icon-#{alpha2}"
-    fi = 'flag-icon-es-ct' if alpha2 == 'ca'
-    fi = 'flag-icon-ie' if alpha2 == 'ga'
+    fi = 'flag-icon-cz' if alpha2 == 'cs'
+    fi = 'flag-icon-de' if alpha2 == 'ed'
     fi = 'flag-icon-by' if alpha2 == 'be'
-    fi = 'flag-icon-gb-wls' if alpha2 == 'wl'
+    fi = 'flag-icon-es-ct' if alpha2 == 'ca'
+    fi = 'flag-icon-fr' if alpha2 == 'fe'
+    fi = 'flag-icon-it' if alpha2 == 'la'
+    fi = 'flag-icon-gb-wls' if alpha2 == 'wl' || alpha2 == 'we'
+    fi = 'flag-icon-ie' if alpha2 == 'ga' || alpha2 == 'ge'
+    fi = 'flag-icon-my' if alpha2 == 'me'
+    fi = 'flag-icon-za' if alpha2 == 'af' || alpha2 == 'af-en'
     fi
   end
 
