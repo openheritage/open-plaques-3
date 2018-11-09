@@ -413,7 +413,7 @@ class Plaque < ApplicationRecord
     end
 
     def unshout
-      if self.inscription.upcase == self.inscription
+      if self.inscription && self.inscription&.upcase == self.inscription
         # it is all in CAPITALS, I AM SHOUTING
         self.inscription = self.inscription.capitalize
       end
