@@ -1,13 +1,18 @@
 <div class="card">
-  <div class="card-block">
+  <div class="card-body">
     <div class="card-title">
+      <% if area.country %>
+        <span class="flag-icon flag-icon-<%= area.country.alpha2 %>"></span>
+      <% end %>
       <% if controller.controller_name.eql?('area_plaques') && controller.action_name.eql?('show') %>
         <%= area.name %>
       <% else %>
         <%= link_to area.name, area_plaques_path(area) %>
       <% end %>
-      <% if area.country %> <span class="flag-icon flag-icon-<%= area.country.alpha2 %>"></span><% end %>
-      <span class="label label-default label-pill pull-right"><%= area.plaques_count %></span>
+      <span class="badge badge-secondary pull-right">
+        <%= area.plaques_count %>
+      </span>
+      <%= icon('compass') if area.geolocated? %>
     </div>
   </div>
 </div>

@@ -41,6 +41,9 @@ Rails.application.routes.draw do
     resource :subjects, controller: :country_subjects, only: :show
     match 'plaques/:filter' => 'country_plaques#show', via: [:get]
     resources :areas do
+      member do
+        post 'geolocate'
+      end
       resource :plaques, controller: :area_plaques, only: :show
       resource :subjects, controller: :area_subjects, only: :show
       match 'plaques/tiles/:zoom/:x/:y' => 'area_plaques#show', constraints: { zoom: /\d{2}/, x: /\d+/, y: /\d+/ }, via: [:get]

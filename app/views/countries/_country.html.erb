@@ -1,6 +1,18 @@
 <div class="card">
-  <div class="card-block">
-    <h4 class="card-title"><span class="flag-icon flag-icon-<%= country.alpha2 %>"></span> <%= link_to(country.name, country) %></h4>
-    <span class="label label-default label-pill pull-right"><%= country.plaques_count %></span>
+  <div class="card-body">
+    <div class="card-title">
+      <span class="flag-icon flag-icon-<%= country.alpha2 %>"></span>
+      <% if controller.controller_name.eql?('countries') && controller.action_name.eql?('show') %>
+        <%= country.name %>
+      <% else %>
+        <%= link_to(country.name, country) %>
+      <% end %>
+    </div>
+    <p class="card-text">
+      <span class="badge badge-secondary pull-right">
+        <%= country.plaques_count %>
+      </span>
+      <%= icon('compass') if country.geolocated? %>
+    </p>
   </div>
 </div>

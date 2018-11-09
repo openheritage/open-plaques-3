@@ -28,7 +28,8 @@
   <%= f.submit t('buttons.update'), class: 'btn btn-primary' %>
 <% end %>
 <br/>
-
-<div class="container">
-  <%= button_delete(area_path(@area)) %>
-</div>
+<% if @area.plaques.geolocated.size > 0 %>
+  <%= button_to 'geolocate from plaques', controller: :areas, action: :geolocate, id: @area %>
+<% end %>
+<br/>
+<%= button_delete(area_path(@area)) %>

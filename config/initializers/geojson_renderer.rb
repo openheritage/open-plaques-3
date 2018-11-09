@@ -11,7 +11,10 @@ ActionController::Renderers.add :geojson do |object, options|
         # object defines its own as_geojson(options) method
         geojson += o.as_geojson(options).to_json
         geojson += ","
-      elsif o.respond_to?(:longitude) && o.respond_to?(:latitude) && (o.longitude != nil)
+      elsif o.respond_to?(:longitude) &&
+        o.respond_to?(:latitude) &&
+        o.longitude != nil &&
+        o.latitude != 51.475
         geojson += {
           type: 'Feature',
           geometry:
@@ -30,7 +33,10 @@ ActionController::Renderers.add :geojson do |object, options|
   elsif object.respond_to? :as_geojson
     # object defines its own as_geojson(options) method
     object.as_geojson(options).to_json
-  elsif object.respond_to?(:longitude) && object.respond_to?(:latitude)
+  elsif object.respond_to?(:longitude) &&
+    object.respond_to?(:latitude) &&
+    object.longitude != nil &&
+    object.latitude != 51.475
     {
       type: 'Feature',
       geometry:

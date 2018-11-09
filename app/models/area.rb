@@ -36,7 +36,7 @@ class Area < ApplicationRecord
   end
 
   def full_name
-    name + ', ' + country.name
+    "#{name}, #{country.name}"
   end
 
   def people

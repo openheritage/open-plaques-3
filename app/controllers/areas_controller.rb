@@ -2,8 +2,8 @@ class AreasController < ApplicationController
 
   before_action :authenticate_admin!, only: :destroy
   before_action :authenticate_user!, except: [:autocomplete, :index, :show, :update]
-  before_action :find_country, only: [:index, :new, :show, :create, :edit, :update, :destroy]
-  before_action :find, only: [:show, :edit, :update, :destroy]
+  before_action :find_country, only: [:index, :new, :show, :create, :edit, :update, :destroy, :geolocate]
+  before_action :find, only: [:show, :edit, :update, :destroy, :geolocate]
   before_action :streetview_to_params, only: :update
 
   def index
@@ -76,6 +76,16 @@ class AreasController < ApplicationController
     redirect_back(fallback_location: root_path)
   end
 
+  def geolocate
+    if !@area.geolocated?
+      @mean = Helper.instance.find_mean(@area.plaques.geolocated)
+      @area.latitude = @mean.latitude
+      @area.longitude = @mean.longitude
+      @area.save
+    end
+    redirect_back(fallback_location: root_path)
+  end
+
   protected
 
     def find_country
@@ -84,10 +94,6 @@ class AreasController < ApplicationController
 
     def find
       @area = @country.areas.find_by_slug!(params[:id])
-#      if !@area.geolocated?
-#        @area.find_centre
-#        @area.save if (@area.plaques.geolocated.size > 3)
-#      end
     end
 
     class Helper
