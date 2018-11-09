@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_06_190559) do
+ActiveRecord::Schema.define(version: 2018_11_09_142412) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,12 +46,13 @@ ActiveRecord::Schema.define(version: 2018_11_06_190559) do
     t.string "alpha2", limit: 255
     t.integer "areas_count"
     t.integer "plaques_count"
-    t.string "dbpedia_uri", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text "description"
     t.float "latitude"
     t.float "longitude"
+    t.integer "preferred_zoom_level"
+    t.string "wikidata_id"
   end
 
   create_table "languages", id: :serial, force: :cascade do |t|

@@ -95,11 +95,12 @@ class CountriesController < ApplicationController
     def country_params
       params.require(:country).permit(
         :alpha2,
-        :dbpedia_uri,
         :latitude,
         :longitude,
         :name,
+        :preferred_zoom_level,
         :streetview_url,
+        :wikidata_id,
       )
     end
 end

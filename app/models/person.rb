@@ -16,6 +16,7 @@
 # * +personal_roles_count+ - cached count of roles
 # * +plaques_count+ - cached count of plaques
 # * +surname_starts_with+ - letter to index this person on
+# * +wikidata_id+ - Q-code to match to Wikidata
 # * +wikipedia_url+ - override link to the person's Wikipedia page (if they have one and it isn't linked to via their name).
 class Person < ApplicationRecord
   has_many :personal_roles

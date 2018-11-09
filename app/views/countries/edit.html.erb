@@ -16,12 +16,17 @@
     </div>
   </div>
   <div class="form-group row">
-    <%= f.label :dbpedia_uri, class: 'form-control-label col-sm-2' %>
+    <%= f.label :wikidata_id, class: 'form-control-label col-sm-2' %>
     <div class="col-sm-10">
-      <%= f.text_field :dbpedia_uri, class: 'form-control' %>
+      <%= f.text_field :wikidata_id, class: 'form-control' %>
     </div>
   </div>
-
+  <div class="form-group row">
+    <%= f.label :preferred_zoom_level, class: 'form-control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.text_field :preferred_zoom_level, maxlength: 2, class: 'form-control' %>
+    </div>
+  </div>
   <%= render 'geolocate', {f: f, object: @country, q: @country.name} %>
 
   <%= f.submit t('buttons.update'), class: 'btn btn-primary' %>

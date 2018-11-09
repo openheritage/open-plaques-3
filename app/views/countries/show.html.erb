@@ -6,8 +6,9 @@
   <% if @country.geolocated? %>
     <div id="map" class="mini"></div>
     <script>
-      var map = L.map('map', {maxZoom: 11})
-      map.setView([<%= @country.latitude %>, <%= @country.longitude %>], 6)
+      var map = L.map('map', {maxZoom: 13})
+      map.scrollWheelZoom.disable()
+      map.setView([<%= @country.latitude %>, <%= @country.longitude %>], <%= @country.zoom %>)
       L.tileLayer('https://maps.tilehosting.com/styles/basic/{z}/{x}/{y}.png?key=qSorA16cJhhBZEhqDisF', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
