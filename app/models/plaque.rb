@@ -40,6 +40,7 @@ class Plaque < ApplicationRecord
 
   before_save :use_other_colour_id
   before_save :usa_townify
+  before_save :unshout
   before_save :translate
   accepts_nested_attributes_for :photos, reject_if: proc { |attributes| attributes['photo_url'].blank? }
   scope :current, -> { where(is_current: true).order('id desc') }
@@ -409,6 +410,13 @@ class Plaque < ApplicationRecord
       x = ((lng_deg + 180.0) / 360.0 * n).to_i
       y = ((1.0 - Math::log(Math::tan(lat_rad) + (1 / Math::cos(lat_rad))) / Math::PI) / 2.0 * n).to_i
       {x: x, y: y}
+    end
+
+    def unshout
+      if self.inscription.upcase == self.inscription
+        # it is all in CAPITALS, I AM SHOUTING
+        self.inscription = self.inscription.capitalize
+      end
     end
 
 end
