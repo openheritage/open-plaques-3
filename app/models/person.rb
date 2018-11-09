@@ -498,6 +498,38 @@ class Person < ApplicationRecord
     "http://www.ancestry.co.uk/genealogy/records/#{self.ancestry_id}" if ancestry_id && !ancestry_id&.blank?
   end
 
+  def self.search(term)
+    cap = 20 # to protect from stupid searches like "%a%"
+    matches = []
+    name = term
+    name_and_dates = term.match /(.*) \((\d\d\d\d)\s*-*\s*(\d\d\d\d)\)/
+    if name_and_dates
+      name = name_and_dates[1]
+      born = name_and_dates[2]
+      died = name_and_dates[3]
+    end
+    @people = []
+    unaccented_phrase = name.tr("’ßÀÁÂÃÄÅàáâãäåĀāĂăĄąÇçĆćĈĉĊċČčÐðĎďĐđÈÉÊËèéêëĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħÌÍÎÏìíîïĨĩĪīĬĭĮįİıĴĵĶķĸĹĺĻļĽľĿŀŁłÑñŃńŅņŇňŉŊŋÒÓÔÕÖØòóôõöøŌōŎŏŐőŔŕŖŗŘřŚśŜŝŞşŠšſŢţŤťŦŧÙÚÛÜùúûüŨũŪūŬŭŮůŰűŲųŴŵÝýÿŶŷŸŹźŻżŽž",
+"'sAAAAAAaaaaaaAaAaAaCcCcCcCcCcDdDdDdEEEEeeeeEeEeEeEeEeGgGgGgGgHhHhIIIIiiiiIiIiIiIiIiJjKkkLlLlLlLlLlNnNnNnNnnNnOOOOOOooooooOoOoOoRrRrRrSsSsSsSssTtTtTtUUUUuuuuUuUuUuUuUuUuWwYyyYyYZzZzZz")
+    full_phrase_like = "%#{name}%"
+    phrase_like = "%#{name.tr(" ","%").tr(".","%")}%"
+    unaccented_phrase_like = "%#{unaccented_phrase.tr(" ","%").tr(".","%")}%"
+    @people += Person.where(["name ILIKE ?", full_phrase_like]).limit(cap)
+    @people += Person.where(["name ILIKE ?", phrase_like]).limit(cap)
+    @people += Person.where(["name ILIKE ?", unaccented_phrase_like]).limit(cap) if name.match(/[À-ž]/)
+    @people += Person.where(["array_to_string(aka, ' ') ILIKE ?", full_phrase_like]).limit(cap)
+    @people += Person.where(["array_to_string(aka, ' ') ILIKE ?", phrase_like]).limit(cap)
+    @people += Person.where(["array_to_string(aka, ' ') ILIKE ?", unaccented_phrase_like]).limit(cap) if name.match(/[À-ž]/)
+    @people.uniq!
+    if name_and_dates
+      exact_matches = @people.find_all {|person| person.born_in.to_i == born.to_i && person.died_in.to_i == died.to_i}
+      exact_matches == nil ? matches = exact_matches : matches = @people
+    else
+      matches = @people
+    end
+    matches
+  end
+
   def uri
     "http://openplaques.org#{Rails.application.routes.url_helpers.person_path(self, format: :json)}"
   end

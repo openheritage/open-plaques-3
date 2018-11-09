@@ -16,16 +16,26 @@ class PersonalConnectionsController < ApplicationController
   def new
     @personal_connection = @plaque.personal_connections.new
 
-    begin
+#    begin
       client = Aws::Comprehend::Client.new(region: 'eu-west-1')
       @entities = client.detect_entities({
         text: @plaque.inscription_preferably_in_english,
         language_code: :en,
       })
       @entities = @entities['entities']
-    rescue
-      @entities = []
-    end
+      @suggested_people = []
+      @entities.each_with_index {|ent, i|
+        if ent.type == 'PERSON'
+          term = ent.text
+          term += " (#{@entities[i+1].text}" if @entities[i+1]&.type == 'DATE'
+          term += "-#{@entities[i+2].text})" if @entities[i+2]&.type == 'DATE'
+          search_result = Person.search(term)
+          @suggested_people += search_result if search_result
+        end
+      }
+#    rescue
+#      @entities = []
+#    end
 
     puts(@entities)
   end
