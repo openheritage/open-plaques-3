@@ -18,14 +18,16 @@ class ApplicationController < ActionController::Base
   end
 
   def bot_blocker
+    is_semrush = request.env["HTTP_USER_AGENT"]&.downcase&.include?('semrush')
+    is_the_knowledge_ai = request.env["HTTP_USER_AGENT"]&.downcase&.include?('the knowledge ai')
     is_a_bot = request.env["HTTP_USER_AGENT"]&.downcase&.include?('bot') ||
       request.env["HTTP_USER_AGENT"]&.downcase&.include?('spider') ||
       request.env["HTTP_USER_AGENT"]&.downcase&.include?('bingpreview') ||
       request.env["HTTP_USER_AGENT"]&.downcase&.include?('bubing') ||
       request.env["HTTP_USER_AGENT"]&.downcase&.include?('slurp') ||
       request.env["HTTP_USER_AGENT"]&.downcase&.include?('java/1.7.0_79') ||
-      request.env["HTTP_USER_AGENT"]&.downcase&.include?('the knowledge ai')
-    is_semrush = request.env["HTTP_USER_AGENT"]&.downcase&.include?('semrush')
+      is_semrush ||
+      is_the_knowledge_ai
     is_a_data_request = ['application/json', 'application/xml', 'application/kml'].include?(request.format)
     puts "USERAGENT: #{is_a_bot ? 'bot' : 'not-bot'} #{request.format} #{request.path} #{request.headers['HTTP_USER_AGENT']}"
     is_not_following_robots_txt = is_a_data_request ||
@@ -39,7 +41,7 @@ class ApplicationController < ActionController::Base
       /\/todo/.match?(request.path) ||
       /\/series/.match?(request.path) ||
       /\/photos/.match?(request.path)
-    if is_semrush || (is_a_bot && is_not_following_robots_txt)
+    if is_semrush || is_the_knowledge_ai || (is_a_bot && is_not_following_robots_txt)
       puts "BLOCKED: #{is_a_bot ? 'bot' : 'not-bot'} #{request.format} #{request.path} #{request.headers['HTTP_USER_AGENT']}"
       render json: {error: "no-bots"}.to_json, status: 406 and return
     end
