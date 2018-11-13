@@ -9,11 +9,12 @@
   <% if url %>
   <% url = url.gsub('http:','https:') if !photo.geograph? %>
   <div class="card photo">
-    <% alt = photo.plaque ? 'Photo of ' + photo.plaque.title : photo.person ? 'Photo of ' + photo.person.name : 'Photo' %>
-    <%= image_tag(url, {class: "card-img img-rounded w-100", alt: alt, rel: "foaf:depiction"}) %>
+    <%= image_tag(url, {class: "card-img img-rounded w-100", rel: "foaf:depiction"}) %>
     <div class="card-info">
       <%= photo.licence.creative_commons? ? icon('creative-commons') : icon('copyright') if photo.licence %> <%= photo.photographer if photo.photographer %> on <%= photo.source %>
-      <%= photo.licence.abbreviation ? photo.licence.abbreviation : photo.licence.name if photo.licence && !photo.licence.creative_commons? %>
+      <% if photo.licence && !photo.licence.creative_commons? %>
+        <%= photo.licence.abbreviation ? photo.licence.abbreviation : photo.licence.name %>
+      <% end %>
     </div>
   </div>
   <% end %>
