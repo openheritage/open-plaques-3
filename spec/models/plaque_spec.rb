@@ -38,10 +38,10 @@ describe Plaque, type: :model do
       end
     end
     context 'with a subject' do
-      let (:plaque) { build :plaque, id: 666 }
-      let (:person) { build :person, name: 'Gizmo' }
-      let (:verb) { build :verb }
-      let (:pc) { build :personal_connection, plaque: plaque, person: person, verb: verb }
+      let (:plaque) { create :plaque }
+      let (:person) { create :person, name: 'Gizmo' }
+      let (:verb) { create :verb }
+      let (:pc) { create :personal_connection, plaque: plaque, person: person, verb: verb }
       before do
         plaque.personal_connections << pc
       end
@@ -50,11 +50,10 @@ describe Plaque, type: :model do
       end
     end
     context 'with a subject and a colour' do
-      let (:blue) { build :colour, name: 'blue' }
-      let (:plaque) { build :plaque, colour: blue }
-      let (:person) { build :person, name: 'Gizmo' }
-      let (:verb) { build :verb }
-      let (:pc) { build :personal_connection, plaque: plaque, person: person, verb: verb }
+      let (:blue) { create :colour, name: 'blue' }
+      let (:plaque) { create :plaque, colour: blue }
+      let (:person) { create :person, name: 'Gizmo' }
+      let (:pc) { create :personal_connection, plaque: plaque, person: person }
       before do
         plaque.personal_connections << pc
       end

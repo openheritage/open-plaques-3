@@ -107,11 +107,22 @@ class Plaque < ApplicationRecord
   end
 
   def people
-    sql = "select distinct people.*
-      from personal_connections as pc_main
-      inner join people on people.id = pc_main.person_id
-      where pc_main.plaque_id = #{self.id}"
-    @people ||= Person.find_by_sql(sql)
+    if self.id
+      sql = "select distinct people.*
+        from personal_connections as pc_main
+        inner join people on people.id = pc_main.person_id
+        where pc_main.plaque_id = #{self.id}"
+      @people ||= Person.find_by_sql(sql)
+    else
+      # not been saved yet
+      people = Array.new
+      personal_connections.each do |personal_connection|
+        if personal_connection.person != nil && personal_connection.person.name != ""
+          people << personal_connection.person
+        end
+      end
+      people.uniq
+    end
   end
 
   def subjects
@@ -276,16 +287,21 @@ class Plaque < ApplicationRecord
   end
 
   def see_also
-    sql = "select distinct plaques.id, plaques.inscription, plaques.area_id
-      from personal_connections as pc_main
-      inner join personal_connections as pc_related
-         on pc_related.person_id = pc_main.person_id
-      inner join plaques on plaques.id = pc_related.plaque_id
-      where pc_main.plaque_id = #{self.id}
-        and pc_related.plaque_id != #{self.id}"
-    @related_plaques ||= Plaque.find_by_sql(sql)
-    ActiveRecord::Associations::Preloader.new.preload(@related_plaques, [:photos, :area])
-    @related_plaques
+    if self.id
+      sql = "select distinct plaques.id, plaques.inscription, plaques.area_id
+        from personal_connections as pc_main
+        inner join personal_connections as pc_related
+           on pc_related.person_id = pc_main.person_id
+        inner join plaques on plaques.id = pc_related.plaque_id
+        where pc_main.plaque_id = #{self.id}
+          and pc_related.plaque_id != #{self.id}"
+      @related_plaques ||= Plaque.find_by_sql(sql)
+      ActiveRecord::Associations::Preloader.new.preload(@related_plaques, [:photos, :area])
+      @related_plaques
+    else
+      # not been saved yet
+      []
+    end
   end
 
   def inscription_preferably_in_english
