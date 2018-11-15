@@ -35,3 +35,4 @@ yarn.lock
 /public/packs
 /public/packs-test
 /node_modules
+*.log

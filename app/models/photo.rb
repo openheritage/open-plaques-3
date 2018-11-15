@@ -16,7 +16,6 @@
 require 'wikimedia/commoner'
 
 class Photo < ApplicationRecord
-
   belongs_to :plaque, counter_cache: true, optional: true
   belongs_to :person, optional: true
   belongs_to :licence, counter_cache: true, optional: true

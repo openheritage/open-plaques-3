@@ -17,7 +17,7 @@
 #            with spaces replaced by underscores. Used in URLs.
 class Area < ApplicationRecord
   belongs_to :country, counter_cache: true
-  has_many :plaques
+  has_many :plaques, dependent: :restrict_with_error
 
   delegate :alpha2, to: :country, prefix: true
 

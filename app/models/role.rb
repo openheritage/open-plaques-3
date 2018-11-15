@@ -13,9 +13,8 @@
 # * +suffix+ - word(s) to display as part of letters after a name
 # * +wikidata_id+ - calculated Qnnnnn code, set to 'Q' if not found
 class Role < ApplicationRecord
-
-  has_many :personal_roles, -> { order('started_at') }
-  has_many :people, -> { order("name") }, through: :personal_roles
+  has_many :personal_roles, -> { order(:started_at) }
+  has_many :people, -> { order(:name) }, through: :personal_roles
 
   before_validation :make_slug_not_war
   before_save :update_index

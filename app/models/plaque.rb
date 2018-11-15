@@ -23,14 +23,13 @@
 require 'aws-sdk-translate'
 
 class Plaque < ApplicationRecord
-
   belongs_to :area, counter_cache: true, optional: true
   belongs_to :colour, counter_cache: true, optional: true
   belongs_to :language, counter_cache: true, optional: true
   belongs_to :series, counter_cache: true, optional: true
-  has_many :personal_connections
+  has_many :personal_connections, dependent: :destroy
   has_many :photos, -> { where(of_a_plaque: true).order('shot ASC')}, inverse_of: :plaque
-  has_many :sponsorships
+  has_many :sponsorships, dependent: :destroy
   has_many :organisations, through: :sponsorships
   has_one :pick
 

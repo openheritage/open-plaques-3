@@ -10,7 +10,7 @@
 # * +sponsorships_count+ - equivalent of number of plaques
 # * +website+ - official web site
 class Organisation < ApplicationRecord
-  has_many :sponsorships
+  has_many :sponsorships, dependent: :restrict_with_error
   has_many :plaques, through: :sponsorships
   belongs_to :language, optional: true
 

@@ -19,9 +19,9 @@
 # * +wikidata_id+ - Q-code to match to Wikidata
 # * +wikipedia_url+ - override link to the person's Wikipedia page (if they have one and it isn't linked to via their name).
 class Person < ApplicationRecord
-  has_many :personal_roles
-  has_many :personal_connections
+  has_many :personal_roles, dependent: :destroy
   has_many :roles, -> { distinct }, through: :personal_roles
+  has_many :personal_connections, dependent: :destroy
   has_many :plaques, -> { distinct }, through: :personal_connections
   has_one :birth_connection, -> { where('verb_id in (8,504)') }, class_name: 'PersonalConnection'
   has_one :death_connection, -> { where('verb_id in (3,49,161,1108)') }, class_name: 'PersonalConnection'

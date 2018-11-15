@@ -32,4 +32,4 @@
   <%= button_to 'geolocate from plaques', controller: :areas, action: :geolocate, id: @area %>
 <% end %>
 <br/>
-<%= button_delete(area_path(@area)) %>
+<%= button_delete(country_area_path(@area.country, @area)) %>
