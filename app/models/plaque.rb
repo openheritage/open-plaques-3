@@ -59,6 +59,7 @@ class Plaque < ApplicationRecord
   scope :partial_inscription_photo, -> { where(photos_count: 1..99999, inscription_is_stub: true).order("id DESC") }
   scope :no_english_version, -> { where("language_id > 1").where(inscription_is_stub: false, inscription_in_english: nil) }
   scope :random, -> { order(Arel.sql('random()')) }
+  scope :in_series_ref_order, -> { order('series_ref ASC') }
 
   include ApplicationHelper, ActionView::Helpers::TextHelper
 
@@ -287,7 +288,12 @@ class Plaque < ApplicationRecord
 
   def see_also
     if self.id
-      sql = "select distinct plaques.id, plaques.inscription, plaques.area_id
+      sql = "select distinct
+        plaques.id,
+        plaques.inscription,
+        plaques.area_id,
+        plaques.latitude,
+        plaques.longitude
         from personal_connections as pc_main
         inner join personal_connections as pc_related
            on pc_related.person_id = pc_main.person_id

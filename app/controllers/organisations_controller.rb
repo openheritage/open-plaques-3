@@ -6,8 +6,14 @@ class OrganisationsController < ApplicationController
   before_action :find_languages, only: [:edit, :create]
 
   def index
-    @organisations = Organisation.all.select(:name, :slug, :sponsorships_count, :language_id).in_alphabetical_order.paginate(page: params[:page], per_page: 50)
-    @top_10 = Organisation.all.select(:name, :slug, :sponsorships_count).order('sponsorships_count DESC').limit(10)
+    @organisations = Organisation.all
+      .select(:language_id, :name, :slug, :sponsorships_count)
+      .in_alphabetical_order
+      .paginate(page: params[:page], per_page: 50)
+    @top_10 = Organisation.all
+      .select(:name, :slug, :sponsorships_count)
+      .in_count_order
+      .limit(10)
     respond_to do |format|
       format.html
       format.json { render json: @organisations }
@@ -21,13 +27,13 @@ class OrganisationsController < ApplicationController
   def autocomplete
     limit = params[:limit] ? params[:limit] : 5
     if params[:contains]
-      @organisations = Organisation.select(:id,:name).name_contains(params[:contains]).limit(limit)
+      @organisations = Organisation.select(:id, :name).name_contains(params[:contains]).limit(limit)
     elsif params[:starts_with]
-      @organisations = Organisation.select(:id,:name).name_starts_with(params[:starts_with]).limit(limit)
+      @organisations = Organisation.select(:id, :name).name_starts_with(params[:starts_with]).limit(limit)
     else
       @organisations = "{}"
     end
-    render json: @organisations.as_json(only: [:id,:name])
+    render json: @organisations.as_json(only: [:id, :name])
   end
 
   def show
@@ -70,9 +76,6 @@ class OrganisationsController < ApplicationController
 
     def find
       @organisation = Organisation.find_by_slug!(params[:id])
-      if (!@organisation.geolocated? && @organisation.plaques.geolocated.size > 3)
-        @organisation.save
-      end
     end
 
     def find_languages
@@ -92,15 +95,15 @@ class OrganisationsController < ApplicationController
 
     def organisation_params
       params.require(:organisation).permit(
-        :name,
-        :slug,
+        :description,
+        :language_id,
         :latitude,
         :longitude,
+        :name,
+        :notes,
+        :slug,
         :streetview_url,
         :website,
-        :description,
-        :notes,
-        :language_id,
-        )
+      )
     end
 end

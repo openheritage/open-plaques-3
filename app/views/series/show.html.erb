@@ -2,11 +2,12 @@
 <% content_for(:title) {@series.name} %>
 <% content_for(:page_subhead) do %>
   <p><%= @series.description %></p>
-  <span class="label label-default label-pill pull-right"><%= @series.plaques_count %></span>
+  <span class="badge badge-secondary pull-right"><%= @series.plaques_count %></span>
 <% end %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_series_path(@series)} %>
 
 <% if @series.geolocated? %>
-  <div class="row" id="plaque-map" data-latitude="<%= @series.latitude %>" data-longitude="<%= @series.longitude %>" data-view="all" context="<%= request.path %>"></div>
+  <div id="plaque-map" class="mini" data-latitude="<%= @series.latitude %>" data-longitude="<%= @series.longitude %>" data-view="all" context="<%= request.path %>/plaques"></div>
 <% end %>
+
 <%= render partial: 'plaques/tabbed' %>

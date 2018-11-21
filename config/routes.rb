@@ -60,6 +60,9 @@ Rails.application.routes.draw do
     collection do
       get 'autocomplete'
     end
+    member do
+      post 'geolocate'
+    end
     resource :plaques, controller: :organisation_plaques, only: :show
     match 'plaques/tiles/:zoom/:x/:y' => 'organisation_plaques#show', constraints: { zoom: /\d{2}/, x: /\d+/, y: /\d+/ }, via: [:get]
     match 'plaques/:filter/tiles/:zoom/:x/:y' => 'organisation_plaques#show', id: :filter, constraints: { zoom: /\d{2}/, x: /\d+/, y: /\d+/ }, via: [:get]
@@ -106,6 +109,9 @@ Rails.application.routes.draw do
   resources :languages
   resources :colours, only: [:index, :new, :create]
   resources :series do
+    member do
+      post 'geolocate'
+    end
     resource :plaques, controller: :series_plaques, only: :show
     match 'plaques/tiles/:zoom/:x/:y' => 'series_plaques#show', constraints: { zoom: /\d{2}/, x: /\d+/, y: /\d+/ }, via: [:get]
     match 'plaques/:filter/tiles/:zoom/:x/:y' => 'series_plaques#show', id: :filter, constraints: { zoom: /\d{2}/, x: /\d+/, y: /\d+/ }, via: [:get]

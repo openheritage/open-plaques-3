@@ -2,7 +2,7 @@
 <% content_for(:title) {t '.page_heading'} %>
 <% content_for(:page_subhead) do %>
   <p><%= t '.explanation' %></p>
-  <span class="label label-default label-pill pull-right"><%= @series.count %></span>
+  <span class="badge badge-secondary pull-right"><%= @series.count %></span>
 <% end %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_series_path} %>
 

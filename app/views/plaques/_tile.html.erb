@@ -1,27 +1,28 @@
 <% if plaque %>
 <% begin %>
-    <% if plaque.area %><% end %>
+  <% if plaque.area %><% end %>
 <% rescue %>
-    <% plaque = plaque.plaque %>
+  <% plaque = plaque.plaque %>
 <% end %>
 <% photo = plaque.main_photo %>
 
 <div class="card plaque text-center">
-    <%= link_to plaque_path(plaque) do %>
-        <% if photo && photo.thumbnail_url %>
-          <%= render photo %>
-        <% else %>
-            <%= image_tag('NoPhotoSqr.png', {class: 'card-img-top img-responsive w-100'}) %>
-            <div class="card-img-overlay">
-                <% unless photo && photo.thumbnail_url %>
-                    <h7 class="card-title"><%= plaque.inscription.truncate(90) %></h7>
-                <% end %>
-            </div>
+  <%= link_to plaque_path(plaque) do %>
+    <% if photo && photo.thumbnail_url %>
+      <%= render photo %>
+    <% else %>
+      <%= image_tag('NoPhotoSqr.png', {class: 'card-img-top img-responsive w-100'}) %>
+      <div class="card-img-overlay">
+        <% unless photo && photo.thumbnail_url %>
+          <h7 class="card-title"><%= plaque.inscription.truncate(90) %></h7>
         <% end %>
+      </div>
     <% end %>
-    <div class="card-footer">
-      <small class="text-muted"><%= plaque.area.full_name if plaque.area %></small>
-    </div>
+  <% end %>
+  <div class="card-footer">
+    <%= icon('compass') if plaque.geolocated? %>
+    <small class="text-muted"><%= plaque.area.full_name if plaque.area %></small>
+  </div>
 </div>
 
 <% end %>

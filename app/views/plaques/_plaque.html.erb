@@ -26,7 +26,7 @@
       <small>
         <%= plaque.address %>, <%= link_to(plaque.area.name, area_path(plaque.area)) if plaque.area %>, <%= plaque.area.country.name if plaque.area %>
         <% if @person %> where <%= @person.personal_pronoun %> <%= verbs(@person,plaque).to_sentence.html_safe %><% end %>
-        <% '. As far as we know, it is not currently on display.' if !plaque.is_current %>
+        <% '. As far as we know, it is not currently on display.' unless plaque.is_current %>
       </small>
     </p>
   </div>
