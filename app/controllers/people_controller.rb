@@ -33,17 +33,17 @@ class PeopleController < ApplicationController
   def autocomplete
     limit = params[:limit] ? params[:limit] : 5
     @people = "{}"
-    @people = Person.select(:id, :name, :born_on, :died_on)
+    @people = Person.select(:born_on, :died_on, :gender, :id, :name)
       .includes(:roles)
       .name_is(params[:contains])
       .limit(limit) if params[:contains]
-    @people = @people + Person.select(:id, :name, :born_on, :died_on)
+    @people = @people + Person.select(:born_on, :died_on, :gender, :id, :name)
       .includes(:roles)
       .name_contains(params[:contains])
       .limit(limit) if params[:contains]
-    render json: @people.as_json(
+    render json: @people.uniq.as_json(
       only: [:id, :name],
-      methods: [:name_and_dates]
+      methods: [:name_and_dates, :type]
     )
   end
 

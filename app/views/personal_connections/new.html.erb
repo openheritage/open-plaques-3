@@ -110,41 +110,6 @@
     <%= link_to(icon('user') + t('.new_person'), "/people/new") %>
   </div>
 
-  <script>
-    wrap($('#personal_connection_person_id_XXXXXX')[0], 'value', function(obj, property, value) {
-      console.log("new value:", value)
-      $.ajax({
-        url: '/people/' + value + '/avm',
-        dataType: 'json',
-        success: function(data) {
-          console.log("subject #" + value + " is a " + data.type)
-          if (data.type == 'thing' || data.type == 'place' || data.type == 'place' || data.type == 'group') {
-            $('#personal_connection_verb_id').val('362')
-          }
-        }
-      })
-    })
-
-    function wrap(obj, property, callback) {
-      if (obj != null) {
-        Object.defineProperty(obj, property, new function() {
-          var _value = obj[property]
-          return {
-            set: function(value) {
-              _value = value
-              callback(obj, property, value)
-            },
-            get: function() {
-              return _value
-            }
-          }
-        })
-      } else {
-        console.log("did not find that object")
-      }
-    }
-  </script>
-
   <% if @common_verbs %>
     <div>
       <% @common_verbs.each do |verb| %>
@@ -198,14 +163,19 @@
             response($.map(data, function(item) {
               return {
                 label: item.name_and_dates,
-                id: item.id
+                id: item.id,
+                type: item.type
               }
             }));
           }
         });
       },
       select: function(event, ui) {
+        console.log(ui.item)
         $('#personal_connection_person_id').val(ui.item.id);
+        if (ui.item.type == 'thing' || ui.item.type == 'place' || ui.item.type == 'place' || ui.item.type == 'group') {
+          $('#personal_connection_verb_id').val('362')
+        }
       }
     });
   });
