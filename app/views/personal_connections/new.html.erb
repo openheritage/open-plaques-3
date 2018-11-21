@@ -111,7 +111,7 @@
   </div>
 
   <script>
-    wrap($('#personal_connection_person_id')[0], 'value', function(obj, property, value) {
+    wrap($('#personal_connection_person_id_XXXXXX')[0], 'value', function(obj, property, value) {
       console.log("new value:", value)
       $.ajax({
         url: '/people/' + value + '/avm',
@@ -126,18 +126,22 @@
     })
 
     function wrap(obj, property, callback) {
-      Object.defineProperty(obj, property, new function() {
-        var _value = obj[property]
-        return {
-          set: function(value) {
-            _value = value
-            callback(obj, property, value)
-          },
-          get: function() {
-            return _value
+      if (obj != null) {
+        Object.defineProperty(obj, property, new function() {
+          var _value = obj[property]
+          return {
+            set: function(value) {
+              _value = value
+              callback(obj, property, value)
+            },
+            get: function() {
+              return _value
+            }
           }
-        }
-      })
+        })
+      } else {
+        console.log("did not find that object")
+      }
     }
   </script>
 
