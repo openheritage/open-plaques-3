@@ -1,7 +1,7 @@
 <% content_for(:page_title) {t '.page_title', plaque: @plaque.id.to_s } %>
 <% content_for(:title) do %>
   <%= linked_inscription @plaque %>
-  <% if !@plaque.inscription_in_english.blank? %>
+  <% unless @plaque.inscription_in_english.blank? %>
     <br/><br/><%= t '.english_translation' %>: "<%= @plaque.inscription_in_english %>"
   <% end %>
 <% end %>
@@ -81,18 +81,18 @@
   </div>
 <% end %>
 
-<% if @entities != [] %>
+<% if @entities && @entities != [] %>
   <h2>AWS suggests...</h2>
-<% end %>
-<% for entity in @entities %>
-  <div>
-  <% if ['PERSON', 'ORGANIZATION'].include?(entity.type) %>
-    <%= icon('user') if entity.type == 'PERSON' %>
-    <%= icon('building') if entity.type == 'ORGANIZATION' %>
-    <%= entity.text %>
-    <span class="badge badge-success"><%= (entity.score * 100).round(1) %>%</span>
+  <% for entity in @entities %>
+    <div>
+    <% if ['PERSON', 'ORGANIZATION'].include?(entity.type) %>
+      <%= icon('user') if entity.type == 'PERSON' %>
+      <%= icon('building') if entity.type == 'ORGANIZATION' %>
+      <%= entity.text %>
+      <span class="badge badge-success"><%= (entity.score * 100).round(1) %>%</span>
+    <% end %>
+    </div>
   <% end %>
-  </div>
 <% end %>
 
 <div id="person-tiles" class="card-columns">
@@ -109,6 +109,38 @@
     <%= f.hidden_field :person_id %>
     <%= link_to(icon('user') + t('.new_person'), "/people/new") %>
   </div>
+
+  <script>
+    wrap($('#personal_connection_person_id')[0], 'value', function(obj, property, value) {
+      console.log("new value:", value)
+      $.ajax({
+        url: '/people/' + value + '/avm',
+        dataType: 'json',
+        success: function(data) {
+          console.log("subject #" + value + " is a " + data.type)
+          if (data.type == 'thing' || data.type == 'place' || data.type == 'place' || data.type == 'group') {
+            $('#personal_connection_verb_id').val('362')
+          }
+        }
+      })
+    })
+
+    function wrap(obj, property, callback) {
+      Object.defineProperty(obj, property, new function() {
+        var _value = obj[property]
+        return {
+          set: function(value) {
+            _value = value
+            callback(obj, property, value)
+          },
+          get: function() {
+            return _value
+          }
+        }
+      })
+    }
+  </script>
+
   <% if @common_verbs %>
     <div>
       <% @common_verbs.each do |verb| %>
@@ -123,9 +155,11 @@
     <%= f.collection_select :verb_id, @verbs, :id, :name, {selected: "222"}, {class: 'form-control', style: "width:400px" } %>
     <%= link_to(t('.new_verb'), "/verbs/new") %>
   </div>
-  <div class="form-group">
-    <%= t('.at') + ' ' + @personal_connection.full_address if @personal_connection.full_address %>
-  </div>
+  <% if @personal_connection.full_address %>
+    <div class="form-group">
+      <%= "#{t('.at')} #{@personal_connection.full_address}" %>
+    </div>
+  <% end %>
   <div class="form-group row">
     <%= f.label :started_at, class: 'col-form-label col-sm-2' %>
     <div class="col-sm-10">
@@ -146,12 +180,12 @@
 
 <script type="text/javascript">
   $(function() {
-    $( "#person_name" ).autocomplete({
+    $('#person_name').autocomplete({
       autofocus: true,
       source: function(request, response) {
         $.ajax({
-          url: "/people/autocomplete",
-          dataType: "json",
+          url: '/people/autocomplete',
+          dataType: 'json',
           data: {
             contains: request.term,
             limit: 10

@@ -26,6 +26,9 @@ class Organisation < ApplicationRecord
   scope :in_alphabetical_order, -> { order('name ASC') }
   scope :in_count_order, -> { order('sponsorships_count DESC') }
 
+  # for slug helper
+  include ApplicationHelper
+
   def plaques_count
     sponsorships_count
   end

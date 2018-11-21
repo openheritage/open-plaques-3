@@ -1,8 +1,8 @@
 class PeopleController < ApplicationController
 
   before_action :authenticate_admin!, only: :destroy
-  before_action :authenticate_user!, except: [:autocomplete, :index, :show, :update]
-  before_action :find, only: [:edit, :update, :destroy]
+  before_action :authenticate_user!, except: [:autocomplete, :index, :show, :update, :avm]
+  before_action :find, only: [:edit, :update, :destroy, :avm]
 
   def index
     respond_to do |format|
@@ -146,6 +146,13 @@ class PeopleController < ApplicationController
       format.html { redirect_to(people_url) }
       format.xml  { head :ok }
     end
+  end
+
+  def avm
+    # animal, vegetable, or mineral?
+    render json: {
+      type: @person.type
+    }
   end
 
   protected
