@@ -26,8 +26,13 @@
 
 <h2>Diversity</h2>
 <ol class="list-group">
+<% @gender_total = @gender.inject(0){|sum, g| sum + g.plaques_count } %>
 <% @gender.each do |g| %>
-  <li class="list-group-item"><%= g.gender %> <span class="badge badge-primary"><%= g.plaques_count %></span></li>
+  <li class="list-group-item">
+    <%= g.gender %>
+    <span class="badge badge-primary">(<%= (100 * g.plaques_count / @gender_total.to_f).to_i %>%)</span>
+    <%= g.plaques_count %> now, estimate <%= (g.plaques_count * (1 / (@country.plaques.connected.count.to_f / @country.plaques.count.to_f))).to_i %>
+  </li>
   <% end %>
 </ol>
 
