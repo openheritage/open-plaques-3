@@ -438,6 +438,21 @@ class Person < ApplicationRecord
   end
 
   def male?
+    if self.gender == 'u'
+      self.gender = 'm' if
+      [
+        'Alfred', 'Alphonse', 'Andrew',
+        'Charles',
+        'David', 'Daniel',
+        'George', 'Georges', 'Gerard',
+        'Henry', 'Hugh',
+        'James', 'John',
+        'Peter',
+        'Richard', 'Robert',
+        'William',
+        'Terry', 'Thomas',
+      ].include?(name.split(' ').first)
+    end
     !self.female?
   end
 
