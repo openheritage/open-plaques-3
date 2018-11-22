@@ -24,6 +24,14 @@
   </p>
 </div>
 
+<h2>Diversity</h2>
+<ol class="list-group">
+<% @gender.each do |g| %>
+  <li class="list-group-item"><%= g.gender %> <span class="badge badge-primary"><%= g.plaques_count %></span></li>
+  <% end %>
+</ol>
+
+<h2>The top 50</h2>
 <div class="row">
   <ol class="list-group">
   <% @top.each do |t| %>

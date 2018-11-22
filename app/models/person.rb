@@ -91,23 +91,23 @@ class Person < ApplicationRecord
   end
 
   def person?
-    !(animal? or thing? or group? or place?)
+    !(animal? || thing? || group? || place?)
   end
 
   def animal?
-    roles.find(&:animal?)
+    roles.find(&:animal?) ? true : false
   end
 
   def thing?
-    roles.find(&:thing?)
+    roles.find(&:thing?) ? true : false
   end
 
   def group?
-    roles.find(&:group?)
+    roles.find(&:group?) ? true : false
   end
 
   def place?
-    roles.find(&:place?)
+    roles.find(&:place?) ? true : false
   end
 
   def type

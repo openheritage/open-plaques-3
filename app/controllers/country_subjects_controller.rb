@@ -6,7 +6,7 @@ class CountrySubjectsController < ApplicationController
   def show
     respond_to do |format|
       format.html do
-        query = "SELECT people.id, people.name,
+        query = "SELECT people.id, people.name, people.gender,
                 (
                   SELECT count(distinct plaque_id)
                   FROM personal_connections, plaques, areas
@@ -17,9 +17,20 @@ class CountrySubjectsController < ApplicationController
                   AND areas.country_id = #{@country.id}
                 ) as plaques_count
                 FROM people
-                ORDER BY plaques_count desc"
+                ORDER BY plaques_count desc
+                LIMIT 50"
         @results = ActiveRecord::Base.connection.execute(query)
         @top = @results.reject{|p| p['plaques_count'] < 1}.map{|attributes| OpenStruct.new(attributes)}
+
+        query = "SELECT people.gender, count(distinct plaque_id) as plaques_count
+          FROM personal_connections, plaques, areas, people
+          WHERE areas.country_id = 1
+          AND areas.id = plaques.area_id
+          AND plaques.id = personal_connections.plaque_id
+          AND personal_connections.person_id = people.id
+          GROUP BY people.gender"
+        @gender = ActiveRecord::Base.connection.execute(query)
+        @gender = @gender.map{|attributes| OpenStruct.new(attributes)}
         render 'countries/subjects/top'
       end
       format.csv do
