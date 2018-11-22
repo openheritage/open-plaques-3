@@ -6,6 +6,11 @@
 <!--[if gt IE 9]><html class="ie"><![endif]-->
 <!--[if !IE]><!--><html lang="en-GB"><!--<![endif]-->
   <head>
+    <% if content_for?(:page_title) %>
+      <title><%= strip_tags(yield :page_title) %> | Open Plaques</title>
+    <% end %>
+    <%= display_meta_tags %>
+    <%= csrf_meta_tags %>
     <%= yield(:head) %>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -14,14 +19,6 @@
     <%= javascript_include_tag 'application' %>
     <%= javascript_include_tag 'https://openlayers.org/dev/OpenLayers.js' if @map %>
     <%= tag("link", rel: "shortcut icon", href: image_path('openplaques-icon.png'))%>
-    <%= csrf_meta_tags %>
-    <% if content_for?(:page_title) %>
-      <title>
-        <%= strip_tags(yield :page_title) %>
-        - Open Plaques
-      </title>
-    <% end %>
-    <%= display_meta_tags site: 'Open Plaques' %>
   </head>
   <body>
     <%= render 'home/development_message' if Rails.env == 'development' %>

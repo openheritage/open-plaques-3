@@ -1,3 +1,3 @@
 <div class="card">
-  <%= link_to(licence.name, licence_url(licence)) %> - <%= pluralize(licence.photos.count, "photo") %> <%= link_to(licence.url, licence.url) %>
+  <%= link_to(licence.name, licence.url) %> - <%= pluralize(licence.photos.count, t(:photo, scope: 'activerecord.models')) %>
 </div>

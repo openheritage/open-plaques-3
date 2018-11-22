@@ -1,4 +1,4 @@
-<% content_for(:page_title) {t '.page_title', person: @person.name } %>
+<% content_for(:page_title) {t '.page_title', person: @person.name_and_dates } %>
 <% content_for(:title) { } %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_person_path(@person)} %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_person_path} %>
@@ -17,10 +17,7 @@
       </div>
     <% end %>
     <div class="card-info">
-      <span class="card-title fn">
-        <%= @person.full_name %><br/>
-        <small><%= @person.dates %></small>
-      </span>
+      <h1 class="card-title fn"><%= @person.full_name %><br/><small><%= @person.dates %></small></h1>
     </div>
   </div>
 

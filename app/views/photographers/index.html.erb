@@ -4,6 +4,8 @@
   <%= t '.how_many', count: @photographers.size %><br/>
   <%= t '.where' %>
   <%= t '.how_they_are_licenced_html' %>
+  <br/>
+  <span class="badge badge-secondary pull-right"><%= @photographers.size %></span>
 <% end %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_photographer_path} %>
 

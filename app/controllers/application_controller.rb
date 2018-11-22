@@ -58,6 +58,8 @@ class ApplicationController < ActionController::Base
 
   def set_global_meta_tags
     begin
+      set_meta_tags author: "Open Plaques"
+      set_meta_tags description: "Commemorative plaques of the world"
       set_meta_tags open_graph: {
         type: :website,
         url: url_for(only_path: false),

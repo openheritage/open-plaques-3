@@ -4,13 +4,14 @@ class OrganisationPlaquesController < ApplicationController
 
   def show
     begin
+      set_meta_tags description: "Blue plaques and historical markers from #{@organisation.name}"
       set_meta_tags open_graph: {
-        title: "Open Plaques Organisation #{@organisation.name}",
+        title: "#{@organisation.name} plaques",
         description: @organisation.description,
       }
       @main_photo = @organisation.main_photo
       set_meta_tags twitter: {
-        title: "Open Plaques Organisation #{@organisation.name}",
+        title: "#{@organisation.name} plaques",
         image: {
           _: @main_photo ? @main_photo.file_url : view_context.root_url[0...-1] + view_context.image_path('openplaques.png'),
           width: 100,

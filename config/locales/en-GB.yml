@@ -5,6 +5,7 @@ en-GB:
   activerecord:
     models:
       area: Area
+      photo: Photo
     attributes:
       area:
         name: Name
@@ -254,12 +255,11 @@ en-GB:
       note_about_description: is displayed on the page
       note_about_notes: is for internal use only
     show:
-      page_title: Organisation %{organisation}
+      page_title: "%{organisation}"
       page_heading: Organisation - %{organisation}
     plaques:
       show:
-        page_title: Organisation %{organisation}
-        page_heading: Organisation - %{organisation}
+        page_title: "%{organisation} plaques"
     subjects:
       show:
         page_title: Plaque subjects from %{organisation}
@@ -300,7 +300,7 @@ en-GB:
       page_heading: New person/thing/place
       page_subhead: Search carefully on things like just the surname before creating a potential duplicate. For common place names like gates/pubs/cinemas use comma + city name, e.g. 'North Gate, Durham'. Rename dupes to 'xxxx's for later deletion.
     show:
-      page_title: Historical plaques about %{person}
+      page_title: "%{person}"
       commemorated_on:
         one: Commemorated on %{count} plaque
         other: Commemorated on %{count} plaques
@@ -339,10 +339,10 @@ en-GB:
 
   photographers:
     index:
-      page_title: Photographers
-      page_heading: Photographers
+      page_title: Plaque hunters
+      page_heading: Plaque hunters
       the_top_50: Top 50
-      how_many: Open Plaques links to photographs on the internet taken by %{count} photographers.
+      how_many: Open Plaques links to photographs on the internet taken by %{count} plaque hunters.
       where: These images are held on Flickr, Wikimedia Commons, and Geograph.
       how_they_are_licenced_html: They are all licenced with permissive <a href="http://creativecommons.org/">Creative Commons</a> licences meaning that the owner has declared via a copyright notice that other people may reuse their photograph.
     new:

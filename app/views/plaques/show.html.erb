@@ -6,20 +6,20 @@
   <%= linked_inscription @plaque %>
 <% end %>
 <% content_for :page_subhead do %>
-<span id="facebook_like_button">
+  <span id="facebook_like_button">
     <iframe
         src="https://www.facebook.com/plugins/like.php?href=http://openplaques.org/<%= plaque_path(@plaque, only_path: false) %>&amp;layout=button_count&amp;show_faces=false&amp;width=90&amp;action=like&amp;font&amp;colorscheme=light&amp;height=35"
         scrolling="no"
         frameborder="0"
         style="border:none; overflow:hidden; width:75px; height:20px; text-align:right;"
         allowTransparency="true"></iframe>
-</span>
-<% if @plaque.foreign? && !@plaque.inscription_in_english.blank? %>
-  <div class="row">
-    <h7><%= t '.english_translation' %>: "<%= @plaque.inscription_in_english %>"</h7>
-  </div>
-<% end %>
-<%= content_tag(:p, markdown(@plaque.description)) unless @plaque.description.blank? %>
+  </span>
+  <% if @plaque.foreign? && !@plaque.inscription_in_english.blank? %>
+    <div class="row">
+      <h7><%= t '.english_translation' %>: "<%= @plaque.inscription_in_english %>"</h7>
+    </div>
+  <% end %>
+  <%= content_tag(:p, markdown(@plaque.description)) unless @plaque.description.blank? %>
 <% end %>
 <%= render 'plaques/edit_bar', plaque: @plaque %>
 
