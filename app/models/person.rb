@@ -441,16 +441,22 @@ class Person < ApplicationRecord
     if self.gender == 'u'
       self.gender = 'm' if
       [
-        'Alfred', 'Alphonse', 'Andrew',
-        'Charles',
-        'David', 'Daniel',
-        'George', 'Georges', 'Gerard',
-        'Henry', 'Hugh',
-        'James', 'John',
-        'Peter',
+        'Alfred', 'Alphonse', 'Andrew', 'Angus', 'Arthur',
+        'Benjamin', 'Ben', 'Bill',
+        'Charles', 'Charlie', 'Claude',
+        'David', 'Daniel', 'Dennis', 'Duncan',
+        'Edward', 'Edwarde', 'Edwardo', 'Edwin',
+        'Frederick',
+        'Gavin', 'George', 'Georges', 'Gerard', 'Gilbert',
+        'Henri', 'Henry', 'Herbert', 'Hugh',
+        'Jack', 'James', 'John', 'Jon', 'Joseph',
+        'Luigi',
+        'Noah',
+        'Peter', 'Philip', 'Philippe',
         'Richard', 'Robert',
+        'Samuel', 'Stephen', 'Steve', 'Steven',
         'William',
-        'Terry', 'Thomas',
+        'Terry', 'Thomas', 'Tommy', 'Tom',
       ].include?(name.split(' ').first)
     end
     !self.female?
@@ -460,7 +466,7 @@ class Person < ApplicationRecord
     if self.gender == 'u'
       self.gender = 'f' if roles.any?{|role| role.female?}
       self.gender = 'f' if
-      ['Abigail','Adelaide','Adele','Ada','Agnes','Alexandra','Alice','Alison','Amalie','Amelia','Anastasia','Anna','Anne','Annie','Antoinette',
+      ['Abigail','Adelaide','Adele','Ada','Agnes','Alexandra','Alice','Alison','Amalie','Amelia','Anastasia','Ann','Anna','Anne','Annie','Antoinette',
       'Beatriz','Bertha','Betty',
       'Caroline','Cäcilie','Charlotte','Clara','Constance',
       'Daisy','Deborah','Diana','Dolly','Doris','Dorothea','Dorothy',
