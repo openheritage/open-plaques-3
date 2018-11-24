@@ -24,7 +24,7 @@ class CountrySubjectsController < ApplicationController
 
         query = "SELECT people.gender, count(distinct plaque_id) as plaques_count
           FROM personal_connections, plaques, areas, people
-          WHERE areas.country_id = 1
+          WHERE areas.country_id = #{@country.id}
           AND areas.id = plaques.area_id
           AND plaques.id = personal_connections.plaque_id
           AND personal_connections.person_id = people.id
