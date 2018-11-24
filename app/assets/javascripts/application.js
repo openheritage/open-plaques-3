@@ -30,6 +30,7 @@
 //= require RGraph.common.core.js
 //= require RGraph.common.context.js
 //= require RGraph.common.annotate.js
+//= require RGraph.pie.js
 //= require_tree .
 
 function addLoadEvent(func) {

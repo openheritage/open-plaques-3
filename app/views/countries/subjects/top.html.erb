@@ -25,16 +25,49 @@
 </div>
 
 <h2>Diversity</h2>
-<ol class="list-group">
-<% @gender_total = @gender.inject(0){|sum, g| sum + g.plaques_count } %>
-<% @gender.each do |g| %>
-  <li class="list-group-item">
-    <%= g.gender %>
-    <span class="badge badge-primary">(<%= (100 * g.plaques_count / @gender_total.to_f).to_i %>%)</span>
-    <%= g.plaques_count %> now, estimate <%= (g.plaques_count * (1 / (@country.plaques.connected.count.to_f / @country.plaques.count.to_f))).to_i %>
-  </li>
-  <% end %>
-</ol>
+<div class="row">
+  <canvas id="cvs" width="800" height="400">
+    <ol class="list-group">
+      <% @gender_total = @gender.inject(0){|sum, g| sum + g.plaques_count } %>
+      <% @gender.each do |g| %>
+        <li class="list-group-item">
+          <%= g.gender %>
+          <span class="badge badge-primary">(<%= (100 * g.plaques_count / @gender_total.to_f).to_i %>%)</span>
+          <%= g.plaques_count %> now, estimate <%= (g.plaques_count * (1 / (@country.plaques.connected.count.to_f / @country.plaques.count.to_f))).to_i %>
+        </li>
+      <% end %>
+    </ol>
+  </canvas>
+</div>
+
+<script>
+  window.onload = function ()
+  {
+    var pie = new RGraph.Pie({
+      id: 'cvs',
+      data: [<% @gender.each do |g| %><%= g.plaques_count %>,<% end %>],
+      options: {
+          radius: 150,
+          colors: [
+              'rgb(51,102,204)',
+              'rgb(220,57,18)',
+              'rgb(255,153,0)',
+              'rgb(16,150,24)',
+              'rgb(153,0,153)',
+              'rgb(0,153,198)',
+              'rgb(221,68,119)'
+          ],
+          linewidth: 2,
+          shadow: false,
+          labels: [<% @gender.each do |g| %>"<%= g.gender %> <%= g.plaques_count %> (<%= (100 * g.plaques_count / @gender_total.to_f).to_i %>%)",<% end %>],
+          labelsSticksList: true,
+          textFont: 'Arial',
+          textSize: 16,
+          textAccessible: true
+      }
+    }).grow();
+  }
+</script>
 
 <h2>The top 50</h2>
 <div class="row">
