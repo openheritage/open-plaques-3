@@ -6,6 +6,7 @@ class OrganisationsController < ApplicationController
   before_action :find_languages, only: [:edit, :create]
 
   def index
+    @organisation_count = Organisation.all.count
     @organisations = Organisation.all
       .select(:language_id, :name, :slug, :sponsorships_count)
       .in_alphabetical_order

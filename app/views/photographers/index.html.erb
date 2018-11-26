@@ -1,44 +1,38 @@
 <% content_for(:page_title) {t '.page_title'} %>
 <% content_for(:title) {t '.page_heading'} %>
 <% content_for(:page_subhead) do %>
-  <%= t '.how_many', count: @photographers.size %><br/>
+  <%= t '.how_many', count: @photographers_count %><br/>
   <%= t '.where' %>
   <%= t '.how_they_are_licenced_html' %>
   <br/>
-  <span class="badge badge-secondary pull-right"><%= @photographers.size %></span>
+  <span class="badge badge-secondary pull-right"><%= @photographers_count %></span>
 <% end %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_photographer_path} %>
 
+<h2><%= t '.the_top_50' %></h2>
 <div class="row">
-  <h2><%= t '.the_top_50' %></h2>
-  <canvas id="myCanvas" width="1000" height="1000">
-    <ol>
-      <% @photographers.each do |photographer| %>
-        <li><%= link_to(photographer.id.gsub("'","’"), photographer_url(photographer.id.gsub(/\./,'_').gsub('/','_'))) rescue photographer %> - <%= pluralize(photographer.photos_count, "") %> </li>
-      <% end %>
-   </ol>
-  </canvas>
+  <div id="top-chart" class="col-12" style="height: 2000px;"></div>
 </div>
 
 <script>
-  window.onload = function ()
-  {
-    var data = [<% @photographers.each_with_index do |photographer, idx| %><% if idx < 50 %><%= photographer.photos_count %>,<% end %><% end %>];
-    var hbar = new RGraph.HBar('myCanvas', data);
-    hbar.Set('chart.labels', [<% @photographers.each_with_index do |photographer, idx| %><% if idx < 50 %>"<%= photographer.id.gsub("'","’") %>",<% end %><% end %>]);
-    hbar.Set('chart.strokestyle', 'rgba(0,0,0,0)');
-    hbar.Set('chart.labels.above', true);
-    hbar.Set('chart.vmargin', 15);
-    hbar.Set('chart.background.grid', false);
-    hbar.Set('chart.colors', ['gold', 'silver', 'brown', <% (40..200).step(50).each do |b| %><% (40..200).step(50).each do |g| %><% (40..200).step(50).each do |r| %>'rgb(<%= r %>,<%= g %>,<%= b %>)', <% end %><% end %><% end %>]);
-    hbar.Set('chart.colors.sequential', true);
-    hbar.Set('chart.xlabels', false);
-    hbar.Set('chart.gutter.left', 100);
-    hbar.Set('chart.gutter.right', 50);
-    hbar.Set('chart.gutter.top', 25);
-    hbar.Set('chart.noxaxis', true);
-    hbar.Set('chart.noxtickmarks', true);
-    hbar.Set('chart.noytickmarks', true);
-    hbar.grow();
-  }
+  new RGraph.SVG.HBar({
+    id: 'top-chart',
+    data: [<% @photographers.each do |p| %><%= p.photos_count %>,<% end %>],
+    options: {
+      yaxisLabels: [<% @photographers.each do |p| %>"#<%= p.rank %> <%= p.id %>",<% end %>],
+      strokestyle: 'rgba(0,0,0,0)',
+      labelsAbove: true,
+      vmargin: 15,
+      backgroundGrid: false,
+      colors: ['gold', 'silver', 'brown', <% (40..200).step(50).each do |b| %><% (40..200).step(50).each do |g| %><% (40..200).step(50).each do |r| %>'rgb(<%= r %>,<%= g %>,<%= b %>)', <% end %><% end %><% end %>],
+      colorsSequential: true,
+      xlabels: false,
+      gutterLeft: 100,
+      gutterRight: 50,
+      gutterTop: 25,
+      noxaxis: true,
+      noxtickmarks: true,
+      noytickmarks: true,
+    }
+  }).grow();
 </script>

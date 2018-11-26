@@ -1,5 +1,5 @@
 class Photographer
-  attr_accessor :id, :photos_count, :photos, :url
+  attr_accessor :id, :photos_count, :photos, :rank, :url
 
   def photos
     return Photo.where(photographer: self.id)
@@ -22,6 +22,20 @@ class Photographer
       photographer.photos_count = d[1]
       @photographers << photographer
     end
+    @photographers
+  end
+
+  def self.top50
+    data = Photo.where.not(plaque_id: nil).group('photographer').order('count_plaque_id desc').distinct.count(:plaque_id)
+    @photographers = []
+    data.each {|d|
+      photographer = Photographer.new
+      photographer.id = d[0].to_s.gsub(/\_/,'.').gsub("'","’")
+      photographer.photos_count = d[1]
+      photographer.rank = @photographers.size + 1
+      @photographers << photographer
+      break if @photographers.size == 50
+    }
     @photographers
   end
 

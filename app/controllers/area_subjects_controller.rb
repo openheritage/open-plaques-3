@@ -6,12 +6,21 @@ class AreaSubjectsController < ApplicationController
   def show
     respond_to do |format|
       format.html {
-        @uncurated_count = @area.plaques.unconnected.count
-        @plaques = @area.plaques.connected#.paginate(page: params[:page], per_page: 20)
-        @people = people(@plaques)
-        @total = @people.count + @uncurated_count
-        @type_counts = @people.map {|p| p.type }.group_by(&:itself).map {|k,v| [k, v.size] }
-        @type_counts << ['uncurated', @uncurated_count]
+        @plaques_count = @area.plaques.size
+        @uncurated_count = @area.plaques.unconnected.size
+        @curated_count = @plaques_count - @uncurated_count
+        @percentage_curated = ((@curated_count.to_f / @plaques_count.to_f) * 100).to_i
+        query = "SELECT people.gender, count(distinct person_id) as subject_count
+          FROM personal_connections, plaques, areas, people
+          WHERE areas.id = #{@area.id}
+          AND areas.id = plaques.area_id
+          AND plaques.id = personal_connections.plaque_id
+          AND personal_connections.person_id = people.id
+          GROUP BY people.gender"
+        @gender = ActiveRecord::Base.connection.execute(query)
+        @gender = @gender.map{|attributes| OpenStruct.new(attributes)}
+        @subject_count = @gender.inject(0){|sum, g| sum + g.subject_count }
+        @people = []
         render 'areas/subjects/show'
       }
       format.csv {

@@ -5,13 +5,21 @@ class OrganisationSubjectsController < ApplicationController
   def show
     respond_to do |format|
       format.html {
-        @uncurated_count = @organisation.plaques.unconnected.count
-        @plaques = @organisation.plaques.connected#.paginate(page: params[:page], per_page: 20)
-        @people = people(@plaques)
-        @total = @people.count + @uncurated_count
-        @type_counts = @people.map {|p| p.type }.group_by(&:itself).map {|k,v| [k, v.size] }
-        @type_counts << ['uncurated', @uncurated_count]
-        render 'organisations/subjects/show'
+        @plaques_count = @organisation.plaques.count # size is 0
+        @uncurated_count = @organisation.plaques.unconnected.size
+        @curated_count = @plaques_count - @uncurated_count
+        @percentage_curated = ((@curated_count.to_f / @plaques_count) * 100).to_i
+        query = "SELECT people.gender, count(distinct person_id) as subject_count
+          FROM sponsorships, personal_connections, people
+          WHERE sponsorships.organisation_id = #{@organisation.id}
+          AND sponsorships.plaque_id = personal_connections.plaque_id
+          AND personal_connections.person_id = people.id
+          GROUP BY people.gender"
+        @gender = ActiveRecord::Base.connection.execute(query)
+        @gender = @gender.map{|attributes| OpenStruct.new(attributes)}
+        @subject_count = @gender.inject(0){|sum, g| sum + g.subject_count }
+        @people = []
+      render 'organisations/subjects/show'
       }
       format.json { render json: @people }
       format.geojson { render geojson: @people }

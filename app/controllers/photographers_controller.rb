@@ -1,7 +1,8 @@
 class PhotographersController < ApplicationController
 
   def index
-    @photographers = Photographer.all
+    @photographers_count = Photographer.all.count
+    @photographers = Photographer.top50
     description = 'Photographers of blue plaques'
     set_meta_tags noindex: true
     set_meta_tags description: description

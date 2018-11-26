@@ -18,55 +18,42 @@
     <%= t '.page_heading' %>
   </h1>
   <p>
-    <%= @country.plaques.connected.count %> out of <%= @country.plaques.count %>
-    (<%= ((@country.plaques.connected.count.to_f / @country.plaques.count.to_f) * 100).to_i %>%)
-    plaques in <%= @country.name %> have been curated.
+    <%= @curated_count %> out of <%= @plaques_count %>
+    (<%= @percentage_curated %>%)
+    plaques have been curated
   </p>
+  <span class="badge badge-secondary pull-right"><%= @subject_count %></span>
 </div>
 
 <h2>Diversity</h2>
 <div class="row">
-  <canvas id="cvs" width="800" height="400">
-    <ol class="list-group">
-      <% @gender_total = @gender.inject(0){|sum, g| sum + g.plaques_count } %>
-      <% @gender.each do |g| %>
-        <li class="list-group-item">
-          <%= g.gender %>
-          <span class="badge badge-primary">(<%= (100 * g.plaques_count / @gender_total.to_f).to_i %>%)</span>
-          <%= g.plaques_count %> now, estimate <%= (g.plaques_count * (1 / (@country.plaques.connected.count.to_f / @country.plaques.count.to_f))).to_i %>
-        </li>
-      <% end %>
-    </ol>
-  </canvas>
+  <div id="gender-chart" class="col-8" style="height: 400px;"></div>
 </div>
 
 <script>
-  window.onload = function ()
-  {
-    var pie = new RGraph.Pie({
-      id: 'cvs',
-      data: [<% @gender.each do |g| %><%= g.plaques_count %>,<% end %>],
-      options: {
-          radius: 150,
-          colors: [
-              'rgb(51,102,204)',
-              'rgb(220,57,18)',
-              'rgb(255,153,0)',
-              'rgb(16,150,24)',
-              'rgb(153,0,153)',
-              'rgb(0,153,198)',
-              'rgb(221,68,119)'
-          ],
-          linewidth: 2,
-          shadow: false,
-          labels: [<% @gender.each do |g| %>"<%= g.gender %> <%= g.plaques_count %> (<%= (100 * g.plaques_count / @gender_total.to_f).to_i %>%)",<% end %>],
-          labelsSticksList: true,
-          textFont: 'Arial',
-          textSize: 16,
-          textAccessible: true
-      }
-    }).grow();
-  }
+  pie = new RGraph.SVG.Pie({
+    id: 'gender-chart',
+    data: [<% @gender.each do |g| %><%= g.subject_count %>,<% end %>],
+    options: {
+      radius: 150,
+      colors: [
+        'rgb(51,102,204)',
+        'rgb(220,57,18)',
+        'rgb(255,153,0)',
+        'rgb(16,150,24)',
+        'rgb(153,0,153)',
+        'rgb(0,153,198)',
+        'rgb(221,68,119)'
+      ],
+      linewidth: 2,
+      shadow: false,
+      labels: [<% @gender.each do |g| %>"<%= g.gender %> <%= g.subject_count %> (<%= (100 * g.subject_count / @subject_count.to_f).to_i %>%)",<% end %>],
+      labelsSticksList: true,
+      textFont: 'Arial',
+      textSize: 16,
+      textAccessible: true
+    }
+  }).draw();
 </script>
 
 <h2>The top 50</h2>

@@ -1,13 +1,13 @@
 <% content_for(:page_title) {t '.page_title'} %>
 <% content_for(:title) {t '.page_heading'} %>
-<% content_for(:page_subhead) {pluralize(@organisations.length, "organisation")} %>
+<% content_for(:page_subhead) {pluralize(@organisation_count, "organisation")} %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_organisation_path} %>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.9.1/holder.js"></script>
 
 <h2>Top 10</h2>
 <div class="row">
-  <canvas id="myCanvas" width="800" height="400"></canvas>
+  <div id="top10-chart" class="col-8" style="height: 400px;"></div>
 </div>
 
 <h2>In alphabetical order</h2>
@@ -18,24 +18,26 @@
 <%= will_paginate @organisations if @organisations.respond_to?(:total_pages) %>
 
 <script>
-  window.onload = function ()
-  {
-    var data = [<% @top_10.each do |organisation| %><%= organisation.sponsorships_count %>,<% end %>];
-    var hbar = new RGraph.HBar('myCanvas', data);
-    hbar.Set('chart.labels', [<% @top_10.each do |organisation| %>'<%= organisation %>',<% end %>]);
-    hbar.Set('chart.colors', ['blue','red','green','orange']);
-    hbar.Set('chart.strokestyle', 'rgba(0,0,0,0)');
-    hbar.Set('chart.labels.above', true);
-    hbar.Set('chart.vmargin', 15);
-    hbar.Set('chart.background.grid', false);
-    hbar.Set('chart.colors.sequential', true);
-    hbar.Set('chart.xlabels', false);
-    hbar.Set('chart.gutter.left', 350);
-    hbar.Set('chart.gutter.right', 50);
-    hbar.Set('chart.gutter.top', 25);
-    hbar.Set('chart.noxaxis', true);
-    hbar.Set('chart.noxtickmarks', true);
-    hbar.Set('chart.noytickmarks', true);
-    RGraph.isOld() ? hbar.Draw() : RGraph.Effects.HBar.Grow(hbar);
-  }
+  data = [<% @top_10.each do |organisation| %><%= organisation.sponsorships_count %>,<% end %>];
+  hbar = new RGraph.SVG.HBar({
+    id: 'top10-chart',
+    data: data,
+    options: {
+      yaxisLabels: [<% @top_10.each do |o| %>'<%= o %>',<% end %>],
+      colors: ['blue','red','green','orange','blue','red','green','orange','blue'],
+      strokestyle: 'rgba(0,0,0,0)',
+      labelsAbove: true,
+      vmargin: 15,
+      backgroundGrid: false,
+      colorsSequential: true,
+      xlabels: false,
+      gutterLeft: 350,
+      gutterRight: 50,
+      gutterTop: 25,
+      noxaxis: true,
+      noxtickmarks: true,
+      noytickmarks: true,
+    }
+  }).grow();
+
 </script>

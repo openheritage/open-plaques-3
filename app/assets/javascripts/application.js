@@ -20,17 +20,11 @@
 //= require leaflet.ajax
 //= require leaflet.markercluster
 //= require tile.stamen
-//= require RGraph.hbar.js
-//= require RGraph.common.zoom.js
-//= require RGraph.common.tooltips.js
-//= require RGraph.common.resizing.js
-//= require RGraph.common.key.js
-//= require RGraph.common.effects.js
-//= require RGraph.common.dynamic.js
-//= require RGraph.common.core.js
-//= require RGraph.common.context.js
-//= require RGraph.common.annotate.js
-//= require RGraph.pie.js
+//= require RGraph.svg.common.ajax.js
+//= require RGraph.svg.common.core.js
+//= require RGraph.svg.common.fx.js
+//= require RGraph.svg.hbar.js
+//= require RGraph.svg.pie.js
 //= require_tree .
 
 function addLoadEvent(func) {
