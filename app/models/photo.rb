@@ -259,21 +259,28 @@ class Photo < ApplicationRecord
             self.photographer = wikimedia[:author]
             self.photographer_url = wikimedia[:author_url]
             self.file_url = wikimedia_special
-            licence = Licence.find_by(url: wikimedia[:licence_url])
-            if (licence == nil)
-              wikimedia[:licence_url] += "/" if !wikimedia[:licence_url].ends_with? '/'
-              licence = Licence.find_by_url wikimedia[:licence_url]
-              if (licence == nil)
-                licence = Licence.new(name: wikimedia[:licence], url: wikimedia[:licence_url])
-                licence.save
+            if wikimedia[:licence_url]
+              licence = Licence.find_by(url: wikimedia[:licence_url])
+              unless licence
+                wikimedia[:licence_url] += "/" if !wikimedia[:licence_url].ends_with? '/'
+                licence = Licence.find_by_url wikimedia[:licence_url]
+                unless licence
+                  if wikimedia[:licence]
+                    licence = Licence.new(
+                      name: wikimedia[:licence],
+                      url: wikimedia[:licence_url]
+                    )
+                    licence.save
+                  end
+                end
               end
+              self.licence = licence if licence != nil
             end
-            self.licence = licence if licence != nil
             self.latitude = wikimedia[:latitude] if wikimedia[:latitude]
             self.longitude = wikimedia[:longitude] if wikimedia[:longitude]
           end
-        rescue
-          errors.add :file_url, 'Commoner errored'
+        rescue RuntimeError => ex
+          errors.add :file_url, 'Commoner errored' + ex.full_messages
         end
       end
     end
