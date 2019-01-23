@@ -1,6 +1,6 @@
 language: ruby
 rvm:
-  - "2.3.7"
+  - "2.5.3"
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
 sudo: false
