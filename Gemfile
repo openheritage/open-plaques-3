@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
-ruby '2.5.3'
+ruby '2.6.0'
 
-gem 'rails', '5.2.2'
+gem 'rails', '5.2.3'
 gem 'pg'
 gem 'webpacker'
 gem 'uglifier'
@@ -14,7 +14,7 @@ gem 'sanitize'
 gem 'sass-rails'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
-gem 'bootstrap' #, '~> 4.0.0.beta2.1'
+gem 'bootstrap'
 gem 'font-awesome-sass', '~> 4.4.0'
 
 source 'https://rails-assets.org' do
