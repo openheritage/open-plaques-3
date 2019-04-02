@@ -1,4 +1,4 @@
-class CreatePlaqueErectedYears < ActiveRecord::Migration
+class CreatePlaqueErectedYears < ActiveRecord::Migration[4.2]
   def self.up
     create_table :plaque_erected_years do |t|
       t.string :name

@@ -1,4 +1,4 @@
-class AddWoeIdAndDbpediaUriToAreas < ActiveRecord::Migration
+class AddWoeIdAndDbpediaUriToAreas < ActiveRecord::Migration[4.2]
   def self.up
     add_column :areas, :woeid, :integer
     add_column :areas, :dbpedia_uri, :string

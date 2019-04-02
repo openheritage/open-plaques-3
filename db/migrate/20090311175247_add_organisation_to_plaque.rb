@@ -1,4 +1,4 @@
-class AddOrganisationToPlaque < ActiveRecord::Migration
+class AddOrganisationToPlaque < ActiveRecord::Migration[4.2]
   def self.up
     add_column :plaques, :organisation_id, :integer
   end

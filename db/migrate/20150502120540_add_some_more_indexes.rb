@@ -1,4 +1,4 @@
-class AddSomeMoreIndexes < ActiveRecord::Migration
+class AddSomeMoreIndexes < ActiveRecord::Migration[4.2]
   def change
     remove_index(:plaques, column: :personal_connections_count)
     add_index :areas, :slug

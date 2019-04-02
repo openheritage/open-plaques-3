@@ -1,4 +1,4 @@
-class AddPhotographerUrlToPhoto < ActiveRecord::Migration
+class AddPhotographerUrlToPhoto < ActiveRecord::Migration[4.2]
   def self.up
     add_column :photos, :photographer_url, :string
   end

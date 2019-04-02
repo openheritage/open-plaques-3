@@ -1,4 +1,4 @@
-class AddTakenAtToPhotos < ActiveRecord::Migration
+class AddTakenAtToPhotos < ActiveRecord::Migration[4.2]
   def self.up
     add_column :photos, :taken_at, :datetime
   end

@@ -1,4 +1,4 @@
-class AddSeriesToPlaques < ActiveRecord::Migration
+class AddSeriesToPlaques < ActiveRecord::Migration[4.2]
   def self.up
     add_column :plaques, :series_id, :integer
   end

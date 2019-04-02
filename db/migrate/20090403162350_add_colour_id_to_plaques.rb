@@ -1,4 +1,4 @@
-class AddColourIdToPlaques < ActiveRecord::Migration
+class AddColourIdToPlaques < ActiveRecord::Migration[4.2]
   def self.up
     add_column :plaques, :colour_id, :integer
   end

@@ -1,4 +1,4 @@
-class AddSomeIndexes < ActiveRecord::Migration
+class AddSomeIndexes < ActiveRecord::Migration[4.2]
   def up
     add_index(:areas, :country_id)
 

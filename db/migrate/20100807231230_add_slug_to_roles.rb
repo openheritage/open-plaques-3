@@ -1,4 +1,4 @@
-class AddSlugToRoles < ActiveRecord::Migration
+class AddSlugToRoles < ActiveRecord::Migration[4.2]
   def self.up
     add_column :roles, :slug, :string
 

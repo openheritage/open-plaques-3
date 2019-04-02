@@ -1,4 +1,4 @@
-class AddDescriptionToOrganisations < ActiveRecord::Migration
+class AddDescriptionToOrganisations < ActiveRecord::Migration[4.2]
   def self.up
     add_column :organisations, :description, :text
   end

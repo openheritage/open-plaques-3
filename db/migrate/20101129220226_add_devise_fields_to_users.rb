@@ -1,4 +1,4 @@
-class AddDeviseFieldsToUsers < ActiveRecord::Migration
+class AddDeviseFieldsToUsers < ActiveRecord::Migration[4.2]
   def self.up
     add_column :users, :encrypted_password, :string, limit: 128, null: false, default: ""
     add_column :users, :password_salt, :string, null: false, default: ""

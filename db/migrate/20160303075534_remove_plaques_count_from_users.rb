@@ -1,4 +1,4 @@
-class RemovePlaquesCountFromUsers < ActiveRecord::Migration
+class RemovePlaquesCountFromUsers < ActiveRecord::Migration[4.2]
   def self.up
     remove_column :users, :plaques_count
   end

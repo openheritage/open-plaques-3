@@ -1,4 +1,4 @@
-class AddSeriesRefToPlaques < ActiveRecord::Migration
+class AddSeriesRefToPlaques < ActiveRecord::Migration[4.2]
   def change
     add_column :plaques, :series_ref, :string
   end

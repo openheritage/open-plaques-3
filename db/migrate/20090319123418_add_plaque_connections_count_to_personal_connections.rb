@@ -1,4 +1,4 @@
-class AddPlaqueConnectionsCountToPersonalConnections < ActiveRecord::Migration
+class AddPlaqueConnectionsCountToPersonalConnections < ActiveRecord::Migration[4.2]
   def self.up
     add_column :personal_connections, :plaque_connections_count, :integer
 

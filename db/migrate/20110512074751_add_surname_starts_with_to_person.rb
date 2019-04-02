@@ -1,4 +1,4 @@
-class AddSurnameStartsWithToPerson < ActiveRecord::Migration
+class AddSurnameStartsWithToPerson < ActiveRecord::Migration[4.2]
 
   class Person < ActiveRecord::Base
   end
@@ -9,7 +9,7 @@ class AddSurnameStartsWithToPerson < ActiveRecord::Migration
     add_index :people, :index
 
     say_with_time("Adding surname indexes to people") do
-      Person.find(:all).each do |person|
+      OpenPlaques::Person.all.each do |person|
         person.surname_starts_with = person.name[person.name.rindex(" ") ? person.name.rindex(" ") + 1 : 0,1].downcase
         person.save!
       end

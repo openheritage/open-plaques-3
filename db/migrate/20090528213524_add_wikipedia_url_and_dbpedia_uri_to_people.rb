@@ -1,4 +1,4 @@
-class AddWikipediaUrlAndDbpediaUriToPeople < ActiveRecord::Migration
+class AddWikipediaUrlAndDbpediaUriToPeople < ActiveRecord::Migration[4.2]
   def self.up
     add_column :people, :wikipedia_url, :string
     add_column :people, :dbpedia_uri, :string

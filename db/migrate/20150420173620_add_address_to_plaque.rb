@@ -1,4 +1,4 @@
-class AddAddressToPlaque < ActiveRecord::Migration
+class AddAddressToPlaque < ActiveRecord::Migration[4.2]
   def change
     add_column :plaques, :address, :string
     add_column :plaques, :area_id, :integer

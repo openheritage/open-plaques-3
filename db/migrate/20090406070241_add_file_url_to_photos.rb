@@ -1,4 +1,4 @@
-class AddFileUrlToPhotos < ActiveRecord::Migration
+class AddFileUrlToPhotos < ActiveRecord::Migration[4.2]
   def self.up
     # Delete all all photos first. We'll re-discover them later.
     #Photo.find(:all).each do |photo|

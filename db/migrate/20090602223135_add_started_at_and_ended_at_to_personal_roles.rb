@@ -1,4 +1,4 @@
-class AddStartedAtAndEndedAtToPersonalRoles < ActiveRecord::Migration
+class AddStartedAtAndEndedAtToPersonalRoles < ActiveRecord::Migration[4.2]
   def self.up
     add_column :personal_roles, :started_at, :date
     add_column :personal_roles, :ended_at, :date

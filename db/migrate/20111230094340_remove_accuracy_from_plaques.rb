@@ -1,4 +1,4 @@
-class RemoveAccuracyFromPlaques < ActiveRecord::Migration
+class RemoveAccuracyFromPlaques < ActiveRecord::Migration[4.2]
   def up
     remove_column :plaques, :accuracy
   end

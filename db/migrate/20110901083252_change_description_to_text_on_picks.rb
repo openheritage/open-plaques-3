@@ -1,4 +1,4 @@
-class ChangeDescriptionToTextOnPicks < ActiveRecord::Migration
+class ChangeDescriptionToTextOnPicks < ActiveRecord::Migration[4.2]
   def self.up
     change_column :picks, :description, :text, limit: nil
   end

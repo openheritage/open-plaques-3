@@ -1,4 +1,4 @@
-class CreatePersonalConnections < ActiveRecord::Migration
+class CreatePersonalConnections < ActiveRecord::Migration[4.2]
   def self.up
     create_table :personal_connections do |t|
       t.integer :person_id, :verb_id, :place_id, :plaque_id

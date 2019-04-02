@@ -1,4 +1,4 @@
-class AddCircaAttributesToPerson < ActiveRecord::Migration
+class AddCircaAttributesToPerson < ActiveRecord::Migration[4.2]
   def self.up
     add_column :people, :born_on_is_circa, :boolean
     add_column :people, :died_on_is_circa, :boolean

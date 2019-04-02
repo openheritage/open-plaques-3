@@ -1,4 +1,4 @@
-class AddPlaquesCountToAreas < ActiveRecord::Migration
+class AddPlaquesCountToAreas < ActiveRecord::Migration[4.2]
   def self.up
     add_column :areas, :plaques_count, :integer
     Area.connection.execute("update areas a set plaques_count = (select count(*) from plaques p where p.area_id = a.id)")

@@ -1,4 +1,4 @@
-class RenamePlacesLocations < ActiveRecord::Migration
+class RenamePlacesLocations < ActiveRecord::Migration[4.2]
   def self.up
     rename_table :places, :locations
     rename_column :plaques, :place_id, :location_id

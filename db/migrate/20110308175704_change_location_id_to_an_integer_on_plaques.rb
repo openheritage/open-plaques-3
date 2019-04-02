@@ -1,4 +1,4 @@
-class ChangeLocationIdToAnIntegerOnPlaques < ActiveRecord::Migration
+class ChangeLocationIdToAnIntegerOnPlaques < ActiveRecord::Migration[4.2]
 
   # redefining the Plaque class so that we don't have to deal with validations.
   class Plaque < ActiveRecord::Base

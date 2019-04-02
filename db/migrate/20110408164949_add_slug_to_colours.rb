@@ -1,4 +1,4 @@
-class AddSlugToColours < ActiveRecord::Migration
+class AddSlugToColours < ActiveRecord::Migration[4.2]
   class Colour < ActiveRecord::Base
   end
   def self.up

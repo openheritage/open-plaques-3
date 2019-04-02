@@ -1,4 +1,4 @@
-class AddPhotosCountToLicense < ActiveRecord::Migration
+class AddPhotosCountToLicense < ActiveRecord::Migration[4.2]
   def self.up
     add_column :licenses, :photos_count, :integer
   end

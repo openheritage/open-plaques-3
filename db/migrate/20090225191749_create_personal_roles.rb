@@ -1,4 +1,4 @@
-class CreatePersonalRoles < ActiveRecord::Migration
+class CreatePersonalRoles < ActiveRecord::Migration[4.2]
   def self.up
     create_table :personal_roles do |t|
       t.integer :person_id, :role_id

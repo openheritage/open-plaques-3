@@ -1,4 +1,4 @@
-class CreateVerbs < ActiveRecord::Migration
+class CreateVerbs < ActiveRecord::Migration[4.2]
   def self.up
     create_table :verbs do |t|
       t.string :name

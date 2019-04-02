@@ -1,4 +1,4 @@
-class AddWikipediaParaNumbersToPeople < ActiveRecord::Migration
+class AddWikipediaParaNumbersToPeople < ActiveRecord::Migration[4.2]
   def self.up
     add_column :people, :wikipedia_paras, :string
   end

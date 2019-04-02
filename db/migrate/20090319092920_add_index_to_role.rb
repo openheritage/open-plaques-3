@@ -1,4 +1,4 @@
-class AddIndexToRole < ActiveRecord::Migration
+class AddIndexToRole < ActiveRecord::Migration[4.2]
   def self.up
     add_column :roles, :index, :string
 

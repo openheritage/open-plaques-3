@@ -1,4 +1,4 @@
-class CreatePlaques < ActiveRecord::Migration
+class CreatePlaques < ActiveRecord::Migration[4.2]
   def self.up
     create_table :plaques do |t|
       t.date :erected_at

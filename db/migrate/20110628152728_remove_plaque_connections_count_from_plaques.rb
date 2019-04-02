@@ -1,4 +1,4 @@
-class RemovePlaqueConnectionsCountFromPlaques < ActiveRecord::Migration
+class RemovePlaqueConnectionsCountFromPlaques < ActiveRecord::Migration[4.2]
   def self.up
     remove_column :plaques, :plaque_connections_count
   end

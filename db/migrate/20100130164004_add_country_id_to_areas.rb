@@ -1,4 +1,4 @@
-class AddCountryIdToAreas < ActiveRecord::Migration
+class AddCountryIdToAreas < ActiveRecord::Migration[4.2]
   def self.up
     add_column :areas, :country_id, :integer
   end

@@ -1,4 +1,4 @@
-class AddCounterCacheToRole < ActiveRecord::Migration
+class AddCounterCacheToRole < ActiveRecord::Migration[4.2]
   def self.up
     add_column :roles, :personal_roles_count, :integer
 

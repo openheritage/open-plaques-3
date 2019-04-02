@@ -1,4 +1,4 @@
-class CreatePicks < ActiveRecord::Migration
+class CreatePicks < ActiveRecord::Migration[4.2]
   def self.up
     create_table :picks do |t|
       t.integer :plaque_id

@@ -1,4 +1,4 @@
-class RemoveOrganisationFromPlaque < ActiveRecord::Migration
+class RemoveOrganisationFromPlaque < ActiveRecord::Migration[4.2]
   def self.up
     remove_column :plaques, :organisation_id
   end

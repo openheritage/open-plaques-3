@@ -1,4 +1,4 @@
-class AddIsAdminToUsers < ActiveRecord::Migration
+class AddIsAdminToUsers < ActiveRecord::Migration[4.2]
   def self.up
     add_column :users, :is_admin, :boolean
   end

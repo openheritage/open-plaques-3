@@ -1,4 +1,4 @@
-class RemovePasswordSaltFromUsers < ActiveRecord::Migration
+class RemovePasswordSaltFromUsers < ActiveRecord::Migration[4.2]
   def self.up
     remove_column :users, :password_salt
   end

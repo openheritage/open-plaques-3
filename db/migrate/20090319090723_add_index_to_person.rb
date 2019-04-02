@@ -1,4 +1,4 @@
-class AddIndexToPerson < ActiveRecord::Migration
+class AddIndexToPerson < ActiveRecord::Migration[4.2]
   def self.up
     add_column :people, :index, :string
 

@@ -1,4 +1,4 @@
-class RenameLicenseTableAsLicence < ActiveRecord::Migration
+class RenameLicenseTableAsLicence < ActiveRecord::Migration[4.2]
   def self.up
     rename_table :licenses, :licences
     rename_column :photos, :license_id, :licence_id

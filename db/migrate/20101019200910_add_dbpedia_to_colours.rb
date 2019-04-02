@@ -1,4 +1,4 @@
-class AddDbpediaToColours < ActiveRecord::Migration
+class AddDbpediaToColours < ActiveRecord::Migration[4.2]
   def self.up
     add_column :colours, :dbpedia_uri, :string
   end

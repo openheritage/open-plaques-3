@@ -1,4 +1,4 @@
-class AddShotToPhotos < ActiveRecord::Migration
+class AddShotToPhotos < ActiveRecord::Migration[4.2]
   def self.up
     add_column :photos, :shot, :string
   end

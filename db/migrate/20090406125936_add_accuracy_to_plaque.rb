@@ -1,4 +1,4 @@
-class AddAccuracyToPlaque < ActiveRecord::Migration
+class AddAccuracyToPlaque < ActiveRecord::Migration[4.2]
   def self.up
     add_column :plaques, :accuracy, :string
   end

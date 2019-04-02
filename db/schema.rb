@@ -16,12 +16,12 @@ ActiveRecord::Schema.define(version: 2018_11_09_142412) do
   enable_extension "plpgsql"
 
   create_table "areas", id: :serial, force: :cascade do |t|
-    t.string "name", limit: 255
+    t.string "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string "dbpedia_uri", limit: 255
+    t.string "dbpedia_uri"
     t.integer "country_id"
-    t.string "slug", limit: 255
+    t.string "slug"
     t.float "latitude"
     t.float "longitude"
     t.integer "plaques_count"
@@ -31,19 +31,19 @@ ActiveRecord::Schema.define(version: 2018_11_09_142412) do
   end
 
   create_table "colours", id: :serial, force: :cascade do |t|
-    t.string "name", limit: 255
+    t.string "name"
     t.integer "plaques_count"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string "dbpedia_uri", limit: 255
+    t.string "dbpedia_uri"
     t.boolean "common", default: false, null: false
-    t.string "slug", limit: 255
+    t.string "slug"
     t.index ["slug"], name: "index_colours_on_slug"
   end
 
   create_table "countries", id: :serial, force: :cascade do |t|
-    t.string "name", limit: 255
-    t.string "alpha2", limit: 255
+    t.string "name"
+    t.string "alpha2"
     t.integer "areas_count"
     t.integer "plaques_count"
     t.datetime "created_at"
@@ -56,30 +56,30 @@ ActiveRecord::Schema.define(version: 2018_11_09_142412) do
   end
 
   create_table "languages", id: :serial, force: :cascade do |t|
-    t.string "name", limit: 255
-    t.string "alpha2", limit: 255
+    t.string "name"
+    t.string "alpha2"
     t.integer "plaques_count"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "licences", id: :serial, force: :cascade do |t|
-    t.string "name", limit: 255
-    t.string "url", limit: 255
+    t.string "name"
+    t.string "url"
     t.boolean "allows_commercial_use"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "photos_count"
-    t.string "abbreviation", limit: 255
+    t.string "abbreviation"
   end
 
   create_table "organisations", id: :serial, force: :cascade do |t|
-    t.string "name", limit: 255
-    t.string "website", limit: 255
+    t.string "name"
+    t.string "website"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text "notes"
-    t.string "slug", limit: 255
+    t.string "slug"
     t.text "description"
     t.integer "sponsorships_count", default: 0
     t.float "latitude"
@@ -90,31 +90,31 @@ ActiveRecord::Schema.define(version: 2018_11_09_142412) do
   end
 
   create_table "pages", id: :serial, force: :cascade do |t|
-    t.string "name", limit: 255
-    t.string "slug", limit: 255
+    t.string "name"
+    t.string "slug"
     t.text "body"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string "strapline", limit: 255
+    t.string "strapline"
   end
 
   create_table "people", id: :serial, force: :cascade do |t|
-    t.string "name", limit: 255
+    t.string "name"
     t.date "born_on"
     t.date "died_on"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "personal_connections_count"
     t.integer "personal_roles_count"
-    t.string "index", limit: 255
+    t.string "index"
     t.boolean "born_on_is_circa"
     t.boolean "died_on_is_circa"
-    t.string "surname_starts_with", limit: 255
+    t.string "surname_starts_with"
     t.text "introduction"
-    t.string "gender", limit: 255, default: "u"
+    t.string "gender", default: "u"
     t.text "aka", default: [], array: true
-    t.string "find_a_grave_id", limit: 255
-    t.string "ancestry_id", limit: 255
+    t.string "find_a_grave_id"
+    t.string "ancestry_id"
     t.string "wikidata_id"
     t.index ["born_on", "died_on"], name: "born_and_died"
     t.index ["index"], name: "index_people_on_index"
@@ -151,22 +151,22 @@ ActiveRecord::Schema.define(version: 2018_11_09_142412) do
   end
 
   create_table "photos", id: :serial, force: :cascade do |t|
-    t.string "photographer", limit: 255
-    t.string "url", limit: 255
+    t.string "photographer"
+    t.string "url"
     t.integer "plaque_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string "file_url", limit: 255
+    t.string "file_url"
     t.integer "licence_id"
-    t.string "photographer_url", limit: 255
+    t.string "photographer_url"
     t.datetime "taken_at"
-    t.string "shot", limit: 255
+    t.string "shot"
     t.boolean "of_a_plaque", default: true
-    t.string "latitude", limit: 255
-    t.string "longitude", limit: 255
-    t.string "subject", limit: 255
+    t.string "latitude"
+    t.string "longitude"
+    t.string "subject"
     t.text "description"
-    t.string "thumbnail", limit: 255
+    t.string "thumbnail"
     t.integer "person_id"
     t.integer "clone_id"
     t.integer "nearest_plaque_id"
@@ -185,21 +185,21 @@ ActiveRecord::Schema.define(version: 2018_11_09_142412) do
     t.integer "featured_count"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string "proposer", limit: 255
+    t.string "proposer"
   end
 
   create_table "plaques", id: :serial, force: :cascade do |t|
     t.date "erected_at"
-    t.float "latitude"
-    t.float "longitude"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text "inscription"
-    t.string "reference", limit: 255
+    t.string "reference"
     t.text "notes"
     t.text "parsed_inscription"
     t.integer "colour_id"
     t.integer "photos_count", default: 0, null: false
+    t.float "latitude"
+    t.float "longitude"
     t.integer "language_id"
     t.text "description"
     t.boolean "inscription_is_stub", default: false
@@ -208,8 +208,8 @@ ActiveRecord::Schema.define(version: 2018_11_09_142412) do
     t.boolean "is_accurate_geolocation", default: true
     t.boolean "is_current", default: true
     t.text "inscription_in_english"
-    t.string "series_ref", limit: 255
-    t.string "address", limit: 255
+    t.string "series_ref"
+    t.string "address"
     t.integer "area_id"
     t.index ["area_id"], name: "index_plaques_on_area_id"
     t.index ["colour_id"], name: "index_plaques_on_colour_id"
@@ -218,16 +218,16 @@ ActiveRecord::Schema.define(version: 2018_11_09_142412) do
   end
 
   create_table "roles", id: :serial, force: :cascade do |t|
-    t.string "name", limit: 255
+    t.string "name"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "personal_roles_count"
-    t.string "index", limit: 255
-    t.string "slug", limit: 255
-    t.string "role_type", limit: 255
-    t.string "abbreviation", limit: 255
-    t.string "prefix", limit: 255
-    t.string "suffix", limit: 255
+    t.string "index"
+    t.string "slug"
+    t.string "role_type"
+    t.string "abbreviation"
+    t.string "prefix"
+    t.string "suffix"
     t.text "description"
     t.integer "priority"
     t.string "wikidata_id"
@@ -237,8 +237,8 @@ ActiveRecord::Schema.define(version: 2018_11_09_142412) do
   end
 
   create_table "series", id: :serial, force: :cascade do |t|
-    t.string "name", limit: 255
-    t.string "description", limit: 255
+    t.string "name"
+    t.string "description"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "plaques_count"
@@ -256,10 +256,10 @@ ActiveRecord::Schema.define(version: 2018_11_09_142412) do
   end
 
   create_table "todo_items", id: :serial, force: :cascade do |t|
-    t.string "description", limit: 255
-    t.string "action", limit: 255
-    t.string "url", limit: 255
-    t.string "image_url", limit: 255
+    t.string "description"
+    t.string "action"
+    t.string "url"
+    t.string "image_url"
     t.integer "plaque_id"
     t.integer "user_id"
     t.datetime "created_at"
@@ -268,7 +268,7 @@ ActiveRecord::Schema.define(version: 2018_11_09_142412) do
 
   create_table "users", id: :serial, force: :cascade do |t|
     t.string "username", limit: 40
-    t.string "name", limit: 100
+    t.string "name", limit: 100, default: ""
     t.string "email", limit: 100
     t.string "crypted_password", limit: 40
     t.string "salt", limit: 40
@@ -276,14 +276,14 @@ ActiveRecord::Schema.define(version: 2018_11_09_142412) do
     t.datetime "updated_at"
     t.datetime "remember_token_expires_at"
     t.boolean "is_admin"
-    t.string "encrypted_password", limit: 128, null: false
-    t.string "reset_password_token", limit: 255
+    t.string "encrypted_password", limit: 128, default: "", null: false
+    t.string "reset_password_token"
     t.datetime "remember_created_at"
     t.integer "sign_in_count", default: 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string "current_sign_in_ip", limit: 255
-    t.string "last_sign_in_ip", limit: 255
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
     t.boolean "is_verified", default: false, null: false
     t.boolean "opted_in", default: false
     t.datetime "reset_password_sent_at"
@@ -293,7 +293,7 @@ ActiveRecord::Schema.define(version: 2018_11_09_142412) do
   end
 
   create_table "verbs", id: :serial, force: :cascade do |t|
-    t.string "name", limit: 255
+    t.string "name"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "personal_connections_count"

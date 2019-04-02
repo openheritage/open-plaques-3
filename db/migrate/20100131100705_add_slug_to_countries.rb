@@ -1,4 +1,4 @@
-class AddSlugToCountries < ActiveRecord::Migration
+class AddSlugToCountries < ActiveRecord::Migration[4.2]
   def self.up
     add_column :areas, :slug, :string
 

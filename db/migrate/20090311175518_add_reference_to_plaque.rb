@@ -1,4 +1,4 @@
-class AddReferenceToPlaque < ActiveRecord::Migration
+class AddReferenceToPlaque < ActiveRecord::Migration[4.2]
   def self.up
     add_column :plaques, :reference, :string
   end

@@ -1,4 +1,4 @@
-class AddCounterCacheToVerb < ActiveRecord::Migration
+class AddCounterCacheToVerb < ActiveRecord::Migration[4.2]
   def self.up
     add_column :verbs, :personal_connections_count, :integer
 

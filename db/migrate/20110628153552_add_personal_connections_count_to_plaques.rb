@@ -1,4 +1,4 @@
-class AddPersonalConnectionsCountToPlaques < ActiveRecord::Migration
+class AddPersonalConnectionsCountToPlaques < ActiveRecord::Migration[4.2]
   class Plaque < ActiveRecord::Base
   end
   class PersonalConnections < ActiveRecord::Base
