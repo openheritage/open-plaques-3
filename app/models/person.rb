@@ -54,6 +54,7 @@ class Person < ApplicationRecord
     SQL
   }
   scope :female, -> { where ("gender = 'f'") }
+  scope :ungendered, -> { where ("gender = 'u'") }
   scope :random, -> { order(Arel.sql('random()')) }
   scope :non_holocaust, -> { joins(:personal_roles).where('personal_roles.role_id != 5375') }
 

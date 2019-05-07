@@ -113,14 +113,14 @@ class AreasController < ApplicationController
 
   private
 
-    def permitted_params
-      params.require(:area).permit(
-        :country_id,
-        :latitude,
-        :longitude,
-        :name,
-        :slug,
-        :streetview_url,
-      )
-	  end
+  def permitted_params
+    params.require(:area).permit(
+      :country_id,
+      :latitude,
+      :longitude,
+      :name,
+      :slug,
+      :streetview_url,
+    )
+  end
 end

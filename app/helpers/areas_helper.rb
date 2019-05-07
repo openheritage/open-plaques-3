@@ -8,6 +8,10 @@ module AreasHelper
     country_area_plaques_path(area.country, area, options)
   end
 
+  def area_subjects_path(area, options = {})
+    country_area_subjects_path(area.country, area, options)
+  end
+
   def area_url(area, options = {})
      country_area_plaques_url(area.country, area, options)
   end

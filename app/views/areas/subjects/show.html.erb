@@ -51,3 +51,7 @@
 <%= will_paginate @people if @people.respond_to?(:total_pages) %>
 <%= render partial: 'people/tiles' %>
 <%= will_paginate @people if @people.respond_to?(:total_pages) %>
+
+<div class="card-columns">
+  <%= render Person.ungendered %>
+</div>
