@@ -17,7 +17,16 @@
       </div>
     <% end %>
     <div class="card-info">
-      <h1 class="card-title fn"><%= @person.full_name %><br/><small><%= @person.dates %></small></h1>
+      <h1 class="card-title fn"><%= @person.full_name %><br/>
+        <small><%= @person.dates %></small>
+        <% if @person.gender == 'm' %>
+          <small><%= icon('mars') %></small>
+        <% elsif @person.gender == 'f' %>
+          <small><%= icon('venus') %></small>
+        <% elsif @person.gender == 'u' %>
+          <small><%= @person.gender %></small>
+        <% end %>
+      </h1>
     </div>
   </div>
 

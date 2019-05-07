@@ -187,7 +187,7 @@ class Person < ApplicationRecord
   end
 
   def fill_wikidata_id
-    unless wikidata_id&.match /Q\d*$/
+    unless wikidata_id&.match(/Q\d*$/)
       t = name
       t = "#{name} (#{born_in}-#{died_in})" if born_in && died_in
       self.wikidata_id = Wikidata.qcode(t)
@@ -290,7 +290,6 @@ class Person < ApplicationRecord
     letters = ''
     current_personal_roles.each do |pr|
       if !pr.role.suffix.blank? && !letters.include?(pr.role.suffix)
-        s = pr.suffix
         letters << " #{pr.suffix}"
       end
     end
