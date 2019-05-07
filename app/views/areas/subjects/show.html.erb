@@ -53,5 +53,5 @@
 <%= will_paginate @people if @people.respond_to?(:total_pages) %>
 
 <div class="card-columns">
-  <%= render Person.ungendered %>
+  <%= render @people %>
 </div>
