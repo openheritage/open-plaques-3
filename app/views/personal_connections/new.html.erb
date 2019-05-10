@@ -52,9 +52,9 @@
           <%= connection.verb.name %>
           here
           <% if connection.single_year? %>
-            <%= "in " + connection.from if connection.from != '' %>
+            <%= "in #{connection.from}" if connection.from != '' %>
           <% else %>
-            <%= "from " + connection.from if connection.from != '' %><%= " to " + connection.to  if connection.to != ''%>
+            <%= "from #{connection.from}" if connection.from != '' %><%= " to #{connection.to}" if connection.to != '' %>
           <% end %>
         </p>
         <%= button_to(t('buttons.unlink'), plaque_connection_path(@plaque, connection), method: :delete, class: 'btn btn-danger') %>
@@ -70,9 +70,9 @@
           <%= connection.verb.name %>
           here
           <% if connection.single_year? %>
-            <%= "in " + connection.from if connection.from != '' %>
+            <%= "in #{connection.from}" if connection.from != '' %>
           <% else %>
-            <%= "from " + connection.from if connection.from != '' %><%= " to " + connection.to  if connection.to != ''%>
+            <%= "from #{connection.from}" if connection.from != '' %><%= " to #{connection.to}" if connection.to != '' %>
           <% end %>
         </p>
         <%= button_to(t('buttons.unlink'), plaque_connection_path(@plaque, connection), method: :delete, class: 'btn btn-danger') %>
@@ -105,9 +105,9 @@
 <%= form_for @personal_connection, url: plaque_connections_path(@plaque) do |f| %>
   <p><%= t '.from_which_we_can_establish' %></p>
   <div class="form-group">
-    <%= text_field_tag :person_name, "", {class: 'form-control', placeholder: "John Smith"} %>
+    <%= text_field_tag :person_name, '', {class: 'form-control', placeholder: 'John Smith'} %>
     <%= f.hidden_field :person_id %>
-    <%= link_to(icon('user') + t('.new_person'), "/people/new") %>
+    <%= link_to(icon('user') + t('.new_person'), '/people/new') %>
   </div>
 
   <% if @common_verbs %>
@@ -115,13 +115,13 @@
       <% @common_verbs.each do |verb| %>
         <div class="row radio">
           <%= f.radio_button :verb_id, verb.id %>
-          <%= f.label "verb_id_" + verb.id.to_s, verb.name, class: verb.name.downcase %>
+          <%= f.label "verb_id_#{verb.id.to_s}", verb.name, class: verb.name.downcase %>
         </div>
       <% end %>
     </div>
   <% end %>
   <div class="form-group">
-    <%= f.collection_select :verb_id, @verbs, :id, :name, {selected: "222"}, {class: 'form-control', style: "width:400px" } %>
+    <%= f.collection_select :verb_id, @verbs, :id, :name, {selected: '222'}, {class: 'form-control', style: 'width:400px' } %>
     <%= link_to(t('.new_verb'), "/verbs/new") %>
   </div>
   <% if @personal_connection.full_address %>

@@ -618,9 +618,9 @@ class Person < ApplicationRecord
 
   def possessive
     return 'its' if inanimate_object?
-    return 'her' if self.female?
-    return 'his' if self.male?
-    'his/her'
+    return 'their' if self.female?
+    return 'their' if self.male?
+    'their'
   end
 
   def is_related_to?(person)

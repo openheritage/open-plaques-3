@@ -73,7 +73,7 @@
   <h2 id="name">Name</h2>
   <%= form_for @person do |f| %>
   <div class="form-group row">
-    <%= f.label :name, "#{@person.possessive} name #{@person.existence_word}", class: 'col-form-label col-sm-2' %>
+    <%= f.label :name, "#{@person.possessive} name was", class: 'col-form-label col-sm-2' %>
     <div class="col-sm-10">
       <%= f.text_field :name, class: 'form-control' %>
       <% if @person.name != @person.full_name %>
@@ -206,51 +206,59 @@
   </div>
 
   <% if @person.plaques.size > 0 %>
-  <div class="row">
-    <p><%= t '.features_on' %></p>
-  </div>
-  <%= render partial: 'plaques/row', collection: @person.plaques.uniq, as: :plaque %>
-  <div class="row">
-    <p><%= t '.from_which_we_can_establish' %></p>
-  </div>
+    <div class="row">
+      <p><%= t '.features_on' %></p>
+    </div>
+    <%= render partial: 'plaques/row', collection: @person.plaques.uniq, as: :plaque %>
+    <div class="row">
+      <p><%= t '.from_which_we_can_establish' %></p>
+    </div>
   <% end %>
 
   <%= render partial: 'family_tree' %>
   <% if @person.person? %>
-  <p>Family: people are related to each other via their mother and father where possible. Use brother/sister
-    <strong>very</strong>
-    sparingly</p>
+    <p>Family: people are related to each other via their mother and father where possible. Use brother/sister
+      <strong>very</strong>
+      sparingly</p>
   <% end %>
 
-  <% @person.personal_roles.each do |personal_role| %>
-  <div class="row">
-    <span class="col-sm-8">
-      <%= @person.personal_pronoun %>
-      <%= @person.existence_word %>
-      <%= "best known as " if personal_role.primary %><%= a_or_an(personal_role.name, false) %>
-      <%= dated_role(personal_role).html_safe %>
-      <%= t('.conferring_the_letters') + ' ' + personal_role.role.suffix if personal_role.role.used_as_a_suffix? %><%= t('.conferring_the_title') + ' ' + personal_role.role.prefix if personal_role.role.used_as_a_prefix? %>
-      <%= link_to t('buttons.edit'), edit_personal_role_path(personal_role), class: 'btn btn-primary' %>
-    </span>
-    <span class="col-sm-4">
-      <%= button_to t('buttons.delete'), personal_role, method: :delete, class: 'btn btn-danger' %>
-    </span>
-  </div>
+  <% @person.personal_roles.each_with_index do |personal_role, index| %>
+    <div class="row">
+      <span class="col-sm-1">
+        <%= link_to t('buttons.edit'), edit_personal_role_path(personal_role), class: 'btn btn-primary' %>
+      </span>
+      <span class="col-sm-11">
+        <% if index == 0 %>
+          <%= @person.personal_pronoun %> <%= @person.existence_word %>
+        <% end %>
+        <% if index == @person.personal_roles.size - 1 %>
+          and
+        <% end %>
+        <%= "best known as " if personal_role.primary %><%= a_or_an(personal_role.name, false) %>
+        <%= dated_role(personal_role).html_safe %>
+        <%= t('.conferring_the_letters') + ' ' + personal_role.role.suffix if personal_role.role.used_as_a_suffix? %><%= t('.conferring_the_title') + ' ' + personal_role.role.prefix if personal_role.role.used_as_a_prefix? %>
+        <%= link_to t('buttons.delete'), personal_role, method: :delete, class: 'btn btn-danger' %>
+      </span>
+    </div>
   <% end %>
 
   <div class="row">
-    <%= form_for @personal_role do |f| %>
-    <%= @person.name %>
-    <%= @person.existence_word %>
-    a
-    <%= f.collection_select :role, @roles, :id, :full_name %>
-    from
-    <%= f.text_field :started_at %>
-    to
-    <%= f.text_field :ended_at %>
-    <%= f.hidden_field :person_id, value: @person.id %>
-    <%= f.submit t('buttons.add'), class: 'btn btn-primary' %>
-    <% end %>
+    <span class="col-sm-1">
+    </span>
+    <span class="col-sm-11">
+      <%= form_for @personal_role do |f| %>
+        <% if @person.personal_roles.size == 0 %>
+          <%= @person.name %> was a
+        <% else %>
+          and a
+        <% end %>
+        <%= f.collection_select :role, @roles, :id, :full_name, {}, {style: 'width:400px'} %>
+        from <%= f.text_field :started_at %>
+        to <%= f.text_field :ended_at %>
+        <%= f.hidden_field :person_id, value: @person.id %>
+        <%= f.submit t('buttons.add'), class: 'btn btn-primary' %>
+      <% end %>
+    </span>
     <span class="col-sm-12">
       <%= link_to(t('.add_a_role'), new_role_path) %>
     </span>
