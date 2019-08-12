@@ -12,17 +12,17 @@ describe Wikidata do
     end
     context 'an ambiguous name with dates' do
       it 'returns someone with the right name and dates' do
-        expect(Wikidata.qcode('James Duffy (1889-1969)')).to eq("Q4155328")
+        expect(Wikidata.qcode('James Duffy (1889-1969)')).to eq("Q6132897")
       end
     end
     context 'an ambiguous name with only death date' do
       it 'returns someone with the right name and dates' do
-        expect(Wikidata.qcode('James Duffy (d.1969)')).to eq("Q4155328")
+        expect(Wikidata.qcode('James Duffy (d.1969)')).to eq("Q6132897")
       end
     end
     context 'an ambiguous name with only birth date' do
       it 'returns someone with the right name and dates' do
-        expect(Wikidata.qcode('James Duffy (b.1889)')).to eq("Q4155328")
+        expect(Wikidata.qcode('James Duffy (b.1889)')).to eq("Q6132897")
       end
     end
     context 'an unambiguous name' do
