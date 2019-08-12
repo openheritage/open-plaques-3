@@ -18,6 +18,7 @@ class OrganisationSubjectsController < ApplicationController
         @gender = ActiveRecord::Base.connection.execute(query)
         @gender = @gender.map{|attributes| OpenStruct.new(attributes)}
         @subject_count = @gender.inject(0){|sum, g| sum + g.subject_count }
+        @gender.append(OpenStruct.new(gender: 'tba', subject_count: @uncurated_count))
         @people = []
       render 'organisations/subjects/show'
       }

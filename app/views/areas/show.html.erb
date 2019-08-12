@@ -4,4 +4,4 @@
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_area_path(@area)} %>
 
 <h2>Has <%= @area.plaques_count %>+ <%= link_to 'plaques', area_plaques_path(@area) %></h2>
-<h2>About <%= @area.people.count, %> <%= link_to 'subjects', area_subjects_path(@area) %></h2>
+<h2>About <%= @area.people.count %> <%= link_to 'subjects', area_subjects_path(@area) %></h2>
