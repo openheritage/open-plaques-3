@@ -51,7 +51,7 @@ class PeopleController < ApplicationController
     if params[:id] =~ /\A\d+\Z/
       @person = Person.with_counts.find(params[:id])
     else
-      redirect_to(controller: :people, action: "index", filter: params[:id]) and return
+      redirect_to(controller: :people, action: :index, filter: params[:id]) and return
     end
     begin
       set_meta_tags description: "#{@person.name_and_dates} historical plaques and markers"
@@ -108,19 +108,22 @@ class PeopleController < ApplicationController
     params[:person][:born_on] += '-01-01' if params[:person][:born_on] =~/\d{4}/
     params[:person][:died_on] += '-01-01' if params[:person][:died_on] =~/\d{4}/
     @person = Person.new(permitted_params)
+    @person.sex
     respond_to do |format|
       if @person.save
         if params[:role_id] && !params[:role_id].blank?
-          @personal_role = PersonalRole.new()
-          @personal_role.person_id = @person.id
-          @personal_role.role_id = params[:role_id]
+          @personal_role = PersonalRole.new(person_id: @person.id, role_id: params[:role_id])
           @personal_role.save!
         end
         flash[:notice] = 'Person was successfully created.'
-        format.html { redirect_to(@person) }
+        format.html  { 
+          @roles = Role.order(:name)
+          @personal_role = PersonalRole.new
+          render :edit
+        }
         format.xml  { render xml: @person, status: :created, location: @person }
       else
-        format.html { render 'new' }
+        format.html { render :new }
         format.xml  { render xml: @person.errors, status: :unprocessable_entity }
       end
     end
@@ -135,7 +138,7 @@ class PeopleController < ApplicationController
         format.html { redirect_to(@person) }
         format.xml  { head :ok }
       else
-        format.html { render 'edit' }
+        format.html { render :edit }
         format.xml  { render xml: @person.errors, status: :unprocessable_entity }
       end
     end
@@ -158,7 +161,7 @@ class PeopleController < ApplicationController
   private
 
     def aka_to_a
-      cords = params.dig(:person, :aka).presence || "[]"
+      cords = params.dig(:person, :aka).presence || '[]'
       JSON.parse cords
     end
 
