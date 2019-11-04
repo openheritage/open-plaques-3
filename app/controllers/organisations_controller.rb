@@ -27,13 +27,10 @@ class OrganisationsController < ApplicationController
 
   def autocomplete
     limit = params[:limit] ? params[:limit] : 5
-    if params[:contains]
-      @organisations = Organisation.select(:id, :name).name_contains(params[:contains]).limit(limit)
-    elsif params[:starts_with]
-      @organisations = Organisation.select(:id, :name).name_starts_with(params[:starts_with]).limit(limit)
-    else
-      @organisations = "{}"
-    end
+    @organisations = Organisation.select(:id, :name).name_is(params[:contains] || params[:starts_with]).limit(limit)
+    @organisations += Organisation.select(:id, :name).name_starts_with(params[:contains] || params[:starts_with]).in_alphabetical_order.limit(limit)
+    @organisations += Organisation.select(:id, :name).name_contains(params[:contains]).in_alphabetical_order.limit(limit) if params[:contains]
+    @organisations.uniq!
     render json: @organisations.as_json(only: [:id, :name])
   end
 

@@ -37,10 +37,22 @@ class PeopleController < ApplicationController
       .includes(:roles)
       .name_is(params[:contains])
       .limit(limit) if params[:contains]
-    @people = @people + Person.select(:born_on, :died_on, :gender, :id, :name)
+    @people += Person.select(:born_on, :died_on, :gender, :id, :name)
+      .includes(:roles)
+      .name_starts_with(params[:contains])
+      .in_alphabetical_order
+      .limit(limit) if params[:contains]
+    @people += Person.select(:born_on, :died_on, :gender, :id, :name)
       .includes(:roles)
       .name_contains(params[:contains])
+      .in_alphabetical_order
       .limit(limit) if params[:contains]
+    @people += Person.select(:born_on, :died_on, :gender, :id, :name)
+      .includes(:roles)
+      .aka(params[:contains])
+      .in_alphabetical_order
+      .limit(limit) if params[:contains]
+    @people.uniq!
     render json: @people.uniq.as_json(
       only: [:id, :name],
       methods: [:name_and_dates, :type]
@@ -108,12 +120,16 @@ class PeopleController < ApplicationController
     params[:person][:born_on] += '-01-01' if params[:person][:born_on] =~/\d{4}/
     params[:person][:died_on] += '-01-01' if params[:person][:died_on] =~/\d{4}/
     @person = Person.new(permitted_params)
-    @person.sex
+    @person.sex  # Get sex from name
     respond_to do |format|
       if @person.save
         if params[:role_id] && !params[:role_id].blank?
           @personal_role = PersonalRole.new(person_id: @person.id, role_id: params[:role_id])
           @personal_role.save!
+          # reget the person now that they have a role
+          @person = Person.find @person.id
+          @person.sex
+          @person.save
         end
         flash[:notice] = 'Person was successfully created.'
         format.html  { 

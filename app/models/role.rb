@@ -26,6 +26,8 @@ class Role < ApplicationRecord
   scope :alphabetically, -> { order("name ASC nulls last") }
   scope :name_starts_with, lambda {|term| where(["lower(name) LIKE ?", term.downcase + "%"]) }
   scope :name_contains, lambda {|term| where(["lower(name) LIKE ?", "%" + term.downcase + "%"]) }
+  scope :name_is, lambda { |term| where(['lower(name) = ?', term.downcase]) }
+  scope :in_alphabetical_order, -> { order('name ASC') }
 
   include ApplicationHelper
 

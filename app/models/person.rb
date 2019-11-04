@@ -40,9 +40,11 @@ class Person < ApplicationRecord
   scope :unphotographed, -> { where('id not in (select person_id from photos)') }
   scope :connected, -> { where('personal_connections_count > 0') }
   scope :unconnected, -> { where(personal_connections_count: [nil,0]) }
-  scope :name_starts_with, lambda { |term| where(['lower(name) LIKE ?', term.downcase + '%']) }
-  scope :name_contains, lambda { |term| where(['lower(name) LIKE ?', '%' + term.downcase + '%']) }
+  scope :name_starts_with, lambda { |term| where(['name ILIKE ?', term.gsub(' ', '%') + '%']) }
+  scope :name_contains, lambda { |term| where(['name ILIKE ?', '%' + term.gsub(' ', '%') + '%']) }
   scope :name_is, lambda { |term| where(['lower(name) = ?', term.downcase]) }
+  scope :aka, lambda { |term| where(["array_to_string(aka, ' ') ILIKE ?", term.gsub(' ', '%') + '%']) }
+  scope :in_alphabetical_order, -> { order('name ASC') }
   scope :with_counts, -> {
     select <<~SQL
       people.*,
@@ -429,7 +431,9 @@ class Person < ApplicationRecord
   end
 
   def inanimate_object?
-    thing? || group? || place?
+    inanimate = self.gender == 'n' || thing? || group? || place?
+    self.gender = 'n' if inanimate && self.gender != 'n'
+    inanimate
   end
 
   def personal_pronoun
@@ -606,6 +610,7 @@ class Person < ApplicationRecord
         'Victoria', 'Violet', 'Virginia',
         'Wilhelmina', 'Winifred'
       ].include?(name.split(' ').first)
+      self.gender = 'm' unless inanimate_object?
     end
     self.gender == 'f'
   end
@@ -671,7 +676,7 @@ class Person < ApplicationRecord
   end
 
   def uri
-    "http://openplaques.org#{Rails.application.routes.url_helpers.person_path(self, format: :json)}"
+    "https://openplaques.org#{Rails.application.routes.url_helpers.person_path(self, format: :json)}"
   end
 
   def machine_tag
