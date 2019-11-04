@@ -13,17 +13,15 @@ class Language < ApplicationRecord
   scope :most_plaques_order, -> { order("plaques_count DESC nulls last") }
 
   def flag_icon
-    fi = "flag-icon-#{alpha2}"
-    fi = 'flag-icon-cz' if alpha2 == 'cs'
-    fi = 'flag-icon-de' if alpha2 == 'ed'
-    fi = 'flag-icon-by' if alpha2 == 'be'
-    fi = 'flag-icon-es-ct' if alpha2 == 'ca'
-    fi = 'flag-icon-fr' if alpha2 == 'fe'
-    fi = 'flag-icon-it' if alpha2 == 'la'
-    fi = 'flag-icon-gb-wls' if alpha2 == 'wl' || alpha2 == 'we'
-    fi = 'flag-icon-ie' if alpha2 == 'ga' || alpha2 == 'ge'
-    fi = 'flag-icon-my' if alpha2 == 'me'
-    fi = 'flag-icon-za' if alpha2 == 'af' || alpha2 == 'af-en'
+    alpha2_2 = alpha2[0,2]
+    fi = "flag-icon-#{alpha2_2}"
+    fi = 'flag-icon-cz' if alpha2_2 == 'cs' # Czech
+    fi = 'flag-icon-by' if alpha2_2 == 'be' # Belarusian
+    fi = 'flag-icon-es-ct' if alpha2_2 == 'ca' # Catalan
+    fi = 'flag-icon-it' if alpha2_2 == 'la' # Latin
+    fi = 'flag-icon-gb-wls' if alpha2_2 == 'cy' # Welsh
+    fi = 'flag-icon-ie' if alpha2_2 == 'ga' # Gaelic
+    fi = 'flag-icon-za' if alpha2_2 == 'af' # Afrikaans
     fi
   end
 
