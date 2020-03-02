@@ -2,31 +2,32 @@
 <% content_for(:title) {t '.page_heading'} %>
 <% content_for(:admin_menu) {navbar_link_to(t('buttons.add'), new_language_path, {class: :edit, title: t('buttons.add')})} %>
 
-<canvas id="myCanvas" width="600" height="650">
-  <div class="row">
+<div class="row">
+  <div id="top10-chart" class="col-8" style="height: 400px;">
     <%= render @languages %>
   </div>
-</canvas>
+</div>
 
 <script>
-  window.onload = function ()
-  {
-    var data = [<% @languages.sort{|a,b| b.plaques.size <=> a.plaques.size}.each do |language| %><%= language.plaques.size %>,<% end %>];
-    var hbar = new RGraph.HBar('myCanvas', data);
-    hbar.Set('chart.labels', [<% @languages.sort{|a,b| b.plaques.size <=> a.plaques.size}.each do |language| %>'<%= language %>',<% end %>]);
-    hbar.Set('chart.colors', ['blue','red','green','orange']);
-    hbar.Set('chart.strokestyle', 'rgba(0,0,0,0)');
-    hbar.Set('chart.labels.above', true);
-    hbar.Set('chart.vmargin', 15);
-    hbar.Set('chart.background.grid', false);
-    hbar.Set('chart.colors.sequential', true);
-    hbar.Set('chart.xlabels', false);
-    hbar.Set('chart.gutter.left', 100);
-    hbar.Set('chart.gutter.right', 50);
-    hbar.Set('chart.gutter.top', 25);
-    hbar.Set('chart.noxaxis', true);
-    hbar.Set('chart.noxtickmarks', true);
-    hbar.Set('chart.noytickmarks', true);
-    RGraph.isOld() ? hbar.Draw() : RGraph.Effects.HBar.Grow(hbar);
-  }
+  var data = [<% @languages.sort{|a,b| b.plaques.size <=> a.plaques.size}.each do |language| %><%= language.plaques.size %>,<% end %>];
+  hbar = new RGraph.SVG.HBar({
+    id: 'top10-chart',
+    data: data,
+    options: {
+      yaxisLabels: [<% @languages.each do |o| %>'<%= o.name %>',<% end %>],
+      colors: ['blue','red','green','orange','blue','red','green','orange','blue'],
+      strokestyle: 'rgba(0,0,0,0)',
+      labelsAbove: true,
+      vmargin: 15,
+      backgroundGrid: false,
+      colorsSequential: true,
+      xlabels: false,
+      gutterLeft: 350,
+      gutterRight: 50,
+      gutterTop: 25,
+      noxaxis: true,
+      noxtickmarks: true,
+      noytickmarks: true,
+    }
+  }).grow();
 </script>
