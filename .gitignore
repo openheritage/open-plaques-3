@@ -36,3 +36,5 @@ yarn.lock
 /public/packs-test
 /node_modules
 *.log
+log/.bash_history
+log/.psql_history
