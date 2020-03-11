@@ -55,7 +55,7 @@ describe Photo, type: :model do
       end
       it 'includes a commons licence statement' do
         expect(@photo.attribution).to eq(
-          '&copy; SteveTheAirman on Wikimedia Commons CC BY-SA 3.0'
+          '&copy; \nSteveTheAirman on Wikimedia Commons CC BY-SA 3.0'
         )
       end
     end
