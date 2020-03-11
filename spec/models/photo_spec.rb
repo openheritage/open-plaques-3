@@ -58,7 +58,6 @@ describe Photo, type: :model do
 #          '&copy; \nSteveTheAirman on Wikimedia Commons CC BY-SA 3.0'
 #        )
 #      end
-    end
   end
 
   describe '#wikimedia_data' do
