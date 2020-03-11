@@ -1,11 +1,11 @@
 <div class="card vcard">
   <div class="card-block">
     <h4 class="card-title">
-      <%= icon('user') if role.person?%>
-      <%= icon('paw') if role.animal? %>
-      <%= icon('users') if role.group? %>
-      <%= icon('building') if role.place? %>
-      <%= icon('map-marker') if role.thing? %>
+      <%= icon('far', 'user') if role.person?%>
+      <%= icon('far', 'paw') if role.animal? %>
+      <%= icon('far', 'users') if role.group? %>
+      <%= icon('far', 'building') if role.place? %>
+      <%= icon('far', 'map-marker') if role.thing? %>
       <%= link_to role.name, role %>
     </h4>
   </div>

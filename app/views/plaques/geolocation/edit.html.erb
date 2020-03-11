@@ -1,76 +1,46 @@
-<% content_for :page_title, "Geocoding " + @plaque.title %>
+<% content_for :page_title, "Geocoding #{@plaque.title}" %>
 <% content_for :title, "Where is this plaque?" %>
 <% content_for :page_subhead, t('.page_subhead') %>
 <%= render 'plaques/edit_bar', plaque: @plaque %>
 
 <%= form_for @plaque do |f| %>
   <% if current_user %>
-    <p><%= label_tag(:address) %> <%= f.text_field(:address, size: 100) %> <a href="https://maps.google.com/maps?q=<%= @plaque.full_address %>&z=18" target="_new">on Google Maps</a></p>
-    <p><%= f.label :area_id, "It's in" %> <%= f.collection_select :area_id, @areas, :id, :full_name, {include_blank: true} %></p>
-  <% else %>
-    <p>Find the address '<%= @plaque.full_address %>' <a href="https://maps.google.com/maps?q=<%= @plaque.full_address %>&z=18" target="_new">on Google Maps</a></p>
+    <%= bootstrap_text_field(f, :address) %>
+    <%= bootstrap_field(f, :area_id, f.collection_select(:area_id, @areas, :id, :full_name, {include_blank: true}, class: 'form-control')) %>
   <% end %>
-  <div class="edit_lat_long">
-    <p><%= label_tag(:streetview_url, "OpenStreetMap/Google/Geohack url:") %> <%= text_field_tag(:streetview_url, ' ', size: 100) %></p>
-    <p>
-      <%= f.label :latitude %> <%= f.text_field :latitude, readonly: !current_user %>
-      <%= f.label :longitude %> <%= f.text_field :longitude, readonly: !current_user %> <a href="https://maps.google.com/maps?q=<%= @plaque.latitude %>,<%= @plaque.longitude %>&z=18" target="_new">on Google Maps</a>
-    </p>
-    <p>I am certain that this location is accurate <%= f.check_box :is_accurate_geolocation %> because it was located from a geocoded photo, or I have seen this plaque in Google Streetview/real life </p>
-    <p><%= f.submit "Update", class: :button  %></p>
+  <div class="row mb-3">
+    <div class="form-group col-md-6">
+      <a href="https://maps.google.com/maps?q=<%= @plaque.full_address %>&z=18" target="_new">'<%= @plaque.full_address %>' on Google Maps</a>
+    </div>
   </div>
-  <p>Of course, a photo will give you the position where the photographer was standing and Google Streetview where the cameracar was. You can drag and drop the blue dot to refine the position.</p>
-  <div id="map" style="height: 400px; width: 100%; margin-top: 15px;"></div>
-  <script>
-    var map = null;
-    var lat_element = null;
-    var lon_element = null;
-    var geolocation = new L.LatLng(52, 0);
-    var view = 5;
+  <div class="row mb-3">
+    <div class="form-group col-md-6">
+      <label class="form-control-label" for="streetview_url">OpenStreetMap/Google/Geohack url</label>
+      <input class="form-control" type="text" value="http://..." name="streetview_url" id="streetview_url" size="100" />
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="form-group col-md-3">
+      <%= f.label :latitude %>
+      <input class="form-control" type="text" id="plaque_latitude" name="plaque[latitude]" placeholder="52.0001" readonly: !current_user>
+    </div>
+    <div class="form-group col-md-3">
+      <%= f.label :longitude %>
+      <input class="form-control" type="text" id="plaque_longitude" name="plaque[longitude]" placeholder="0.0001" readonly: !current_user>
+    </div>
+  </div>
+  <div class="row mb-3"><div class="form-group col-md-6">
+    <a id="latlonlink" href="https://maps.google.com/maps?q=<%= @plaque.latitude %>,<%= @plaque.longitude %>&z=18" target="_new"><%= @plaque.latitude %>,<%= @plaque.longitude %> on Google Maps</a>
+  </div></div>
+  <div class="row mb-3"><div class="form-group col-md-6">
+    <%= f.check_box :is_accurate_geolocation %> I am certain that this location is accurate because it was located from a geocoded photo, or I have seen this plaque in Google Streetview/real life
+  </div></div>
+  <%= f.submit "Update", class: 'btn btn-primary' %>
 
-    document.addEventListener("DOMContentLoaded", function() {
-    	lat_element = document.getElementById('plaque_latitude');
-    	lon_element = document.getElementById('plaque_longitude');
-
-    	lat_element.addEventListener('blur', update_map);
-    	lon_element.addEventListener('blur', update_map);
-
-    	update_geolocation_from_text_fields();
-
-    	var plaque_icon = new L.DivIcon({ className: 'plaque-marker', html: '', iconSize : 16 });
-
-    	map = L.map('map').setView(geolocation, view);
-      map.scrollWheelZoom.disable();
-
-      var basemap = L.tileLayer('https://maps.tilehosting.com/styles/basic/{z}/{x}/{y}.png?key=qSorA16cJhhBZEhqDisF', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="http://www.openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
-      });
-      map.addLayer(basemap);
-
-			marker = L.marker(geolocation, {draggable: true, icon: plaque_icon});
-			marker.on('dragend', update_text_fields_from_marker);
-			marker.addTo(map);
-
-			function update_geolocation_from_text_fields() {
-				if (lat_element && lat_element.value != '' && lon_element && lon_element.value != '') {
-					geolocation.lat = lat_element.value;
-					geolocation.lng = lon_element.value;
-					view = 18;
-				}
-			}
-
-		 function update_map() {
-			 update_geolocation_from_text_fields();
-			 marker.setLatLng(geolocation);
-			 map.setView(geolocation, view);
-		 }
-
-		 function update_text_fields_from_marker() {
-			 lat_element.value = marker.getLatLng().lat;
-			 lon_element.value = marker.getLatLng().lng;
-		 }
-
-		});
-	</script>
+  <div class="row mb-3">
+    <div class="form-group col-md-12">
+      A photo will give you the position where the photographer was standing, and Google Streetview where the cameracar was. Drag and drop the blue dot to refine the position.
+    </div>
+    <div class="form-group col-md-12" id="map" style="height: 400px; width: 100%; margin-top: 15px;"></div>
+  </div>
 <% end %>

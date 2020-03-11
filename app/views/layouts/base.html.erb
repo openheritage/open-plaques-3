@@ -11,13 +11,14 @@
     <% end %>
     <%= display_meta_tags %>
     <%= csrf_meta_tags %>
+    <script src='https://api.mapbox.com/mapbox.js/v3.2.1/mapbox.js'></script>
+    <link href='https://api.mapbox.com/mapbox.js/v3.2.1/mapbox.css' rel='stylesheet' />
     <%= yield(:head) %>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <%= stylesheet_link_tag 'application' %>
     <%= javascript_include_tag 'application' %>
-    <%= javascript_include_tag 'https://openlayers.org/dev/OpenLayers.js' if @map %>
     <%= tag("link", rel: "shortcut icon", href: image_path('openplaques-icon.png'))%>
   </head>
   <body>

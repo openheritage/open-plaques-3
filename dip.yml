@@ -68,9 +68,16 @@ interaction:
   psql:
     description: Run psql console
     service: postgres
-#    command: psql -h postgres -U postgres -d example_app_dev
-    command: psql -h postgres -U postgres
+    command: psql -h postgres -U postgres -d openplaques_development_20200350
 
+  livepull:
+    description: Pull data from live into development
+    service: runner
+#    command: heroku pg:backups capture --app open-plaques-beta && \
+#      curl -o db/openplaques_production.dump `heroku pg:backups --app open-plaques-beta public-url` && \
+#      pg_restore -h postgres -U postgres -d openplaques_development db/openplaques_production.dump
+    command: pg_restore -h postgres -U postgres -d openplaques_development_20200350 db/openplaques_production.dump
+  
   'redis-cli':
     description: Run Redis console
     service: redis
@@ -82,3 +89,4 @@ provision:
   - dip bundle install
   - dip yarn install
   - dip rails db:setup
+#  - dip rails db:migrate db:seed

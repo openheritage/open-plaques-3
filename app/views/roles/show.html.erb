@@ -1,10 +1,10 @@
 <% content_for(:page_title) {t '.page_title', role: @role.pluralize} %>
 <% content_for(:title) do %>
-  <%= icon('user') if @role.person? %>
-  <%= icon('paw') if @role.animal? %>
-  <%= icon('users') if @role.group? %>
-  <%= icon('building') if @role.place? %>
-  <%= icon('map-marker') if @role.thing? %>
+  <%= icon('far', 'user') if @role.person? %>
+  <%= icon('far', 'paw') if @role.animal? %>
+  <%= icon('far', 'users') if @role.group? %>
+  <%= icon('far', 'building') if @role.place? %>
+  <%= icon('far', 'map-marker') if @role.thing? %>
   <%= @role.pluralize %>
   <span class="badge badge-secondary">
     <%= @personal_roles.total_entries if @personal_roles.respond_to?(:total_entries) %>
@@ -20,11 +20,11 @@
 <% unless !@role.description || @role.description.blank? %>
   <blockquote class="quote-card blue-card">
     <p><%= @role.description %></p>
-    <cite><%= link_to(icon('external-link') + 'DbPedia', @role.dbpedia_uri, target: '_blank') unless @role.dbpedia_uri.blank? %></cite>
+    <cite><%= link_to(icon('far', 'external-link') + 'DbPedia', @role.dbpedia_uri, target: '_blank') unless @role.dbpedia_uri.blank? %></cite>
   </blockquote>
 <% end %>
-<%= link_to(icon('external-link') + 'Wikidata', @role.wikidata_url, target: '_blank') unless @role.wikidata_url.blank? %>
-<%= link_to(icon('external-link') + 'Wikipedia', @role.wikipedia_url, target: '_blank') unless @role.wikipedia_url.blank? %>
+<%= link_to(icon('far', 'external-link') + 'Wikidata', @role.wikidata_url, target: '_blank') unless @role.wikidata_url.blank? %>
+<%= link_to(icon('far', 'external-link') + 'Wikipedia', @role.wikipedia_url, target: '_blank') unless @role.wikipedia_url.blank? %>
 
 <%= render partial:'personal_roles/tiles' %>
 

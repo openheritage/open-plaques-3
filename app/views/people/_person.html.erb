@@ -6,9 +6,9 @@
         <%= person.full_name %><br/>
         <small><%= person.dates %></small>
         <% if person.gender == 'm' %>
-          <small><%= icon('mars') %></small>
+          <small><%= icon('far', 'mars') %></small>
         <% elsif person.gender == 'f' %>
-          <small><%= icon('venus') %></small>
+          <small><%= icon('far', 'venus') %></small>
         <% elsif person.gender == 'u' %>
           <small><%= person.gender %></small>
         <% end %>

@@ -11,7 +11,7 @@
   <div class="card photo">
     <%= image_tag(url, {class: "card-img img-rounded w-100", rel: "foaf:depiction"}) %>
     <div class="card-info">
-      <%= photo.licence.creative_commons? ? icon('creative-commons') : icon('copyright') if photo.licence %> <%= photo.photographer if photo.photographer %> on <%= photo.source %>
+      <%= photo.licence.creative_commons? ? icon('far', 'creative-commons') : icon('far', 'copyright') if photo.licence %> <%= photo.photographer if photo.photographer %> on <%= photo.source %>
       <% if photo.licence && !photo.licence.creative_commons? %>
         <%= photo.licence.abbreviation ? photo.licence.abbreviation : photo.licence.name %>
       <% end %>

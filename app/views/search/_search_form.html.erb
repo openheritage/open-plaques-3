@@ -1,6 +1,6 @@
 ﻿<%= form_tag("/search", method: "get", class: "search_box") do %>
   <div>
-    <%= icon('magnifying_glass') %>
+    <%= icon('far', 'magnifying_glass') %>
     <%= label_tag(:phrase, "Search: ") %>
     <%= text_field_tag(:phrase, phrase, type: 'search' ) %>
     <%= submit_tag(t('menu.go'), class: 'btn btn-primary', name: nil) %>

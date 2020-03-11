@@ -86,8 +86,8 @@
   <% for entity in @entities %>
     <div>
     <% if ['PERSON', 'ORGANIZATION'].include?(entity.type) %>
-      <%= icon('user') if entity.type == 'PERSON' %>
-      <%= icon('building') if entity.type == 'ORGANIZATION' %>
+      <%= icon('far', 'user') if entity.type == 'PERSON' %>
+      <%= icon('far', 'building') if entity.type == 'ORGANIZATION' %>
       <%= entity.text %>
       <span class="badge badge-success"><%= (entity.score * 100).round(1) %>%</span>
     <% end %>
@@ -107,7 +107,7 @@
   <div class="form-group">
     <%= text_field_tag :person_name, '', {class: 'form-control', placeholder: 'John Smith'} %>
     <%= f.hidden_field :person_id %>
-    <%= link_to(icon('user') + t('.new_person'), '/people/new') %>
+    <%= link_to(icon('far', 'user') + t('.new_person'), '/people/new') %>
   </div>
 
   <% if @common_verbs %>

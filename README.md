@@ -45,3 +45,15 @@ If you see `0 failures` then everything is ok.
 * and download it
 * create a new empty database
 * restore it into postgres (I use the pgAdmin3 graphical tool)
+
+## Docker dev
+To build in a Docker image the exact same as Heroku
+
+https://buildpacks.io/docs/install-pack/
+
+```sh
+brew tap buildpack/tap
+brew install pack
+pack build openplaques:1.0.0 --builder heroku/buildpacks
+docker run --rm -p 3000:3000 openplaques:1.0.0
+```

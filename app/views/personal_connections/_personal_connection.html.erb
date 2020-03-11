@@ -11,7 +11,7 @@
         <% end %>
         <%= "at " unless personal_connection.verb.name.ends_with?(' near') %>
         <%= personal_connection.full_address if personal_connection.full_address %>
-        <%= icon('compass') if personal_connection.plaque&.geolocated? %>
+        <%= icon('far', 'compass') if personal_connection.plaque&.geolocated? %>
       </small>
     </p>
   </div>

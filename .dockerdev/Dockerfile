@@ -1,5 +1,5 @@
 ARG RUBY_VERSION
-FROM ruby:$RUBY_VERSION-slim-buster
+FROM ruby:${RUBY_VERSION}-slim-buster
 
 ARG PG_MAJOR
 ARG NODE_MAJOR
@@ -23,8 +23,8 @@ RUN apt-get update -qq \
 RUN curl https://cli-assets.heroku.com/install.sh | sh
 
 # Add PostgreSQL to sources list
-RUN curl -sSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
-  && echo 'deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main' $PG_MAJOR > /etc/apt/sources.list.d/pgdg.list
+#RUN curl -sSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
+#  && echo 'deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main' $PG_MAJOR > /etc/apt/sources.list.d/pgdg.list
 
 # Add NodeJS to sources list
 RUN curl -sL https://deb.nodesource.com/setup_$NODE_MAJOR.x | bash -
@@ -59,6 +59,7 @@ ENV LANG=C.UTF-8 \
 
 # Upgrade RubyGems and install required Bundler version
 RUN gem update --system && \
+    gem uninstall bundler \
     gem install bundler:$BUNDLER_VERSION
 
 # Create a directory for the app code

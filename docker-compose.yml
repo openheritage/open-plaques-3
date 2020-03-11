@@ -13,7 +13,7 @@ x-app: &app
   environment: &env
     NODE_ENV: development
     RAILS_ENV: ${RAILS_ENV:-development}
-  image: example-dev:1.1.0
+  image: openplaques-dev:1.0.1
   tmpfs:
     - /tmp
 
@@ -22,6 +22,7 @@ x-backend: &backend
   stdin_open: true
   tty: true
   volumes:
+    - ./webapp:/opt/webapp
     - .:/app:cached
     - rails_cache:/app/tmp/cache
     - bundle:/usr/local/bundle

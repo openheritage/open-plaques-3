@@ -16,7 +16,6 @@
 //= require bootstrap
 //= require jquery-ui
 //= require jquery_ujs
-//= require leaflet
 //= require leaflet.ajax
 //= require leaflet.markercluster
 //= require tile.stamen

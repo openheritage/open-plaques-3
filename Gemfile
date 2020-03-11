@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.6.0'
+ruby File.read(".ruby-version").strip
 
 gem 'rails', '5.2.3'
 gem 'pg'
@@ -15,7 +15,7 @@ gem 'sass-rails'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'bootstrap'
-gem 'font-awesome-sass', '~> 4.4.0'
+gem 'font-awesome-sass', '~> 5.12.0'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-tether', '>= 1.1.0'
