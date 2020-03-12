@@ -11,7 +11,7 @@ describe UpcomingUnveilingsController do
 
     it 'should render the page' do
       get :show
-      expect(response).to be_success
+      expect(response).to render_template(:show)
     end
 
     it 'should assign upcoming plaques' do
