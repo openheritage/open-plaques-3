@@ -1,11 +1,11 @@
 <div class="card vcard">
   <div class="card-block">
     <h6 class="card-title">
-      <%= icon('far', 'user') if role.person?%>
-      <%= icon('far', 'paw') if role.animal? %>
-      <%= icon('far', 'users') if role.group? %>
-      <%= icon('far', 'building') if role.place? %>
-      <%= icon('far', 'map-marker') if role.thing? %>
+      <%= icon(:fas, :user) if role.person?%>
+      <%= icon(:fas, :paw) if role.animal? %>
+      <%= icon(:fas, :users) if role.group? %>
+      <%= icon(:fas, :building) if role.place? %>
+      <%= icon(:fas, :'map-marker') if role.thing? %>
       <% if controller.controller_name.eql?('roles') && controller.action_name.eql?('show') %>
         <%= role.name.pluralize %>
       <% else %>

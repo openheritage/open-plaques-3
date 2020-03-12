@@ -20,7 +20,7 @@
     <% end %>
   <% end %>
   <div class="card-footer">
-    <%= icon('far', 'compass') if plaque.geolocated? %>
+    <%= icon(:far, :compass) if plaque.geolocated? %>
     <small class="text-muted"><%= plaque.area.full_name if plaque.area %></small>
   </div>
 </div>

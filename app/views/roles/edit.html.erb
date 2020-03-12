@@ -51,7 +51,7 @@
   <div class="form-group row">
     <div class="col-sm-2">
       <%= f.label :wikidata_id, class: 'form-control-label' %>
-      <%= link_to(icon('far', 'external-link'), @role.wikidata_url, target: '_blank') unless @role.wikidata_id.blank?%>
+      <%= link_to(icon(:fas, :'external-link'), @role.wikidata_url, target: '_blank') unless @role.wikidata_id.blank?%>
     </div>
     <div class="col-sm-10">
       <%= f.text_field :wikidata_id, class: 'form-control' %>
@@ -60,9 +60,9 @@
   <div class="form-group row">
     <div class="col-sm-2">
       <%= f.label :wikipedia_url, class: 'col-form-label' %>
-      <%= link_to(icon('far', 'external-link'), @role.wikipedia_url, target: '_blank')  unless @role.wikipedia_url.blank? %>
+      <%= link_to(icon(:fas, :'external-link'), @role.wikipedia_url, target: '_blank')  unless @role.wikipedia_url.blank? %>
       <%= f.label :dbpedia_uri, class: 'col-form-label' %>
-      <%= link_to(icon('far', 'external-link'), @role.dbpedia_uri, target: '_blank') %>
+      <%= link_to(icon(:fas, :'external-link'), @role.dbpedia_uri, target: '_blank') %>
     </div>
     <div class="col-sm-10">
       <%= t '.wikipedia_comment' %>

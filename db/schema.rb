@@ -2,26 +2,26 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
+# This file is the source Rails uses to define your schema when running `rails
+# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_09_142412) do
+ActiveRecord::Schema.define(version: 2020_03_12_112549) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "areas", id: :serial, force: :cascade do |t|
-    t.string "name"
+    t.string "name", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string "dbpedia_uri"
+    t.string "dbpedia_uri", limit: 255
     t.integer "country_id"
-    t.string "slug"
+    t.string "slug", limit: 255
     t.float "latitude"
     t.float "longitude"
     t.integer "plaques_count"
@@ -31,19 +31,19 @@ ActiveRecord::Schema.define(version: 2018_11_09_142412) do
   end
 
   create_table "colours", id: :serial, force: :cascade do |t|
-    t.string "name"
+    t.string "name", limit: 255
     t.integer "plaques_count"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string "dbpedia_uri"
+    t.string "dbpedia_uri", limit: 255
     t.boolean "common", default: false, null: false
-    t.string "slug"
+    t.string "slug", limit: 255
     t.index ["slug"], name: "index_colours_on_slug"
   end
 
   create_table "countries", id: :serial, force: :cascade do |t|
-    t.string "name"
-    t.string "alpha2"
+    t.string "name", limit: 255
+    t.string "alpha2", limit: 255
     t.integer "areas_count"
     t.integer "plaques_count"
     t.datetime "created_at"
@@ -56,30 +56,30 @@ ActiveRecord::Schema.define(version: 2018_11_09_142412) do
   end
 
   create_table "languages", id: :serial, force: :cascade do |t|
-    t.string "name"
-    t.string "alpha2"
+    t.string "name", limit: 255
+    t.string "alpha2", limit: 255
     t.integer "plaques_count"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "licences", id: :serial, force: :cascade do |t|
-    t.string "name"
-    t.string "url"
+    t.string "name", limit: 255
+    t.string "url", limit: 255
     t.boolean "allows_commercial_use"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "photos_count"
-    t.string "abbreviation"
+    t.string "abbreviation", limit: 255
   end
 
   create_table "organisations", id: :serial, force: :cascade do |t|
-    t.string "name"
-    t.string "website"
+    t.string "name", limit: 255
+    t.string "website", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text "notes"
-    t.string "slug"
+    t.string "slug", limit: 255
     t.text "description"
     t.integer "sponsorships_count", default: 0
     t.float "latitude"
@@ -90,31 +90,31 @@ ActiveRecord::Schema.define(version: 2018_11_09_142412) do
   end
 
   create_table "pages", id: :serial, force: :cascade do |t|
-    t.string "name"
-    t.string "slug"
+    t.string "name", limit: 255
+    t.string "slug", limit: 255
     t.text "body"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string "strapline"
+    t.string "strapline", limit: 255
   end
 
   create_table "people", id: :serial, force: :cascade do |t|
-    t.string "name"
+    t.string "name", limit: 255
     t.date "born_on"
     t.date "died_on"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "personal_connections_count"
     t.integer "personal_roles_count"
-    t.string "index"
+    t.string "index", limit: 255
     t.boolean "born_on_is_circa"
     t.boolean "died_on_is_circa"
-    t.string "surname_starts_with"
+    t.string "surname_starts_with", limit: 255
     t.text "introduction"
-    t.string "gender", default: "u"
+    t.string "gender", limit: 255, default: "u"
     t.text "aka", default: [], array: true
-    t.string "find_a_grave_id"
-    t.string "ancestry_id"
+    t.string "find_a_grave_id", limit: 255
+    t.string "ancestry_id", limit: 255
     t.string "wikidata_id"
     t.index ["born_on", "died_on"], name: "born_and_died"
     t.index ["index"], name: "index_people_on_index"
@@ -151,22 +151,22 @@ ActiveRecord::Schema.define(version: 2018_11_09_142412) do
   end
 
   create_table "photos", id: :serial, force: :cascade do |t|
-    t.string "photographer"
-    t.string "url"
+    t.string "photographer", limit: 255
+    t.string "url", limit: 255
     t.integer "plaque_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string "file_url"
+    t.string "file_url", limit: 255
     t.integer "licence_id"
-    t.string "photographer_url"
+    t.string "photographer_url", limit: 255
     t.datetime "taken_at"
-    t.string "shot"
+    t.string "shot", limit: 255
     t.boolean "of_a_plaque", default: true
-    t.string "latitude"
-    t.string "longitude"
-    t.string "subject"
+    t.string "latitude", limit: 255
+    t.string "longitude", limit: 255
+    t.string "subject", limit: 255
     t.text "description"
-    t.string "thumbnail"
+    t.string "thumbnail", limit: 255
     t.integer "person_id"
     t.integer "clone_id"
     t.integer "nearest_plaque_id"
@@ -185,21 +185,21 @@ ActiveRecord::Schema.define(version: 2018_11_09_142412) do
     t.integer "featured_count"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string "proposer"
+    t.string "proposer", limit: 255
   end
 
   create_table "plaques", id: :serial, force: :cascade do |t|
     t.date "erected_at"
+    t.float "latitude"
+    t.float "longitude"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text "inscription"
-    t.string "reference"
+    t.string "reference", limit: 255
     t.text "notes"
     t.text "parsed_inscription"
     t.integer "colour_id"
     t.integer "photos_count", default: 0, null: false
-    t.float "latitude"
-    t.float "longitude"
     t.integer "language_id"
     t.text "description"
     t.boolean "inscription_is_stub", default: false
@@ -208,8 +208,8 @@ ActiveRecord::Schema.define(version: 2018_11_09_142412) do
     t.boolean "is_accurate_geolocation", default: true
     t.boolean "is_current", default: true
     t.text "inscription_in_english"
-    t.string "series_ref"
-    t.string "address"
+    t.string "series_ref", limit: 255
+    t.string "address", limit: 255
     t.integer "area_id"
     t.index ["area_id"], name: "index_plaques_on_area_id"
     t.index ["colour_id"], name: "index_plaques_on_colour_id"
@@ -218,16 +218,16 @@ ActiveRecord::Schema.define(version: 2018_11_09_142412) do
   end
 
   create_table "roles", id: :serial, force: :cascade do |t|
-    t.string "name"
+    t.string "name", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "personal_roles_count"
-    t.string "index"
-    t.string "slug"
-    t.string "role_type"
-    t.string "abbreviation"
-    t.string "prefix"
-    t.string "suffix"
+    t.string "index", limit: 255
+    t.string "slug", limit: 255
+    t.string "role_type", limit: 255
+    t.string "abbreviation", limit: 255
+    t.string "prefix", limit: 255
+    t.string "suffix", limit: 255
     t.text "description"
     t.integer "priority"
     t.string "wikidata_id"
@@ -237,8 +237,8 @@ ActiveRecord::Schema.define(version: 2018_11_09_142412) do
   end
 
   create_table "series", id: :serial, force: :cascade do |t|
-    t.string "name"
-    t.string "description"
+    t.string "name", limit: 255
+    t.string "description", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "plaques_count"
@@ -256,10 +256,10 @@ ActiveRecord::Schema.define(version: 2018_11_09_142412) do
   end
 
   create_table "todo_items", id: :serial, force: :cascade do |t|
-    t.string "description"
-    t.string "action"
-    t.string "url"
-    t.string "image_url"
+    t.string "description", limit: 255
+    t.string "action", limit: 255
+    t.string "url", limit: 255
+    t.string "image_url", limit: 255
     t.integer "plaque_id"
     t.integer "user_id"
     t.datetime "created_at"
@@ -268,7 +268,7 @@ ActiveRecord::Schema.define(version: 2018_11_09_142412) do
 
   create_table "users", id: :serial, force: :cascade do |t|
     t.string "username", limit: 40
-    t.string "name", limit: 100, default: ""
+    t.string "name", limit: 100
     t.string "email", limit: 100
     t.string "crypted_password", limit: 40
     t.string "salt", limit: 40
@@ -276,14 +276,14 @@ ActiveRecord::Schema.define(version: 2018_11_09_142412) do
     t.datetime "updated_at"
     t.datetime "remember_token_expires_at"
     t.boolean "is_admin"
-    t.string "encrypted_password", limit: 128, default: "", null: false
-    t.string "reset_password_token"
+    t.string "encrypted_password", limit: 128, null: false
+    t.string "reset_password_token", limit: 255
     t.datetime "remember_created_at"
     t.integer "sign_in_count", default: 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string "current_sign_in_ip"
-    t.string "last_sign_in_ip"
+    t.string "current_sign_in_ip", limit: 255
+    t.string "last_sign_in_ip", limit: 255
     t.boolean "is_verified", default: false, null: false
     t.boolean "opted_in", default: false
     t.datetime "reset_password_sent_at"
@@ -293,7 +293,7 @@ ActiveRecord::Schema.define(version: 2018_11_09_142412) do
   end
 
   create_table "verbs", id: :serial, force: :cascade do |t|
-    t.string "name"
+    t.string "name", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "personal_connections_count"

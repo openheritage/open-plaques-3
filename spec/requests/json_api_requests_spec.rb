@@ -12,7 +12,7 @@ describe 'JSON API' do
     end
 
     it 'should return application/json content-type' do
-      expect(response.content_type.to_s).to eql('application/json')
+      expect(response.media_type.to_s).to eql('application/json')
     end
   end
 end

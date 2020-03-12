@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.6.5'
 
-gem 'rails', '5.2.3'
+gem 'rails', '6.0.2.1'
 gem 'pg'
 gem 'webpacker'
 gem 'uglifier'
@@ -30,8 +30,6 @@ gem 'rollbar'
 gem 'puma'
 gem 'oink'
 
-gem 'rails_12factor'
-
 gem 'julia_builder'
 
 gem 'aws-sdk-comprehend'
@@ -48,7 +46,7 @@ group :development do
 end
 
 group :test do
-  gem 'rspec-rails',        group: :development
+  gem 'rspec-rails', '4.0.0.beta3', group: :development
   gem 'factory_bot_rails'
   gem 'database_cleaner'
   gem 'rails-controller-testing'

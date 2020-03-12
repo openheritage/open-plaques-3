@@ -79,7 +79,7 @@
     <p>It is free, fairly easy to use, and your image will [probably] live forever as part of the awesome Wikipedia platform. When you are done, paste the url of the Wikimedia page in here and Open Plaques will link to the photo.</p>
     <p class="card-text">You can also tag it when asked for other information, or at the bottom of the Summary with
       <i><input type="text" readonly value="<%= @plaque.wikimedia_tag %>"/></i>
-      <%= button_tag icon('far', 'clipboard'), id: 'copy-wikimedia-tag', type: 'button', class: :button %>
+      <%= button_tag icon(:fas, :clipboard), id: 'copy-wikimedia-tag', type: 'button', class: :button %>
       which will add a link back to Open Plaques.
     </p>
     <p>Do not upload photos of Pennsylvania historical markers as the copyright states that you may not reproduce an image and it will be removed from Wikimedia Commons</p>
@@ -99,7 +99,7 @@
       <li>give it a Creative Commons licence, i.e. it shouldn't say "All Rights Reserved"</li>
       <li>tag it
         <input type="text" readonly value="<%= @plaque.machine_tag %>"/>
-        <%= button_tag icon('far', 'clipboard'), id: 'copy-flickr-tag', type: 'button', class: :button %></p>
+        <%= button_tag icon(:fas, :clipboard), id: 'copy-flickr-tag', type: 'button', class: :button %></p>
     </li>
     <li>wait for 24 hours and our servers should automatically find it and display it on our site</li>
     <li>does it appear in the Flickr search of

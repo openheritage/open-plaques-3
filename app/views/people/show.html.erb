@@ -20,9 +20,9 @@
       <h1 class="card-title fn"><%= @person.full_name %><br/>
         <small><%= @person.dates %></small>
         <% if @person.gender == 'm' %>
-          <small><%= icon('far', 'mars') %></small>
+          <small><%= icon(:fas, :mars) %></small>
         <% elsif @person.gender == 'f' %>
-          <small><%= icon('far', 'venus') %></small>
+          <small><%= icon(:fas, :venus) %></small>
         <% elsif @person.gender == 'u' %>
           <small><%= @person.gender %></small>
         <% end %>
@@ -31,11 +31,11 @@
   </div>
 
   <div class="row">
-    <h4 class="col-xs-12"><%= icon('far', 'user') if @person.person?%>
-    <%= icon('far', 'paw') if @person.animal? %>
-    <%= icon('far', 'users') if @person.group? %>
-    <%= icon('far', 'building') if @person.place? %>
-    <%= icon('far', 'map-marker') if @person.thing? %>
+    <h4 class="col-xs-12"><%= icon(:fas, :user) if @person.person?%>
+    <%= icon(:fas, :paw) if @person.animal? %>
+    <%= icon(:fas, :users) if @person.group? %>
+    <%= icon(:fas, :building) if @person.place? %>
+    <%= icon(:fas, :'map-marker') if @person.thing? %>
     <%= roles_list(@person) %></h4>
   </div>
 
@@ -51,12 +51,12 @@
       <% unless !@person.dbpedia_abstract || @person.dbpedia_abstract.empty? %>
         <blockquote class="quote-card blue-card">
           <p><%= @person.dbpedia_abstract %></p>
-          <cite><%= link_to(icon('far', 'external-link') + 'DbPedia', @person.dbpedia_uri, target: '_blank') unless @person.dbpedia_uri.blank? %></cite>
+          <cite><%= link_to(icon(:fas, :'external-link') + 'DbPedia', @person.dbpedia_uri, target: '_blank') unless @person.dbpedia_uri.blank? %></cite>
         </blockquote>
       <% end %>
-      <%= link_to(icon('far', 'external-link') + "Wikidata", @person.wikidata_url, target: '_blank') unless @person.wikidata_url.blank? %>
-      <%= link_to(icon('far', 'external-link') + "Wikipedia", @person.wikipedia_url, target: '_blank') unless @person.wikipedia_url.blank? %>
-      <%= link_to(icon('far', 'external-link') + "Find A Grave", @person.find_a_grave_url, target: '_blank') unless @person.find_a_grave_id.blank? %>
+      <%= link_to(icon(:fas, :'external-link') + "Wikidata", @person.wikidata_url, target: '_blank') unless @person.wikidata_url.blank? %>
+      <%= link_to(icon(:fas, :'external-link') + "Wikipedia", @person.wikipedia_url, target: '_blank') unless @person.wikipedia_url.blank? %>
+      <%= link_to(icon(:fas, :'external-link') + "Find A Grave", @person.find_a_grave_url, target: '_blank') unless @person.find_a_grave_id.blank? %>
   </div>
   </div>
 

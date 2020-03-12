@@ -11,11 +11,11 @@
         <%= person.full_name %> <%= person.dates %></small>
       </h2>
       <% end %>
-      <%= icon('far', 'user') if person.person?%>
-      <%= icon('far', 'paw') if person.animal? %>
-      <%= icon('far', 'users') if person.group? %>
-      <%= icon('far', 'building') if person.place? %>
-      <%= icon('far', 'map-marker') if person.thing? %>
+      <%= icon(:fas, :user) if person.person?%>
+      <%= icon(:fas, :paw) if person.animal? %>
+      <%= icon(:fas, :users) if person.group? %>
+      <%= icon(:fas, :building) if person.place? %>
+      <%= icon(:fas, :'map-marker') if person.thing? %>
       <%= roles_list(person) %>
     </div>
   </div>

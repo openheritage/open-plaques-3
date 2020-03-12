@@ -1,25 +1,25 @@
 <% content_for :page_title, "Upcoming plaque unveilings" %>
 <% content_for :title, "Upcoming plaque unveilings" %>
 
-<div class="row">
-  <% if @upcoming_plaques.length > 0 %>
-    <% @upcoming_plaques.each do |plaque| %>
+<% if @upcoming_plaques.any? %>
+  <% @upcoming_plaques.each do |plaque| %>
+    <div class="row">
       <h2><%= plaque.erected_at.to_s(:long) %></h2>
       <p>
-        <% if plaque.organisations.length > 0 %>
+        <% if plaque.organisations.any? %>
           <%= plaque.organisations.collect(&:name).to_sentence %> are unveiling a plaque
         <% else %>
           A plaque will be unveiled
         <% end %>
-        <% if plaque.location %>
+        <% if plaque.address.present? %>
           at <%= plaque.address %>.
         <% else %>
           somewhere.
         <% end %>
           <%= link_to "More", plaque_path(plaque) %>
         </p>
-    <% end %>
-  <% else %>
-    <p>No upcoming unveilings are currently known about.</p>
+    </div>
   <% end %>
-</div>
+<% else %>
+  <p>No upcoming unveilings are currently known about.</p>
+<% end %>

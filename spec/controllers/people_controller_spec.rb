@@ -17,7 +17,7 @@ describe PeopleController do
     it 'should render the page' do
       @jez = Person.create(name: 'Jez Nicholson')
       get :show, params: { id: @jez.id }, format: :json
-      expect(response.content_type).to eq 'application/json'
+      expect(response.media_type).to eq 'application/json'
     end
   end
 end
