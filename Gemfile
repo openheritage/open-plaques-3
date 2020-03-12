@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.6.5'
 
-gem 'rails', '5.2.3'
+gem 'rails', '6.0.2.1'
 gem 'pg'
 gem 'webpacker'
 gem 'uglifier'
@@ -29,8 +29,6 @@ gem 'wikimedia-commoner', github: 'jnicho02/wikimedia-commoner'
 gem 'rollbar'
 gem 'puma'
 gem 'oink'
-
-gem 'rails_12factor'
 
 gem 'julia_builder'
 
