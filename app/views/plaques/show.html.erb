@@ -64,7 +64,7 @@
                         <% end %>
                         <% if @plaque.geolocated? %>
                         <br/>
-                        <%= icon('far', 'link') %>
+                        <%= icon(:fas, :link) %>
                         <a href="https://maps.google.com/maps?q=&layer=c&cbll=<%= @plaque.latitude %>,<%= @plaque.longitude %>&cbp=11,0,0,0,0" target="_new">Google Streetview</a>
                         <% end %>
                     </p>
@@ -95,10 +95,10 @@
                 </p>
                 <p class="card-text">Wikimedia:
                     <i><input type="text" readonly value="<%= @plaque.wikimedia_tag %>"/></i>
-                    <%= button_tag icon('far', 'clipboard'), id: 'copy-wikimedia-tag', type: 'button', class: :button %></p>
+                    <%= button_tag icon(:fas, :clipboard), id: 'copy-wikimedia-tag', type: 'button', class: :button %></p>
                 <p class="card-text">Flickr:
                     <i><input type="text" readonly value="<%= @plaque.machine_tag %>"/></i>
-                    <%= button_tag icon('far', 'clipboard'), id: 'copy-flickr-tag', type: 'button', class: :button %></p>
+                    <%= button_tag icon(:fas, :clipboard), id: 'copy-flickr-tag', type: 'button', class: :button %></p>
             </div>
             <div class="card" id="subjects">
                 <h6 class="card-header"><%= pluralize_word(@plaque.people.size, 'Subject') %></h6>
