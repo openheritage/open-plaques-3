@@ -4,14 +4,15 @@
 # big and easily-compressed files like SVGs also get gzipped.
 
 namespace :assets do
-  desc "Create .gz versions of static assets"
+  desc 'Create .gz versions of static assets'
   task gzip_static: :environment do
     zip_types = /\.(?:css|html|js|otf|svg|txt|xml)$/
 
     public_assets = File.join(
       Rails.root,
-      "public",
-      Rails.application.config.assets.prefix)
+      'public',
+      Rails.application.config.assets.prefix
+    )
 
     Dir["#{public_assets}/**/*"].each do |f|
       next unless f =~ zip_types
@@ -31,7 +32,7 @@ namespace :assets do
   end
 
   # Hook into existing assets:precompile task
-  Rake::Task["assets:precompile"].enhance do
-    Rake::Task["assets:gzip_static"].invoke
+  Rake::Task['assets:precompile'].enhance do
+    Rake::Task['assets:gzip_static'].invoke
   end
 end

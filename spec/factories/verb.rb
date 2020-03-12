@@ -1,9 +1,9 @@
 FactoryBot.define do
   factory :verb do
-    name {'asfgadsf'}
+    name { 'asfgadsf' }
   end
 
   factory :lived, class: :verb do
-    name {'lived'}
+    name { 'lived' }
   end
 end

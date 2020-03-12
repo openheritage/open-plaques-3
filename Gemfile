@@ -43,6 +43,7 @@ group :development do
   gem 'listen'
   gem 'fuubar'
   gem 'mechanize'
+  gem 'rubocop'
 end
 
 group :test do

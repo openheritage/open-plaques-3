@@ -22,10 +22,10 @@ class Role < ApplicationRecord
   before_save :fill_wikidata_id
   validates_presence_of :name, :slug
   validates_uniqueness_of :name, :slug
-  scope :by_popularity, -> { order("personal_roles_count DESC nulls last") }
-  scope :alphabetically, -> { order("name ASC nulls last") }
-  scope :name_starts_with, lambda {|term| where(["lower(name) LIKE ?", term.downcase + "%"]) }
-  scope :name_contains, lambda {|term| where(["lower(name) LIKE ?", "%" + term.downcase + "%"]) }
+  scope :by_popularity, -> { order('personal_roles_count DESC nulls last') }
+  scope :alphabetically, -> { order('name ASC nulls last') }
+  scope :name_starts_with, lambda {|term| where(['lower(name) LIKE ?', "#{term.downcase}%"]) }
+  scope :name_contains, lambda {|term| where(['lower(name) LIKE ?', "%#{term.downcase }%"]) }
   scope :name_is, lambda { |term| where(['lower(name) = ?', term.downcase]) }
   scope :in_alphabetical_order, -> { order('name ASC') }
 
@@ -37,7 +37,7 @@ class Role < ApplicationRecord
   end
 
   def self.types
-    ["person", "man", "woman", "animal", "thing", "group", "place", "relationship", "parent", "spouse", "child", "title", "letters", "military medal", "clergy"]
+    ['person', 'man', 'woman', 'animal', 'thing', 'group', 'place', 'relationship', 'parent', 'spouse', 'child', 'title', 'letters', 'military medal', 'clergy']
   end
 
   def person?
@@ -46,44 +46,44 @@ class Role < ApplicationRecord
   end
 
   def animal?
-    return true if "animal" == role_type
+    return true if 'animal' == role_type
 	  return false
   end
 
   def thing?
-    return true if "thing" == role_type
+    return true if 'thing' == role_type
     return false
   end
 
   def group?
-    return true if "group" == role_type
+    return true if 'group' == role_type
     return false
   end
 
   def place?
-    return true if "place" == role_type
+    return true if 'place' == role_type
     return false
   end
 
   def family?
-    return true if role_type == "parent"
-    return true if role_type == "child"
-    return true if role_type == "spouse"
+    return true if role_type == 'parent'
+    return true if role_type == 'child'
+    return true if role_type == 'spouse'
     # redundant roles
-    return true if name == "brother"
-    return true if name == "sister"
-    return true if name == "half-brother"
-    return true if name == "half-sister"
+    return true if name == 'brother'
+    return true if name == 'sister'
+    return true if name == 'half-brother'
+    return true if name == 'half-sister'
     false
   end
 
   def type
-	  return "person" if person?
-	  return "animal" if animal?
-	  return "thing" if thing?
-	  return "group" if group?
-	  return "place" if place?
-	  return "?"
+	  return 'person' if person?
+	  return 'animal' if animal?
+	  return 'thing' if thing?
+	  return 'group' if group?
+	  return 'place' if place?
+	  return '?'
   end
 
   def fill_wikidata_id
@@ -97,7 +97,7 @@ class Role < ApplicationRecord
   end
 
   def wikidata_url
-    "https://www.wikidata.org/wiki/#{wikidata_id}" if wikidata_id && !wikidata_id&.blank? && wikidata_id != "Q"
+    "https://www.wikidata.org/wiki/#{wikidata_id}" if wikidata_id && !wikidata_id&.blank? && wikidata_id != 'Q'
   end
 
   def wikipedia_url
@@ -105,13 +105,15 @@ class Role < ApplicationRecord
   end
 
   def dbpedia_uri
-    wikipedia_url&.gsub("en.wikipedia.org/wiki","dbpedia.org/resource")&.gsub("https","http")
+    wikipedia_url&.gsub('en.wikipedia.org/wiki', 'dbpedia.org/resource')&.gsub('https', 'http')
   end
 
   def dbpedia_abstract
-    return description if !description.blank?
+    return description unless description.blank?
+
     return nil if dbpedia_uri.blank?
-    api = "#{dbpedia_uri.gsub("resource","data")}.json"
+
+    api = "#{dbpedia_uri.gsub('resource','data')}.json"
     begin
       response = open(api)
       resp = response.read
@@ -122,12 +124,8 @@ class Role < ApplicationRecord
   end
 
   def relationship?
-    return true if "relationship" == role_type
-    return true if "parent" == role_type
-    return true if "spouse" == role_type
-    return true if "child" == role_type
-    return true if "group" == role_type
-    false
+    relationship_role_types = ['relationship', 'parent', 'spouse', 'child', 'group']
+    relationship_role_types.include?(role_type)
   end
 
   def used_as_a_prefix?
@@ -135,7 +133,7 @@ class Role < ApplicationRecord
   end
 
   def military_medal?
-    "military medal" == role_type
+    role_type == 'military medal'
   end
 
   def used_as_a_suffix?
@@ -143,7 +141,7 @@ class Role < ApplicationRecord
   end
 
   def letters
-    used_as_a_suffix? ? suffix : ""
+    used_as_a_suffix? ? suffix : ''
   end
 
   def abbreviated?
@@ -151,40 +149,37 @@ class Role < ApplicationRecord
   end
 
   def confers_honourific_title?
-    return true if "Baronet" == name
-    return true if "Baroness" == name
-    return true if "Knight Bachelor" == name
-    return true if "Knight of the Order of the Garter" == name
-    return true if "Knight of the Order of the Thistle" == name
-    return true if "Knight Commander of the Order of the Bath" == name
-    return true if "Knight Grand Cross of the Order of the Bath" == name
-    return true if "Knight Commander of the Order of St Michael and St George" == name
-    return true if "Knight Grand Cross of the Order of St Michael and St George" == name
-    return true if "Knight Commander of the Royal Victorian Order" == name
-    return true if "Knight Grand Cross of the Royal Victorian Order" == name
-    return true if "Knight Commander of the Order of the British Empire" == name
-    return true if "Knight Grand Cross of the Order of the British Empire" == name
-    return true if "Lady" == name
+    return true if 'Baronet' == name
+    return true if 'Baroness' == name
+    return true if 'Knight Bachelor' == name
+    return true if 'Knight of the Order of the Garter' == name
+    return true if 'Knight of the Order of the Thistle' == name
+    return true if 'Knight Commander of the Order of the Bath' == name
+    return true if 'Knight Grand Cross of the Order of the Bath' == name
+    return true if 'Knight Commander of the Order of St Michael and St George' == name
+    return true if 'Knight Grand Cross of the Order of St Michael and St George' == name
+    return true if 'Knight Commander of the Royal Victorian Order' == name
+    return true if 'Knight Grand Cross of the Royal Victorian Order' == name
+    return true if 'Knight Commander of the Order of the British Empire' == name
+    return true if 'Knight Grand Cross of the Order of the British Empire' == name
+    return true if 'Lady' == name
     false
   end
 
   def female?
-    return true if "woman" == role_type
-    return true if "wife" == name
-    return true if "sister" == name
-    return true if "half-sister" == name
-    return true if "daughter" == name
-    return true if "mother" == name
-    return true if "Baroness" == name
-    return true if "Dame" == name
-    return true if "Dame Commander of the Most Excellent Order of the British Empire" == name
-    return true if "Dame Commander of the Royal Victorian Order" == name
-    return true if "Empress" == name
-    return true if "Empress of India" == name
-    return true if "Lady" == name
-    return true if "Queen" == name
-    return true if "Woman Police Constable" == name
-    return true if name.start_with?("Viscountess")
+    return true if 'woman' == role_type
+
+    female_relatives = ['wife', 'sister', 'half-sister', 'daughter', 'mother']
+    return true if female_relatives.include?(name)
+
+    ennobled_females = ['Baroness', 'Dame', 'Dame Commander of the Most Excellent Order of the British Empire', 'Dame Commander of the Royal Victorian Order', 'Empress', 'Lady', 'Queen']
+    return true if ennobled_females.include?(name)
+
+    female_job_titles = ['Woman Police Constable']
+    return true if female_job_titles.include?(name)
+
+    return true if name.start_with?('Viscountess')
+
     false
   end
 
@@ -193,7 +188,7 @@ class Role < ApplicationRecord
   end
 
   def full_name
-    return abbreviation + " - " + name if abbreviated?
+    return "#{abbreviation} - #{name}" if abbreviated?
     name
   end
 
@@ -202,17 +197,17 @@ class Role < ApplicationRecord
   end
 
   def sticky?
-    name == "President of the Royal Society" || prefix == "King" || prefix == "Queen"
+    name == 'President of the Royal Society' || prefix == 'King' || prefix == 'Queen'
   end
 
   def pluralize
-    full_name.include?(" of ") ?
+    full_name.include?(' of ') ?
       name.split(/#| of /).first.pluralize + name.sub(/.*? of /, ' of ')
       : name.pluralize
   end
 
   def uri
-    "http://openplaques.org" + Rails.application.routes.url_helpers.role_path(self.slug, format: :json)
+    'http://openplaques.org' + Rails.application.routes.url_helpers.role_path(self.slug, format: :json)
   end
 
   def to_s
@@ -229,12 +224,12 @@ class Role < ApplicationRecord
 
   private
 
-    def update_index
-      self.index = self.name[0,1].downcase
-    end
+  def update_index
+    self.index = self.name[0,1].downcase
+  end
 
-    def filter_name
-      self.name = self.name.gsub(/\.?\??/, "").strip
-    end
+  def filter_name
+    self.name = name.gsub(/\.?\??/, '').strip
+  end
 
 end

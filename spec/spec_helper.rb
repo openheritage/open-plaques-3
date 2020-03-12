@@ -1,6 +1,6 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV['RAILS_ENV'] ||= 'test'
-require File.expand_path('../../config/environment', __FILE__)
+require File.expand_path('../../config/environment', __dir__)
 require 'rspec/rails'
 # require 'rspec/autorun'
 # require 'capybara/rspec'
@@ -11,7 +11,7 @@ require 'rspec/rails'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
-Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+Dir[Rails.root.join('spec/support/**/*.rb')].sort.each { |f| require f }
 
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
@@ -56,7 +56,6 @@ RSpec.configure do |config|
   end
 end
 
-
 RSpec::Matchers.define :include_one_of do |*elements|
   match do |actual|
     @included = []
@@ -67,7 +66,7 @@ RSpec::Matchers.define :include_one_of do |*elements|
   end
 
   failure_message do |actual|
-    "expected \n  \"#{actual}\"\nto include one of \n  \"#{expected.join("\"\n  \"")}\""
+    "expected \n\"#{actual}\"\nto include 1 of \n\"#{expected.join("\"\n\"")}\""
   end
 end
 
@@ -81,6 +80,6 @@ RSpec::Matchers.define :be_one_of do |*elements|
   end
 
   failure_message do |actual|
-    "expected \n  \"#{actual}\"\nto include one of \n  \"#{expected.join("\"\n  \"")}\""
+    "expected \n\"#{actual}\"\nto include 1 of\n\"#{expected.join("\"\n\"")}\""
   end
 end

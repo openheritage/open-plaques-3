@@ -1,8 +1,8 @@
 describe Person, type: :model do
-  let (:john_smith) { build :person }
+  let(:john_smith) { build :person }
 
   it 'has a valid factory' do
-    expect(create :person).to be_valid
+    expect(create(:person)).to be_valid
   end
 
   describe '#full_name' do
@@ -45,7 +45,7 @@ describe Person, type: :model do
     end
 
     context 'with a title' do
-      let (:smiter) { build :role, name: 'Smiter', role_type: 'title' }
+      let(:smiter) { build :role, name: 'Smiter', role_type: 'title' }
       before do
         john_smith.roles << smiter
       end
@@ -55,7 +55,7 @@ describe Person, type: :model do
     end
 
     context 'with a title that has a prefix' do
-      let (:smiter) { build :role, name: 'Smiter', prefix: 'Smt', role_type: 'title' }
+      let(:smiter) { build :role, name: 'Smiter', prefix: 'Smt', role_type: 'title' }
       before do
         john_smith.roles << smiter
       end
@@ -65,8 +65,8 @@ describe Person, type: :model do
     end
 
     context 'with two different titles confering the same prefix' do
-      let (:smiter) { build :role, name: 'Smiter', prefix: 'Smt', role_type: 'title' }
-      let (:wolverine) { build :role, name: 'Wolverine', prefix: 'Smt', role_type: 'title' }
+      let(:smiter) { build :role, name: 'Smiter', prefix: 'Smt', role_type: 'title' }
+      let(:wolverine) { build :role, name: 'Wolverine', prefix: 'Smt', role_type: 'title' }
       before do
         john_smith.roles << smiter
         john_smith.roles << wolverine
@@ -77,7 +77,7 @@ describe Person, type: :model do
     end
 
     context 'with higher education qualifications' do
-      let (:toodle) { build :role, name: 'Toodle', suffix: 'Td', role_type: 'letters' }
+      let(:toodle) { build :role, name: 'Toodle', suffix: 'Td', role_type: 'letters' }
       before do
         john_smith.roles << toodle
       end
@@ -87,8 +87,8 @@ describe Person, type: :model do
     end
 
     context 'with multiple higher education qualifications' do
-      let (:toodle) { build :role, name: 'Toodle', suffix: 'Td', role_type: 'letters' }
-      let (:pip) { build :role, name: 'Pip', suffix: 'P', role_type: 'letters' }
+      let(:toodle) { build :role, name: 'Toodle', suffix: 'Td', role_type: 'letters' }
+      let(:pip) { build :role, name: 'Pip', suffix: 'P', role_type: 'letters' }
       before do
         john_smith.roles << toodle
         john_smith.roles << pip
@@ -99,9 +99,9 @@ describe Person, type: :model do
     end
 
     context 'a princess who became queen' do
-      let (:victoria) { build :person, name: 'Victoria' }
-      let (:princess) { build :role, name: 'Princess', role_type: 'title', prefix: 'Princess' }
-      let (:is_queen) { build :role, name: 'Queen of the United Kingdom', role_type: 'title', prefix: 'Queen' }
+      let(:victoria) { build :person, name: 'Victoria' }
+      let(:princess) { build :role, name: 'Princess', role_type: 'title', prefix: 'Princess' }
+      let(:is_queen) { build :role, name: 'Queen of the United Kingdom', role_type: 'title', prefix: 'Queen' }
       before do
         victoria.roles << is_queen
         victoria.roles << princess
@@ -122,9 +122,9 @@ describe Person, type: :model do
     end
 
     context 'a person with no role with a suffix' do
-      let (:boodle) { build :role, name: 'Boodle' }
-      let (:toodle) { build :role, name: 'Toodle' }
-      let (:pip) { build :role, name: 'Pip' }
+      let(:boodle) { build :role, name: 'Boodle' }
+      let(:toodle) { build :role, name: 'Toodle' }
+      let(:pip) { build :role, name: 'Pip' }
       before do
         john_smith.roles << boodle
         john_smith.roles << toodle
@@ -136,9 +136,9 @@ describe Person, type: :model do
     end
 
     context 'a person with a mix of roles with and without suffix' do
-      let (:boodle) { build :role, name: 'Boodle', prefix: 'Boo' }
-      let (:toodle) { build :role, name: 'Toodle', suffix: 'Td' }
-      let (:pip) { build :role, name: 'Pip' }
+      let(:boodle) { build :role, name: 'Boodle', prefix: 'Boo' }
+      let(:toodle) { build :role, name: 'Toodle', suffix: 'Td' }
+      let(:pip) { build :role, name: 'Pip' }
       before do
         john_smith.roles << boodle
         john_smith.roles << toodle
@@ -150,9 +150,9 @@ describe Person, type: :model do
     end
 
     context 'multiple roles with a suffix' do
-      let (:boodle) { build :role, name: 'Boodle', suffix: 'Boo' }
-      let (:toodle) { build :role, name: 'Toodle', suffix: 'Td' }
-      let (:pip) { build :role, name: 'Pip' }
+      let(:boodle) { build :role, name: 'Boodle', suffix: 'Boo' }
+      let(:toodle) { build :role, name: 'Toodle', suffix: 'Td' }
+      let(:pip) { build :role, name: 'Pip' }
       before do
         john_smith.roles << boodle
         john_smith.roles << toodle
@@ -164,10 +164,10 @@ describe Person, type: :model do
     end
 
     context 'same suffix twice' do
-      let (:boodle) { build :role, name: 'Boodle', suffix: 'Boo', priority: 5 }
-      let (:poodle) { build :role, name: 'Poodle', suffix: 'Boo', priority: 5 }
-      let (:toodle) { build :role, name: 'Toodle', suffix: 'Td', priority: 4 }
-      let (:pip) { build :role, name: 'Pip' }
+      let(:boodle) { build :role, name: 'Boodle', suffix: 'Boo', priority: 5 }
+      let(:poodle) { build :role, name: 'Poodle', suffix: 'Boo', priority: 5 }
+      let(:toodle) { build :role, name: 'Toodle', suffix: 'Td', priority: 4 }
+      let(:pip) { build :role, name: 'Pip' }
       before do
         john_smith.roles << boodle
         john_smith.roles << poodle
@@ -180,10 +180,10 @@ describe Person, type: :model do
     end
 
     context 'a person with a number of prioritised roles applied in priority order' do
-      let (:om) { build :role, suffix: 'OM', priority: 10, name: 'Order of Merit recipient' }
-      let (:gcsi) { build :role, suffix: 'GCSI', priority: 9, name: 'Knight Grand Commander of The Star of India' }
-      let (:cb) { build :role, suffix: 'CB', priority: 8, name: 'Companion of the Order of the Bath' }
-      let (:prs) { build :role, suffix: 'PRS', priority: 7, name: 'President of The Royal Society' }
+      let(:om) { build :role, suffix: 'OM', priority: 10, name: 'Order of Merit recipient' }
+      let(:gcsi) { build :role, suffix: 'GCSI', priority: 9, name: 'Knight Grand Commander of The Star of India' }
+      let(:cb) { build :role, suffix: 'CB', priority: 8, name: 'Companion of the Order of the Bath' }
+      let(:prs) { build :role, suffix: 'PRS', priority: 7, name: 'President of The Royal Society' }
       before do
         john_smith.roles << om
         john_smith.roles << gcsi
@@ -196,10 +196,10 @@ describe Person, type: :model do
     end
 
     context 'a person with a number of prioritised roles applied in non-priority order' do
-      let (:om) { build :role, suffix: 'OM', priority: 10, name: 'Order of Merit recipient' }
-      let (:gcsi) { build :role, suffix: 'GCSI', priority: 9, name: 'Knight Grand Commander of The Star of India' }
-      let (:cb) { build :role, suffix: 'CB', priority: 8, name: 'Companion of the Order of the Bath' }
-      let (:prs) { build :role, suffix: 'PRS', priority: 7, name: 'President of The Royal Society' }
+      let(:om) { build :role, suffix: 'OM', priority: 10, name: 'Order of Merit recipient' }
+      let(:gcsi) { build :role, suffix: 'GCSI', priority: 9, name: 'Knight Grand Commander of The Star of India' }
+      let(:cb) { build :role, suffix: 'CB', priority: 8, name: 'Companion of the Order of the Bath' }
+      let(:prs) { build :role, suffix: 'PRS', priority: 7, name: 'President of The Royal Society' }
       before do
         john_smith.roles << cb
         john_smith.roles << prs
@@ -278,7 +278,7 @@ describe Person, type: :model do
     end
 
     context 'an actor that is a dog' do
-      let(:lassie){ build :person }
+      let(:lassie) { build :person }
       before do
         lassie.roles << (build :actor)
         lassie.roles << (build :dog)
@@ -449,7 +449,7 @@ describe Person, type: :model do
       before do
         john_smith.died_on = Date.new(2009, 1, 1)
       end
-        it 'is a death year' do
+      it 'is a death year' do
         expect(john_smith.dates).to eq('(d.2009)')
       end
     end
@@ -476,7 +476,7 @@ describe Person, type: :model do
 
   describe '#accented_name?' do
     context 'with an accented name' do
-      let (:bela_bartok) { build :person, name: 'Béla Bartók' }
+      let(:bela_bartok) { build :person, name: 'Béla Bartók' }
       before do
         bela_bartok.aka_accented_name
       end
@@ -496,7 +496,7 @@ describe Person, type: :model do
   end
 
   describe '#aka_accented_name' do
-    let (:bela_bartok) { build :person, name: 'Béla Bartók' }
+    let(:bela_bartok) { build :person, name: 'Béla Bartók' }
 
     context 'with an accented name' do
       before do
@@ -529,7 +529,7 @@ describe Person, type: :model do
 
   describe '#fill_wikidata_id' do
     context 'an unfindable name' do
-      let(:zdfgad) { build :person, name: 'zdfgad'}
+      let(:zdfgad) { build :person, name: 'zdfgad' }
       before do
         zdfgad.fill_wikidata_id
       end
@@ -546,12 +546,12 @@ describe Person, type: :model do
       end
     end
     context 'an unambiguous name' do
-      let(:myra_hess) { build :person, name: 'Myra Hess'}
+      let(:myra_hess) { build :person, name: 'Myra Hess' }
       before do
         myra_hess.fill_wikidata_id
       end
       it 'has Wikidata' do
-        expect(myra_hess.wikidata_id).to eq("Q269848")
+        expect(myra_hess.wikidata_id).to eq('Q269848')
       end
     end
   end
@@ -564,10 +564,10 @@ describe Person, type: :model do
     end
     context 'with a wikidata id' do
       before do
-        john_smith.wikidata_id = "Q269848"
+        john_smith.wikidata_id = 'Q269848'
       end
       it 'has a wikipedia url' do
-        expect(john_smith.wikipedia_url).to eq("https://en.wikipedia.org/wiki/Myra_Hess")
+        expect(john_smith.wikipedia_url).to eq('https://en.wikipedia.org/wiki/Myra_Hess')
       end
     end
   end
@@ -580,12 +580,11 @@ describe Person, type: :model do
     end
     context 'with a wikidata id' do
       before do
-        john_smith.wikidata_id = "Q2063684"
+        john_smith.wikidata_id = 'Q2063684'
       end
       it 'has a dbpedia abstract' do
-        expect(john_smith.dbpedia_abstract).to include("Matilda Alice Powles")
+        expect(john_smith.dbpedia_abstract).to include('Matilda Alice Powles')
       end
     end
   end
-
 end

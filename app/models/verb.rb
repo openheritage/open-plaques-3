@@ -8,23 +8,27 @@ class Verb < ApplicationRecord
 
   validates_presence_of :name
   validates_uniqueness_of :name
-  scope :name_starts_with, lambda {|term| where(["lower(name) LIKE ?", term.downcase + "%"]) }
-  scope :name_contains, lambda {|term| where(["lower(name) LIKE ?", "%" + term.downcase + "%"]) }
+  scope :name_starts_with, lambda { |term| where(['lower(name) LIKE ?', "#{term.downcase}%"]) }
+  scope :name_contains, lambda { |term| where(['lower(name) LIKE ?', "%#{term.downcase}%"]) }
 
   def self.common
-    [Verb.find_by_name("was born"),Verb.find_by_name("lived"),Verb.find_by_name("died")].compact
+    [
+      Verb.find_by_name('was born'),
+      Verb.find_by_name('lived'),
+      Verb.find_by_name('died')
+    ].compact
   end
 
   def to_param
-    "#{name.gsub('.', '_').gsub(' ', '_')}"
+    name.gsub('.', '_').gsub(' ', '_')
   end
 
   def to_s
-    return name
+    name
   end
 
   def uri
-    "https://openplaques.org" + Rails.application.routes.url_helpers.verb_path(self, format: :json)
+    'https://openplaques.org' + Rails.application.routes.url_helpers.verb_path(self, format: :json)
   end
 
   def as_json(options=nil)
@@ -33,7 +37,7 @@ class Verb < ApplicationRecord
       options = {
         only: [:name],
         include: {
-          people: {only: [:name], methods: [:uri]}
+          people: { only: [:name], methods: [:uri] }
         },
         methods: [:uri]
       }

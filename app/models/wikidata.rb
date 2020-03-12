@@ -9,25 +9,26 @@ class OpenStruct
   end
 
   def qcode
-    self.entities&.root_key&.to_s
+    entities&.root_key&.to_s
   end
 
   def q
-    self.entities&.send("#{qcode}")
+    entities&.send(qcode.to_s)
   end
 
   def not_found?
-    "-1" == self.qcode
+    qcode == '-1'
   end
 
   def disambiguation?
-    q&.descriptions&.en&.value&.to_s&.include? "disambiguation page"
+    q&.descriptions&.en&.value&.to_s&.include?('disambiguation page')
   end
 end
 
 class Wikidata
   def initialize(wikidata_id)
-    return if !wikidata_id&.match(/Q\d*$/)
+    return unless wikidata_id&.match(/Q\d*$/)
+
     @id = wikidata_id
     api = "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=#{@id}&format=json"
     response = open(api)
@@ -41,11 +42,13 @@ class Wikidata
 
   def qcode
     return if !@wikidata || @wikidata.not_found?
+
     @wikidata.qcode
   end
 
   def disambiguation?
     return if !@wikidata || @wikidata.not_found?
+
     @wikidata.disambiguation?
   end
 
@@ -55,6 +58,7 @@ class Wikidata
 
   def born_in
     return if !@wikidata || @wikidata.not_found?
+
     t = @wikidata.q&.claims&.P569&.first&.mainsnak&.datavalue&.value&.time
     # can by +1600-00-00 for 'unknown month and day' which breaks datetime
     t&.match(/\+(\d\d\d\d)/)[1] if t&.match(/\+(\d\d\d\d)/)
@@ -62,8 +66,9 @@ class Wikidata
 
   def died_in
     return if !@wikidata || @wikidata.not_found?
+
     t = @wikidata.q&.claims&.P570&.first&.mainsnak&.datavalue&.value&.time
-    t&.match(/\+(\d\d\d\d)/)[1] if t&.match(/\+(\d\d\d\d)/)
+    t.match(/\+(\d\d\d\d)/)[1] if t&.match(/\+(\d\d\d\d)/)
   end
 
   def dates?(born, died)
@@ -73,19 +78,19 @@ class Wikidata
   def self.qcode(term)
     term = term.tr("’ß#ÀÁÂÃÄÅàáâãäåĀāĂăĄąÇçĆćĈĉĊċČčÐðĎďĐđÈÉÊËèéêëĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħÌÍÎÏìíîïĨĩĪīĬĭĮįİıĴĵĶķĸĹĺĻļĽľĿŀŁłÑñŃńŅņŇňŉŊŋÒÓÔÕÖØòóôõöøŌōŎŏŐőŔŕŖŗŘřŚśŜŝŞşŠšſŢţŤťŦŧÙÚÛÜùúûüŨũŪūŬŭŮůŰűŲųŴŵÝýÿŶŷŸŹźŻżŽž",
 "'s AAAAAAaaaaaaAaAaAaCcCcCcCcCcDdDdDdEEEEeeeeEeEeEeEeEeGgGgGgGgHhHhIIIIiiiiIiIiIiIiIiJjKkkLlLlLlLlLlNnNnNnNnnNnOOOOOOooooooOoOoOoRrRrRrSsSsSsSssTtTtTtUUUUuuuuUuUuUuUuUuUuWwYyyYyYZzZzZz")
-    api_root = "https://www.wikidata.org/w/api.php?action="
-    name_and_dates = term.match /(.*) \((\d\d\d\d)\s*-*\s*(\d\d\d\d)\)/
+    api_root = 'https://www.wikidata.org/w/api.php?action='
+    name_and_dates = term.match(/(.*) \((\d\d\d\d)\s*-*\s*(\d\d\d\d)\)/)
     if name_and_dates
       name = name_and_dates[1]
       born = name_and_dates[2]
       died = name_and_dates[3]
     else
-      name_and_dates = term.match /(.*) \(d.\s*-*\s*(\d\d\d\d)\)/
+      name_and_dates = term.match(/(.*) \(d.\s*-*\s*(\d\d\d\d)\)/)
       if name_and_dates
         name = name_and_dates[1]
         died = name_and_dates[2]
       else
-        name_and_dates = term.match /(.*) \(b.\s*-*\s*(\d\d\d\d)\)/
+        name_and_dates = term.match(/(.*) \(b.\s*-*\s*(\d\d\d\d)\)/)
         if name_and_dates
           name = name_and_dates[1]
           born = name_and_dates[2]
@@ -96,15 +101,15 @@ class Wikidata
     end
     begin
       api = "#{api_root}wbgetentities&sites=enwiki&titles=#{name}&format=json"
-      logger.debug "#{api}"
+      logger.debug(api)
       response = open(api)
       resp = response.read
       wikidata = JSON.parse(resp, object_class: OpenStruct)
-      if (wikidata.not_found?)
+      if wikidata.not_found?
         #  try again with first letter in uppercase
         name = name[0].upcase + name[1..-1]
         api = "#{api_root}wbgetentities&sites=enwiki&titles=#{name}&format=json"
-        logger.debug "#{api}"
+        logger.debug(api)
         response = open(api)
         resp = response.read
         wikidata = JSON.parse(resp, object_class: OpenStruct)
@@ -121,20 +126,21 @@ class Wikidata
       end
       if wikidata.not_found? || wikidata.disambiguation?
         nil
-      elsif (born || died)
+      elsif born || died
         w = Wikidata.new(wikidata.qcode)
         w.qcode if w.dates?(born, died)
       else
         wikidata.qcode
       end
     rescue URI::InvalidURIError
-      logger.error "nasty char in there"
+      logger.error 'nasty char in there'
     end
   end
 
   def en_wikipedia_url
     return if !@wikidata || @wikidata.not_found?
+
     t = @wikidata&.q&.sitelinks&.enwiki&.title
-    "https://en.wikipedia.org/wiki/#{t.gsub(" ","_")}" if t
+    "https://en.wikipedia.org/wiki/#{t.gsub(' ', '_')}" if t
   end
 end

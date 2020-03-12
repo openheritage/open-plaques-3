@@ -19,7 +19,7 @@ class Series < ApplicationRecord
   end
 
   def geolocated?
-    return !(self.latitude == nil && self.longitude == nil || self.latitude == 51.475 && self.longitude == 0)
+    return !(latitude.nil? && longitude.nil? || latitude == 51.475 && longitude.zero?)
   end
 
   def zoom
@@ -27,15 +27,15 @@ class Series < ApplicationRecord
   end
 
   def uri
-    'http://openplaques.org' + Rails.application.routes.url_helpers.series_path(self.id, :format=>:json) if id
+    'http://openplaques.org' + Rails.application.routes.url_helpers.series_path(id, format: :json) if id
   end
 
   def as_json(options={})
     options =
     {
-      only: [:name, :description, :plaques_count],
+      only: %i(:name, :description, :plaques_count),
       methods: :uri
-    } if !options[:only]
+    } unless options[:only]
     super(options)
   end
 end

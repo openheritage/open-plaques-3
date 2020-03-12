@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :todo_item do
-    action {'ddgds'}
-    description {'gsgfdg'}
+    action { 'xyz' }
+    description { 'you should do xyz' }
   end
 end
