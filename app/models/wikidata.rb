@@ -25,6 +25,7 @@ class OpenStruct
   end
 end
 
+# A Wikidata object has much information in the open graph
 class Wikidata
   def initialize(wikidata_id)
     return unless wikidata_id&.match(/Q\d*$/)

@@ -8,8 +8,8 @@ class Verb < ApplicationRecord
 
   validates_presence_of :name
   validates_uniqueness_of :name
-  scope :name_starts_with, lambda { |term| where(['lower(name) LIKE ?', "#{term.downcase}%"]) }
-  scope :name_contains, lambda { |term| where(['lower(name) LIKE ?', "%#{term.downcase}%"]) }
+  scope :name_starts_with, ->(term) { where(['lower(name) LIKE ?', "#{term.downcase}%"]) }
+  scope :name_contains, ->(term) { where(['lower(name) LIKE ?', "%#{term.downcase}%"]) }
 
   def self.common
     [
@@ -31,7 +31,7 @@ class Verb < ApplicationRecord
     'https://openplaques.org' + Rails.application.routes.url_helpers.verb_path(self, format: :json)
   end
 
-  def as_json(options=nil)
+  def as_json(options = nil)
     if options && options[:only]
     else
       options = {
@@ -44,5 +44,4 @@ class Verb < ApplicationRecord
     end
     super(options)
   end
-
 end

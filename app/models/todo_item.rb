@@ -1,4 +1,4 @@
-# This class represents a to do item. It has a type (e.g. transcribe a photo, geo-tag a plaque). Maybe this needs its own class?
+# This class represents a todo item.
 # a description, a user (who completed the task)
 # an optional plaque that needs something doing to it
 # an optional url for more details (e.g. a news article about an unveiling)

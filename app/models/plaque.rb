@@ -252,7 +252,7 @@ class Plaque < ApplicationRecord
       else
         "plaque"
       end # << " in " + area.name if area
-    rescue Exception => e
+    rescue StandardError
       "plaque № #{id}"
     end
   end
@@ -327,7 +327,7 @@ class Plaque < ApplicationRecord
         resp = client.translate_text({
           text: "#{inscription}",
           source_language_code: "#{language.alpha2}",
-          target_language_code: "en",
+          target_language_code: 'en',
         })
         self.inscription_in_english = "#{resp.translated_text} [AWS Translate]"
       rescue
@@ -346,17 +346,22 @@ class Plaque < ApplicationRecord
     lon_max = top_left[:lng_deg].to_s
     latitude = lat_min..lat_max
     longitude = lon_max..lon_min
-    tile = "/plaques/"
-    tile+= options + "/" if options && options != '' && options != 'all'
-    tile+= "tiles" + "/" + zoom.to_s + "/" + xtile.to_s + "/" + ytile.to_s
-    puts "Rails query " + tile
+    tile = '/plaques/'
+    tile += options + '/' if options && options != '' && options != 'all'
+    tile += "tiles/#{zoom.to_s}/#{xtile.to_s}/#{ytile.to_s}"
+    puts "Rails query #{tile}"
 #    Rails.cache.fetch(tile, expires_in: 5.minutes) do
-      if options == "unphotographed"
-        self.unphotographed.select(:id, :inscription, :latitude, :longitude, :is_accurate_geolocation).where(latitude: latitude, longitude: longitude)
-      elsif options == "unconnected"
-        self.unconnected.select(:id, :inscription, :latitude, :longitude, :is_accurate_geolocation).where(latitude: latitude, longitude: longitude)
+      if options == 'unphotographed'
+        unphotographed
+          .select(:id, :inscription, :latitude, :longitude, :is_accurate_geolocation)
+          .where(latitude: latitude, longitude: longitude)
+      elsif options == 'unconnected'
+        unconnected
+          .select(:id, :inscription, :latitude, :longitude, :is_accurate_geolocation)
+          .where(latitude: latitude, longitude: longitude)
       else
-        self.select(:id, :inscription, :latitude, :longitude, :is_accurate_geolocation).where(latitude: latitude, longitude: longitude)
+        self.select(:id, :inscription, :latitude, :longitude, :is_accurate_geolocation)
+          .where(latitude: latitude, longitude: longitude)
       end
 #    end
   end
@@ -377,25 +382,27 @@ class Plaque < ApplicationRecord
 
   def us_state
     return area.us_state if area
+
     return force_us_state if force_us_state
+
     matches = /(.*), ([A-Z][A-Z]\z)/.match(address)
     matches[2] if matches
   end
 
   def usa_townify
-    if (area == nil && us_state)
-      usa = Country.find_by_alpha2("us")
-      state_towns = Area.where("country_id = #{usa.id} and name like '%, #{us_state}'")
-      state_towns.each do |town|
-        # match any address that includes a town name from the state
-        if town.name != ", #{us_state}" && self.address.include?(town.us_town)
-          self.area = town
-          self.address = self.address.reverse.sub(", #{town.name}".reverse, "").reverse.strip
-          self.address = self.address.reverse.sub("#{town.name}".reverse, "").reverse.strip
-          self.address = self.address.reverse.sub("in #{town.us_town}".reverse, "").reverse.strip
-          self.address = self.address.reverse.sub(", #{town.us_town}".reverse, "").reverse.strip
-          break
-        end
+    return unless (area.nil? && us_state)
+
+    usa = Country.find_by_alpha2('us')
+    state_towns = Area.where("country_id = #{usa.id} and name like '%, #{us_state}'")
+    state_towns.each do |town|
+      # match any address that includes a town name from the state
+      if town.name != ", #{us_state}" && address.include?(town.us_town)
+        self.area = town
+        self.address = address.reverse.sub(", #{town.name}".reverse, '').reverse.strip
+        self.address = address.reverse.sub(town.name.reverse, '').reverse.strip
+        self.address = address.reverse.sub("in #{town.us_town}".reverse, '').reverse.strip
+        self.address = address.reverse.sub(", #{town.us_town}".reverse, '').reverse.strip
+        break
       end
     end
   end
@@ -408,37 +415,34 @@ class Plaque < ApplicationRecord
     title
   end
 
+  # from OpenStreetMap documentation
+  def self.get_lat_lng_for_number(zoom, xtile, ytile)
+    n = 2.0**zoom
+    lon_deg = xtile / n * 360.0 - 180.0
+    lat_rad = Math::atan(Math::sinh(Math::PI * (1 - 2 * ytile / n)))
+    lat_deg = 180.0 * (lat_rad / Math::PI)
+    {lat_deg: lat_deg, lng_deg: lon_deg}
+  end
+
+  # from OpenStreetMap documentation
+  def self.get_tile_number(lat_deg, lng_deg, zoom)
+    lat_rad = lat_deg/180 * Math::PI
+    n = 2.0**zoom
+    x = ((lng_deg + 180.0) / 360.0 * n).to_i
+    y = ((1.0 - Math::log(Math::tan(lat_rad) + (1 / Math::cos(lat_rad))) / Math::PI) / 2.0 * n).to_i
+    { x: x, y: y }
+  end
+
   private
 
-    def use_other_colour_id
-      if !colour && other_colour_id
-        self.colour_id = other_colour_id
-      end
-    end
+  def use_other_colour_id
+    self.colour_id = other_colour_id if !colour && other_colour_id
+  end
 
-    # from OpenStreetMap documentation
-    def self.get_lat_lng_for_number(zoom, xtile, ytile)
-      n = 2.0 ** zoom
-      lon_deg = xtile / n * 360.0 - 180.0
-      lat_rad = Math::atan(Math::sinh(Math::PI * (1 - 2 * ytile / n)))
-      lat_deg = 180.0 * (lat_rad / Math::PI)
-      {lat_deg: lat_deg, lng_deg: lon_deg}
+  def unshout
+    if inscription && inscription&.upcase == inscription
+      # it is all in CAPITALS, I AM SHOUTING
+      self.inscription = inscription.capitalize
     end
-
-    # from OpenStreetMap documentation
-    def self.get_tile_number(lat_deg, lng_deg, zoom)
-      lat_rad = lat_deg/180 * Math::PI
-      n = 2.0 ** zoom
-      x = ((lng_deg + 180.0) / 360.0 * n).to_i
-      y = ((1.0 - Math::log(Math::tan(lat_rad) + (1 / Math::cos(lat_rad))) / Math::PI) / 2.0 * n).to_i
-      {x: x, y: y}
-    end
-
-    def unshout
-      if self.inscription && self.inscription&.upcase == self.inscription
-        # it is all in CAPITALS, I AM SHOUTING
-        self.inscription = self.inscription.capitalize
-      end
-    end
-
+  end
 end
