@@ -1,5 +1,5 @@
+# Assist Roles
 module RolesHelper
-
   def role_path(role, options = {})
     url_for(options.merge(controller: :roles, action: :show, id: role.slug))
   end
@@ -11,5 +11,4 @@ module RolesHelper
   def role_url(role, options = {})
     role_path(role, options.merge!(only_path: false))
   end
-
 end

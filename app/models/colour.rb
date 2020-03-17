@@ -25,7 +25,7 @@ class Colour < ApplicationRecord
     name
   end
 
-  def as_json(options={})
+  def as_json(options = {})
     options = {
       only: [:name, :plaques_count, :common],
       include: { },

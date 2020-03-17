@@ -441,7 +441,7 @@ describe Person, type: :model do
 
     context 'with no dates' do
       it 'is nil' do
-        expect(john_smith.dates).to eq(nil)
+        expect(john_smith.dates).to eq('')
       end
     end
 

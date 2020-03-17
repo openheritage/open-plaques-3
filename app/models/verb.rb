@@ -32,8 +32,7 @@ class Verb < ApplicationRecord
   end
 
   def as_json(options = nil)
-    if options && options[:only]
-    else
+    unless options && options[:only]
       options = {
         only: [:name],
         include: {

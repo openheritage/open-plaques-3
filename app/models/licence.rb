@@ -49,7 +49,7 @@ class Licence < ApplicationRecord
     name
   end
 
-  def as_json(options={})
+  def as_json(options = {})
     options = {
       only: [:name, :abbreviation, :url, :allows_commercial_reuse, :photos_count]
     } if !options || !options[:only]

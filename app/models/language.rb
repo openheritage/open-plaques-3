@@ -33,7 +33,7 @@ class Language < ApplicationRecord
     name
   end
 
-  def as_json(options={})
+  def as_json(options = {})
     options = {
       only: [:name, :alpha2, :plaques_count],
       include: { },

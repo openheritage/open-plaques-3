@@ -32,7 +32,7 @@ class Country < ApplicationRecord
     self.preferred_zoom_level || 6
   end
 
-  def as_json(options={})
+  def as_json(options = {})
     options = {
       only: [:name],
       methods: [:uri, :plaques_count, :areas_count]

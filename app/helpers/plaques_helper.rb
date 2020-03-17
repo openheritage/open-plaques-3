@@ -385,30 +385,31 @@ module PlaquesHelper
     # https://www.google.com/maps/@37.0625,-95.677068,4z
     p = Point.new
     r = /@([-\d.\d]*),([-\d.\d]*)/
-    if (url[r])
-      p.latitude = url[r,1].to_f.round(5)
-      p.longitude = url[r,2].to_f.round(5)
+    if url[r]
+      p.latitude = url[r, 1].to_f.round(5)
+      p.longitude = url[r, 2].to_f.round(5)
       return p
     end
     # or OSM
     # https://www.openstreetmap.org/#map=17/57.14772/-2.10572
     r = /map=[\d]*\/([-\d.\d]*)\/([-\d.\d]*)/
-    if (url[r])
-      p.latitude = url[r,1].to_f.round(5)
-      p.longitude = url[r,2].to_f.round(5)
+    if url[r]
+      p.latitude = url[r, 1].to_f.round(5)
+      p.longitude = url[r, 2].to_f.round(5)
       return p
     end
     # or Geohack
     # https://tools.wmflabs.org/wiwosm/osm-on-ol/commons-on-osm.php?zoom=16&lat=43.725688888889&lon=7.2722138888889
     r = /&lat=([-\d.\d]*)&lon=([-\d.\d]*)/
-    if (url[r])
-      p.latitude = url[r,1].to_f.round(5)
-      p.longitude = url[r,2].to_f.round(5)
+    if url[r]
+      p.latitude = url[r, 1].to_f.round(5)
+      p.longitude = url[r, 2].to_f.round(5)
       return p
     end
     p
   end
 
+  # A geographic point location
   class Point
     attr_accessor :precision
     attr_accessor :latitude
@@ -416,8 +417,7 @@ module PlaquesHelper
     attr_accessor :zoom
 
     def as_wkt
-      'POINT(' + self.latitude.to_s + ' ' + self.longitude.to_s + ')'
+      "POINT(#{latitude} #{longitude})"
     end
   end
-
 end

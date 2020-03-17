@@ -11,7 +11,7 @@
               <% @person.spouses.each do |spouse| %>
                 <%= link_to(spouse.full_name, spouse) %>
               <% end %>
-              <% if @person.has_children? %>
+              <% if @person.children? %>
                 <ul>
                   <% @person.children.each do |child| %>
                     <li><%= link_to(child.full_name, child) %></li>

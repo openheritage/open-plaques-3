@@ -12,17 +12,27 @@ class PersonalConnection < ApplicationRecord
 
   validates_presence_of :verb_id, :person_id, :plaque_id
 
+  # this would be a Verb query, but data is fixed and this is used frequently
+  def birth?
+    [8, 504].include?(verb.id)
+  end
+
+  # this would be a Verb query, but data is fixed and this is used frequently
+  def death?
+    [3, 49, 161, 288, 292, 566, 779, 1103, 1108, 1147].include?(verb.id)
+  end
+
   def from
-    year = started_at ? started_at.year.to_s : ""
-    year = person.born_in.to_s if (verb.id == 8 || verb.id == 504)
-    year = person.died_in.to_s if (verb.id == 3 || verb.id == 49 || verb.id == 161 || verb.id == 288 || verb.id == 292 || verb.id == 566 || verb.id == 779 || verb.id == 1103 || verb.id == 1108 || verb.id == 1147)
+    year = started_at ? started_at.year.to_s : ''
+    year = person.born_in.to_s if birth?
+    year = person.died_in.to_s if death?
     year
   end
 
   def to
-    year = ended_at ? ended_at.year.to_s : ""
-    year = person.born_in.to_s if (verb.id == 8 || verb.id == 504)
-    year = person.died_in.to_s if (verb.id == 3 || verb.id == 49 || verb.id == 161 || verb.id == 288 || verb.id == 292 || verb.id == 566 || verb.id == 779 || verb.id == 1103 || verb.id == 1108 || verb.id == 1147)
+    year = ended_at ? ended_at.year.to_s : ''
+    year = person.born_in.to_s if birth?
+    year = person.died_in.to_s if death?
     year
   end
 
@@ -33,5 +43,4 @@ class PersonalConnection < ApplicationRecord
   def single_year?
     from == to
   end
-
 end

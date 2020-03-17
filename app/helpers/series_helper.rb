@@ -1,5 +1,5 @@
+# Assist Series
 module SeriesHelper
-
   def series_path(series, options = {})
     url_for(options.merge(controller: :series, action: :show, id: series.id))
   end

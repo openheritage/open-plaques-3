@@ -32,13 +32,15 @@ class Role < ApplicationRecord
   include ApplicationHelper
 
   def related_roles
-    Role.where([
-      'lower(name) != ? and (lower(name) LIKE ? or lower(name) LIKE ? or lower(name) LIKE ? )',
-      name.downcase,
-      "#{name.downcase} %",
-      "% #{name.downcase} %",
-      "% #{name.downcase}"
-    ])
+    Role.where(
+      [
+        'lower(name) != ? and (lower(name) LIKE ? or lower(name) LIKE ? or lower(name) LIKE ? )',
+        name.downcase,
+        "#{name.downcase} %",
+        "% #{name.downcase} %",
+        "% #{name.downcase}"
+      ]
+    )
   end
 
   def self.types
