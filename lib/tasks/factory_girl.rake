@@ -1,5 +1,5 @@
 namespace :factory_girl do
-  desc "Verify that all FactoryBot factories are valid"
+  desc 'Verify that all FactoryBot factories are valid'
   task lint: :environment do
     if Rails.env.test?
       begin
@@ -9,7 +9,7 @@ namespace :factory_girl do
         DatabaseCleaner.clean
       end
     else
-      system("bundle exec rake factory_girl:lint RAILS_ENV='test'")
+      system('bundle exec rake factory_girl:lint RAILS_ENV=test')
     end
   end
 end

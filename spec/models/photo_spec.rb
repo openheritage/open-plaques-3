@@ -1,6 +1,6 @@
 describe Photo, type: :model do
   it 'has a valid factory' do
-    expect(create :photo).to be_valid
+    expect(create(:photo)).to be_valid
   end
   describe '#title' do
     context 'with nothing set' do
@@ -48,16 +48,6 @@ describe Photo, type: :model do
         expect(@photo.attribution).to eq('&copy;  on the web')
       end
     end
-#    context 'of a Commons photo' do
-#      before do
-#        @photo = Photo.new(url: 'https://commons.wikimedia.org/wiki/File:Goderich_BCATP_Historical_Plaque.JPG')
-#        @photo.populate
-#      end
-#      it 'includes a commons licence statement' do
-#        expect(@photo.attribution).to eq(
-#          '&copy; \nSteveTheAirman on Wikimedia Commons CC BY-SA 3.0'
-#        )
-#      end
   end
 
   describe '#wikimedia_data' do
@@ -122,34 +112,11 @@ describe Photo, type: :model do
     context 'of a Geograph photo' do
       before do
         @photo = Photo.new(url: 'https://www.geograph.org.uk/photo/5561265')
-       @photo.populate
+        @photo.populate
       end
       it 'has a file url' do
         expect(@photo.file_url).to eq('https://s0.geograph.org.uk/geophotos/05/56/12/5561265_bc74db7d.jpg')
       end
     end
   end
-#  describe 'setting Flickr data' do
-#    context 'of a Flickr photo' do
-#      before do
-#        @photo = Photo.new(url: 'https://www.flickr.com/photos/josemoya/36584194011/in/album-72157667474637461/')
-#        @photo.populate
-#      end
-#      it 'has a file url' do
-#        expect(@photo.file_url).to eq('http://farm5.staticflickr.com/4396/36584194011_8178d33349_z.jpg')
-#      end
-#      it 'has a photo url' do
-#        expect(@photo.photo_url).to eq('http://www.flickr.com/photos/josemoya/36584194011/')
-#      end
-#      it 'has a photographer' do
-#        expect(@photo.photographer).to eq('José Moya')
-#      end
-#      it 'has a photographer url' do
-#        expect(@photo.photographer_url).to eq('https://www.flickr.com/photos/josemoya/')
-#      end
-#      it 'has a licence' do
-#        expect(@photo.licence).to be nil
-#      end
-#    end
-#  end
 end

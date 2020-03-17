@@ -46,29 +46,25 @@ xml.openplaques(){
     	    }
         end
         plaque.photos.each do |photo|
-          xml.photo(uri: photo_url(photo.id)) {
+          xml.photo(uri: photo_url(photo.id)) do
             xml.webpage(uri: photo.url)
             xml.fullsize(uri: photo.file_url)
             xml.thumbnail(uri: photo.thumbnail_url)
-            xml.photographer(uri: photo.photographer_url) {
+            xml.photographer(uri: photo.photographer_url) do
               begin
                 xml.text! photo.photographer
               rescue
                 xml.text! 'unknown'
               end
-            }
+            end
             if photo.shot_name
-              xml.shot(order: photo.shot_order) {
-                xml.text! photo.shot_name
-              }
+              xml.shot(order: photo.shot_order) { xml.text! photo.shot_name }
             end
             if photo.licence
-              xml.licence(uri: photo.licence.url) {
-                xml.text! photo.licence.name
-              }
+              xml.licence(uri: photo.licence.url) { xml.text! photo.licence.name }
             end
             xml.plaque(uri: plaque_url(photo.plaque)) if photo.plaque
-          }
+          end
         end
       }
 

@@ -1,7 +1,22 @@
 Style/FrozenStringLiteralComment:
   Enabled: false
-Metrics/BlockLength:
+Metrics/LineLength:
+  Max: 150
+AllCops:
   Exclude:
+    - app/views/**/*.*.builder
+    - 'bin/*'
+    - 'config/**/*.rb'
+    - 'db/**/*.rb'
+    - 'lib/**/*.*'
+    - 'log/**/*.*'
+    - 'node_modules/**/*'
+    - 'public/**/*'
+    - 'spec/**/*.rb'
+    - 'tmp/**/*.*'
+    - 'vendor/**/*'
+    - 'webapp/**/*'
     - 'Rakefile'
     - '**/*.rake'
-    - 'spec/**/*.rb'
+    - greatest_hits.rb
+    - bench_rails_memory_usage.rb

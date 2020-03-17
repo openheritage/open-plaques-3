@@ -22,82 +22,94 @@ class Role < ApplicationRecord
   before_save :fill_wikidata_id
   validates_presence_of :name, :slug
   validates_uniqueness_of :name, :slug
-  scope :by_popularity, -> { order("personal_roles_count DESC nulls last") }
-  scope :alphabetically, -> { order("name ASC nulls last") }
-  scope :name_starts_with, lambda {|term| where(["lower(name) LIKE ?", term.downcase + "%"]) }
-  scope :name_contains, lambda {|term| where(["lower(name) LIKE ?", "%" + term.downcase + "%"]) }
-  scope :name_is, lambda { |term| where(['lower(name) = ?', term.downcase]) }
+  scope :by_popularity, -> { order('personal_roles_count DESC nulls last') }
+  scope :alphabetically, -> { order('name ASC nulls last') }
+  scope :name_starts_with, ->(term) { where(['lower(name) LIKE ?', "#{term.downcase}%"]) }
+  scope :name_contains, ->(term) { where(['lower(name) LIKE ?', "%#{term.downcase}%"]) }
+  scope :name_is, ->(term) { where(['lower(name) = ?', term.downcase]) }
   scope :in_alphabetical_order, -> { order('name ASC') }
 
   include ApplicationHelper
 
   def related_roles
-    Role.where(['lower(name) != ? and (lower(name) LIKE ? or lower(name) LIKE ? or lower(name) LIKE ? )', name.downcase,
-    "#{name.downcase} %", "% #{name.downcase} %", "% #{name.downcase}"])
+    Role.where([
+      'lower(name) != ? and (lower(name) LIKE ? or lower(name) LIKE ? or lower(name) LIKE ? )',
+      name.downcase,
+      "#{name.downcase} %",
+      "% #{name.downcase} %",
+      "% #{name.downcase}"
+    ])
   end
 
   def self.types
-    ["person", "man", "woman", "animal", "thing", "group", "place", "relationship", "parent", "spouse", "child", "title", "letters", "military medal", "clergy"]
+    [
+      'person',
+      'man',
+      'woman',
+      'animal',
+      'thing',
+      'group',
+      'place',
+      'relationship',
+      'parent',
+      'spouse',
+      'child',
+      'title',
+      'letters',
+      'military medal',
+      'clergy'
+    ]
   end
 
   def person?
-    return false if animal? or thing? or group? or place?
-	  return true
+    !(animal? || thing? || group? || place?)
   end
 
   def animal?
-    return true if "animal" == role_type
-	  return false
+    role_type == 'animal'
   end
 
   def thing?
-    return true if "thing" == role_type
-    return false
+    role_type == 'thing'
   end
 
   def group?
-    return true if "group" == role_type
-    return false
+    role_type == 'group'
   end
 
   def place?
-    return true if "place" == role_type
-    return false
+    role_type == 'place'
   end
 
   def family?
-    return true if role_type == "parent"
-    return true if role_type == "child"
-    return true if role_type == "spouse"
-    # redundant roles
-    return true if name == "brother"
-    return true if name == "sister"
-    return true if name == "half-brother"
-    return true if name == "half-sister"
-    false
+    %w[parent child spouse].include?(role_type) ||
+      %w[brother sister half-brother half-sister].include?(name)
   end
 
   def type
-	  return "person" if person?
-	  return "animal" if animal?
-	  return "thing" if thing?
-	  return "group" if group?
-	  return "place" if place?
-	  return "?"
+    return 'person' if person?
+
+    return 'animal' if animal?
+
+    return 'thing' if thing?
+
+    return 'group' if group?
+
+    return 'place' if place?
+
+    '?'
   end
 
   def fill_wikidata_id
-    unless wikidata_id&.match /Q\d*$/
+    unless wikidata_id&.match(/Q\d*$/)
       self.wikidata_id = Wikidata.qcode(name)
       dbpedia_abstract
     end
-    if wikidata_id&.match(/Q\d*$/) && description.blank?
-      dbpedia_abstract
-    end
+    dbpedia_abstract if wikidata_id&.match(/Q\d*$/) && description.blank?
   end
 
   def wikidata_url
-    "https://www.wikidata.org/wiki/#{wikidata_id}" if wikidata_id && !wikidata_id&.blank? && wikidata_id != "Q"
+    "https://www.wikidata.org/wiki/#{wikidata_id}" if wikidata_id && !wikidata_id&.blank? && wikidata_id != 'Q'
   end
 
   def wikipedia_url
@@ -105,29 +117,27 @@ class Role < ApplicationRecord
   end
 
   def dbpedia_uri
-    wikipedia_url&.gsub("en.wikipedia.org/wiki","dbpedia.org/resource")&.gsub("https","http")
+    wikipedia_url&.gsub('en.wikipedia.org/wiki', 'dbpedia.org/resource')&.gsub('https', 'http')
   end
 
   def dbpedia_abstract
-    return description if !description.blank?
+    return description unless description.blank?
+
     return nil if dbpedia_uri.blank?
-    api = "#{dbpedia_uri.gsub("resource","data")}.json"
+
+    api = "#{dbpedia_uri.gsub('resource', 'data')}.json"
     begin
       response = open(api)
       resp = response.read
       parsed_json = JSON.parse(resp)
-      self.description = parsed_json["#{dbpedia_uri}"]['http://dbpedia.org/ontology/abstract'].find {|abstract| abstract['lang']=='en'}['value']
+      abstract = parsed_json[dbpedia_uri]['http://dbpedia.org/ontology/abstract']
+      self.description = abstract.find { |txt| txt['lang'] == 'en' }['value']
     rescue
     end
   end
 
   def relationship?
-    return true if "relationship" == role_type
-    return true if "parent" == role_type
-    return true if "spouse" == role_type
-    return true if "child" == role_type
-    return true if "group" == role_type
-    false
+    %w[relationship parent spouse child group].include?(role_type)
   end
 
   def used_as_a_prefix?
@@ -135,7 +145,7 @@ class Role < ApplicationRecord
   end
 
   def military_medal?
-    "military medal" == role_type
+    role_type == 'military medal'
   end
 
   def used_as_a_suffix?
@@ -143,7 +153,7 @@ class Role < ApplicationRecord
   end
 
   def letters
-    used_as_a_suffix? ? suffix : ""
+    used_as_a_suffix? ? suffix : ''
   end
 
   def abbreviated?
@@ -151,49 +161,50 @@ class Role < ApplicationRecord
   end
 
   def confers_honourific_title?
-    return true if "Baronet" == name
-    return true if "Baroness" == name
-    return true if "Knight Bachelor" == name
-    return true if "Knight of the Order of the Garter" == name
-    return true if "Knight of the Order of the Thistle" == name
-    return true if "Knight Commander of the Order of the Bath" == name
-    return true if "Knight Grand Cross of the Order of the Bath" == name
-    return true if "Knight Commander of the Order of St Michael and St George" == name
-    return true if "Knight Grand Cross of the Order of St Michael and St George" == name
-    return true if "Knight Commander of the Royal Victorian Order" == name
-    return true if "Knight Grand Cross of the Royal Victorian Order" == name
-    return true if "Knight Commander of the Order of the British Empire" == name
-    return true if "Knight Grand Cross of the Order of the British Empire" == name
-    return true if "Lady" == name
-    false
+    [
+      'Baronet',
+      'Baroness',
+      'Knight Bachelor',
+      'Knight of the Order of the Garter',
+      'Knight of the Order of the Thistle',
+      'Knight Commander of the Order of the Bath',
+      'Knight Grand Cross of the Order of the Bath',
+      'Knight Commander of the Order of St Michael and St George',
+      'Knight Grand Cross of the Order of St Michael and St George',
+      'Knight Commander of the Royal Victorian Order',
+      'Knight Grand Cross of the Royal Victorian Order',
+      'Knight Commander of the Order of the British Empire',
+      'Knight Grand Cross of the Order of the British Empire',
+      'Lady'
+    ].include?(name)
+  end
+
+  def ennobled_female?
+    [
+      'Baroness',
+      'Dame',
+      'Dame Commander of the Most Excellent Order of the British Empire',
+      'Dame Commander of the Royal Victorian Order',
+      'Empress',
+      'Lady',
+      'Queen'
+    ].include?(name) || name.start_with?('Viscountess')
   end
 
   def female?
-    return true if "woman" == role_type
-    return true if "wife" == name
-    return true if "sister" == name
-    return true if "half-sister" == name
-    return true if "daughter" == name
-    return true if "mother" == name
-    return true if "Baroness" == name
-    return true if "Dame" == name
-    return true if "Dame Commander of the Most Excellent Order of the British Empire" == name
-    return true if "Dame Commander of the Royal Victorian Order" == name
-    return true if "Empress" == name
-    return true if "Empress of India" == name
-    return true if "Lady" == name
-    return true if "Queen" == name
-    return true if "Woman Police Constable" == name
-    return true if name.start_with?("Viscountess")
-    false
+    role_type == 'woman' ||
+      %w[wife sister half-sister daughter mother].include?(name) ||
+      ennobled_female? ||
+      ['Woman Police Constable'].include?(name)
   end
 
   def male?
-    !self.female?
+    !female?
   end
 
   def full_name
-    return abbreviation + " - " + name if abbreviated?
+    return "#{abbreviation} - #{name}" if abbreviated?
+
     name
   end
 
@@ -202,39 +213,42 @@ class Role < ApplicationRecord
   end
 
   def sticky?
-    name == "President of the Royal Society" || prefix == "King" || prefix == "Queen"
+    name == 'President of the Royal Society' || prefix == 'King' || prefix == 'Queen'
   end
 
   def pluralize
-    full_name.include?(" of ") ?
+    if full_name.include?(' of ')
       name.split(/#| of /).first.pluralize + name.sub(/.*? of /, ' of ')
-      : name.pluralize
+    else
+      name.pluralize
+    end
   end
 
   def uri
-    "http://openplaques.org" + Rails.application.routes.url_helpers.role_path(self.slug, format: :json)
+    'http://openplaques.org' + Rails.application.routes.url_helpers.role_path(slug, format: :json)
   end
 
   def to_s
     name
   end
 
-  def as_json(options={})
-    options = {
-      only: [:name, :personal_roles_count, :role_type, :abbreviation],
-      methods: [:type, :full_name, :male?, :relationship?, :confers_honourific_title?]
-    } if !options || !options[:only]
+  def as_json(options = {})
+    if !options || !options[:only]
+      options = {
+        only: %i[name personal_roles_count role_type abbreviation],
+        methods: %i[type full_name male? relationship? confers_honourific_title?]
+      }
+    end
     super options
   end
 
   private
 
-    def update_index
-      self.index = self.name[0,1].downcase
-    end
+  def update_index
+    self.index = name[0, 1].downcase
+  end
 
-    def filter_name
-      self.name = self.name.gsub(/\.?\??/, "").strip
-    end
-
+  def filter_name
+    self.name = name.gsub(/\.?\??/, '').strip
+  end
 end

@@ -11,11 +11,13 @@ require 'rspec/rails'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
-Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+Dir[Rails.root.join('spec/support/**/*.rb')].sort.each { |f| require f }
 
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.maintain_test_schema!
+
+DatabaseCleaner.allow_remote_database_url = true
 
 RSpec.configure do |config|
   # ## Mock Framework
@@ -56,7 +58,6 @@ RSpec.configure do |config|
   end
 end
 
-
 RSpec::Matchers.define :include_one_of do |*elements|
   match do |actual|
     @included = []
@@ -67,7 +68,7 @@ RSpec::Matchers.define :include_one_of do |*elements|
   end
 
   failure_message do |actual|
-    "expected \n  \"#{actual}\"\nto include one of \n  \"#{expected.join("\"\n  \"")}\""
+    "expected \n\"#{actual}\"\nto include 1 of \n\"#{expected.join("\"\n\"")}\""
   end
 end
 
@@ -81,6 +82,6 @@ RSpec::Matchers.define :be_one_of do |*elements|
   end
 
   failure_message do |actual|
-    "expected \n  \"#{actual}\"\nto include one of \n  \"#{expected.join("\"\n  \"")}\""
+    "expected \n\"#{actual}\"\nto include 1 of\n\"#{expected.join("\"\n\"")}\""
   end
 end
