@@ -2,7 +2,7 @@ class Photographer
   attr_accessor :id, :photos_count, :photos, :rank, :url
 
   def photos
-    return Photo.where(photographer: self.id)
+    Photo.where(photographer: id)
   end
 
   def plaques
@@ -14,11 +14,11 @@ class Photographer
   end
 
   def self.all
-    data = Photo.where.not(plaque_id: nil).group('photographer').order('count_plaque_id desc').distinct.count(:plaque_id)
+    data = Photo.where.not(plaque_id: nil).group(:photographer).order(count_plaque_id: :desc).distinct.count(:plaque_id)
     @photographers = []
     data.each do |d|
       photographer = Photographer.new
-      photographer.id = d[0].to_s.gsub(/\_/,'.')
+      photographer.id = d[0].to_s.gsub(/\_/, '.')
       photographer.photos_count = d[1]
       @photographers << photographer
     end
@@ -26,11 +26,11 @@ class Photographer
   end
 
   def self.top50
-    data = Photo.where.not(plaque_id: nil).group('photographer').order('count_plaque_id desc').distinct.count(:plaque_id)
+    data = Photo.where.not(plaque_id: nil).group(:photographer).order(count_plaque_id: :desc).distinct.count(:plaque_id)
     @photographers = []
     data.each {|d|
       photographer = Photographer.new
-      photographer.id = d[0].to_s.gsub(/\_/,'.').gsub("'","’")
+      photographer.id = d[0].to_s.gsub(/\_/, '.').gsub("'", "’")
       photographer.photos_count = d[1]
       photographer.rank = @photographers.size + 1
       @photographers << photographer
@@ -38,5 +38,4 @@ class Photographer
     }
     @photographers
   end
-
 end

@@ -1,4 +1,6 @@
 # -*- encoding : utf-8 -*-
+require 'aws-sdk-translate'
+
 # A physical commemorative plaque, which is either currently installed, or
 # was once installed on a building, site or monument. Our definition of plaques is quite wide,
 # encompassing 'traditional' blue plaques that commemorate a historic person's connection to a
@@ -20,15 +22,13 @@
 # * +photos_count+ -
 # * +reference+ - An official reference number or identifier for the self. Sometimes marked on the actual plaque itself, sometimes only in promotional material. Optional.
 # * +series_ref+ - if part of a series does it have a reference number/id?
-require 'aws-sdk-translate'
-
 class Plaque < ApplicationRecord
   belongs_to :area, counter_cache: true, optional: true
   belongs_to :colour, counter_cache: true, optional: true
   belongs_to :language, counter_cache: true, optional: true
   belongs_to :series, counter_cache: true, optional: true
   has_many :personal_connections, dependent: :destroy
-  has_many :photos, -> { where(of_a_plaque: true).order('shot ASC')}, inverse_of: :plaque
+  has_many :photos, -> { where(of_a_plaque: true).order(:shot) }, inverse_of: :plaque
   has_many :sponsorships, dependent: :destroy
   has_many :organisations, through: :sponsorships
   has_one :pick
@@ -42,35 +42,37 @@ class Plaque < ApplicationRecord
   before_save :unshout
   before_save :translate
   accepts_nested_attributes_for :photos, reject_if: proc { |attributes| attributes['photo_url'].blank? }
-  scope :current, -> { where(is_current: true).order('id desc') }
-  scope :geolocated, ->  { where(["plaques.latitude IS NOT NULL"]) }
-  scope :ungeolocated, -> { where(latitude: nil).order('id DESC') }
-  scope :photographed, -> { where("photos_count > 0") }
-  scope :unphotographed, -> { where(photos_count: 0, is_current: true).order("id DESC") }
-  scope :coloured, -> { where("colour_id IS NOT NULL") }
+  scope :current, -> { where(is_current: true).order(id: :desc) }
+  scope :geolocated, -> { where(['plaques.latitude IS NOT NULL']) }
+  scope :ungeolocated, -> { where(latitude: nil).order(id: :desc) }
+  scope :photographed, -> { where('photos_count > 0') }
+  scope :unphotographed, -> { where(photos_count: 0, is_current: true).order(id: :desc) }
+  scope :coloured, -> { where('colour_id IS NOT NULL') }
   scope :uncoloured, -> { where(colour_id: nil) }
-  scope :photographed_not_coloured, -> { where(["photos_count > 0 AND colour_id IS NULL"]) }
-  scope :geo_no_location, -> { where(["latitude IS NOT NULL AND address IS NULL"]) }
-  scope :detailed_address_no_geo, -> { where(latitude: nil).where("address is not null") }  # TODO fix this
-  scope :unconnected, -> { where(personal_connections_count: 0).order("id DESC") }
-  scope :connected, -> { where("personal_connections_count > 0").order("id DESC") }
+  scope :photographed_not_coloured, -> { where(['photos_count > 0 AND colour_id IS NULL']) }
+  scope :geo_no_location, -> { where(['latitude IS NOT NULL AND address IS NULL']) }
+  scope :detailed_address_no_geo, -> { where(latitude: nil).where('address IS NOT NULL') } # TODO: fix this
+  scope :unconnected, -> { where(personal_connections_count: 0).order(id: :desc) }
+  scope :connected, -> { where('personal_connections_count > 0').order(id: :desc) }
   scope :no_description, -> { where("description = '' OR description IS NULL") }
-  scope :partial_inscription, -> { where(inscription_is_stub: true).order("id DESC") }
-  scope :partial_inscription_photo, -> { where(photos_count: 1..99999, inscription_is_stub: true).order("id DESC") }
-  scope :no_english_version, -> { where("language_id > 1").where(inscription_is_stub: false, inscription_in_english: nil) }
+  scope :partial_inscription, -> { where(inscription_is_stub: true).order(id: :desc) }
+  scope :partial_inscription_photo, -> { where(photos_count: 1..99_999, inscription_is_stub: true).order(id: :desc) }
+  scope :no_english_version, -> { where('language_id > 1').where(inscription_is_stub: false, inscription_in_english: nil) }
   scope :random, -> { order(Arel.sql('random()')) }
-  scope :in_series_ref_order, -> { order('series_ref ASC') }
+  scope :in_series_ref_order, -> { order(:series_ref) }
 
   include ApplicationHelper, ActionView::Helpers::TextHelper
 
   def coordinates
-    geolocated? ? "#{latitude},#{longitude}" : ""
+    geolocated? ? "#{latitude},#{longitude}" : ''
   end
 
   def full_address
     a = address ||+ ''
-    a += ", " + area&.name if area
-    a += ", " + area.country&.name if area
+    if area
+      a += ", #{area&.name}"
+      a += ", #{area.country&.name}"
+    end
     a
   end
 
@@ -88,7 +90,7 @@ class Plaque < ApplicationRecord
 
   def erected_at_string=(date)
     if date.length == 4
-      self.erected_at = Date.parse(date + "-01-01")
+      self.erected_at = Date.parse(date + '-01-01')
     else
       self.erected_at = date
     end
@@ -99,25 +101,25 @@ class Plaque < ApplicationRecord
   end
 
   def roughly_geolocated?
-    !self.geolocated? || (self.geolocated? && !self.is_accurate_geolocation)
+    !geolocated? || (geolocated? && !is_accurate_geolocation)
   end
 
   def photographed?
-    photos_count > 0
+    photos_count.positive?
   end
 
   def people
-    if self.id
+    if id
       sql = "select distinct people.*
         from personal_connections as pc_main
         inner join people on people.id = pc_main.person_id
-        where pc_main.plaque_id = #{self.id}"
+        where pc_main.plaque_id = #{id}"
       @people ||= Person.find_by_sql(sql)
     else
       # not been saved yet
-      people = Array.new
+      people = []
       personal_connections.each do |personal_connection|
-        if personal_connection.person != nil && personal_connection.person.name != ""
+        if !personal_connection.person.nil? && personal_connection.person.name != ''
           people << personal_connection.person
         end
       end
@@ -132,88 +134,74 @@ class Plaque < ApplicationRecord
       people.first(number_of_subjects - 1).each do |person|
         first_people << person[:name]
       end
-      first_people << pluralize(people.size - number_of_subjects + 1, "other")
+      first_people << pluralize(people.size - number_of_subjects + 1, 'other')
       first_people.to_sentence
     elsif people.size > number_of_subjects
       first_4_people = []
       people.first(number_of_subjects).each do |person|
         first_4_people << person[:name]
       end
-      first_4_people << pluralize(people.size - number_of_subjects, "other")
+      first_4_people << pluralize(people.size - number_of_subjects, 'other')
       first_4_people.to_sentence
-    elsif people.size > 0
+    elsif !people.empty?
       people.collect(&:name).to_sentence
     end
   end
 
-  def as_json(options={})
-    options =
-    {
-      only: [:id, :inscription, :erected_at, :is_current, :updated_at, :latitude, :longitude],
-      include:
-      {
-        photos:
-        {
+  def as_json(options = {})
+    options = {
+      only: %i[id inscription erected_at is_current updated_at latitude longitude],
+      include: {
+        photos: {
           only: [],
-          methods: [:uri, :thumbnail_url, :shot_name, :attribution]
+          methods: %i[uri thumbnail_url shot_name attribution]
         },
-        organisations:
-        {
+        organisations: {
           only: [:name],
           methods: [:uri]
         },
-        language:
-        {
-          only: [:name, :alpha2]
+        language: {
+          only: %i[name alpha2]
         },
-        area:
-        {
+        area: {
           only: :name,
-          include:
-          {
-            country:
-            {
-              only: [:name, :alpha2],
+          include: {
+            country: {
+              only: %i[name alpha2],
               methods: :uri
             }
           },
           methods: :uri
         },
-        people:
-        {
+        people: {
           only: [],
-          methods: [:uri, :full_name]
+          methods: %i[uri full_name]
         },
-        see_also:
-        {
+        see_also: {
           only: [],
-          methods: [:uri]
+          methods: %i[uri]
         }
       },
-      methods: [:uri, :title, :address, :subjects, :colour_name, :machine_tag, :geolocated?, :photographed?, :thumbnail_url]
+      methods: %i[uri title address subjects colour_name machine_tag geolocated? photographed? thumbnail_url]
     } if !options || !options[:only]
     super options
   end
 
-  def as_geojson(options={})
-    options =
-    {
-      only: [:id, :uri, :inscription]
-    } if !options || !options[:only]
+  def as_geojson(options = {})
+    options = { only: %i[id uri inscription] } if !options || !options[:only]
     {
       type: 'Feature',
-      geometry:
-      {
+      geometry: {
         type: 'Point',
-        coordinates: [self.longitude, self.latitude],
-        is_accurate: self.is_accurate_geolocation
+        coordinates: [longitude, latitude],
+        is_accurate: is_accurate_geolocation
       },
       properties: as_json(options)
     }
   end
 
-  def as_wkt()
-    geolocated? ? "POINT(#{self.longitude} #{self.latitude})" : ""
+  def as_wkt
+    geolocated? ? "POINT(#{longitude} #{latitude})" : ''
   end
 
   def machine_tag
@@ -221,7 +209,7 @@ class Plaque < ApplicationRecord
   end
 
   def wikimedia_tag
-    "{{Open Plaques|plaqueid=" + id.to_s + "}}"
+    "{{Open Plaques|plaqueid=#{id}}}"
   end
 
   def latitude
@@ -233,27 +221,23 @@ class Plaque < ApplicationRecord
   end
 
   def title
-    begin
-      if people.size > 4
-        first_4_people = []
-        people.first(4).each do |person|
-          first_4_people << person[:name]
-        end
-        first_4_people << pluralize(people.size - 4, "other")
-        first_4_people.to_sentence
-      elsif people.size > 0
-        t = people.collect(&:name).to_sentence
-        t += " " + colour_name if colour_name && "unknown"!=colour_name
-        t + " plaque"
-      elsif colour_name && "unknown"!=colour_name
-        colour_name.to_s.capitalize + " plaque № #{id}"
-      elsif id != nil
-        "plaque № #{id}"
-      else
-        "plaque"
-      end # << " in " + area.name if area
-    rescue StandardError
+    if people.size > 4
+      first_4_people = []
+      people.first(4).each do |person|
+        first_4_people << person[:name]
+      end
+      first_4_people << pluralize(people.size - 4, 'other')
+      first_4_people.to_sentence
+    elsif people.any?
+      t = people.collect(&:name).to_sentence
+      t += ' ' + colour_name if colour_name && colour_name != 'unknown'
+      t + ' plaque'
+    elsif colour_name && colour_name != 'unknown'
+      "#{colour_name.to_s.capitalize} plaque № #{id}"
+    elsif !id.nil?
       "plaque № #{id}"
+    else
+      'plaque'
     end
   end
 
@@ -270,24 +254,21 @@ class Plaque < ApplicationRecord
   end
 
   def main_photo_reverse
-    photos.reverse_detail_order.first if !photos.empty?
+    photos.reverse_detail_order.first unless photos.empty?
   end
 
   def thumbnail_url
-    return nil if main_photo == nil
-    main_photo.thumbnail_url != "" ? main_photo.thumbnail_url : main_photo.file_url
+    return nil if main_photo.nil?
+
+    main_photo.thumbnail_url != '' ? main_photo.thumbnail_url : main_photo.file_url
   end
 
   def foreign?
-    begin
-      language.alpha2 != "en"
-    rescue
-      false
-    end
+    !(language.nil? || language&.alpha2 == 'en')
   end
 
   def see_also
-    if self.id
+    if id
       sql = "select distinct
         plaques.id,
         plaques.inscription,
@@ -298,10 +279,10 @@ class Plaque < ApplicationRecord
         inner join personal_connections as pc_related
            on pc_related.person_id = pc_main.person_id
         inner join plaques on plaques.id = pc_related.plaque_id
-        where pc_main.plaque_id = #{self.id}
-          and pc_related.plaque_id != #{self.id}"
+        where pc_main.plaque_id = #{id}
+          and pc_related.plaque_id != #{id}"
       @related_plaques ||= Plaque.find_by_sql(sql)
-      ActiveRecord::Associations::Preloader.new.preload(@related_plaques, [:photos, :area])
+      ActiveRecord::Associations::Preloader.new.preload(@related_plaques, %i[photos area])
       @related_plaques
     else
       # not been saved yet
@@ -316,7 +297,9 @@ class Plaque < ApplicationRecord
 
   def erected?
     return false if erected_at? && erected_at.year > Date.today.year
-    return false if erected_at? && erected_at.day!=1 && erected_at.month!=1 && erected_at > Date.today
+
+    return false if erected_at? && erected_at.day != 1 && erected_at.month != 1 && erected_at > Date.today
+
     true
   end
 
@@ -325,9 +308,9 @@ class Plaque < ApplicationRecord
       begin
         client = Aws::Translate::Client.new(region: 'eu-west-1')
         resp = client.translate_text({
-          text: "#{inscription}",
-          source_language_code: "#{language.alpha2}",
-          target_language_code: 'en',
+          text: inscription,
+          source_language_code: language.alpha2,
+          target_language_code: 'en'
         })
         self.inscription_in_english = "#{resp.translated_text} [AWS Translate]"
       rescue
@@ -348,35 +331,36 @@ class Plaque < ApplicationRecord
     longitude = lon_max..lon_min
     tile = '/plaques/'
     tile += options + '/' if options && options != '' && options != 'all'
-    tile += "tiles/#{zoom.to_s}/#{xtile.to_s}/#{ytile.to_s}"
+    tile += "tiles/#{zoom}/#{xtile}/#{ytile}"
     puts "Rails query #{tile}"
-#    Rails.cache.fetch(tile, expires_in: 5.minutes) do
-      if options == 'unphotographed'
-        unphotographed
-          .select(:id, :inscription, :latitude, :longitude, :is_accurate_geolocation)
-          .where(latitude: latitude, longitude: longitude)
-      elsif options == 'unconnected'
-        unconnected
-          .select(:id, :inscription, :latitude, :longitude, :is_accurate_geolocation)
-          .where(latitude: latitude, longitude: longitude)
-      else
-        self.select(:id, :inscription, :latitude, :longitude, :is_accurate_geolocation)
-          .where(latitude: latitude, longitude: longitude)
-      end
-#    end
+    #    Rails.cache.fetch(tile, expires_in: 5.minutes) do
+    if options == 'unphotographed'
+      unphotographed
+        .select(:id, :inscription, :latitude, :longitude, :is_accurate_geolocation)
+        .where(latitude: latitude, longitude: longitude)
+    elsif options == 'unconnected'
+      unconnected
+        .select(:id, :inscription, :latitude, :longitude, :is_accurate_geolocation)
+        .where(latitude: latitude, longitude: longitude)
+    else
+      self
+        .select(:id, :inscription, :latitude, :longitude, :is_accurate_geolocation)
+        .where(latitude: latitude, longitude: longitude)
+    end
+    #    end
   end
 
   def distance_to(thing)
-    distance_between(self.latitude, self.longitude, thing.latitude, thing.longitude)
+    distance_between(latitude, longitude, thing.latitude, thing.longitude)
   end
 
   def distance_between(lat1, lon1, lat2, lon2)
-    rad_per_deg = Math::PI / 180
+    rad_per_deg = Math.PI / 180
     rm = 6371000 # Earth radius in meters
     lat1_rad, lat2_rad = lat1.to_f * rad_per_deg, lat2.to_f * rad_per_deg
     lon1_rad, lon2_rad = lon1.to_f * rad_per_deg, lon2.to_f * rad_per_deg
-    a = Math.sin((lat2_rad - lat1_rad) / 2) ** 2 + Math.cos(lat1_rad) * Math.cos(lat2_rad) * Math.sin((lon2_rad - lon1_rad) / 2) ** 2
-    c = 2 * Math::atan2(Math::sqrt(a), Math::sqrt(1 - a))
+    a = Math.sin((lat2_rad - lat1_rad) / 2)**2 + Math.cos(lat1_rad) * Math.cos(lat2_rad) * Math.sin((lon2_rad - lon1_rad) / 2)**2
+    c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
     (rm * c).round # Delta in meters
   end
 
@@ -390,7 +374,7 @@ class Plaque < ApplicationRecord
   end
 
   def usa_townify
-    return unless (area.nil? && us_state)
+    return unless area.nil? && us_state
 
     usa = Country.find_by_alpha2('us')
     state_towns = Area.where("country_id = #{usa.id} and name like '%, #{us_state}'")
@@ -419,17 +403,17 @@ class Plaque < ApplicationRecord
   def self.get_lat_lng_for_number(zoom, xtile, ytile)
     n = 2.0**zoom
     lon_deg = xtile / n * 360.0 - 180.0
-    lat_rad = Math::atan(Math::sinh(Math::PI * (1 - 2 * ytile / n)))
-    lat_deg = 180.0 * (lat_rad / Math::PI)
+    lat_rad = Math.atan(Math.sinh(Math.PI * (1 - 2 * ytile / n)))
+    lat_deg = 180.0 * (lat_rad / Math.PI)
     {lat_deg: lat_deg, lng_deg: lon_deg}
   end
 
   # from OpenStreetMap documentation
   def self.get_tile_number(lat_deg, lng_deg, zoom)
-    lat_rad = lat_deg/180 * Math::PI
+    lat_rad = lat_deg/180 * Math.PI
     n = 2.0**zoom
     x = ((lng_deg + 180.0) / 360.0 * n).to_i
-    y = ((1.0 - Math::log(Math::tan(lat_rad) + (1 / Math::cos(lat_rad))) / Math::PI) / 2.0 * n).to_i
+    y = ((1.0 - Math.log(Math.tan(lat_rad) + (1 / Math.cos(lat_rad))) / Math.PI) / 2.0 * n).to_i
     { x: x, y: y }
   end
 

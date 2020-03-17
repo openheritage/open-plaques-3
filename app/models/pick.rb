@@ -9,13 +9,28 @@
 # * +proposer+ - person who proposed it
 class Pick < ApplicationRecord
   belongs_to :plaque
-
   validates_presence_of :plaque_id
   validates_uniqueness_of :plaque_id
-  scope :current, -> { where(["last_featured > ? and last_featured < ?", (Date.today - 1.day).strftime + " 23:59:59 UTC" , (Date.today + 1.day).strftime + " 00:00:00 UTC"]).order("last_featured DESC") }
-  scope :never_been_featured, -> { where(["last_featured is null or featured_count = 0 or featured_count is null"]) }
-  scope :preferably_today, -> { where(["feature_on > ? and feature_on < ?", (Date.today - 1.day).strftime + " 23:59:59 UTC" , (Date.today + 1.day).strftime + " 00:00:00 UTC"]).order("featured_count ASC") }
-  scope :least_featured, -> { where(["last_featured < ?", Date.today - 1.week]).order("featured_count ASC") }
+  scope :current, -> { 
+    where([
+        'last_featured > ? and last_featured < ?',
+        (Date.today - 1.day).strftime + ' 23:59:59 UTC',
+        (Date.today + 1.day).strftime + ' 00:00:00 UTC'
+    ])
+    .order(last_featured: :desc)
+  }
+  scope :never_been_featured, -> {
+    where(['last_featured is null or featured_count = 0 or featured_count is null'])
+  }
+  scope :preferably_today, -> {
+    where([
+      'feature_on > ? and feature_on < ?',
+      (Date.today - 1.day).strftime + ' 23:59:59 UTC',
+      (Date.today + 1.day).strftime + ' 00:00:00 UTC'
+    ])
+    .order(featured_count: :asc)
+  }
+  scope :least_featured, -> { where(['last_featured < ?', Date.today - 1.week]).order(featured_count: :asc) }
 
   def self.todays
     @todays = Pick.current.first

@@ -574,7 +574,7 @@ describe Person, type: :model do
 
   describe '#dbpedia_abstract' do
     context 'with no wikidata id' do
-      it 'has no Wikidata' do
+      it 'has no dbpedia' do
         expect(john_smith.dbpedia_abstract).to eq(nil)
       end
     end

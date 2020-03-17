@@ -2,6 +2,28 @@ describe Plaque, type: :model do
   it 'has a valid factory' do
     expect(create(:plaque)).to be_valid
   end
+  describe '#foreign?' do
+    context 'built' do
+      let(:plaque) { build :plaque }
+      it 'is not foreign' do
+        expect(plaque.foreign?).to be_falsey
+      end
+    end
+    context 'in English' do
+      let(:english) { build :language, alpha2: 'en' }
+      let(:plaque) { build :plaque, language: english }
+      it 'is not foreign' do
+        expect(plaque.foreign?).to be_falsey
+      end
+    end
+    context 'in Russian' do
+      let(:russian) { build :language, alpha2: 'ru' }
+      let(:plaque) { build :plaque, language: russian}
+      it 'is foreign' do
+        expect(plaque.foreign?).to be_truthy
+      end
+    end
+  end
   describe '#machine_tag' do
     context 'built' do
       let(:plaque) { build :plaque }
