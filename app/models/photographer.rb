@@ -1,3 +1,4 @@
+# A person who took a photo (and is the copyright holder)
 class Photographer
   attr_accessor :id, :photos_count, :rank, :url
 
@@ -30,7 +31,7 @@ class Photographer
     @photographers = []
     data.each do |d|
       photographer = Photographer.new
-      photographer.id = d[0].to_s.gsub(/\_/, '.').gsub("'", "’")
+      photographer.id = d[0].to_s.gsub(/\_/, '.').gsub(/'/, /’/)
       photographer.photos_count = d[1]
       photographer.rank = @photographers.size + 1
       @photographers << photographer

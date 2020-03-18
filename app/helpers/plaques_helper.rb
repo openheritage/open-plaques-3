@@ -37,43 +37,38 @@ module PlaquesHelper
 
   def find_flickr_photos_non_api(plaque)
     url = "https://www.flickr.com/search/?tags=#{plaque.machine_tag}%20"
-    response = ""
+    response = ''
     open(url){|f| response = f.read }
     pics = response.match( /\[{"_flickrModelRegistry":"photo-lite-models".*?\]/ )
-    pics = "[]" if pics == nil
+    pics = '[]' if pics.nil?
     json_parsed = JSON.parse("{\"data\":#{pics}}")
     json_parsed['data'].each do |pic|
       photo_url = "https://www.flickr.com/photos/#{pic['ownerNsid']}/#{pic['id']}/"
-      @photo = Photo.find_by_url(photo_url) || Photo.find_by_url(photo_url.sub("https:","http:"))
-      if @photo
-#        puts "we've already got #{photo_url}"
-      else
-        @photo = Photo.new(url: photo_url, plaque: plaque)
-        @photo.populate
-        @photo.save
-      end
+      @photo = Photo.find_by_url(photo_url) || Photo.find_by_url(photo_url.sub('https:', 'http:'))
+      next if @photo
+
+      @photo = Photo.new(url: photo_url, plaque: plaque)
+      @photo.populate
+      @photo.save
     end
   end
 
   # pass null plaque and flickr_user_id to search all machinetagged photos on Flickr
   def find_photo_by_machinetag(plaque, flickr_user_id)
-#    key = FLICKR_KEY
-    key = "86c115028094a06ed5cd19cfe72e8f8b"
+    key = '86c115028094a06ed5cd19cfe72e8f8b'
     repeat = plaque ? 1 : 20 # 100 per page, we will check the 2000 most recently created Flickr images
     repeat.times do |page|
-      machine_tag = plaque ? plaque.machine_tag : "openplaques:id="
-      url = "https://api.flickr.com/services/rest/?api_key=#{key}&method=flickr.photos.search&page=#{page.to_s}&content_type=1&machine_tags=#{machine_tag}&extras=date_taken,owner_name,license,geo,machine_tags"
-      if (flickr_user_id)
-        url += "&user_id=#{flickr_user_id}"
-      end
-      puts "Flickr: #{url}"
-      response = open(url)
+      machine_tag = plaque ? plaque.machine_tag : 'openplaques:id='
+      api = "https://api.flickr.com/services/rest/?api_key=#{key}&method=flickr.photos.search&page=#{page}&content_type=1&machine_tags=#{machine_tag}&extras=date_taken,owner_name,license,geo,machine_tags"
+      api += "&user_id=#{flickr_user_id}" if flickr_user_id
+      puts "Flickr: #{api}"
+      response = URI.parse(api).open
       doc = REXML::Document.new(response.read)
       doc.elements.each('//rsp/photos/photo') do |photo|
         $stdout.flush
         @photo = nil
         photo_url = "https://www.flickr.com/photos/#{photo.attributes['owner']}/#{photo.attributes['id']}/"
-        @photo = Photo.find_by_url(photo_url) || Photo.find_by_url(photo_url.sub("https:","http:"))
+        @photo = Photo.find_by_url(photo_url) || Photo.find_by_url(photo_url.sub('https:', 'http:'))
         if @photo
           # we've already got that one
         else
@@ -84,31 +79,31 @@ module PlaquesHelper
             @photo.populate
             @photo.save
           else
-            puts "Photo's machine tag doesn't match a plaque."
+            puts 'Machine tag does not match a plaque.'
           end
         end
       end
     end
   end
 
-  def crawl_kentucky()
+  def crawl_kentucky
     agent = Mechanize.new
     page = agent.get('http://migration.kentucky.gov/kyhs/hmdb/MarkerSearch.aspx')
     form = page.form('aspnetForm')
     field = form.field_with(name: 'ctl00$MainContentPlaceHolder$searchCriteriaControl$numberTextBox')
     submit_button = form.button_with(name: 'ctl00$MainContentPlaceHolder$searchCriteriaControl$searchByNumberButton')
 
-    kentucky_historical_society = Organisation.find_by_slug("kentucky_historical_society")
-    kentucky_highways_department = Organisation.find_by_slug("kentucky_highways_department")
-    kentucky_historical_marker = Series.find_by_name("Kentucky Historical Marker")
-    usa = Country.find_by_name("United States")
-    black = Colour.find_by_name("black")
-    english = Language.find_by_name("English")
+    kentucky_historical_society = Organisation.find_by_slug('kentucky_historical_society')
+    kentucky_highways_department = Organisation.find_by_slug('kentucky_highways_department')
+    kentucky_historical_marker = Series.find_by_name('Kentucky Historical Marker')
+    usa = Country.find_by_name('United States')
+    black = Colour.find_by_name('black')
+    english = Language.find_by_name('English')
     (1..2533).each do |series_ref|
       field.value = series_ref
       output = agent.submit(form, submit_button)
       marker_number = output.search('.//tr[contains(th,"Marker Number")]/td/text()').text.strip
-      if marker_number == ""
+      if marker_number == ''
         puts "#{series_ref} does not exist"
       else
         title = output.search('.//caption').text.strip
@@ -116,7 +111,7 @@ module PlaquesHelper
         location = output.search('.//tr[contains(th,"Location")]/td/text()').text.strip
         puts "#{marker_number} #{location} #{inscription}"
         plaque = Plaque.where(series_id: kentucky_historical_marker.id, series_ref: series_ref).first
-        plaque = Plaque.new() if !plaque
+        plaque = Plaque.new unless plaque
         plaque.address = location
         plaque.inscription = "#{title}. #{inscription}"
         plaque.colour = black
@@ -124,35 +119,35 @@ module PlaquesHelper
         plaque.series = kentucky_historical_marker
         plaque.series_ref = marker_number
         known_names = [
-          "Athens","Augusta",
-          "Bardstown",
-          "Brandenburg","Brownsville",
-          "Cloverport",
-          "Danville",
-          "Elizabethtown","Elkhorn City",
-          "Frankfort",
-          "Georgetown","Glasgow","Grants Lick","Greensburg","Greenville",
-          "Hopkinsville",
-          "Lebanon","Lexington","Louisville",
-          "Maysville","Monticello",
-          "Paducah",
-          "Radcliff","Russellville",
-          "Sulphur Well",
-          "Williamsburg"
+          'Athens', 'Augusta',
+          'Bardstown',
+          'Brandenburg', 'Brownsville',
+          'Cloverport',
+          'Danville',
+          'Elizabethtown', 'Elkhorn City',
+          'Frankfort',
+          'Georgetown', 'Glasgow', 'Grants Lick', 'Greensburg', 'Greenville',
+          'Hopkinsville',
+          'Lebanon', 'Lexington', 'Louisville',
+          'Maysville', 'Monticello',
+          'Paducah',
+          'Radcliff', 'Russellville',
+          'Sulphur Well',
+          'Williamsburg'
         ]
         known_names.each do |known_name|
-          if (location.include?(known_name))
-            area = Area.find_or_create_by(name: "#{known_name}, KY")
-            if (!area.country)
-              area.country = usa
-              area.save
-            end
-            plaque.area = area
-            if plaque.address.end_with?(", #{known_name}")
-              plaque.address = plaque.address.reverse.sub(", #{known_name}".reverse, "").reverse
-            end
-            break
+          next unless location.include?(known_name)
+
+          area = Area.find_or_create_by(name: "#{known_name}, KY")
+          unless area.country
+            area.country = usa
+            area.save
           end
+          plaque.area = area
+          if plaque.address.end_with?(", #{known_name}")
+            plaque.address = plaque.address.reverse.sub(", #{known_name}".reverse, '').reverse
+          end
+          break
         end
         plaque.save
         s = Sponsorship.find_or_create_by(plaque_id: plaque.id, organisation_id: kentucky_historical_society.id)
@@ -171,14 +166,14 @@ module PlaquesHelper
       return
     end
     marker_number = output.search('.//input[@name="txtID"]/@value').text.strip
-    if marker_number == ""
+    if marker_number == ''
       puts "#{series_ref} does not exist"
     else
       title = output.search('.//input[@name="txtTitle"]/@value').text.titlecase.strip
       inscription = output.search('.//textarea[@name="txtMarkerText"]').text.strip
       location = output.search('.//textarea[@name="txtLocation"]').text.strip
       location += ", #{state}"
-      created = output.search('.//input[@name="txtYear"]/@value').text.strip
+      # created = output.search('.//input[@name="txtYear"]/@value').text.strip
       puts "#{series.name} number #{marker_number} at #{location} == #{title}"
 
       plaque = Plaque.find_or_create_by(series_id: series.id, series_ref: series_ref)
@@ -198,14 +193,14 @@ module PlaquesHelper
   end
 
   def crawl_nevada
-    j = JSON.parse(open("http://shpo.nv.gov/historical-markers-json").read)
+    j = JSON.parse(open('http://shpo.nv.gov/historical-markers-json').read)
     j.each do |js|
-      nevada(js['marker_number'], js['slug'], js['latitude'], js['longitude'], js['city'], js['county'])
+      nevada(js['marker_number'], js['slug'], js['latitude'], js['longitude'], js['city'])
     end
   end
 
   # http://shpo.nv.gov/historical-markers-json
-  def nevada(marker_number, slug, latitude, longitude, city, county)
+  def nevada(marker_number, slug, latitude, longitude, city)
     begin
       output = Nokogiri::HTML(open("http://shpo.nv.gov/nevadas-historical-markers/historical-markers/#{slug}"))
     rescue OpenURI::HTTPError
@@ -213,12 +208,12 @@ module PlaquesHelper
       return
     end
     not_found = output.search('.//h1').text.strip
-    if not_found == "404"
+    if not_found == '404'
       puts "#{slug} does not exist"
     else
       sponsors = []
       series = Series.find 59
-      state = "NV"
+      state = 'NV'
       title = output.search('.//article/h1').text.titlecase.strip
       inscription = output.search('.//article/p').text.strip
       inscription += output.search('.//article/h3').text.strip
@@ -226,20 +221,21 @@ module PlaquesHelper
       area = Area.find_or_create_by(country: usa, name: "#{city}, #{state}")
       puts "#{series.name} number #{marker_number} at #{area.name} == #{title}"
       plaque = Plaque.find_by(series_id: series.id, series_ref: marker_number)
-      if (plaque)
+      if plaque
         puts "#{series.name} number #{marker_number} already exists"
       else
         plaque = Plaque.new(series_id: series.id, series_ref: marker_number, area: area, latitude: latitude, longitude: longitude) if !plaque
         if /MARKER/.match(inscription)
           matches = /([\w\W]*)([\bNEVADA\b\s]*[\bSTATE OF NEVADA\b\s]*[STATE\b\s]*[\bCENTENNIAL\b\s]*[\bHISTORIC[AL]*\b\s]*MA[R]*KER)\s(NO[.]*|number|NUMBER)\W*(\d*)\W*(.*)\W*(.*)\W*(.*)\W*(.*)\W*(.*)\W*/i.match(inscription)
           plaque.inscription = "#{title}."
-          if (matches && matches[1])
-            plaque.inscription += " #{matches[1].gsub('NEVADA CENTENNIAL','').gsub('CENTENNIAL','').gsub('STATE HISTORICAL','')}"
+          if matches && matches[1]
+            plaque.inscription += ' '
+            plaque.inscription += matches[1].gsub('NEVADA CENTENNIAL', '').gsub('CENTENNIAL', '').gsub('STATE HISTORICAL', '')
           else
             plaque.inscription += inscription
           end
-          if (matches && matches[5])
-            extra_sponsors = matches[5].gsub(/STATE HISTORIC PRESERVATION OFFICE/i,'').strip
+          if matches && matches[5]
+            extra_sponsors = matches[5].gsub(/STATE HISTORIC PRESERVATION OFFICE/i, '').strip
             sponsors << Organisation.find_or_create_by(name: extra_sponsors.titleize) unless extra_sponsors.blank?
           end
           sponsors << Organisation.find_or_create_by(name: 'Nevada State Historic Preservation Office')
@@ -255,17 +251,18 @@ module PlaquesHelper
   end
 
   # when you are pretty sure a group contains plaques
-  def crawl_flickr(group_id='74191472@N00')
-    return if !group_id
-    key = "86c115028094a06ed5cd19cfe72e8f8b"
+  def crawl_flickr(group_id = '74191472@N00')
+    return unless group_id
+
+    key = '86c115028094a06ed5cd19cfe72e8f8b'
     (1..1000).each do |page|
-      q_url = "https://api.flickr.com/services/rest/?api_key=#{key}&method=flickr.photos.search&page=#{page.to_s}&per_page=10&content_type=1&group_id=#{group_id}"
-      puts q_url
+      api = "https://api.flickr.com/services/rest/?api_key=#{key}&method=flickr.photos.search&page=#{page}&per_page=10&content_type=1&group_id=#{group_id}"
+      puts api
       begin
-        response = open(q_url)
+        response = URI.parse(api).open
       rescue # random 502 bad gateway from Flickr
         sleep(5)
-        response = open(q_url)
+        response = URI.parse(api).open
       end
       doc = REXML::Document.new(response.read)
       pages = doc.root.elements['photos'].attributes['pages']
@@ -283,100 +280,95 @@ module PlaquesHelper
   end
 
   def poi(plaque)
-    if plaque.geolocated? && plaque.people.size() > 0
-    plaque.longitude.to_s + ', ' + plaque.latitude.to_s + ", \"" + plaque.people.collect(&:name).to_sentence + "\"" + "\r\n"
-    end
+    return unless plaque.geolocated? && !plaque.people.empty?
+
+    plaque.longitude.to_s + ', ' + plaque.latitude.to_s + ', \"' + plaque.people.collect(&:name).to_sentence + '\"\r\n'
   end
 
   def erected_date(plaque)
     if plaque.erected_at?
       if plaque.erected_at.day == 1 && plaque.erected_at.month == 1
-        "in ".html_safe + plaque.erected_at.year.to_s
+        'in '.html_safe + plaque.erected_at.year.to_s
       else
-        "on ".html_safe + plaque.erected_at.strftime('%d %B %Y')
+        'on '.html_safe + plaque.erected_at.strftime('%d %B %Y')
       end
     else
-      "sometime in the past"
+      'sometime in the past'
     end
   end
 
   def erected_information(plaque)
-    info = "".html_safe
-    if plaque.erected_at? || plaque.organisations.size > 0
-      info += "by ".html_safe if plaque.organisations.size > 0
+    info = ''.html_safe
+    if plaque.erected_at? || !plaque.organisations.empty?
+      info += 'by '.html_safe unless plaque.organisations.empty?
       org_list = []
       plaque.organisations.each do |organisation|
         org_list << link_to(h(organisation.name), organisation)
       end
       info += org_list.to_sentence.html_safe
       if plaque.erected_at?
-        info += " ".html_safe
+        info += ' '.html_safe
         info += erected_date(plaque)
       end
-      return info
     end
+    info
   end
 
   def linked_inscription(plaque)
-    inscription = plaque.inscription.split.join(' ').strip.gsub('  ',' ')
+    inscription = plaque.inscription.split.join(' ').strip.gsub('  ', ' ')
     people = plaque.people
     if people
       reduced_inscription = inscription
-      people.each_with_index do |person, person_index|
+      people.each do |person|
         matched = false
-        search_for = ""
+        search_for = ''
         i = 0
-        person.names.each_with_index do |name, index|
-          if (!matched)
-            search_for = name
-            matched = reduced_inscription.upcase.index(search_for.upcase) != nil
-            i = reduced_inscription.upcase.index(search_for.upcase)
-          end
+        person.names.each do |name|
+          next if matched
+
+          search_for = name
+          matched = !reduced_inscription.upcase.index(search_for.upcase).nil?
+          i = reduced_inscription.upcase.index(search_for.upcase)
         end
         reduced_inscription = "#{reduced_inscription[0..i]}#{reduced_inscription[(i + search_for.length - 1)..-1]}" if matched
         i_inscription = inscription.upcase.index(search_for.upcase)
-        inscription = "#{inscription[0..(i_inscription - 1)] if i_inscription > 0}#{link_to(search_for, person_path(person))}#{inscription[(i_inscription + search_for.length)..-1]}" if i
+        inscription = "#{inscription[0..(i_inscription - 1)] if i_inscription.positive?}#{link_to(search_for, person_path(person))}#{inscription[(i_inscription + search_for.length)..-1]}" if i
       end
     end
-    inscription += " [full inscription unknown]" if plaque.inscription_is_stub
-    inscription += " [has not been erected yet]" if !plaque.erected?
-    return inscription.html_safe
+    inscription += ' [full inscription unknown]' if plaque.inscription_is_stub
+    inscription += ' [has not been erected yet]' unless plaque.erected?
+    inscription.html_safe
   end
 
   def simple_inscription(plaque)
-    inscription = plaque.inscription&.split&.join(' ')&.strip&.gsub('  ',' ')
-    inscription += " [full inscription unknown]" if plaque.inscription_is_stub
-    inscription += " [has not been erected yet]" if !plaque.erected?
-    return inscription&.html_safe
+    inscription = plaque.inscription&.split&.join(' ')&.strip&.gsub('  ', ' ')
+    inscription += ' [full inscription unknown]' if plaque.inscription_is_stub
+    inscription += ' [has not been erected yet]' unless plaque.erected?
+    inscription&.html_safe
   end
 
   # given a set of plaques, or a thing that has plaques (like an organisation) tell me what the mean point is
   def find_mean(things)
+    @centre = Point.new
+    @centre.latitude = 51.475 # Greenwich Meridian
+    @centre.longitude = 0
     begin
-      @centre = Point.new
-      @centre.latitude = 51.475 # Greenwich Meridian
-      @centre.longitude = 0
-      begin
-        @lat = 0
-        @lon = 0
-        @count = 0
-        things.each do |thing|
-          if thing.geolocated?
-            @lat += thing.latitude
-            @lon += thing.longitude
-            @count = @count + 1
-          end
-        end
-        @centre.latitude = @lat / @count
-        @centre.longitude = @lon / @count
-        return @centre
-      rescue
-        # oh, maybe it's a thing that has plaques
-        return find_mean(thing.plaques)
+      @lat = 0
+      @lon = 0
+      @count = 0
+      things.each do |thing|
+        next unless thing.geolocated?
+
+        @lat += thing.latitude
+        @lon += thing.longitude
+        @count += 1
       end
+      @centre.latitude = @lat / @count
+      @centre.longitude = @lon / @count
+      @centre
     rescue
-      # something went wrong, failing gracefully
-      return @centre
+      # oh, maybe it's a thing that has plaques
+      find_mean(thing.plaques)
     end
   end
 

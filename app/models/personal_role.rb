@@ -7,7 +7,6 @@ class PersonalRole < ApplicationRecord
   belongs_to :person, counter_cache: true
   belongs_to :role, counter_cache: true
   belongs_to :related_person, class_name: 'Person', optional: true
-
   validates_presence_of :person_id, :role_id
 
   def date_range
@@ -48,5 +47,13 @@ class PersonalRole < ApplicationRecord
 
   def current?
     role.sticky? || ended_at.nil? || ended_at == '' || (ended_at && ended_at.year.to_s == person.died_on.to_s)
+  end
+
+  def relationship?
+    !related_person_id.nil?
+  end
+
+  def primary?
+    primary == true
   end
 end

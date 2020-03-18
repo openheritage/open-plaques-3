@@ -7,13 +7,12 @@
 # * +slug+ - textual identifier, usually equivalent to its name in lower case, with spaces replaced by underscores. Used in URLs.
 class Colour < ApplicationRecord
   has_many :plaques
-
   before_validation :make_slug_not_war
   validates_presence_of :name, :slug
   validates_uniqueness_of :name, :slug
   scope :common, -> { where(common: true) }
   scope :uncommon, ->  { where(common: false) }
-  scope :most_plaques_order, -> { order("plaques_count DESC nulls last") }
+  scope :most_plaques_order, -> { order('plaques_count DESC nulls last') }
 
   include ApplicationHelper # for help with making slugs
 
@@ -26,12 +25,13 @@ class Colour < ApplicationRecord
   end
 
   def as_json(options = {})
-    options = {
-      only: [:name, :plaques_count, :common],
-      include: { },
-      methods: []
-    } if !options[:prefixes].blank?
+    unless options[:prefixes].blank?
+      options = {
+        only: %i[name plaques_count common],
+        include: {},
+        methods: []
+      }
+    end
     super options
   end
-
 end

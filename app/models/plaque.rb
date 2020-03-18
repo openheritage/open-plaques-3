@@ -31,11 +31,8 @@ class Plaque < ApplicationRecord
   has_many :sponsorships, dependent: :destroy
   has_many :organisations, through: :sponsorships
   has_one :pick
-
-  attr_accessor :country, :other_colour_id, :force_us_state
   delegate :name, to: :colour, prefix: true, allow_nil: true
   delegate :name, :alpha2, to: :language, prefix: true, allow_nil: true
-
   before_save :use_other_colour_id
   before_save :usa_townify
   before_save :unshout
@@ -59,6 +56,7 @@ class Plaque < ApplicationRecord
   scope :no_english_version, -> { where('language_id > 1').where(inscription_is_stub: false, inscription_in_english: nil) }
   scope :random, -> { order(Arel.sql('random()')) }
   scope :in_series_ref_order, -> { order(:series_ref) }
+  attr_accessor :country, :other_colour_id, :force_us_state
 
   include ApplicationHelper
   include ActionView::Helpers::TextHelper

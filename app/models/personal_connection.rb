@@ -7,10 +7,8 @@ class PersonalConnection < ApplicationRecord
   belongs_to :person, counter_cache: true
   belongs_to :plaque, counter_cache: true
   belongs_to :verb, counter_cache: true
-
-  attr_accessor :other_verb_id
-
   validates_presence_of :verb_id, :person_id, :plaque_id
+  attr_accessor :other_verb_id
 
   # this would be a Verb query, but data is fixed and this is used frequently
   def birth?

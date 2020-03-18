@@ -29,7 +29,7 @@ module UsersHelper
     link_to h(content_text), user_path(user), options
   end
 
-  def link_to_login_with_IP(content_text = nil, options = {})
+  def link_to_login_with_ip(content_text = nil, options = {})
     ip_addr = request.remote_ip
     content_text ||= ip_addr
     options.reverse_merge! title: ip_addr
@@ -42,7 +42,7 @@ module UsersHelper
 
   #
   # Link to the current user's page (using link_to_user) or to the login page
-  # (using link_to_login_with_IP).
+  # (using link_to_login_with_ip).
   #
   def link_to_current_user(options = {})
     if current_user
@@ -51,7 +51,7 @@ module UsersHelper
       content_text = options.delete(:content_text) || 'not signed in'
       # kill ignored options from link_to_user
       %i[content_method title_method].each { |opt| options.delete(opt) }
-      link_to_login_with_IP content_text, options
+      link_to_login_with_ip content_text, options
     end
   end
 

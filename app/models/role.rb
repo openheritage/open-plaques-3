@@ -15,7 +15,6 @@
 class Role < ApplicationRecord
   has_many :personal_roles, -> { order(:started_at) }
   has_many :people, -> { order(:name) }, through: :personal_roles
-
   before_validation :make_slug_not_war
   before_save :update_index
   before_save :filter_name
@@ -27,7 +26,7 @@ class Role < ApplicationRecord
   scope :name_starts_with, ->(term) { where(['lower(name) LIKE ?', "#{term.downcase}%"]) }
   scope :name_contains, ->(term) { where(['lower(name) LIKE ?', "%#{term.downcase}%"]) }
   scope :name_is, ->(term) { where(['lower(name) = ?', term.downcase]) }
-  scope :in_alphabetical_order, -> { order('name ASC') }
+  scope :in_alphabetical_order, -> { order(name: :asc) }
 
   include ApplicationHelper
 

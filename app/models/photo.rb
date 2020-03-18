@@ -18,9 +18,6 @@ class Photo < ApplicationRecord
   belongs_to :plaque, counter_cache: true, optional: true
   belongs_to :person, optional: true
   belongs_to :licence, counter_cache: true, optional: true
-
-  attr_accessor :photo_url, :accept_cc_by_licence
-
   validates_presence_of :file_url
   validate :unique_file_url, on: :create
   after_update :reset_plaque_photo_count
@@ -40,6 +37,7 @@ class Photo < ApplicationRecord
   scope :geograph, -> { where("photographer_url like 'https://www.geograph.org.uk/profile/%'") }
   scope :geolocated, -> { where(['latitude IS NOT NULL']) }
   scope :ungeolocated, -> { where(['latitude IS NULL']) }
+  attr_accessor :photo_url, :accept_cc_by_licence
 
   def title
     title = 'a photo'
@@ -119,14 +117,14 @@ class Photo < ApplicationRecord
 
   # retrieve Flickr photo id from url e.g. http://www.flickr.com/photos/84195101@N00/3412825200/
   def self.flickr_photo_id(url)
-    mtch = url.match(/flickr.com\/photos\/[^\/]*\/([^\/]*)/)
+    mtch = url.match(%r{flickr.com\/photos\/[^\/]*\/([^\/]*)})
     mtch ? mtch[1].to_s : nil
   end
 
   def thumbnail_url
     return thumbnail if thumbnail?
 
-    if file_url.ends_with?(*%w(_b.jpg _z.jpg _z.jpg?zz=1 _m.jpg _o.jpg))
+    if file_url.ends_with?(*%w[_b.jpg _z.jpg _z.jpg?zz=1 _m.jpg _o.jpg])
       return file_url.gsub('b.jpg', 'm.jpg').gsub('z.jpg?zz=1', 'm.jpg').gsub('z.jpg', 'm.jpg').gsub('o.jpg', 'm.jpg')
 
     end
@@ -281,6 +279,7 @@ class Photo < ApplicationRecord
         self.photographer = wikimedia[:author]
         self.photographer_url = wikimedia[:author_url]
         self.file_url = wikimedia_special
+
         if wikimedia[:licence_url]
           licence = Licence.find_by(url: wikimedia[:licence_url])
           unless licence
@@ -387,10 +386,10 @@ class Photo < ApplicationRecord
     return unless clone_id&.positive?
 
     opposite = Photo.find(clone_id)
-    if opposite.clone_id != id
-      opposite.clone_id = id
-      opposite.save
-    end
+    return unless opposite.clone_id != id
+
+    opposite.clone_id = id
+    opposite.save
   end
 
   def set_of_a_plaque

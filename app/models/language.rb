@@ -6,14 +6,13 @@
 class Language < ApplicationRecord
   has_many :plaques
   has_many :organisations
-
   validates_presence_of :name, :alpha2
   validates_uniqueness_of :alpha2
   validates_uniqueness_of :name
-  scope :most_plaques_order, -> { order("plaques_count DESC nulls last") }
+  scope :most_plaques_order, -> { order('plaques_count DESC nulls last') }
 
   def flag_icon
-    alpha2_2 = alpha2[0,2]
+    alpha2_2 = alpha2[0, 2]
     fi = "flag-icon-#{alpha2_2}"
     fi = 'flag-icon-cz' if alpha2_2 == 'cs' # Czech
     fi = 'flag-icon-by' if alpha2_2 == 'be' # Belarusian
@@ -34,11 +33,13 @@ class Language < ApplicationRecord
   end
 
   def as_json(options = {})
-    options = {
-      only: [:name, :alpha2, :plaques_count],
-      include: { },
-      methods: []
-    } if !options[:prefixes].blank?
+    unless options[:prefixes].blank?
+      options = {
+        only: %i[name alpha2 plaques_count],
+        include: {},
+        methods: []
+      }
+    end
     super(options)
   end
 

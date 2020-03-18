@@ -18,9 +18,7 @@
 class Area < ApplicationRecord
   belongs_to :country, counter_cache: true
   has_many :plaques, dependent: :restrict_with_error
-
   delegate :alpha2, to: :country, prefix: true
-
   before_validation :make_slug_not_war
   validates_presence_of :name, :slug, :country_id
   validates_uniqueness_of :slug, scope: :country_id
@@ -76,6 +74,7 @@ class Area < ApplicationRecord
 
   def uri
     return nil unless id && country
+
     path = Rails.application.routes.url_helpers.country_area_path(
       country, self, format: :json
     )
@@ -84,6 +83,7 @@ class Area < ApplicationRecord
 
   def plaques_uri
     return nil unless id && country
+
     path = Rails.application.routes.url_helpers.country_area_plaques_path(
       country, self, format: :json
     )

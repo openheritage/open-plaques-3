@@ -26,20 +26,19 @@ class Person < ApplicationRecord
   has_one :birth_connection, -> { where('verb_id in (8,504)') }, class_name: 'PersonalConnection'
   has_one :death_connection, -> { where('verb_id in (3,49,161,1108)') }, class_name: 'PersonalConnection'
   has_one :main_photo, class_name: 'Photo'
-
   validates_presence_of :name
   before_save :update_index
   before_save :aka_accented_name
   before_save :fill_wikidata_id
   after_save :depiction_from_dbpedia
   scope :roled, -> { where('personal_roles_count > 0') }
-  scope :unroled, -> { where(personal_roles_count: [nil,0]) }
+  scope :unroled, -> { where(personal_roles_count: [nil, 0]) }
   scope :dated, -> { where('born_on IS NOT NULL or died_on IS NOT NULL') }
   scope :undated, -> { where('born_on IS NULL and died_on IS NULL') }
   scope :photographed, -> { joins(:main_photo) }
   scope :unphotographed, -> { where('id not in (select person_id from photos)') }
   scope :connected, -> { where('personal_connections_count > 0') }
-  scope :unconnected, -> { where(personal_connections_count: [nil,0]) }
+  scope :unconnected, -> { where(personal_connections_count: [nil, 0]) }
   scope :name_starts_with, ->(term) { where(['name ILIKE ?', term.gsub(' ', '%') + '%']) }
   scope :name_contains, ->(term) { where(['name ILIKE ?', '%' + term.gsub(' ', '%') + '%']) }
   scope :name_is, ->(term) { where(['lower(name) = ?', term.downcase]) }
@@ -65,21 +64,21 @@ class Person < ApplicationRecord
 
   def relationships
     @relationships ||= begin
-      relationships = personal_roles.select { |personal_role| !personal_role.related_person_id.nil? }
+      relationships = personal_roles.select(&:relationship?)
       relationships.sort { |a, b| a.started_at.to_s <=> b.started_at.to_s }
     end
   end
 
   def straight_roles
     @straight_roles ||= begin
-      straight_roles = personal_roles.select { |personal_role| personal_role.related_person_id.nil? }
+      straight_roles = personal_roles.reject(&:relationship?)
       straight_roles.sort { |a, b| a.primary.to_s + a.started_at.to_s <=> a.primary.to_s + b.started_at.to_s }
     end
   end
 
   def primary_roles
     @primary_roles ||= begin
-      primary_roles = personal_roles.select { |personal_role| personal_role.primary == true }
+      primary_roles = personal_roles.select(&:primary?)
       # if >1 then cannot judge which is the 'best' role
       straight_roles if primary_roles == [] && straight_roles.size == 1
     end
@@ -161,7 +160,7 @@ class Person < ApplicationRecord
   end
 
   def dead?
-    died_in || (person? || animal?) && born_in && born_in < 1910
+    !died_in.nil? || (person? || animal?) && !born_in.nil? && born_in < 1910
   end
 
   def alive?
@@ -178,10 +177,7 @@ class Person < ApplicationRecord
 
     if died_on && born_on
       a = died_on.year - born_on.year
-      a -= 1 if (
-        born_on.month > died_on.month ||
-        (born_on.month >= died_on.month && born_on.day > died_on.day)
-      )
+      a -= 1 if born_on.month > died_on.month || (born_on.month >= died_on.month && born_on.day > died_on.day)
       return a.to_s
     end
     return Time.now.year - born_in if born_in && inanimate_object?
@@ -189,10 +185,6 @@ class Person < ApplicationRecord
     return Time.now.year - born_in if born_in && born_in > 1910
 
     'unknown'
-  end
-
-  def age_in(year)
-    year - born_in if born_in
   end
 
   def fill_wikidata_id
@@ -233,28 +225,24 @@ class Person < ApplicationRecord
     end
   end
 
+  # call DBpedia and cache the response
   def dbpedia_json
-    # call DBpedia and cache the response
     return @dbpedia_json if defined? @dbpedia_json
 
     @dbpedia_json = nil
     return @dbpedia_json if dbpedia_uri.blank?
 
-    @dbpedia_json = begin
+    begin
       api = "#{dbpedia_uri.gsub('resource', 'data')}.json"
-      response = open(api)
+      response = URI.parse(api).open
       resp = response.read
-      JSON.parse(resp)
+      @dbpedia_json = JSON.parse(resp)
     rescue
     end
   end
 
   def name_and_dates
     "#{full_name} #{dates}"
-  end
-
-  def surname
-    name[name.downcase.rindex(" #{surname_starts_with.downcase}") ? name.downcase.rindex(" #{surname_starts_with.downcase}") + 1 : 0, name.size]
   end
 
   def default_thumbnail_url
@@ -304,9 +292,17 @@ class Person < ApplicationRecord
     "#{title} #{name} #{letters}".strip
   end
 
+  def firstname
+    name.split(' ').first
+  end
+
+  def surname
+    name[name.downcase.rindex(" #{surname_starts_with.downcase}") ? name.downcase.rindex(" #{surname_starts_with.downcase}") + 1 : 0, name.size]
+  end
+
+  # a set of versions of a person's name, in precision order
   def names
     nameparts = name.split(' ')
-    firstname = nameparts.first
     firstinitial = nameparts.second ? "#{firstname[0, 1]}." : ''
     secondname = nameparts.third ? nameparts.second : ''
     secondinitial = nameparts.third ? "#{secondname[0, 1]}." : ''
@@ -414,7 +410,7 @@ class Person < ApplicationRecord
     family
   end
 
-  def has_family?
+  def family?
     family_relationships.size.positive?
   end
 
@@ -453,92 +449,92 @@ class Person < ApplicationRecord
   def male?
     if gender == 'u'
       self.gender = 'm' if
-      [
-        'Abel', 'Abraham',
-        'Adam', 'Adolf', 'Adolphus', 'Adrian',
-        'Alan', 'Albert', 'Albie', 'Alexander', 'Alex', 'Alfredo', 'Alfred', 'Alf', 'Allen', 'Alphonse',
-        'Anatole', 'Angelo', 'Andrew', 'Angus', 'Antoine', 'Antonio', 'Anton',
-        'Archibald', 'Archie', 'Arnold', 'Arthur',
-        'Augustus',
-        'Barry',
-        'Benjamin', 'Ben', 'Benedict', 'Bernard',
-        'Bill',
-        'Bob', 'Boris',
-        'Brian', 'Bryan',
-        'Carlo', 'Carl', 'Caspar', 'Casper',
-        'Charles', 'Christian', 'Christopher',
-        'Ciaran',
-        'Claude',
-        'Colin',
-        'Cuthbert',
-        'Cyril',
-        'Daniel', 'Dan', 'Danny', 'David', 'Davey',
-        'Dennis',
-        'Dick',
-        'Dominic',
-        'Donald',
-        'Duncan',
-        'Edgar', 'Edmund', 'Edmond', 'Edmund', 'Edward', 'Edwarde', 'Edwardo', 'Edwin',
-        'Elias', 'Elijah', 'Elliott',
-        'Eric', 'Ernest', 'Ernesto',
-        'Felice', 'Felix',
-        'Filippo',
-        'Francesco', 'Francisco', 'Francis', 'Frank', 'Fraser', 'Frederic', 'Frederick', 'Fred',
-        'Gaetano', 'Gary', 'Gavin',
-        'George', 'Georges', 'Gerard',
-        'Giacomo', 'Giovanni', 'Gilbert', 'Giulio',
-        'Gus',
-        'Harold', 'Harry',
-        'Henri', 'Henry', 'Henryk', 'Herbert', 'Herman',
-        'Horace', 'Howard',
-        'Hugh', 'Humphrey',
-        'Isaac',
-        'Ivan',
-        'Jack', 'Jacob', 'Jacques', 'James',
-        'Jean-Paul', 'Jeremy',
-        'Jimmy', 'Jim',
-        'John', 'Johnny', 'Jon', 'Jonas', 'Josiah', 'Joseph',
-        'Karl',
-        'Kenneth', 'Ken',
-        'Laurent', 'Lawrence',
-        'Len', 'Leonard', 'Leopold', 'Leo', 'Lewis',
-        'Lorenzo', 'Louis',
-        'Luciano', 'Luigi',
-        'Marcel', 'Marco', 'Maurice', 'Martin', 'Matthew', 'Matt', 'Matthias',
-        'Michael', 'Michel', 'Mick',
-        'Montague', 'Montgomery',
-        'Murray',
-        'Nathan',
-        'Neil',
-        'Noah', 'Norman',
-        'Nicholas', 'Nick', 'Nicolas',
-        'Owen',
-        'Patrick', 'Paul',
-        'Pedro', 'Percy', 'Peter', 'Petr',
-        'Philip', 'Philippe',
-        'Pierre', 'Pietro',
-        'Raffaello', 'Ralph', 'Raymond', 'Ray',
-        'Rees', 'Reginald', 'Reg', 'Reggie',
-        'Richard',
-        'Robert', 'Roberto', 'Rod', 'Roger', 'Roland', 'Rory', 'Ross', 'Rowland', 'Roy',
-        'Russell', 'Russ',
-        'Samuel',
-        'Sebastian',
-        'Sergey',
-        'Sidney', 'Sid', 'Simon',
-        'Solomon',
-        'Spencer',
-        'Stanley', 'Stephen', 'Steve', 'Steven', 'Stewart',
-        'Stuart',
-        'Terry',
-        'Theodorus', 'Theo', 'Thomas',
-        'Tommy', 'Tom',
-        'Ugo',
-        'Vincent', 'Vince', 'Vincenzo',
-        'Waldo', 'Walter',
-        'Wilfred', 'Wilf', 'William', 'Will', 'Willie',
-        'Zachariah', 'Zachary', 'Zach'
-      ].include?(name.split(' ').first)
+      %w[
+        Abel Abraham
+        Adam Adolf Adolphus Adrian
+        Alan Albert Albie Alexander Alex Alfredo Alfred Alf Allen Alphonse
+        Anatole Angelo Andrew Angus Antoine Antonio Anton
+        Archibald Archie Arnold Arthur
+        Augustus
+        Barry
+        Benjamin Ben Benedict Bernard
+        Bill
+        Bob Boris
+        Brian Bryan
+        Carlo Carl Caspar Casper
+        Charles Christian Christopher
+        Ciaran
+        Claude
+        Colin
+        Cuthbert
+        Cyril
+        Daniel Dan Danny David Davey
+        Dennis
+        Dick
+        Dominic
+        Donald
+        Duncan
+        Edgar Edmund Edmond Edmund Edward Edwarde Edwardo Edwin
+        Elias Elijah Elliott
+        Eric Ernest Ernesto
+        Felice Felix
+        Filippo
+        Francesco Francisco Francis Frank Fraser Frederic Frederick Fred
+        Gaetano Gary Gavin
+        George Georges Gerard
+        Giacomo Giovanni Gilbert Giulio
+        Gus
+        Harold Harry
+        Henri Henry Henryk Herbert Herman
+        Horace Howard
+        Hugh Humphrey
+        Isaac
+        Ivan
+        Jack Jacob Jacques James
+        Jean-Paul Jeremy
+        Jimmy Jim
+        John Johnny Jon Jonas Josiah Joseph
+        Karl
+        Kenneth Ken
+        Laurent Lawrence
+        Len Leonard Leopold Leo Lewis
+        Lorenzo Louis
+        Luciano Luigi
+        Marcel Marco Maurice Martin Matthew Matt Matthias
+        Michael Michel Mick
+        Montague Montgomery
+        Murray
+        Nathan
+        Neil
+        Noah Norman
+        Nicholas Nick Nicolas
+        Owen
+        Patrick Paul
+        Pedro Percy Peter Petr
+        Philip Philippe
+        Pierre Pietro
+        Raffaello Ralph Raymond Ray
+        Rees Reginald Reg Reggie
+        Richard
+        Robert Roberto Rod Roger Roland Rory Ross Rowland Roy
+        Russell Russ
+        Samuel
+        Sebastian
+        Sergey
+        Sidney Sid Simon
+        Solomon
+        Spencer
+        Stanley Stephen Steve Steven Stewart
+        Stuart
+        Terry
+        Theodorus Theo Thomas
+        Tommy Tom
+        Ugo
+        Vincent Vince Vincenzo
+        Waldo Walter
+        Wilfred Wilf William Will Willie
+        Zachariah Zachary Zach
+      ].include?(firstname)
     end
     !self.female?
   end
@@ -618,7 +614,7 @@ class Person < ApplicationRecord
         Vera
         Victoria Violet Virginia
         Wilhelmina Winifred
-      ].include?(name.split(' ').first)
+      ].include?(firstname)
       self.gender = 'm' unless inanimate_object?
     end
     gender == 'f'

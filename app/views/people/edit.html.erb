@@ -28,7 +28,7 @@
   <% content_for(:admin_menu) {navbar_link_to t('description'), '#description'} %>
   <% content_for(:admin_menu) {navbar_link_to t('links'), '#links'} %>
   <% content_for(:admin_menu) {navbar_link_to t('role'), '#roles'} %>
-  <% content_for(:admin_menu) {navbar_link_to t('family tree'), '#family-tree'} if @person.person? && @person.has_family? %>
+  <% content_for(:admin_menu) {navbar_link_to t('family tree'), '#family-tree'} if @person.person? && @person.family? %>
 
   <h2 id="depiction">Depiction</h2>
   <div class="row">

@@ -8,10 +8,9 @@
 # * +plaques_count+
 class Series < ApplicationRecord
   has_many :plaques
-
   validates_presence_of :name
-  scope :in_alphabetical_order, -> { order('name ASC') }
-  scope :in_count_order, -> { order('plaques_count DESC') }
+  scope :in_alphabetical_order, -> { order(name: :asc) }
+  scope :in_count_order, -> { order(plaques_count: :desc) }
 
   def main_photo
     random_plaque = plaques.photographed.random.limit(1).first
