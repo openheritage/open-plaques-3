@@ -353,7 +353,7 @@ class Plaque < ApplicationRecord
   end
 
   def distance_between(lat1, lon1, lat2, lon2)
-    rad_per_deg = Math.PI / 180
+    rad_per_deg = Math::PI / 180
     earth_radius_in_meters = 6_371_000
     lat1_rad = lat1.to_f * rad_per_deg
     lat2_rad = lat2.to_f * rad_per_deg
@@ -403,17 +403,17 @@ class Plaque < ApplicationRecord
   def self.get_lat_lng_for_number(zoom, xtile, ytile)
     n = 2.0**zoom
     lon_deg = xtile / n * 360.0 - 180.0
-    lat_rad = Math.atan(Math.sinh(Math.PI * (1 - 2 * ytile / n)))
-    lat_deg = 180.0 * (lat_rad / Math.PI)
+    lat_rad = Math.atan(Math.sinh(Math::PI * (1 - 2 * ytile / n)))
+    lat_deg = 180.0 * (lat_rad / Math::PI)
     { lat_deg: lat_deg, lng_deg: lon_deg }
   end
 
   # from OpenStreetMap documentation
   def self.get_tile_number(lat_deg, lng_deg, zoom)
-    lat_rad = lat_deg / 180 * Math.PI
+    lat_rad = lat_deg / 180 * Math::PI
     n = 2.0**zoom
     x = ((lng_deg + 180.0) / 360.0 * n).to_i
-    y = ((1.0 - Math.log(Math.tan(lat_rad) + (1 / Math.cos(lat_rad))) / Math.PI) / 2.0 * n).to_i
+    y = ((1.0 - Math.log(Math.tan(lat_rad) + (1 / Math.cos(lat_rad))) / Math::PI) / 2.0 * n).to_i
     { x: x, y: y }
   end
 
