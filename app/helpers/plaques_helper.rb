@@ -11,35 +11,33 @@ module PlaquesHelper
 
   def search_snippet(text, search_term)
     regex = /#{search_term}/i
-    if text =~ regex
-      text = " " + text + " "
-      indexes = []
-      first_index = text.index(regex)
-      indexes << first_index
-      second_index = text.index(regex, (first_index + search_term.length + 50))
-      indexes << second_index if second_index
-      snippet = ""
-      indexes.each do |i|
-        i = i - 80
-        i = 0 if i < 0
-        s = text[i, 160]
-        first_space = (s.index(/\s/) + 1)
-        last_space = (s.rindex(/\s/) - 1)
-        snippet += "..." if i > 0
-        snippet += (s[first_space..last_space])
-        snippet += "..." if last_space + 2 < text.length
-      end
-      snippet
-    else
-      return text
+    return text unless text =~ regex
+
+    text = ' ' + text + ' '
+    indexes = []
+    first_index = text.index(regex)
+    indexes << first_index
+    second_index = text.index(regex, (first_index + search_term.length + 50))
+    indexes << second_index if second_index
+    snippet = ''
+    indexes.each do |i|
+      i -= 80
+      i = 0 if i.negative?
+      s = text[i, 160]
+      first_space = (s.index(/\s/) + 1)
+      last_space = (s.rindex(/\s/) - 1)
+      snippet += '...' if i > 0
+      snippet += (s[first_space..last_space])
+      snippet += '...' if last_space + 2 < text.length
     end
+    snippet
   end
 
   def find_flickr_photos_non_api(plaque)
     url = "https://www.flickr.com/search/?tags=#{plaque.machine_tag}%20"
     response = ''
-    open(url){|f| response = f.read }
-    pics = response.match( /\[{"_flickrModelRegistry":"photo-lite-models".*?\]/ )
+    open(url){ |f| response = f.read }
+    pics = response.match(/\[{"_flickrModelRegistry":"photo-lite-models".*?\]/)
     pics = '[]' if pics.nil?
     json_parsed = JSON.parse("{\"data\":#{pics}}")
     json_parsed['data'].each do |pic|
@@ -111,7 +109,7 @@ module PlaquesHelper
         location = output.search('.//tr[contains(th,"Location")]/td/text()').text.strip
         puts "#{marker_number} #{location} #{inscription}"
         plaque = Plaque.where(series_id: kentucky_historical_marker.id, series_ref: series_ref).first
-        plaque = Plaque.new unless plaque
+        plaque ||= Plaque.new
         plaque.address = location
         plaque.inscription = "#{title}. #{inscription}"
         plaque.colour = black

@@ -11,7 +11,7 @@ class Colour < ApplicationRecord
   validates_presence_of :name, :slug
   validates_uniqueness_of :name, :slug
   scope :common, -> { where(common: true) }
-  scope :uncommon, ->  { where(common: false) }
+  scope :uncommon, -> { where(common: false) }
   scope :most_plaques_order, -> { order('plaques_count DESC nulls last') }
 
   include ApplicationHelper # for help with making slugs

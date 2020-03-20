@@ -33,7 +33,7 @@ module UsersHelper
     ip_addr = request.remote_ip
     content_text ||= ip_addr
     options.reverse_merge! title: ip_addr
-    if tag = options.delete(:tag)
+    if (tag = options.delete(:tag))
       content_tag tag, h(content_text), options
     else
       link_to h(content_text), login_path, options

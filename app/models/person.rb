@@ -373,8 +373,8 @@ class Person < ApplicationRecord
 
   def siblings
     siblings = []
-    father.children.each { |child| siblings << child if child != self } if !father.nil?
-    mother.children.each { |child| siblings << child if child != self } if !mother.nil?
+    father&.children.each { |child| siblings << child if child != self }
+    mother&.children.each { |child| siblings << child if child != self }
     siblings.uniq.sort! { |a, b| a.born_on ? a.born_on : 0 <=> b.born_on ? b.born_on : 0 }
   end
 

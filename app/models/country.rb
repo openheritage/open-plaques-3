@@ -23,7 +23,7 @@ class Country < ApplicationRecord
   end
 
   def plaques_count
-    @@p_count = areas.sum(:plaques_count) if @@p_count == 0
+    @@p_count = areas.sum(:plaques_count) if @@p_count.zero?
     @@p_count
   end
 
