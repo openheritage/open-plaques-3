@@ -14,18 +14,18 @@ class Organisation < ApplicationRecord
   has_many :sponsorships, dependent: :restrict_with_error
   has_many :plaques, through: :sponsorships
   belongs_to :language, optional: true
-
   before_validation :make_slug_not_war
   validates_presence_of :name, :slug
   validates_uniqueness_of :slug
   validates :name, exclusion: {
-    in: %w(unknown unkown Unknown Unknown), message: "just leave it blank"
+    in: %w[unknown unkown Unknown Unknown],
+    message: 'just leave it blank'
   }
-  scope :name_starts_with, lambda { |term| where(["lower(name) LIKE ?", term.downcase + "%"]) }
-  scope :name_contains, lambda { |term| where(["lower(name) LIKE ?", "%" + term.downcase + "%"]) }
-  scope :name_is, lambda { |term| where(['lower(name) = ?', term.downcase]) }
-  scope :in_alphabetical_order, -> { order('name ASC') }
-  scope :in_count_order, -> { order('sponsorships_count DESC') }
+  scope :name_starts_with, ->(term) { where(['lower(name) LIKE ?', term.downcase + '%']) }
+  scope :name_contains, ->(term) { where(['lower(name) LIKE ?', '%' + term.downcase + '%']) }
+  scope :name_is, ->(term) { where(['lower(name) = ?', term.downcase]) }
+  scope :in_alphabetical_order, -> { order(name: :asc) }
+  scope :in_count_order, -> { order(sponsorships_count: :desc) }
 
   # for slug helper
   include ApplicationHelper
@@ -35,7 +35,7 @@ class Organisation < ApplicationRecord
   end
 
   def geolocated?
-    return !(self.latitude == nil && self.longitude == nil || self.latitude == 51.475 && self.longitude == 0)
+    !(latitude.nil? && longitude.nil? || latitude == 51.475 && longitude.zero?)
   end
 
   def main_photo
@@ -44,18 +44,20 @@ class Organisation < ApplicationRecord
   end
 
   def uri
-    "https://openplaques.org#{Rails.application.routes.url_helpers.organisation_path(self.slug, :format=>:json)}"
+    "https://openplaques.org#{Rails.application.routes.url_helpers.organisation_path(slug, format: :json)}"
   end
 
   def plaques_uri
-    "https://openplaques.org#{Rails.application.routes.url_helpers.organisation_plaques_path(self.slug, format: :geojson)}"
+    "https://openplaques.org#{Rails.application.routes.url_helpers.organisation_plaques_path(slug, format: :geojson)}"
   end
 
-  def as_json(options=nil)
-    options = {
-      only: [:name],
-      methods: [:uri, :plaques_count, :plaques_uri]
-    } if !options || !options[:only]
+  def as_json(options = nil)
+    if !options || !options[:only]
+      options = {
+        only: [:name],
+        methods: %i[uri plaques_count plaques_uri]
+      }
+    end
     super options
   end
 

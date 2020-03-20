@@ -31,8 +31,9 @@ class Wikidata
     return unless wikidata_id&.match(/Q\d*$/)
 
     @id = wikidata_id
-    api = "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=#{@id}&format=json"
-    response = open(api)
+    root = 'https://www.wikidata.org/w/api.php'
+    api = "#{root}?action=wbgetentities&ids=#{@id}&format=json"
+    response = URI.parse(api).open
     resp = response.read
     @wikidata = JSON.parse(resp, object_class: OpenStruct)
   end
@@ -103,7 +104,7 @@ class Wikidata
     begin
       api = "#{api_root}wbgetentities&sites=enwiki&titles=#{name}&format=json"
       logger.debug(api)
-      response = open(api)
+      response = URI.parse(api).open
       resp = response.read
       wikidata = JSON.parse(resp, object_class: OpenStruct)
       if wikidata.not_found?
@@ -111,13 +112,13 @@ class Wikidata
         name = name[0].upcase + name[1..-1]
         api = "#{api_root}wbgetentities&sites=enwiki&titles=#{name}&format=json"
         logger.debug(api)
-        response = open(api)
+        response = URI.parse(api).open
         resp = response.read
         wikidata = JSON.parse(resp, object_class: OpenStruct)
       end
       if (wikidata.not_found? || wikidata.disambiguation?) && (born || died)
         api = "#{api_root}query&list=search&srsearch=#{name}&format=json"
-        response = open(api)
+        response = URI.parse(api).open
         resp = response.read
         search_wikidata = JSON.parse(resp, object_class: OpenStruct)
         search_wikidata.query.search.each do |search_result|

@@ -1,4 +1,3 @@
-# -*- encoding : utf-8 -*-
 require 'aws-sdk-translate'
 
 # A physical commemorative plaque, which is either currently installed, or
@@ -32,11 +31,8 @@ class Plaque < ApplicationRecord
   has_many :sponsorships, dependent: :destroy
   has_many :organisations, through: :sponsorships
   has_one :pick
-
-  attr_accessor :country, :other_colour_id, :force_us_state
   delegate :name, to: :colour, prefix: true, allow_nil: true
   delegate :name, :alpha2, to: :language, prefix: true, allow_nil: true
-
   before_save :use_other_colour_id
   before_save :usa_townify
   before_save :unshout
@@ -60,15 +56,17 @@ class Plaque < ApplicationRecord
   scope :no_english_version, -> { where('language_id > 1').where(inscription_is_stub: false, inscription_in_english: nil) }
   scope :random, -> { order(Arel.sql('random()')) }
   scope :in_series_ref_order, -> { order(:series_ref) }
+  attr_accessor :country, :other_colour_id, :force_us_state
 
-  include ApplicationHelper, ActionView::Helpers::TextHelper
+  include ApplicationHelper
+  include ActionView::Helpers::TextHelper
 
   def coordinates
     geolocated? ? "#{latitude},#{longitude}" : ''
   end
 
   def full_address
-    a = address ||+ ''
+    a = address || ''
     if area
       a += ", #{area&.name}"
       a += ", #{area.country&.name}"
@@ -77,14 +75,12 @@ class Plaque < ApplicationRecord
   end
 
   def erected_at_string
-    if erected_at?
-      if erected_at.month == 1 && erected_at.day == 1
-        erected_at.year.to_s
-      else
-        erected_at.to_s
-      end
+    return unless erected_at?
+
+    if erected_at.month == 1 && erected_at.day == 1
+      erected_at.year.to_s
     else
-      nil
+      erected_at.to_s
     end
   end
 
@@ -97,7 +93,7 @@ class Plaque < ApplicationRecord
   end
 
   def geolocated?
-    !(latitude.nil?) && !(longitude.nil?)
+    !latitude.nil? && !longitude.nil?
   end
 
   def roughly_geolocated?
@@ -304,18 +300,20 @@ class Plaque < ApplicationRecord
   end
 
   def translate
-    if foreign? && inscription_in_english.blank?
-      begin
-        client = Aws::Translate::Client.new(region: 'eu-west-1')
-        resp = client.translate_text({
+    return unless foreign? && inscription_in_english.blank?
+
+    begin
+      client = Aws::Translate::Client.new(region: 'eu-west-1')
+      resp = client.translate_text(
+        {
           text: inscription,
           source_language_code: language.alpha2,
           target_language_code: 'en'
-        })
-        self.inscription_in_english = "#{resp.translated_text} [AWS Translate]"
-      rescue
-        puts("plaque #{id} failed to translate")
-      end
+        }
+      )
+      self.inscription_in_english = "#{resp.translated_text} [AWS Translate]"
+    rescue
+      puts("plaque #{id} failed to translate")
     end
   end
 
@@ -355,13 +353,15 @@ class Plaque < ApplicationRecord
   end
 
   def distance_between(lat1, lon1, lat2, lon2)
-    rad_per_deg = Math.PI / 180
-    rm = 6371000 # Earth radius in meters
-    lat1_rad, lat2_rad = lat1.to_f * rad_per_deg, lat2.to_f * rad_per_deg
-    lon1_rad, lon2_rad = lon1.to_f * rad_per_deg, lon2.to_f * rad_per_deg
+    rad_per_deg = Math::PI / 180
+    earth_radius_in_meters = 6_371_000
+    lat1_rad = lat1.to_f * rad_per_deg
+    lat2_rad = lat2.to_f * rad_per_deg
+    lon1_rad = lon1.to_f * rad_per_deg
+    lon2_rad = lon2.to_f * rad_per_deg
     a = Math.sin((lat2_rad - lat1_rad) / 2)**2 + Math.cos(lat1_rad) * Math.cos(lat2_rad) * Math.sin((lon2_rad - lon1_rad) / 2)**2
     c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-    (rm * c).round # Delta in meters
+    (earth_radius_in_meters * c).round # Delta in meters
   end
 
   def us_state
@@ -392,7 +392,7 @@ class Plaque < ApplicationRecord
   end
 
   def uri
-    "http://openplaques.org" + Rails.application.routes.url_helpers.plaque_path(self) if id
+    'http://openplaques.org' + Rails.application.routes.url_helpers.plaque_path(self) if id
   end
 
   def to_s
@@ -403,17 +403,17 @@ class Plaque < ApplicationRecord
   def self.get_lat_lng_for_number(zoom, xtile, ytile)
     n = 2.0**zoom
     lon_deg = xtile / n * 360.0 - 180.0
-    lat_rad = Math.atan(Math.sinh(Math.PI * (1 - 2 * ytile / n)))
-    lat_deg = 180.0 * (lat_rad / Math.PI)
-    {lat_deg: lat_deg, lng_deg: lon_deg}
+    lat_rad = Math.atan(Math.sinh(Math::PI * (1 - 2 * ytile / n)))
+    lat_deg = 180.0 * (lat_rad / Math::PI)
+    { lat_deg: lat_deg, lng_deg: lon_deg }
   end
 
   # from OpenStreetMap documentation
   def self.get_tile_number(lat_deg, lng_deg, zoom)
-    lat_rad = lat_deg/180 * Math.PI
+    lat_rad = lat_deg / 180 * Math::PI
     n = 2.0**zoom
     x = ((lng_deg + 180.0) / 360.0 * n).to_i
-    y = ((1.0 - Math.log(Math.tan(lat_rad) + (1 / Math.cos(lat_rad))) / Math.PI) / 2.0 * n).to_i
+    y = ((1.0 - Math.log(Math.tan(lat_rad) + (1 / Math.cos(lat_rad))) / Math::PI) / 2.0 * n).to_i
     { x: x, y: y }
   end
 
@@ -424,9 +424,9 @@ class Plaque < ApplicationRecord
   end
 
   def unshout
-    if inscription && inscription&.upcase == inscription
-      # it is all in CAPITALS, I AM SHOUTING
-      self.inscription = inscription.capitalize
-    end
+    return unless inscription && inscription&.upcase == inscription
+
+    # IT IS ALL IN CAPITALS, I AM SHOUTING
+    self.inscription = inscription.capitalize
   end
 end

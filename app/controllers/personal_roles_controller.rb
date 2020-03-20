@@ -60,7 +60,7 @@ class PersonalRolesController < ApplicationController
         primary: params[:personal_role][:primary]
     )
       opposite = nil
-      if @personal_role.related_person # && !@personal_role.related_person.is_related_to?(@personal_role.person)
+      if @personal_role.related_person # && !@personal_role.related_person.related_to?(@personal_role.person)
         opposite = Role.find_by_name 'wife' if @personal_role.role.name == 'husband'
         opposite = Role.find_by_name 'husband' if @personal_role.role.name == 'wife'
         opposite = Role.find_by_name 'father' if @personal_role.role.role_type == 'child' && @personal_role.related_person.male?

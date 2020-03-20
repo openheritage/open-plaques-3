@@ -5,7 +5,6 @@
 class Verb < ApplicationRecord
   has_many :personal_connections
   has_many :people, through: :personal_connections
-
   validates_presence_of :name
   validates_uniqueness_of :name
   scope :name_starts_with, ->(term) { where(['lower(name) LIKE ?', "#{term.downcase}%"]) }
@@ -32,8 +31,7 @@ class Verb < ApplicationRecord
   end
 
   def as_json(options = nil)
-    if options && options[:only]
-    else
+    unless options && options[:only]
       options = {
         only: [:name],
         include: {

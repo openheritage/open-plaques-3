@@ -11,7 +11,6 @@
 class Country < ApplicationRecord
   has_many :areas
   has_many :plaques, through: :areas
-
   validates_presence_of :name, :alpha2
   validates_uniqueness_of :name, :alpha2
 
@@ -24,19 +23,21 @@ class Country < ApplicationRecord
   end
 
   def plaques_count
-    @@p_count = areas.sum(:plaques_count) if @@p_count = 0
+    @@p_count = areas.sum(:plaques_count) if @@p_count.zero?
     @@p_count
   end
 
   def zoom
-    self.preferred_zoom_level || 6
+    preferred_zoom_level || 6
   end
 
-  def as_json(options={})
-    options = {
-      only: [:name],
-      methods: [:uri, :plaques_count, :areas_count]
-    } if !options || !options[:only]
+  def as_json(options = {})
+    if !options || !options[:only]
+      options = {
+        only: [:name],
+        methods: %i[uri plaques_count areas_count]
+      }
+    end
     super options
   end
 
