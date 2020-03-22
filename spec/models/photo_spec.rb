@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 describe Photo, type: :model do
   let(:nothing_set) { build :photo }
 

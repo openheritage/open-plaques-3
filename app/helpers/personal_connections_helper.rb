@@ -25,7 +25,6 @@ module PersonalConnectionsHelper
     connections.each do |personal_connection|
       years = ''
       years += '(' + personal_connection.from if personal_connection.from != ''
-      end
       years += '-' + personal_connection.to unless ['', personal_connection.from].include?(personal_connection.to)
       years += ')' if years != ''
       verbs << personal_connection.verb.name + ' ' + years

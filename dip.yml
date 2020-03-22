@@ -74,9 +74,9 @@ interaction:
     description: Pull data from live into development
     service: runner
 #    command: heroku pg:backups capture --app open-plaques-beta && \
-#      curl -o db/openplaques_production.dump `heroku pg:backups --app open-plaques-beta public-url` && \
-#      pg_restore -h postgres -U postgres -d openplaques_development db/openplaques_production.dump
-    command: pg_restore -h postgres -U postgres -d openplaques_development_20200350 db/openplaques_production.dump
+#      curl -o openplaques_production.dump `heroku pg:backups --app open-plaques-beta public-url` && \
+#      pg_restore -h postgres -U postgres -d openplaques_development openplaques_production.dump
+    command: pg_restore -h postgres -U postgres -d openplaques_development openplaques_production.dump
   
   'redis-cli':
     description: Run Redis console
@@ -88,5 +88,7 @@ provision:
   - dip compose up -d postgres redis
   - dip bundle install
   - dip yarn install
+  - dip rails db:setup db:migrate db:seed RAILS_ENV=test
   - dip rails db:setup
 #  - dip rails db:migrate db:seed
+  - dip livepull

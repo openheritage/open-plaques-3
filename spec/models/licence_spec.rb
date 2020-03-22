@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 describe Licence, type: :model do
   let(:blinky) { build :licence, name: 'blinky' }
   let(:cc_by_2) { build :licence, name: 'cc_by_2', url: 'http://creativecommons.org/licenses/by/2.0/' }
