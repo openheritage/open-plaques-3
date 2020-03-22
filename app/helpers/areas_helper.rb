@@ -1,5 +1,5 @@
+# Assist Areas
 module AreasHelper
-
   def area_path(area, options = {})
     country_area_plaques_path(area.country, area, options)
   end
@@ -13,7 +13,7 @@ module AreasHelper
   end
 
   def area_url(area, options = {})
-     country_area_plaques_url(area.country, area, options)
+    country_area_plaques_url(area.country, area, options)
   end
 
   def area_plaques_url(area, options = {})
@@ -35,5 +35,4 @@ module AreasHelper
   def area_unconnected_path(area, options = {})
     url_for(options.merge(controller: :area_plaques, action: :show, country_id: area.country.alpha2, area_id: area.slug, filter: :unconnected))
   end
-
 end

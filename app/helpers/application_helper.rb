@@ -1,6 +1,5 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
-
   def button_delete(path)
     button_to(t('buttons.delete'), path, {method: :delete, class: 'btn btn-danger'})
   end
@@ -10,7 +9,7 @@ module ApplicationHelper
   end
 
   def div(options = {}, &block)
-    content_tag("div", options, &block)
+    content_tag(:div, options, &block)
   end
 
   def csv_escape(string)
@@ -30,8 +29,8 @@ module ApplicationHelper
     return h(phrase).gsub(/'/,'&#39;').gsub(/\r\n/,"<br/>")
   end
 
-  def unknown(text = "unknown")
-    content_tag("span", text, class: :unknown)
+  def unknown(text = 'unknown')
+    content_tag(:span, text, class: :unknown)
   end
 
   # Outputs an abbreviation tag for 'circa'.
@@ -39,7 +38,7 @@ module ApplicationHelper
   # ==== Example output:
   #   <abbr title="circa">c</abbr>
   def circa_tag
-    return content_tag("abbr", "c", {title: "circa"})
+    return content_tag("abbr", "c", { title: "circa" })
   end
 
   # Produces a link wrapped in a list item element (<li>).
@@ -75,12 +74,8 @@ module ApplicationHelper
   end
 
   def pluralize_is_or_are(number, name)
-    if number > 1
-      word = "are"
-    else
-      word = "is"
-    end
-    return word + " " + pluralize(number, name)
+    word = number > 1 ? 'are' : 'is'
+    word + ' ' + pluralize(number, name)
   end
 
   def pluralize_no_count(count, singular, plural = nil)
@@ -92,11 +87,7 @@ module ApplicationHelper
   # the link would otherwise lead to the page you're already on. This can be used
   # for styling in CSS.
   def navigation_link_to(name, options = {}, html_options = {})
-    if current_page?(options)
-      content_tag("span", name)
-    else
-      link_to name, options, html_options
-    end
+    current_page?(options) ? content_tag(:span, name) : link_to(name, options, html_options)
   end
 
   # A (persistant) navigation link embedded within a list item.
@@ -105,15 +96,11 @@ module ApplicationHelper
   # Produces:
   #   <li><a href="/">Home</a></li>
   def navigation_list_link_to(name, options = {}, html_options = {})
-    content_tag("li", navigation_link_to(name, options, html_options))
+    content_tag(:li, navigation_link_to(name, options, html_options))
   end
 
   def pluralize_with_no(number, name)
-    if number == 0
-      "no " + name
-    else
-      pluralize(number, name)
-    end
+    number.zero? ? "no #{name}" : pluralize(number, name)
   end
 
   def pluralize_word(count, singular, plural = nil)
@@ -121,26 +108,28 @@ module ApplicationHelper
   end
 
   def make_slug_not_war
-    if slug.blank?
-      self.slug = name.to_s.rstrip.lstrip.downcase.tr(" ", "_").tr("-", "_").tr(",", "_").tr(".", "_").tr("'", "").gsub("__", "_")
-    end
+    return unless slug.blank?
+
+    self.slug = name.to_s.rstrip.lstrip.downcase.tr(' ', '_').tr('-', '_').tr(',', '_').tr('.', '_').tr("'", '').gsub('__', '_')
   end
 
   def markdown(text)
-    markdown = Redcarpet::Markdown.new(CustomRender,
-    no_intra_emphasis: true,
-    fenced_code_blocks: true,
-    disable_indented_code_blocks: true)
-    return ERB.new(markdown.render(text).html_safe).result(binding).html_safe
+    markdown = Redcarpet::Markdown.new(
+      CustomRender,
+      no_intra_emphasis: true,
+      fenced_code_blocks: true,
+      disable_indented_code_blocks: true
+    )
+    ERB.new(markdown.render(text).html_safe).result(binding).html_safe
   end
-
 end
 
+# Render plaques etc. inside Markdown
 class CustomRender < Redcarpet::Render::HTML
   def paragraph(text)
-    text.gsub!(/plaque ([0-9]+)/) { |match|
+    text.gsub!(/plaque ([0-9]+)/) do |match|
       %(<div class="col-xs-6 col-sm-4 col-md-3"><%= render partial: 'plaques/tile', object: Plaque.find(#{match[7..-1]}), as: :plaque  %></div>)
-    }
+    end
     %(<div class="row">#{text}</div>)
   end
 end

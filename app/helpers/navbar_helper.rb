@@ -1,3 +1,4 @@
+# Assist navbar creation
 module NavbarHelper
   # Generate <li><a href=...></a></li> appropriate for the Bootstrap navbar.
   # If :active_when hash is provided in the options, a class=active will
@@ -15,10 +16,9 @@ module NavbarHelper
     active = active_when.all? do |key, value|
       params[key].to_s == value.to_s
     end
-    active_class = ""
-    active_class = " active" if active
-    options[:class] = "nav-link"
-    content_tag(:li, class: ("nav-item" + active_class)) do
+    active_class = active ? ' active' : ''
+    options[:class] = 'nav-link'
+    content_tag(:li, class: ('nav-item' + active_class)) do
       link_to(label, path, options)
     end
   end

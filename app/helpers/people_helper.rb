@@ -1,13 +1,12 @@
 # Assist People
 module PeopleHelper
-
   def roles_list(person)
     list = []
-    if person.roles.size == 0 || person.type != 'man'
+    if person.roles.empty? || person.type != 'man'
       list << person.type
     end
     person.straight_roles.each do |personal_role|
-      list <<  dated_role(personal_role)
+      list << dated_role(personal_role)
     end
     if person.inanimate_object?
       person.relationships.each do |relationship|
@@ -15,7 +14,7 @@ module PeopleHelper
       end
     end
     list.uniq!
-    content_tag(:span, list.to_sentence.html_safe, {id: "person-#{person.id}-roles"})
+    content_tag(:span, list.to_sentence.html_safe, { id: "person-#{person.id}-roles" })
   end
 
   def dated_role(personal_role)
@@ -49,9 +48,9 @@ module PeopleHelper
   def wikipedia_summary(url)
     doc = Nokogiri::HTML(open(url))
     first_para_html = doc.search('//p').first.to_s # .gsub(/<\/?[^>]*>/, "")
-    return Sanitize.clean(first_para_html)
+    Sanitize.clean(first_para_html)
     rescue Exception
-    return nil
+      nil
   end
 
   # select html paragraphs from a web page given an Array, String or integer
@@ -73,7 +72,7 @@ module PeopleHelper
   def dated_roled_person(person)
     return 'XXXX' unless person
 
-    roles = Array.new
+    roles = []
     person.personal_roles.each do |personal_role|
       roles << dated_role(personal_role)
     end
