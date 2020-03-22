@@ -36,21 +36,22 @@ gem 'aws-sdk-comprehend'
 gem 'aws-sdk-translate'
 
 group :development do
-  gem 'derailed_benchmarks'
-  gem 'spring'
   gem 'bullet'
-  gem 'meta_request'
-  gem 'listen'
+  gem 'derailed_benchmarks'
   gem 'fuubar'
+  gem 'listen'
   gem 'mechanize'
+  gem 'meta_request'
   gem 'rubocop'
+  gem 'spring'
 end
 
 group :test do
-  gem 'rspec-rails', '4.0.0.beta3', group: :development
-  gem 'factory_bot_rails'
   gem 'database_cleaner'
+  gem 'factory_bot_rails'
+  gem 'faker'
   gem 'rails-controller-testing'
+  gem 'rspec-rails', '4.0.0.rc1'
 end
 
 gem 'tzinfo-data'

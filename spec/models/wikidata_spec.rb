@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 describe Wikidata do
   describe '#search_wikidata' do
     context 'an unfindable name' do

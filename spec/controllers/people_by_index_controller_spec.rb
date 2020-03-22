@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe PeopleByIndexController do
   let!(:a_person) do

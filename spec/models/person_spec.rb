@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 describe Person, type: :model do
   let(:john_smith) { build :person }
 

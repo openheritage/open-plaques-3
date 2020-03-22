@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 describe Page, type: :model do
   it 'has a valid factory' do
     expect(create(:page)).to be_valid
