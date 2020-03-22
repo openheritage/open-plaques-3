@@ -379,7 +379,7 @@ class Photo < ApplicationRecord
     self.photographer = 'Nick Harrison' if photographer == 'nick.harrisonfli'
     self.photographer = 'Elliott Brown' if photographer == 'ell brown'
     self.photographer = 'Jez Nicholson' if photographer == "J'Roo"
-    self.photographer = photographer.gsub(/\R+/, '')
+    self.photographer = photographer&.gsub(/\R+/, '')
   end
 
   def opposite_clone
