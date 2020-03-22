@@ -1,20 +1,21 @@
-<div class="card">
-    <% if @todays&.photo %>
-        <%= link_to @todays.plaque do %>
-            <div class="card-img-top">
-                <%= render @todays.plaque.main_photo %>
-            </div>
-        <% end %>
-    <% end %>
-    <% if @todays %>
-        <h2 class="card-header"><%= t '.plaque_of_the_day' %></h2>
-        <div class="card-block">
-            <p class="card-text"><%= link_to @todays.plaque.title, @todays.plaque %>
-                <%= @todays.proposer %>
-                says,"<%= @todays.description %>"</p>
-            <div class="text-center">
-            <%= link_to "Read more", picks_path, class: "btn btn-primary" %>
-            </div>
+<% if @todays %>
+  <div class="card">
+    <div class="row no-gutters">
+      <% if @todays&.photo %>
+        <div class="col-md-4">
+          <%= link_to @todays.plaque do %>
+            <%= render @todays.plaque.main_photo %>
+          <% end %>
         </div>
-    <% end %>
-</div>
+      <% end %>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title"><%= t '.plaque_of_the_day' %></h5>
+          <p class="card-text"><%= link_to @todays.plaque.title, @todays.plaque %></p>
+          <p class="card-text"><%= @todays.proposer %> says,"<%= @todays.description %>"</p>
+          <div class="card-text"><%= link_to "See more...", picks_path, class: "btn btn-primary" %></div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

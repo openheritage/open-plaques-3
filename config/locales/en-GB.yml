@@ -133,10 +133,10 @@ en-GB:
       news: news
       news_detail_html: Follow us on <a href="http://www.twitter.com/openplaques">Twitter</a> and Facebook for updates.
     open_data:
-      open_data: open data
-      who_can_use: Who can use the data and how?
+      open_data: Open Data
+      who_can_use: We believe that the purpose of historical markers is to bring history alive. So we have made the data open. Anybody can use it to builds apps, charts, whatever they wish.
     plaque_of_the_day:
-      plaque_of_the_day: plaque of the day
+      plaque_of_the_day: Plaque Of The Day
     special_offer:
     index:
       page_title: Open Plaques - linking historical people and places
