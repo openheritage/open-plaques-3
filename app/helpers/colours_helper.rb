@@ -1,5 +1,5 @@
+# Assist Colours
 module ColoursHelper
-
   def link_to_colour(colour)
     link_to(colour.name, colour_path(colour))
   end
@@ -13,5 +13,4 @@ module ColoursHelper
   def colour_url(colour, options = {})
     colour_path(colour, options.merge(only_path: false))
   end
-
 end

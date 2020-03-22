@@ -1,3 +1,4 @@
+# Assist javascripting
 module JavascriptHelper
   # Adds the async attribute into javascript_include_tag, but only when the
   # asset pipeline is not in debug mode. Be careful when using this helper,
@@ -7,7 +8,7 @@ module JavascriptHelper
   def javascript_include_async_tag(*args)
     options = args.extract_options!
 
-    unless options["debug"] != false && request_debug_assets?
+    unless options['debug'] != false && request_debug_assets?
       options[:async] = true
     end
 

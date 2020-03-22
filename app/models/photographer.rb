@@ -31,7 +31,7 @@ class Photographer
     @photographers = []
     data.each do |d|
       photographer = Photographer.new
-      photographer.id = d[0].to_s.gsub(/\_/, '.').gsub(/'/, /’/)
+      photographer.id = d[0].to_s.gsub('\_', '.').gsub("'", '’').gsub(/\R+/, '')
       photographer.photos_count = d[1]
       photographer.rank = @photographers.size + 1
       @photographers << photographer
