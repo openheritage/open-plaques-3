@@ -3,21 +3,22 @@
 <% content_for(:page_subhead) {} %>
 <% content_for(:admin_menu) {navbar_link_to(t('.pages'), pages_path, {class: :edit, title: t('.pages')})} %>
 
+<div class="card-group">
+  <%= render partial: 'explore' %>
+  <%= render partial: 'contribute' %>
+  <%= render partial: 'open_data' %>
+  <%= render partial: 'news' %>
+</div>
+
 <div class="row">
-  <div class="col-xs-12 col-sm-12 col-md-8">
-    <div class="row">
-      <div class="col-sm-4"><%= render partial: 'explore' %></div>
-      <div class="col-sm-4"><%= render partial: 'open_data' %></div>
-      <div class="col-sm-4"><%= render partial: 'news' %></div>
-    </div>
-    <div class="row">
-      <div class="col-xs-12 col-sm-6"><%= render partial: 'contribute' %></div>
-      <div class="col-xs-12 col-sm-6"><%= render partial: 'plaque_of_the_day' %></div>
-    </div>
+  <div class="col-xs-12 col-sm-6">
+    <%= render partial: 'plaque_of_the_day' %>
   </div>
-  <div class="col-xs-12 col-sm-6 col-md-4">
+  <div class="col-xs-12 col-sm-6">
     <% if @famous_women %>
       <%= render partial: 'international_womens_day' %>
+    <% else %>
+      <%= render partial: 'place_of_the_day' %>
     <% end %>
   </div>
 </div>
@@ -27,6 +28,6 @@
   <h2><%= t '.famous_women' %></h2>
   <%= render partial: 'people/tiles' %>
 <% elsif @plaques %>
-    <h2><%= t '.recently_photographed' %></h2>
-    <%= render partial: 'plaques/tabbed' %>
+  <h2><%= t '.recently_photographed' %></h2>
+  <%= render partial: 'plaques/tabbed' %>
 <% end %>
