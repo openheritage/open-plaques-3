@@ -19,7 +19,7 @@
                 </ul>
               <% end %>
             </li>
-            <% @person.siblings.each do |sibling| %>
+            <% @person.siblings&.each do |sibling| %>
               <li><%= link_to(sibling.full_name, sibling) %></li>
             <% end %>
           </ul>
