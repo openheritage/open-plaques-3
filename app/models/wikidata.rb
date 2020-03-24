@@ -63,7 +63,10 @@ class Wikidata
 
     t = @wikidata.q&.claims&.P569&.first&.mainsnak&.datavalue&.value&.time
     # can by +1600-00-00 for 'unknown month and day' which breaks datetime
-    t&.match(/\+(\d\d\d\d)/)[1] if t&.match(/\+(\d\d\d\d)/)
+
+    return unless t&.match(/\+(\d\d\d\d)/)
+
+    t.match(/\+(\d\d\d\d)/)[1]
   end
 
   def died_in

@@ -114,10 +114,8 @@ class Plaque < ApplicationRecord
     else
       # not been saved yet
       people = []
-      personal_connections.each do |personal_connection|
-        if !personal_connection.person.nil? && personal_connection.person.name != ''
-          people << personal_connection.person
-        end
+      personal_connections.each do |pc|
+        people << pc.person unless pc.person.nil? || pc.person.name.empty?
       end
       people.uniq
     end
@@ -292,9 +290,11 @@ class Plaque < ApplicationRecord
   end
 
   def erected?
-    return false if erected_at? && erected_at.year > Date.today.year
+    if erected_at?
+      return false if erected_at.year > Date.today.year
 
-    return false if erected_at? && erected_at.day != 1 && erected_at.month != 1 && erected_at > Date.today
+      return false if erected_at.day != 1 && erected_at.month != 1 && erected_at > Date.today
+    end
 
     true
   end
