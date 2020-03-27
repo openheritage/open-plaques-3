@@ -14,8 +14,6 @@ class Country < ApplicationRecord
   validates_presence_of :name, :alpha2
   validates_uniqueness_of :name, :alpha2
 
-  @@p_count = 0
-
   include PlaquesHelper
 
   def geolocated?
@@ -23,8 +21,7 @@ class Country < ApplicationRecord
   end
 
   def plaques_count
-    @@p_count = areas.sum(:plaques_count) if @@p_count.zero?
-    @@p_count
+    @p_count ||= areas.sum(:plaques_count)
   end
 
   def zoom
@@ -52,5 +49,4 @@ class Country < ApplicationRecord
   def to_s
     name
   end
-
 end
