@@ -128,7 +128,7 @@ class Role < ApplicationRecord
 
     api = "#{dbpedia_uri.gsub('resource', 'data')}.json"
     begin
-      response = open(api)
+      response = URI.parse(api).open
       resp = response.read
       parsed_json = JSON.parse(resp)
       abstract = parsed_json[dbpedia_uri]['http://dbpedia.org/ontology/abstract']
@@ -163,19 +163,13 @@ class Role < ApplicationRecord
 
   def confers_honourific_title?
     [
-      'Baronet',
-      'Baroness',
+      'Baronet', 'Baroness',
       'Knight Bachelor',
-      'Knight of the Order of the Garter',
-      'Knight of the Order of the Thistle',
-      'Knight Commander of the Order of the Bath',
-      'Knight Grand Cross of the Order of the Bath',
-      'Knight Commander of the Order of St Michael and St George',
-      'Knight Grand Cross of the Order of St Michael and St George',
-      'Knight Commander of the Royal Victorian Order',
-      'Knight Grand Cross of the Royal Victorian Order',
-      'Knight Commander of the Order of the British Empire',
-      'Knight Grand Cross of the Order of the British Empire',
+      'Knight of the Order of the Garter', 'Knight of the Order of the Thistle',
+      'Knight Commander of the Order of the Bath', 'Knight Grand Cross of the Order of the Bath',
+      'Knight Commander of the Order of St Michael and St George', 'Knight Grand Cross of the Order of St Michael and St George',
+      'Knight Commander of the Royal Victorian Order', 'Knight Grand Cross of the Royal Victorian Order',
+      'Knight Commander of the Order of the British Empire', 'Knight Grand Cross of the Order of the British Empire',
       'Lady'
     ].include?(name)
   end

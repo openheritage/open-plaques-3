@@ -1,6 +1,6 @@
 # A person who took a photo (and is the copyright holder)
 class Photographer
-  attr_accessor :id, :photos_count, :rank, :url
+  attr_accessor :id, :photos_count, :rank
 
   def photos
     Photo.where(photographer: id)
@@ -27,7 +27,7 @@ class Photographer
   end
 
   def self.top50
-    data = Photo.where.not(plaque_id: nil).group(:photographer).order(count_plaque_id: :desc).distinct.count(:plaque_id)
+    data = Photo.where.not(plaque_id: nil).group(:photographer).order(count_plaque_id: :desc).distinct.limit(50).count(:plaque_id)
     @photographers = []
     data.each do |d|
       photographer = Photographer.new
@@ -35,7 +35,6 @@ class Photographer
       photographer.photos_count = d[1]
       photographer.rank = @photographers.size + 1
       @photographers << photographer
-      break if @photographers.size == 50
     end
     @photographers
   end
