@@ -1,3 +1,4 @@
+# control Series
 class SeriesController < ApplicationController
   before_action :authenticate_admin!, only: :destroy
   before_action :find, only: %i[show edit update geolocate]
@@ -17,12 +18,11 @@ class SeriesController < ApplicationController
       @plaque = Plaque.where(series_id: @series.id, series_ref: params[:series_ref]).first
       render '/plaques/show'
     else
-      @plaques = 
-        @series
-        .plaques
-        .in_series_ref_order
-        .paginate(page: params[:page], per_page: 20)
-        .preload(:language, :personal_connections, :photos, area: :country)
+      @plaques = @series
+                 .plaques
+                 .in_series_ref_order
+                 .paginate(page: params[:page], per_page: 20)
+                 .preload(:language, :personal_connections, :photos, area: :country)
       begin
         set_meta_tags open_graph: {
           title: "Open Plaques Series #{@series.name}",
@@ -67,7 +67,7 @@ class SeriesController < ApplicationController
 
   def geolocate
     unless @series.geolocated?
-      @mean = Helper.instance.find_mean(@series.plaques.geolocated.random.limit(50))
+      @mean = Helper.instance.find_mean(@series.plaques.geolocated.random(50))
       @series.latitude = @mean.latitude
       @series.longitude = @mean.longitude
       @series.save
@@ -81,6 +81,7 @@ class SeriesController < ApplicationController
     @series = Series.find(params[:id] || params[:series_id])
   end
 
+  # access helpers from controller
   class Helper
     include Singleton
     include PlaquesHelper
@@ -89,11 +90,11 @@ class SeriesController < ApplicationController
   def streetview_to_params
     return unless params[:streetview_url]
 
-    point = Helper.instance.geolocation_from params[:streetview_url]
-    unless point.latitude.blank? || point.longitude.blank?
-      params[:series][:latitude] = point.latitude.to_s
-      params[:series][:longitude] = point.longitude.to_s
-    end
+    point = Helper.instance.geolocation_from(params[:streetview_url])
+    return if point.latitude.blank? || point.longitude.blank?
+
+    params[:series][:latitude] = point.latitude.to_s
+    params[:series][:longitude] = point.longitude.to_s
   end
 
   private

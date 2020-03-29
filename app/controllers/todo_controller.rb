@@ -1,4 +1,4 @@
-
+# control todos
 class TodoController < ApplicationController
   include ActionView::Helpers::TextHelper
   before_action :authenticate_user!, except: [:index]
@@ -84,7 +84,7 @@ class TodoController < ApplicationController
         @plaques = Plaque.photographed_not_coloured
         @plaque = @plaques[rand @plaques.length]
         if @plaque
-          @colours = Colour.order(:name)
+          @colours = Colour.alphabetically
           render 'plaque_colour/edit' and return
         end
       when 1
@@ -92,7 +92,7 @@ class TodoController < ApplicationController
         @plaques = Plaque.partial_inscription_photo
         @plaque = @plaques[rand @plaques.length]
         if @plaque
-          @languages = Language.all.order(:name)
+          @languages = Language.all.alphabetically
           render 'plaque_inscription/edit' and return
         end
       when 2
@@ -100,7 +100,7 @@ class TodoController < ApplicationController
         @people = Person.unroled
         @person = @people[rand @people.length]
         if @person
-          @roles = Role.all.order(:name)
+          @roles = Role.all.alphabetically
           @personal_role = PersonalRole.new
           @died_on = @person.died_on.year if @person.died_on
           @born_on = @person.born_on.year if @person.born_on
@@ -122,7 +122,7 @@ class TodoController < ApplicationController
         @died_on = @person.died_on.year if @person.died_on
         @born_on = @person.born_on.year if @person.born_on
         if @person
-          @roles = Role.all.order(:name)
+          @roles = Role.all.alphabetically
           render 'people/dates/edit' and return
         end
       when 5
@@ -131,7 +131,7 @@ class TodoController < ApplicationController
         @photo = @photos[rand @photos.length]
         if @photo
           @plaques = [Plaque.find(100)]
-          @licences = Licence.all.order(:name)
+          @licences = Licence.all.alphabetically
           render 'photos/plaque/edit' and return
         end
       when 6

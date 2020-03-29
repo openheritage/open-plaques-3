@@ -2,17 +2,9 @@
 module PeopleHelper
   def roles_list(person)
     list = []
-    if person.roles.empty? || person.type != 'man'
-      list << person.type
-    end
-    person.straight_roles.each do |personal_role|
-      list << dated_role(personal_role)
-    end
-    if person.inanimate_object?
-      person.relationships.each do |relationship|
-        list << link_to(relationship.role.name, relationship.role)
-      end
-    end
+    list << person.type if person.roles.empty? || person.type != 'man'
+    person.straight_roles.each { |personal_role| list << dated_role(personal_role) }
+    person.relationships.each { |relationship| list << link_to(relationship.role.name, relationship.role) } if person.inanimate_object?
     list.uniq!
     content_tag(:span, list.to_sentence.html_safe, { id: "person-#{person.id}-roles" })
   end
@@ -46,7 +38,7 @@ module PeopleHelper
 
   # select the very first html paragraph
   def wikipedia_summary(url)
-    doc = Nokogiri::HTML(open(url))
+    doc = Nokogiri::HTML(URI.parse(url).open)
     first_para_html = doc.search('//p').first.to_s # .gsub(/<\/?[^>]*>/, "")
     Sanitize.clean(first_para_html)
   rescue Exception

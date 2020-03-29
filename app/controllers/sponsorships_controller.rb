@@ -1,3 +1,4 @@
+# control sponsorships
 class SponsorshipsController < ApplicationController
   before_action :authenticate_admin!, only: :destroy
   before_action :find, only: [:destroy]
@@ -39,6 +40,6 @@ class SponsorshipsController < ApplicationController
   end
 
   def list_organisations
-    @organisations = Organisation.select(:id, :name).order('name')
+    @organisations = Organisation.select(:id, :name).alphabetically
   end
 end

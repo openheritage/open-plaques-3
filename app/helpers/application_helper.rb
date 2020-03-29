@@ -13,11 +13,9 @@ module ApplicationHelper
   end
 
   def csv_escape(string)
-    unless string.blank?
-      '"' + string.gsub(/[\r\n]/, ' ').gsub(/\s\s+/, ' ').strip + '"'
-    else
-      ''
-    end
+    return '' if string.blank?
+
+    '"' + string.gsub(/[\r\n]/, ' ').gsub(/\s\s+/, ' ').strip + '"'
   end
 
   def block_tag(tag, options = {}, &block)
@@ -52,11 +50,11 @@ module ApplicationHelper
   # <tt>name</tt> - the word
   # <tt>include_name - whether to include the name in the string output or not.
   def a_or_an(name, include_name = true)
-    if name[0,1] =~ /[aeiou]/
-      article = 'an'.html_safe
-    else
-      article = 'a'.html_safe
-    end
+    article = if name[0, 1] =~ /[aeiou]/
+                'an'.html_safe
+              else
+                'a'.html_safe
+              end
     if include_name
       article + ' '.html_safe + name
     else
@@ -104,7 +102,7 @@ module ApplicationHelper
   end
 
   def pluralize_word(count, singular, plural = nil)
-    (count == 1 || count =~ %r/^1(\.0+)?$/) ? singular : (plural || singular.pluralize)
+    count == 1 || count =~ %r/^1(\.0+)?$/ ? singular : plural || singular.pluralize
   end
 
   def make_slug_not_war

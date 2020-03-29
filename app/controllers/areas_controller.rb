@@ -77,7 +77,7 @@ class AreasController < ApplicationController
 
   def geolocate
     unless @area.geolocated?
-      @mean = Helper.instance.find_mean(@area.plaques.geolocated.random.limit(50))
+      @mean = Helper.instance.find_mean(@area.plaques.geolocated.random(50))
       @area.latitude = @mean.latitude
       @area.longitude = @mean.longitude
       @area.save

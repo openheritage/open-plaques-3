@@ -1,8 +1,9 @@
+# define Plaque CSV format
 class PlaqueCsv < Julia::Builder
   column :id
   column :machine_tag
   column :title
-  column 'inscription' do |plaque| plaque.inscription.gsub(/\r/," ").gsub(/\n/," ") end
+  column 'inscription' do |plaque| plaque.inscription.gsub(/\r/, ' ').gsub(/\n/, ' ') end
   column :latitude
   column :longitude
   column :as_wkt
@@ -63,7 +64,7 @@ class PlaqueCsv < Julia::Builder
     subjects = []
     plaque.people.each do |subject|
       roles = []
-      subject.personal_roles.each do |personal_role| roles << personal_role.name end
+      subject.personal_roles.each { |personal_role| roles << personal_role.name }
       subjects << subject.name + '|' + subject.dates.to_s + '|' + subject.type + '|' + roles.to_sentence
     end
     subjects

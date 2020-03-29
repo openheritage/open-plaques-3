@@ -21,7 +21,7 @@ class Country < ApplicationRecord
   end
 
   def plaques_count
-    @p_count ||= areas.sum(:plaques_count)
+    @plaques_count ||= areas.sum(:plaques_count)
   end
 
   def zoom

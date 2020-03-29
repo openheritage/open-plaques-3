@@ -1,12 +1,13 @@
+# control subjects
 class PeopleController < ApplicationController
   before_action :authenticate_admin!, only: :destroy
-  before_action :authenticate_user!, except: [:autocomplete, :index, :show, :update]
-  before_action :find, only: [:edit, :update, :destroy]
+  before_action :authenticate_user!, except: %i[autocomplete index show update]
+  before_action :find, only: %i[edit update destroy]
 
   def index
     respond_to do |format|
-      format.html {
-        if (params[:filter] && params[:filter]!='')
+      format.html do
+        if params[:filter] && params[:filter] != ''
           begin
             @people = Person.send(params[:filter].to_s).paginate(page: params[:page], per_page: 50)
             @display = params[:filter].to_s
@@ -16,45 +17,47 @@ class PeopleController < ApplicationController
         else
           redirect_to(controller: :people_by_index, action: :show, id: :a)
         end
-      }
-      format.csv {
+      end
+      format.csv do
         @people = Person.with_counts.all
         send_data(
           "\uFEFF#{PersonCsv.new(@people).build}",
           type: 'text/csv',
-          filename: "open-plaques-subjects-all-#{Date.today.to_s}.csv",
+          filename: "open-plaques-subjects-all-#{Date.today}.csv",
           disposition: 'attachment'
         ) and return
-      }
+      end
     end
   end
 
   def autocomplete
-    limit = params[:limit] ? params[:limit] : 5
-    @people = "{}"
-    @people = Person.select(:born_on, :died_on, :gender, :id, :name)
-      .includes(:roles)
-      .name_is(params[:contains])
-      .limit(limit) if params[:contains]
-    @people += Person.select(:born_on, :died_on, :gender, :id, :name)
-      .includes(:roles)
-      .name_starts_with(params[:contains])
-      .alphabetically
-      .limit(limit) if params[:contains]
-    @people += Person.select(:born_on, :died_on, :gender, :id, :name)
-      .includes(:roles)
-      .name_contains(params[:contains])
-      .alphabetically
-      .limit(limit) if params[:contains]
-    @people += Person.select(:born_on, :died_on, :gender, :id, :name)
-      .includes(:roles)
-      .aka(params[:contains])
-      .alphabetically
-      .limit(limit) if params[:contains]
+    limit = params[:limit] || 5
+    @people = '{}'
+    if params[:contains]
+      @people = Person.select(:born_on, :died_on, :gender, :id, :name)
+                      .includes(:roles)
+                      .name_is(params[:contains])
+                      .limit(limit)
+      @people += Person.select(:born_on, :died_on, :gender, :id, :name)
+                       .includes(:roles)
+                       .name_starts_with(params[:contains])
+                       .alphabetically
+                       .limit(limit)
+      @people += Person.select(:born_on, :died_on, :gender, :id, :name)
+                       .includes(:roles)
+                       .name_contains(params[:contains])
+                       .alphabetically
+                       .limit(limit)
+      @people += Person.select(:born_on, :died_on, :gender, :id, :name)
+                       .includes(:roles)
+                       .aka(params[:contains])
+                       .alphabetically
+                       .limit(limit)
+    end
     @people.uniq!
     render json: @people.uniq.as_json(
-      only: [:id, :name],
-      methods: [:name_and_dates, :type]
+      only: %i[id name],
+      methods: %i[name_and_dates type]
     )
   end
 
@@ -69,9 +72,9 @@ class PeopleController < ApplicationController
       set_meta_tags open_graph: {
         type: :website,
         url: url_for(only_path: false),
-        image: @person.main_photo ? @person.main_photo.file_url : view_context.root_url[0...-1] + view_context.image_path("openplaques.png"),
+        image: @person.main_photo ? @person.main_photo.file_url : view_context.root_url[0...-1] + view_context.image_path('openplaques.png'),
         title: "#{@person.name_and_dates} historical plaques and markers",
-        description: @person.name_and_dates,
+        description: @person.name_and_dates
       }
       set_meta_tags twitter: {
         card: 'summary_large_image',
@@ -80,7 +83,7 @@ class PeopleController < ApplicationController
         image: {
           _: @person.main_photo ? @person.main_photo.file_url : view_context.root_url[0...-1] + view_context.image_path('openplaques.png'),
           width: 100,
-          height: 100,
+          height: 100
         }
       }
     rescue
@@ -89,7 +92,7 @@ class PeopleController < ApplicationController
       format.html
       format.json { render json: @person }
       format.geojson { render geojson: @person }
-      format.csv {
+      format.csv do
         @people = []
         @people << @person
         send_data(
@@ -98,7 +101,7 @@ class PeopleController < ApplicationController
           filename: 'open-plaque-subject-' + @person.id.to_s + '.csv',
           disposition: 'attachment'
         )
-      }
+      end
     end
   end
 
@@ -106,18 +109,18 @@ class PeopleController < ApplicationController
     @person = Person.new
     respond_to do |format|
       format.html
-      format.xml  { render xml: @person }
+      format.xml { render xml: @person }
     end
   end
 
   def edit
-    @roles = Role.order(:name)
+    @roles = Role.alphabetically
     @personal_role = PersonalRole.new
   end
 
   def create
-    params[:person][:born_on] += '-01-01' if params[:person][:born_on] =~/\d{4}/
-    params[:person][:died_on] += '-01-01' if params[:person][:died_on] =~/\d{4}/
+    params[:person][:born_on] += '-01-01' if params[:person][:born_on] =~ /\d{4}/
+    params[:person][:died_on] += '-01-01' if params[:person][:died_on] =~ /\d{4}/
     @person = Person.new(permitted_params)
     @person.sex  # Get sex from name
     respond_to do |format|
@@ -131,11 +134,11 @@ class PeopleController < ApplicationController
           @person.save
         end
         flash[:notice] = 'Person was successfully created.'
-        format.html  { 
-          @roles = Role.order(:name)
+        format.html do
+          @roles = Role.alphabetically
           @personal_role = PersonalRole.new
           render :edit
-        }
+        end
         format.xml  { render xml: @person, status: :created, location: @person }
       else
         format.html { render :new }
@@ -145,8 +148,8 @@ class PeopleController < ApplicationController
   end
 
   def update
-    params[:person][:born_on] += '-01-01' if params[:person][:born_on] =~/\d{4}/
-    params[:person][:died_on] += '-01-01' if params[:person][:died_on] =~/\d{4}/
+    params[:person][:born_on] += '-01-01' if params[:person][:born_on] =~ /\d{4}/
+    params[:person][:died_on] += '-01-01' if params[:person][:died_on] =~ /\d{4}/
     respond_to do |format|
       if @person.update_attributes(permitted_params)
         flash[:notice] = 'Person was successfully updated.'
@@ -194,7 +197,7 @@ class PeopleController < ApplicationController
       :surname_starts_with,
       :wikidata_id,
       :wikipedia_paras,
-      :wikipedia_url,
-    ).merge({aka: aka_to_a})
+      :wikipedia_url
+    ).merge({ aka: aka_to_a })
   end
 end

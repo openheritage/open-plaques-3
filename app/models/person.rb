@@ -56,11 +56,10 @@ class Person < ApplicationRecord
   }
   scope :female, -> { where(gender: 'f') }
   scope :ungendered, -> { where(gender: 'u') }
-  scope :random, -> { order(Arel.sql('random()')) }
   scope :non_holocaust, -> { joins(:personal_roles).where('personal_roles.role_id != 5375') }
 
-  DATE_REGEX = /c?[\d]{4}/
-  DATE_RANGE_REGEX = /(?:\(#{DATE_REGEX}-#{DATE_REGEX}\)|#{DATE_REGEX}-#{DATE_REGEX})/
+  DATE_REGEX = /c?[\d]{4}/.freeze
+  DATE_RANGE_REGEX = /(?:\(#{DATE_REGEX}-#{DATE_REGEX}\)|#{DATE_REGEX}-#{DATE_REGEX})/.freeze
 
   def relationships
     @relationships ||= begin
@@ -343,18 +342,16 @@ class Person < ApplicationRecord
 
   def father
     relationships.each do |relationship|
-      if relationship.role.role_type == 'child' && !relationship.related_person.nil? && relationship.related_person.male?
-        return relationship.related_person
-      end
+      return relationship.related_person if relationship.role.role_type == 'child' && !relationship.related_person.nil? && relationship.related_person.male?
+
     end
     nil
   end
 
   def mother
     relationships.each do |relationship|
-      if relationship.role.role_type == 'child' && !relationship.related_person.nil? && relationship.related_person.female?
-        return relationship.related_person
-      end
+      return relationship.related_person if relationship.role.role_type == 'child' && !relationship.related_person.nil? && relationship.related_person.female?
+
     end
     nil
   end
@@ -536,7 +533,7 @@ class Person < ApplicationRecord
         Zachariah Zachary Zach
       ].include?(firstname)
     end
-    !self.female?
+    !female?
   end
 
   def female?

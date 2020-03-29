@@ -1,3 +1,4 @@
+# show subjects by starting letter
 class PeopleByIndexController < ApplicationController
   def show
     @index = params[:id]
@@ -6,11 +7,11 @@ class PeopleByIndexController < ApplicationController
     elsif @index =~ /^[a-z]$/
       # roles used by person.full_name
       @people = Person
-        .where(surname_starts_with: @index)
-        .connected
-        .paginate(page: params[:page], per_page: 50)
-        .preload(:personal_roles, :roles, :main_photo)
-        .to_a.sort! { |a,b| a.surname.downcase <=> b.surname.downcase }
+                .where(surname_starts_with: @index)
+                .connected
+                .paginate(page: params[:page], per_page: 50)
+                .preload(:personal_roles, :roles, :main_photo)
+                .to_a.sort! { |a, b| a.surname.downcase <=> b.surname.downcase }
       respond_to do |format|
         format.html { render 'people/by_index/show' }
         format.xml

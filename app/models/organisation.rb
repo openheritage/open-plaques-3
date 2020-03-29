@@ -37,7 +37,7 @@ class Organisation < ApplicationRecord
   end
 
   def main_photo
-    random_plaque = plaques.photographed.random.limit(1).first
+    random_plaque = plaques.photographed.random
     random_plaque&.main_photo
   end
 

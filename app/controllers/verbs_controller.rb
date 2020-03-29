@@ -1,3 +1,4 @@
+# control verbs
 class VerbsController < ApplicationController
   before_action :authenticate_user!, except: [:index]
 
@@ -11,15 +12,18 @@ class VerbsController < ApplicationController
 
   def autocomplete
     limit = params[:limit] || 5
-    @verbs = "{}"
-    @verbs = Verb
-             .select(:id, :name)
-             .name_contains(params[:contains])
-             .limit(limit) if params[:contains]
-    @verbs = Verb
-             .select(:id,:name)
-             .name_starts_with(params[:starts_with])
-             .limit(limit) if params[:starts_with]
+    @verbs = '{}'
+    @verbs = if params[:contains]
+               Verb
+                 .select(:id, :name)
+                 .name_contains(params[:contains])
+                 .limit(limit)
+             elsif params[:starts_with]
+               Verb
+                 .select(:id, :name)
+                 .name_starts_with(params[:starts_with])
+                 .limit(limit)
+             end
     render json: @verbs.as_json(only: %i[id name])
   end
 

@@ -1,3 +1,4 @@
+# control plaques in an area
 class AreaPlaquesController < ApplicationController
   before_action :find, only: [:show]
   respond_to :html, :json, :csv
@@ -19,7 +20,6 @@ class AreaPlaquesController < ApplicationController
     rescue
     end
     zoom = params[:zoom].to_i
-
     @display = 'plaques'
     if zoom > 0
       @plaques = @area.plaques.tile(zoom, params[:x].to_i, params[:y].to_i, params[:filter])
@@ -49,7 +49,7 @@ class AreaPlaquesController < ApplicationController
         send_data(
           "\uFEFF#{PlaqueCsv.new(@plaques).build}",
           type: 'text/csv',
-          filename: "open-plaques-#{@area.slug}-#{Date.today.to_s}.csv",
+          filename: "open-plaques-#{@area.slug}-#{Date.today}.csv",
           disposition: 'attachment'
         )
       }

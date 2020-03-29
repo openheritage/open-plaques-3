@@ -1,5 +1,6 @@
+# control Picks
 class PicksController < ApplicationController
-  before_action :find, only: [:edit, :update, :show, :destroy]
+  before_action :find, only: %i[edit update show destroy]
 
   def index
     @picks = Pick.all
@@ -23,7 +24,7 @@ class PicksController < ApplicationController
   end
 
   def create
-    @pick = Pick.new(pick_params)
+    @pick = Pick.new(permitted_params)
     @plaque = Plaque.find(params[:pick][:plaque_id])
     @pick.plaque = @plaque
     @pick.save
@@ -31,7 +32,7 @@ class PicksController < ApplicationController
   end
 
   def update
-    if @pick.update_attributes(pick_params)
+    if @pick.update_attributes(permitted_params)
       redirect_to pick_path(@pick)
     else
       render :edit
@@ -46,13 +47,14 @@ class PicksController < ApplicationController
 
   private
 
-  def pick_params
+  def permitted_params
     params.require(:pick).permit(
       :plaque_id,
       :description,
       :proposer,
       :feature_on,
       :last_featured,
-      :featured_count)
+      :featured_count
+    )
   end
 end

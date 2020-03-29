@@ -38,6 +38,7 @@ class Area < ApplicationRecord
     people = []
     plaques.each do |plaque|
       next if plaque.people.nil?
+
       plaque.people.each do |person|
         people << person
       end
@@ -88,7 +89,7 @@ class Area < ApplicationRecord
   end
 
   def main_photo
-    random_plaque = plaques.photographed.order(Arel.sql('random()')).limit(1).first
+    random_plaque = plaques.photographed.random
     random_plaque ? random_plaque.main_photo : nil
   end
 

@@ -1,3 +1,4 @@
+# control messages
 class PlaqueTalkController < PlaqueDetailsController
   respond_to :json
 

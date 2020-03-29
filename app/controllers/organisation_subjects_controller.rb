@@ -1,9 +1,10 @@
+# show subjects in an organisation
 class OrganisationSubjectsController < ApplicationController
   before_action :find, only: [:show]
 
   def show
     respond_to do |format|
-      format.html {
+      format.html do
         @plaques_count = @organisation.plaques.count # size is 0
         @uncurated_count = @organisation.plaques.unconnected.size
         @curated_count = @plaques_count - @uncurated_count
@@ -15,24 +16,24 @@ class OrganisationSubjectsController < ApplicationController
           AND personal_connections.person_id = people.id
           GROUP BY people.gender"
         @gender = ActiveRecord::Base.connection.execute(query)
-        @gender = @gender.map{|attributes| OpenStruct.new(attributes)}
-        @subject_count = @gender.inject(0){|sum, g| sum + g.subject_count }
+        @gender = @gender.map { |attributes| OpenStruct.new(attributes) }
+        @subject_count = @gender.inject(0) { |sum, g| sum + g.subject_count }
         @gender.append(OpenStruct.new(gender: 'tba', subject_count: @uncurated_count))
         @people = []
-      render 'organisations/subjects/show'
-      }
+        render 'organisations/subjects/show'
+      end
       format.json { render json: @people }
       format.geojson { render geojson: @people }
-      format.csv {
+      format.csv do
         @plaques = @organisation.plaques.connected
         @people = people(@plaques)
         send_data(
           "\uFEFF#{PersonCsv.new(@people).build}",
           type: 'text/csv',
-          filename: "open-plaques-#{@organisation.slug}-subjects-#{Date.today.to_s}.csv",
+          filename: "open-plaques-#{@organisation.slug}-subjects-#{Date.today}.csv",
           disposition: 'attachment'
         )
-      }
+      end
     end
   end
 

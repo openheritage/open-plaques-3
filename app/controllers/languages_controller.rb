@@ -1,3 +1,4 @@
+# control languages
 class LanguagesController < ApplicationController
   before_action :authenticate_admin!, only: :destroy
   before_action :authenticate_user!, except: [:index]
@@ -16,7 +17,7 @@ class LanguagesController < ApplicationController
   end
 
   def create
-    @language = Language.new(language_params)
+    @language = Language.new(permitted_params)
     @language.save
     redirect_to languages_path
   end
@@ -29,9 +30,10 @@ class LanguagesController < ApplicationController
 
   private
 
-  def language_params
+  def permitted_params
     params.require(:language).permit(
-      :name,
-      :alpha2)
+      :alpha2,
+      :name
+    )
   end
 end

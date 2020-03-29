@@ -13,7 +13,7 @@ class Series < ApplicationRecord
   scope :in_count_order, -> { order(plaques_count: :desc) }
 
   def main_photo
-    random_plaque = plaques.photographed.random.limit(1).first
+    random_plaque = plaques.photographed.random
     random_plaque&.main_photo
   end
 

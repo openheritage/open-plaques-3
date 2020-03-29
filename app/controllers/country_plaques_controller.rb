@@ -1,14 +1,15 @@
+# show plaques in country
 class CountryPlaquesController < ApplicationController
   before_action :find, only: [:show]
 
   def show
     @display = 'all'
-    if (params[:id] && params[:id]=='unphotographed')
+    if (params[:id] && params[:id] == 'unphotographed')
       request.format == 'html' ? @plaques = @country.plaques.unphotographed.paginate(page: params[:page], per_page: 50) : @plaques = @country.plaques.unphotographed
       @display = 'unphotographed'
-    elsif (params[:id] && params[:id]=='current')
+    elsif (params[:id] && params[:id] == 'current')
       request.format == 'html' ? @plaques = @country.plaques.current.paginate(page: params[:page], per_page: 50) : @plaques = @country.plaques.current
-    elsif (params[:id] && params[:id]=='ungeolocated')
+    elsif (params[:id] && params[:id] == 'ungeolocated')
       request.format == 'html' ? @plaques = @country.plaques.ungeolocated.paginate(page: params[:page], per_page: 50) : @plaques = @country.plaques.ungeolocated
       @display = 'ungeolocated'
     else
@@ -22,7 +23,7 @@ class CountryPlaquesController < ApplicationController
         send_data(
           "\uFEFF#{PlaqueCsv.new(@plaques).build}",
           type: 'text/csv',
-          filename: "open-plaques-#{@country.name}-#{Date.today.to_s}.csv",
+          filename: "open-plaques-#{@country.name}-#{Date.today}.csv",
           disposition: 'attachment'
         )
       }

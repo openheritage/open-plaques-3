@@ -1,7 +1,8 @@
+# control personal roles
 class PersonalRolesController < ApplicationController
   before_action :authenticate_admin!, only: :destroy
   before_action :authenticate_user!
-  before_action :find, only: [:destroy, :update, :edit]
+  before_action :find, only: %i[destroy update edit]
 
   def create
     @personal_role = PersonalRole.new
@@ -9,13 +10,13 @@ class PersonalRolesController < ApplicationController
     @personal_role.person = Person.find(params[:personal_role][:person_id])
     if params[:personal_role][:started_at] > ''
       started_at = params[:personal_role][:started_at]
-      started_at = started_at + '-01-01' if started_at =~/\d{4}/
+      started_at += '-01-01' if started_at =~ /\d{4}/
       started_at = Date.parse(started_at)
       @personal_role.started_at = started_at
     end
     if params[:personal_role][:ended_at] > ''
       ended_at = params[:personal_role][:ended_at]
-      ended_at = ended_at + '-01-01' if ended_at =~/\d{4}/
+      ended_at += '-01-01' if ended_at =~ /\d{4}/
       ended_at = Date.parse(ended_at)
       @personal_role.ended_at = ended_at
     end
@@ -23,40 +24,32 @@ class PersonalRolesController < ApplicationController
       flash[:notice] = 'PersonalRole was successfully created.'
       redirect_to(edit_person_path(@personal_role.person))
     else
-      @roles = Role.all.order(:name)
+      @roles = Role.all.alphabetically
       render 'people/edit'
     end
   end
 
   def update
     related_person = nil
-    if (params[:personal_role][:related_person_id])
-      related_person = Person.find(params[:personal_role][:related_person_id])
-    end
+    related_person = Person.find(params[:personal_role][:related_person_id]) if params[:personal_role][:related_person_id]
     started_at = nil
-    if (params[:personal_role][:started_at]>"")
+    if params[:personal_role][:started_at] > ''
       started_at = params[:personal_role][:started_at]
-      if started_at =~/\d{4}/
-        started_at = Date.parse(started_at + "-01-01")
-      else
-        started_at = Date.parse(started_at)
-      end
+      started_at += '-01-01' if started_at =~ /\d{4}/
+      started_at = Date.parse(started_at)
     end
     ended_at = nil
-    if (params[:personal_role][:ended_at]>"")
+    if params[:personal_role][:ended_at] > ''
       ended_at = params[:personal_role][:ended_at]
-      if ended_at =~/\d{4}/
-        ended_at = Date.parse(ended_at + "-01-01")
-      else
-        ended_at = Date.parse(ended_at)
-      end
+      ended_at += '-01-01' if ended_at =~ /\d{4}/
+      ended_at = Date.parse(ended_at)
     end
     if @personal_role.update_attributes(
-        started_at: started_at,
-        ended_at: ended_at,
-        related_person: related_person,
-        ordinal: params[:personal_role][:ordinal],
-        primary: params[:personal_role][:primary]
+      started_at: started_at,
+      ended_at: ended_at,
+      related_person: related_person,
+      ordinal: params[:personal_role][:ordinal],
+      primary: params[:personal_role][:primary]
     )
       opposite = nil
       if @personal_role.related_person # && !@personal_role.related_person.related_to?(@personal_role.person)
@@ -85,33 +78,31 @@ class PersonalRolesController < ApplicationController
         opposite = Role.find_by_name 'battle' if @personal_role.role.name == 'battle veteran'
         opposite = Role.find_by_name 'battle veteran' if @personal_role.role.name == 'battle'
       end
-      if opposite != nil
+      unless opposite.nil?
         it_exists = false
         if @personal_role.started_at && @personal_role.ended_at
-          it_exists = PersonalRole.find_by(
+          it_exists = !PersonalRole.find_by(
             person_id: @personal_role.related_person.id,
             related_person: @personal_role.person.id,
             role_id: opposite.id,
             started_at: @personal_role.started_at,
             ended_at: @personal_role.ended_at
-          ) != nil
-          if !it_exists
-            it_exists = PersonalRole.find_by(
-              person_id: @personal_role.related_person.id,
-              related_person: @personal_role.person.id,
-              role_id: opposite.id,
-              started_at: nil,
-              ended_at: nil
-            ) != nil
-          end
+          ).nil?
+          it_exists ||= !PersonalRole.find_by(
+            person_id: @personal_role.related_person.id,
+            related_person: @personal_role.person.id,
+            role_id: opposite.id,
+            started_at: nil,
+            ended_at: nil
+          ).nil?
         else
-          it_exists = PersonalRole.find_by(
+          it_exists = !PersonalRole.find_by(
             person_id: @personal_role.related_person.id,
             related_person: @personal_role.person.id,
             role_id: opposite.id
-          ) != nil
+          ).nil?
         end
-        if !it_exists
+        unless it_exists
           @vice_versa = PersonalRole.new
           @vice_versa.person = @personal_role.related_person
           @vice_versa.role = opposite
