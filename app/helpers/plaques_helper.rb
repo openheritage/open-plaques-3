@@ -142,9 +142,7 @@ module PlaquesHelper
             area.save
           end
           plaque.area = area
-          if plaque.address.end_with?(", #{known_name}")
-            plaque.address = plaque.address.reverse.sub(", #{known_name}".reverse, '').reverse
-          end
+          plaque.address = plaque.address.reverse.sub(", #{known_name}".reverse, '').reverse if plaque.address.end_with?(", #{known_name}")
           break
         end
         plaque.save

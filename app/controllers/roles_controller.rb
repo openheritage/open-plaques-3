@@ -1,5 +1,4 @@
 class RolesController < ApplicationController
-
   before_action :authenticate_admin!, only: :destroy
   before_action :authenticate_user!, except: [:index, :show]
   before_action :find, only: [:edit, :update]
@@ -23,11 +22,11 @@ class RolesController < ApplicationController
       .limit(limit)
     @roles = @roles + Role.select(:id,:name)
       .name_starts_with(params[:contains] || params[:starts_with])
-      .in_alphabetical_order
+      .alphabetically
       .limit(limit)
     @roles = @roles + Role.select(:id,:name)
       .name_contains(params[:contains])
-      .in_alphabetical_order
+      .alphabetically
       .limit(limit) if params[:contains]
     @roles.uniq!
     render json: @roles.as_json(
@@ -83,24 +82,24 @@ class RolesController < ApplicationController
 
   protected
 
-    def find
-      @role = Role.find_by_slug!(params[:id])
-    end
+  def find
+    @role = Role.find_by_slug!(params[:id])
+  end
 
   private
 
-    def role_params
-      params.require(:role).permit(
-        :abbreviation,
-        :commit,
-        :description,
-        :id,
-        :name,
-        :prefix,
-        :priority,
-        :role_type,
-        :suffix,
-        :slug,
-        :wikidata_id)
-    end
+  def role_params
+    params.require(:role).permit(
+      :abbreviation,
+      :commit,
+      :description,
+      :id,
+      :name,
+      :prefix,
+      :priority,
+      :role_type,
+      :suffix,
+      :slug,
+      :wikidata_id)
+  end
 end

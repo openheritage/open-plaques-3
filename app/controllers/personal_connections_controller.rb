@@ -1,7 +1,6 @@
 require 'aws-sdk-comprehend'
 
 class PersonalConnectionsController < ApplicationController
-
   before_action :authenticate_admin!, only: :destroy
   before_action :find, only: [:destroy]
   before_action :find_plaque, only: [:new, :create]
@@ -61,27 +60,26 @@ class PersonalConnectionsController < ApplicationController
 
   protected
 
-    def find
-      @personal_connection = PersonalConnection.find(params[:id])
-    end
+  def find
+    @personal_connection = PersonalConnection.find(params[:id])
+  end
 
-    def find_plaque
-      @plaque = Plaque.find(params[:plaque_id])
-    end
+  def find_plaque
+    @plaque = Plaque.find(params[:plaque_id])
+  end
 
-    def list_people_and_verbs
-      @verbs = Verb.order(:name).select('id, name')
-    end
+  def list_people_and_verbs
+    @verbs = Verb.order(:name).select('id, name')
+  end
 
   private
 
-    def personal_connection_params
-      params.require(:personal_connection).permit(
-        :person_id,
-        :verb_id,
-        :started_at,
-        :ended_at,
-      )
-    end
-
+  def personal_connection_params
+    params.require(:personal_connection).permit(
+      :person_id,
+      :verb_id,
+      :started_at,
+      :ended_at,
+    )
+  end
 end

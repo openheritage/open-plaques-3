@@ -41,7 +41,7 @@ module PeopleHelper
     elsif personal_role.ended_at?
       r += " (until #{personal_role.ended_at.year})"
     end
-    return r
+    r
   end
 
   # select the very first html paragraph
@@ -49,8 +49,8 @@ module PeopleHelper
     doc = Nokogiri::HTML(open(url))
     first_para_html = doc.search('//p').first.to_s # .gsub(/<\/?[^>]*>/, "")
     Sanitize.clean(first_para_html)
-    rescue Exception
-      nil
+  rescue Exception
+    nil
   end
 
   # select html paragraphs from a web page given an Array, String or integer
@@ -59,56 +59,29 @@ module PeopleHelper
   # e.g. "http://en.wikipedia.org/wiki/Arthur_Onslow", [2,4,5]
   # e.g. "http://en.wikipedia.org/wiki/Arthur_Onslow", 2
   def wikipedia_summary_each(url, para_numbers)
-    para_numbers = para_numbers.to_s.scan(/\d+/) if !para_numbers.is_a?(Array)
-    doc = Hpricot open(url)
+    para_numbers = para_numbers.to_s.scan(/\d+/) unless para_numbers.is_a?(Array)
+    doc = Hpricot(URI.parse(url).open)
     section = para_numbers.inject('') do |para, para_number|
       para += doc.at("p[#{para_number}]").to_html.gsub(/<\/?[^>]*>/, '') + ' '
     end
-    return section.strip
-    rescue Exception
-    return nil
+    section.strip
+  rescue Exception
+    nil
   end
 
   def dated_roled_person(person)
     return 'XXXX' unless person
 
     roles = []
-    person.personal_roles.each do |personal_role|
-      roles << dated_role(personal_role)
-    end
-    if roles.size > 0
-      dated_person(person) + ', ' + roles.to_sentence.html_safe
-    else
-      dated_person(person)
-    end
+    person.personal_roles.each { |personal_role| roles << dated_role(personal_role) }
+    dated_person(person) + roles.empty? ? '' : ', ' + roles.to_sentence.html_safe
   end
 
   def dated_person(person, options = {})
     dates = ' '
     dates += person.dates if person.dates
-    if options[:links] == :none
-      return content_tag(:span, person.full_name, { class: :fn, property: 'rdfs:label foaf:name vcard:fn' }) + dates.html_safe
-    else
-      return link_to(person.full_name, person, { class: 'fn url', property: 'rdfs:label foaf:name vcard:fn', rel: 'foaf:homepage vcard:url' }) + dates.html_safe
-    end
+    return content_tag(:span, person.full_name, { class: :fn, property: 'rdfs:label foaf:name vcard:fn' }) + dates.html_safe if options[:links] == :none
+    
+    link_to(person.full_name, person, { class: 'fn url', property: 'rdfs:label foaf:name vcard:fn', rel: 'foaf:homepage vcard:url' }) + dates.html_safe
   end
-
-  # TODO helper for people_alive_in(year)
-  def datespan(year)
-    ran = rand 3
-    puts 'random = ' + ran.to_s
-    if ran == 0
-      '<div class="col-sm-5"><hr/></div>
-      <div class="col-sm-5"></div>'
-    elsif ran == 1
-      '<div class="col-sm-2"></div>
-      <div class="col-sm-4"><hr/></div>
-      <div class="col-sm-4"></div>'
-    else
-      '<div class="col-sm-3"></div>
-      <div class="col-sm-5"><hr/></div>
-      <div class="col-sm-2"></div>'
-    end
-  end
-
 end

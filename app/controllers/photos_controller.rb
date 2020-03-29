@@ -1,5 +1,4 @@
 class PhotosController < ApplicationController
-
   before_action :authenticate_user!, except: [:index, :show, :update, :create]
   before_action :authenticate_admin!, only: :destroy
   before_action :find, only: [:destroy, :edit, :show, :update]
@@ -67,42 +66,42 @@ class PhotosController < ApplicationController
 
   protected
 
-    def find
-      @photo = Photo.find(params[:id])
-    end
+  def find
+    @photo = Photo.find(params[:id])
+  end
 
-    def get_licences
-      @licences = Licence.order(:name)
-    end
+  def get_licences
+    @licences = Licence.order(:name)
+  end
 
   private
 
-    def help
-      Helper.instance
-    end
+  def help
+    Helper.instance
+  end
 
-    class Helper
-      include Singleton
-      include PlaquesHelper
-    end
+  class Helper
+    include Singleton
+    include PlaquesHelper
+  end
 
-  	def photo_params
-      params.require(:photo).permit(
-        :clone_id,
-        :description,
-        :file_url,
-        :latitude,
-        :licence_id,
-        :longitude,
-        :of_a_plaque,
-        :person_id,
-        :photographer,
-        :photographer_url,
-        :plaque_id,
-        :shot,
-        :streetview_url,
-        :subject,
-        :thumbnail,
-        :url)
-    end
+  def photo_params
+    params.require(:photo).permit(
+      :clone_id,
+      :description,
+      :file_url,
+      :latitude,
+      :licence_id,
+      :longitude,
+      :of_a_plaque,
+      :person_id,
+      :photographer,
+      :photographer_url,
+      :plaque_id,
+      :shot,
+      :streetview_url,
+      :subject,
+      :thumbnail,
+      :url)
+  end
 end

@@ -1,5 +1,4 @@
 class OrganisationSubjectsController < ApplicationController
-
   before_action :find, only: [:show]
 
   def show
@@ -39,21 +38,20 @@ class OrganisationSubjectsController < ApplicationController
 
   protected
 
-    def people(plaques)
-      @people = []
-      plaques.each do |p|
-        p.people.each do |per|
-          per.define_singleton_method(:plaques_count) do
-            1
-          end
-          @people << per
+  def people(plaques)
+    @people = []
+    plaques.each do |p|
+      p.people.each do |per|
+        per.define_singleton_method(:plaques_count) do
+          1
         end
+        @people << per
       end
-      @people.uniq
     end
+    @people.uniq
+  end
 
-    def find
-      @organisation = Organisation.find_by_slug!(params[:organisation_id])
-    end
-
+  def find
+    @organisation = Organisation.find_by_slug!(params[:organisation_id])
+  end
 end

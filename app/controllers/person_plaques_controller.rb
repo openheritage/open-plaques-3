@@ -1,5 +1,4 @@
 class PersonPlaquesController < ApplicationController
-
   def show
     @person = Person.find(params[:person_id])
     @plaques = @person.plaques
@@ -21,5 +20,4 @@ class PersonPlaquesController < ApplicationController
       }
     end
   end
-
 end

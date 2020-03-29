@@ -1,11 +1,11 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
   def button_delete(path)
-    button_to(t('buttons.delete'), path, {method: :delete, class: 'btn btn-danger'})
+    button_to(t('buttons.delete'), path, { method: :delete, class: 'btn btn-danger' })
   end
 
   def alternate_link_to(text, path, format)
-    link_to text, path, type: Mime::Type.lookup_by_extension(format.to_s).to_s, rel: [:alternate,:nofollow]
+    link_to text, path, type: Mime::Type.lookup_by_extension(format.to_s).to_s, rel: %i[alternate nofollow]
   end
 
   def div(options = {}, &block)
@@ -14,9 +14,9 @@ module ApplicationHelper
 
   def csv_escape(string)
     unless string.blank?
-      '"' + string.gsub(/[\r\n]/, " ").gsub(/\s\s+/, " ").strip + '"'
+      '"' + string.gsub(/[\r\n]/, ' ').gsub(/\s\s+/, ' ').strip + '"'
     else
-      ""
+      ''
     end
   end
 
@@ -26,7 +26,7 @@ module ApplicationHelper
 
   # h() replaces some characters, but not apostrophes or carriage returns
   def html_safe(phrase)
-    return h(phrase).gsub(/'/,'&#39;').gsub(/\r\n/,"<br/>")
+    h(phrase).gsub(/'/, '&#39;').gsub(/\r\n/, '<br/>')
   end
 
   def unknown(text = 'unknown')
@@ -38,12 +38,12 @@ module ApplicationHelper
   # ==== Example output:
   #   <abbr title="circa">c</abbr>
   def circa_tag
-    return content_tag("abbr", "c", { title: "circa" })
+    content_tag(:abbr, 'c', { title: 'circa' })
   end
 
   # Produces a link wrapped in a list item element (<li>).
   def list_link_to(link_text, options = {}, html_options = {})
-    content_tag("li", link_to(link_text, options, html_options))
+    content_tag(:li, link_to(link_text, options, html_options))
   end
 
   # Returns 'a' or 'an' depending on whether the word starts with a vowel or not
@@ -53,12 +53,12 @@ module ApplicationHelper
   # <tt>include_name - whether to include the name in the string output or not.
   def a_or_an(name, include_name = true)
     if name[0,1] =~ /[aeiou]/
-      article = "an".html_safe
+      article = 'an'.html_safe
     else
-      article = "a".html_safe
+      article = 'a'.html_safe
     end
     if include_name
-      article + " ".html_safe + name
+      article + ' '.html_safe + name
     else
       article
     end
@@ -110,7 +110,7 @@ module ApplicationHelper
   def make_slug_not_war
     return unless slug.blank?
 
-    self.slug = name.to_s.rstrip.lstrip.downcase.tr(' ', '_').tr('-', '_').tr(',', '_').tr('.', '_').tr("'", '').gsub('__', '_')
+    self.slug = name.to_s.strip.downcase.tr(' ', '_').tr('-', '_').tr(',', '_').tr('.', '_').tr("'", '').gsub('__', '_')
   end
 
   def markdown(text)

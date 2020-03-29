@@ -55,20 +55,20 @@ class CountrySubjectsController < ApplicationController
 
   protected
 
-    def people(plaques)
-      @people = []
-      plaques.each do |p|
-        p.people.each do |per|
-          per.define_singleton_method(:plaques_count) do
-            1
-          end
-          @people << per
+  def people(plaques)
+    @people = []
+    plaques.each do |p|
+      p.people.each do |per|
+        per.define_singleton_method(:plaques_count) do
+          1
         end
+        @people << per
       end
-      @people.uniq
     end
+    @people.uniq
+  end
 
-    def find
-      @country = Country.find_by_alpha2!(params[:country_id])
-    end
+  def find
+    @country = Country.find_by_alpha2!(params[:country_id])
+  end
 end

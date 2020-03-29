@@ -1,7 +1,6 @@
 require 'julia'
 
 class PlaquesController < ApplicationController
-
   before_action :authenticate_user!, only: [:edit]
   before_action :authenticate_admin!, only: :destroy
   before_action :find, only: [:show, :flickr_search, :flickr_search_all, :update, :destroy, :edit]
@@ -227,36 +226,36 @@ class PlaquesController < ApplicationController
 
   private
 
-    def find
-      @plaque = Plaque.find(params[:id])
-    end
+  def find
+    @plaque = Plaque.find(params[:id])
+  end
 
-  	def plaque_params
-        params.require(:plaque).permit(
-          # for new plaque form
-          :inscription,
-          :inscription_is_stub,
-          :language_id,
-          :address,
-          :area,
-          :country,
-          :organisation_name,
-          :organisation_id,
-          'erected_at(1i)', 'erected_at(3i)', 'erected_at(2i)',
-          :colour_id,
-          :other_colour_id,
-          # for plaque update
-          :notes,
-          :inscription_in_english,
-          :description,
-          :area_id,
-          :latitude,
-          :longitude,
-          :is_accurate_geolocation,
-          :erected_at_string,
-          :is_current,
-          :series_id,
-          :series_ref,
-        )
-  	end
+  def plaque_params
+      params.require(:plaque).permit(
+        # for new plaque form
+        :inscription,
+        :inscription_is_stub,
+        :language_id,
+        :address,
+        :area,
+        :country,
+        :organisation_name,
+        :organisation_id,
+        'erected_at(1i)', 'erected_at(3i)', 'erected_at(2i)',
+        :colour_id,
+        :other_colour_id,
+        # for plaque update
+        :notes,
+        :inscription_in_english,
+        :description,
+        :area_id,
+        :latitude,
+        :longitude,
+        :is_accurate_geolocation,
+        :erected_at_string,
+        :is_current,
+        :series_id,
+        :series_ref,
+      )
+  end
 end

@@ -1,5 +1,4 @@
 class PlaquePhotosController < PlaqueDetailsController
-
   def show
   	respond_to do |format|
       format.html { render 'plaques/photos/show' }
@@ -7,5 +6,4 @@ class PlaquePhotosController < PlaqueDetailsController
       format.geojson { render geojson: @plaque.photos }
     end
   end
-
 end

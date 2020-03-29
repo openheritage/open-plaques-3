@@ -1,5 +1,4 @@
 class SearchController < ApplicationController
-
   def index
     @search_results = []
     @original_phrase = params[:phrase]
@@ -28,12 +27,12 @@ class SearchController < ApplicationController
 
       @places += Area.where(["name ILIKE ?", phrase_like]).limit(cap)
 
-      @plaques += Plaque.where(["inscription ILIKE ?", full_phrase_like]).limit(cap).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
-      @plaques += Plaque.where(["inscription ILIKE ?", phrase_like]).limit(cap).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
-      @plaques += Plaque.where(["inscription_in_english ILIKE ?", phrase_like]).limit(cap).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
+      @plaques += Plaque.where(["inscription ILIKE ?", full_phrase_like]).limit(cap).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort!{ |t1, t2| t1.to_s <=> t2.to_s }
+      @plaques += Plaque.where(["inscription ILIKE ?", phrase_like]).limit(cap).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort!{ |t1, t2| t1.to_s <=> t2.to_s }
+      @plaques += Plaque.where(["inscription_in_english ILIKE ?", phrase_like]).limit(cap).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort!{ |t1, t2| t1.to_s <=> t2.to_s}
       if @phrase.match(/[À-ž]/)
-        @plaques += Plaque.where(["inscription ILIKE ?", unaccented_phrase_like]).limit(cap).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
-        @plaques += Plaque.where(["inscription_in_english ILIKE ?", unaccented_phrase_like]).limit(cap).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
+        @plaques += Plaque.where(["inscription ILIKE ?", unaccented_phrase_like]).limit(cap).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort!{ |t1, t2| t1.to_s <=> t2.to_s }
+        @plaques += Plaque.where(["inscription_in_english ILIKE ?", unaccented_phrase_like]).limit(cap).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort!{ |t1, t2| t1.to_s <=> t2.to_s }
       end
       # include all that person's plaques
       @people.each do |person|
@@ -42,7 +41,7 @@ class SearchController < ApplicationController
       # Look for their akas in the inscription
       @people.each do |person|
         person.aka.each do |aka|
-          @plaques += Plaque.where(["inscription ILIKE ?", "%#{aka}%"]).limit(cap).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort!{|t1,t2|t1.to_s <=> t2.to_s}
+          @plaques += Plaque.where(["inscription ILIKE ?", "%#{aka}%"]).limit(cap).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort!{ |t1, t2| t1.to_s <=> t2.to_s }
         end
       end
       @organisations.uniq!
@@ -61,5 +60,4 @@ class SearchController < ApplicationController
       format.geojson { render geojson: @search_results.uniq }
     end
   end
-
 end

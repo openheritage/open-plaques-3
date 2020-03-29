@@ -1,5 +1,5 @@
+# Assist organisations
 module OrganisationsHelper
-
   def organisation_path(organisation, options = {})
     url_for(options.merge(controller: :organisations, action: :show, id: organisation.slug))
   end

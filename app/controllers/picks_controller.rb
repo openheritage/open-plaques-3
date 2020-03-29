@@ -1,5 +1,4 @@
 class PicksController < ApplicationController
-
   before_action :find, only: [:edit, :update, :show, :destroy]
 
   def index
@@ -41,20 +40,19 @@ class PicksController < ApplicationController
 
   protected
 
-    def find
-      @pick = Pick.find(params[:id])
-    end
+  def find
+    @pick = Pick.find(params[:id])
+  end
 
   private
 
-    def pick_params
-      params.require(:pick).permit(
-        :plaque_id,
-        :description,
-        :proposer,
-        :feature_on,
-        :last_featured,
-        :featured_count)
-    end
-
+  def pick_params
+    params.require(:pick).permit(
+      :plaque_id,
+      :description,
+      :proposer,
+      :feature_on,
+      :last_featured,
+      :featured_count)
+  end
 end

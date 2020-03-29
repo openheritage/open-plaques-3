@@ -1,5 +1,4 @@
 class LanguagesController < ApplicationController
-
   before_action :authenticate_admin!, only: :destroy
   before_action :authenticate_user!, except: [:index]
   before_action :find, only: [:update]
@@ -24,15 +23,15 @@ class LanguagesController < ApplicationController
 
   protected
 
-    def find
-      @language = Language.find_by_alpha2!(params[:id])
-    end
+  def find
+    @language = Language.find_by_alpha2!(params[:id])
+  end
 
   private
 
-    def language_params
-      params.require(:language).permit(
-        :name,
-        :alpha2)
-    end
+  def language_params
+    params.require(:language).permit(
+      :name,
+      :alpha2)
+  end
 end

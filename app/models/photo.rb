@@ -124,8 +124,8 @@ class Photo < ApplicationRecord
   def thumbnail_url
     return thumbnail if thumbnail?
 
-    if file_url.ends_with?(*%w[_b.jpg _z.jpg _z.jpg?zz=1 _m.jpg _o.jpg])
-      return file_url.gsub('b.jpg', 'm.jpg').gsub('z.jpg?zz=1', 'm.jpg').gsub('z.jpg', 'm.jpg').gsub('o.jpg', 'm.jpg')
+    if file_url.ends_with?('_b.jpg', '_z.jpg', '_z.jpg?zz=1', '_m.jpg', '_o.jpg')
+      return file_url.gsub(/[bzo].jpg/, 'm.jpg').gsub('z.jpg?zz=1', 'm.jpg')
 
     end
     "https://commons.wikimedia.org/wiki/Special:FilePath/#{wikimedia_filename}?width=250" if wikimedia?

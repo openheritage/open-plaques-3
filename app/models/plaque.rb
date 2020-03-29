@@ -318,20 +318,13 @@ class Plaque < ApplicationRecord
   end
 
   def self.tile(zoom, xtile, ytile, options)
-    puts("options #{options}")
     top_left = get_lat_lng_for_number(zoom, xtile, ytile)
     bottom_right = get_lat_lng_for_number(zoom, xtile + 1, ytile + 1)
-    lat_min = bottom_right[:lat_deg].to_s
-    lat_max = top_left[:lat_deg].to_s
-    lon_min = bottom_right[:lng_deg].to_s
-    lon_max = top_left[:lng_deg].to_s
-    latitude = lat_min..lat_max
-    longitude = lon_max..lon_min
+    latitude = bottom_right[:lat_deg].to_s..top_left[:lat_deg].to_s
+    longitude = top_left[:lng_deg].to_s..bottom_right[:lng_deg].to_s
     tile = '/plaques/'
     tile += options + '/' if options && options != '' && options != 'all'
     tile += "tiles/#{zoom}/#{xtile}/#{ytile}"
-    puts "Rails query #{tile}"
-    #    Rails.cache.fetch(tile, expires_in: 5.minutes) do
     if options == 'unphotographed'
       unphotographed
         .select(:id, :inscription, :latitude, :longitude, :is_accurate_geolocation)
@@ -345,7 +338,6 @@ class Plaque < ApplicationRecord
         .select(:id, :inscription, :latitude, :longitude, :is_accurate_geolocation)
         .where(latitude: latitude, longitude: longitude)
     end
-    #    end
   end
 
   def distance_to(thing)

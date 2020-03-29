@@ -1,5 +1,4 @@
 class ColoursController < ApplicationController
-
   before_action :authenticate_admin!, only: :destroy
   before_action :authenticate_user!, except: [:index]
   before_action :find, only: [:update]
@@ -30,9 +29,9 @@ class ColoursController < ApplicationController
 
   private
 
-    def colour_params
-      params.require(:colour).permit(
-        :name,
-        :dbpedia_uri)
-    end
+  def colour_params
+    params.require(:colour).permit(
+      :name,
+      :dbpedia_uri)
+  end
 end

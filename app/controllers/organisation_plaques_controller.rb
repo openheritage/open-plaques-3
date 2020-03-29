@@ -1,5 +1,4 @@
 class OrganisationPlaquesController < ApplicationController
-
   before_action :find, only: [:show]
 
   def show
@@ -62,8 +61,7 @@ class OrganisationPlaquesController < ApplicationController
 
   protected
 
-    def find
-      @organisation = Organisation.find_by_slug!(params[:organisation_id])
-    end
-
+  def find
+    @organisation = Organisation.find_by_slug!(params[:organisation_id])
+  end
 end

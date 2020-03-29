@@ -16,18 +16,15 @@
 # * +slug+ - a textual identifier, usually equivalent to its name in lower case,
 #            with spaces replaced by underscores. Used in URLs.
 class Area < ApplicationRecord
+  include ApplicationHelper
+  include PlaquesHelper
+
   belongs_to :country, counter_cache: true
   has_many :plaques, dependent: :restrict_with_error
   delegate :alpha2, to: :country, prefix: true
   before_validation :make_slug_not_war
   validates_presence_of :name, :slug, :country_id
   validates_uniqueness_of :slug, scope: :country_id
-  default_scope { order('name ASC') }
-  scope :name_starts_with, ->(term) { where(['lower(name) LIKE ?', term.downcase + '%']) }
-  scope :name_contains, ->(term) { where(['lower(name) LIKE ?', '%' + term.downcase + '%']) }
-
-  include ApplicationHelper
-  include PlaquesHelper
 
   def geolocated?
     !(latitude.nil? || longitude.nil? || latitude == 51.475 && longitude.zero?)

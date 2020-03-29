@@ -1,5 +1,4 @@
 class CountryPlaquesController < ApplicationController
-
   before_action :find, only: [:show]
 
   def show
@@ -32,8 +31,7 @@ class CountryPlaquesController < ApplicationController
 
   protected
 
-    def find
-      @country = Country.find_by_alpha2!(params[:country_id])
-    end
-
+  def find
+    @country = Country.find_by_alpha2!(params[:country_id])
+  end
 end

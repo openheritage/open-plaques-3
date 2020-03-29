@@ -1,5 +1,4 @@
 class RolesByIndexController < ApplicationController
-
   def show
     @index = params[:id]
     unless @index =~ /[a-z]/
@@ -11,5 +10,4 @@ class RolesByIndexController < ApplicationController
       format.json { render json: @roles }
     end
   end
-
 end

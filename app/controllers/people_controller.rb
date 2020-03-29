@@ -1,5 +1,4 @@
 class PeopleController < ApplicationController
-
   before_action :authenticate_admin!, only: :destroy
   before_action :authenticate_user!, except: [:autocomplete, :index, :show, :update]
   before_action :find, only: [:edit, :update, :destroy]
@@ -40,17 +39,17 @@ class PeopleController < ApplicationController
     @people += Person.select(:born_on, :died_on, :gender, :id, :name)
       .includes(:roles)
       .name_starts_with(params[:contains])
-      .in_alphabetical_order
+      .alphabetically
       .limit(limit) if params[:contains]
     @people += Person.select(:born_on, :died_on, :gender, :id, :name)
       .includes(:roles)
       .name_contains(params[:contains])
-      .in_alphabetical_order
+      .alphabetically
       .limit(limit) if params[:contains]
     @people += Person.select(:born_on, :died_on, :gender, :id, :name)
       .includes(:roles)
       .aka(params[:contains])
-      .in_alphabetical_order
+      .alphabetically
       .limit(limit) if params[:contains]
     @people.uniq!
     render json: @people.uniq.as_json(
@@ -170,32 +169,32 @@ class PeopleController < ApplicationController
 
   protected
 
-    def find
-      @person = Person.find(params[:id])
-    end
+  def find
+    @person = Person.find(params[:id])
+  end
 
   private
 
-    def aka_to_a
-      cords = params.dig(:person, :aka).presence || '[]'
-      JSON.parse cords
-    end
+  def aka_to_a
+    cords = params.dig(:person, :aka).presence || '[]'
+    JSON.parse cords
+  end
 
-    def permitted_params
-      params.require(:person).permit(
-        :ancestry_id,
-        :aka,
-        :born_on,
-        :dbpedia_uri,
-        :died_on,
-        :find_a_grave_id,
-        :gender,
-        :introduction,
-        :name,
-        :surname_starts_with,
-        :wikidata_id,
-        :wikipedia_paras,
-        :wikipedia_url,
-      ).merge({aka: aka_to_a})
-    end
+  def permitted_params
+    params.require(:person).permit(
+      :ancestry_id,
+      :aka,
+      :born_on,
+      :dbpedia_uri,
+      :died_on,
+      :find_a_grave_id,
+      :gender,
+      :introduction,
+      :name,
+      :surname_starts_with,
+      :wikidata_id,
+      :wikipedia_paras,
+      :wikipedia_url,
+    ).merge({aka: aka_to_a})
+  end
 end

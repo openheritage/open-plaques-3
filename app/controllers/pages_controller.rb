@@ -1,5 +1,4 @@
 class PagesController < ApplicationController
-
   before_action :authenticate_admin!, only: :destroy
   before_action :authenticate_user!, except: [:show]
   before_action :find, only: [:show, :edit, :update]
@@ -42,12 +41,11 @@ class PagesController < ApplicationController
 
   private
 
-    def page_params
-      params.require(:page).permit(
-        :name,
-        :slug,
-        :strapline,
-        :body)
-    end
-
+  def page_params
+    params.require(:page).permit(
+      :name,
+      :slug,
+      :strapline,
+      :body)
+  end
 end

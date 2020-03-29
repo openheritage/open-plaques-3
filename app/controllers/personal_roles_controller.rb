@@ -1,5 +1,4 @@
 class PersonalRolesController < ApplicationController
-
   before_action :authenticate_admin!, only: :destroy
   before_action :authenticate_user!
   before_action :find, only: [:destroy, :update, :edit]
@@ -136,8 +135,7 @@ class PersonalRolesController < ApplicationController
 
   protected
 
-    def find
-      @personal_role = PersonalRole.find(params[:id])
-    end
-
+  def find
+    @personal_role = PersonalRole.find(params[:id])
+  end
 end

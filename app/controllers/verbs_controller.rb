@@ -1,5 +1,4 @@
 class VerbsController < ApplicationController
-
   before_action :authenticate_user!, except: [:index]
 
   def index
@@ -11,21 +10,21 @@ class VerbsController < ApplicationController
   end
 
   def autocomplete
-    limit = params[:limit] ? params[:limit] : 5
+    limit = params[:limit] || 5
     @verbs = "{}"
-    @verbs = Verb.select(:id,:name)
-      .name_contains(params[:contains])
-      .limit(limit) if params[:contains]
-    @verbs = Verb.select(:id,:name)
-      .name_starts_with(params[:starts_with])
-      .limit(limit) if params[:starts_with]
-    render json: @verbs.as_json(
-      only: [:id, :name]
-    )
+    @verbs = Verb
+             .select(:id, :name)
+             .name_contains(params[:contains])
+             .limit(limit) if params[:contains]
+    @verbs = Verb
+             .select(:id,:name)
+             .name_starts_with(params[:starts_with])
+             .limit(limit) if params[:starts_with]
+    render json: @verbs.as_json(only: %i[id name])
   end
 
   def show
-    @verb = Verb.find_by_name(params[:id].tr('_',' '))
+    @verb = Verb.find_by_name(params[:id].tr('_', ' '))
     @personal_connections = @verb.personal_connections.paginate(page: params[:page], per_page: 50)
     respond_to do |format|
       format.html
@@ -38,7 +37,7 @@ class VerbsController < ApplicationController
   end
 
   def create
-    @verb = Verb.new(verb_params)
+    @verb = Verb.new(permitted_params)
     if @verb.save
       redirect_to verb_path(@verb)
     else
@@ -48,10 +47,9 @@ class VerbsController < ApplicationController
 
   private
 
-    def verb_params
-      params.require(:verb).permit(
-        :name,
-      )
-    end
-
+  def permitted_params
+    params.require(:verb).permit(
+      :name
+    )
+  end
 end

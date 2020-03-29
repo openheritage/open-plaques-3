@@ -11,6 +11,8 @@
 # * +sponsorships_count+ - equivalent of number of plaques
 # * +website+ - official web site
 class Organisation < ApplicationRecord
+  include Named
+
   has_many :sponsorships, dependent: :restrict_with_error
   has_many :plaques, through: :sponsorships
   belongs_to :language, optional: true
@@ -21,10 +23,6 @@ class Organisation < ApplicationRecord
     in: %w[unknown unkown Unknown Unknown],
     message: 'just leave it blank'
   }
-  scope :name_starts_with, ->(term) { where(['lower(name) LIKE ?', term.downcase + '%']) }
-  scope :name_contains, ->(term) { where(['lower(name) LIKE ?', '%' + term.downcase + '%']) }
-  scope :name_is, ->(term) { where(['lower(name) = ?', term.downcase]) }
-  scope :in_alphabetical_order, -> { order(name: :asc) }
   scope :in_count_order, -> { order(sponsorships_count: :desc) }
 
   # for slug helper

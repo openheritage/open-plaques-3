@@ -1,5 +1,4 @@
 class CountriesController < ApplicationController
-
   before_action :authenticate_admin!, only: :destroy
   before_action :authenticate_user!, except: [:index, :show]
   before_action :find, only: [:edit, :update]
@@ -71,36 +70,36 @@ class CountriesController < ApplicationController
 
   protected
 
-    def find
-      @country = Country.find_by_alpha2!(params[:id])
-    end
+  def find
+    @country = Country.find_by_alpha2!(params[:id])
+  end
 
-    class Helper
-      include Singleton
-      include PlaquesHelper
-    end
+  class Helper
+    include Singleton
+    include PlaquesHelper
+  end
 
-    def streetview_to_params
-      if (params[:streetview_url])
-        point = Helper.instance.geolocation_from params[:streetview_url]
-        if !point.latitude.blank? && !point.longitude.blank?
-          params[:country][:latitude] = point.latitude.to_s
-          params[:country][:longitude] = point.longitude.to_s
-        end
+  def streetview_to_params
+    if (params[:streetview_url])
+      point = Helper.instance.geolocation_from params[:streetview_url]
+      if !point.latitude.blank? && !point.longitude.blank?
+        params[:country][:latitude] = point.latitude.to_s
+        params[:country][:longitude] = point.longitude.to_s
       end
     end
+  end
 
   private
 
-    def country_params
-      params.require(:country).permit(
-        :alpha2,
-        :latitude,
-        :longitude,
-        :name,
-        :preferred_zoom_level,
-        :streetview_url,
-        :wikidata_id,
-      )
-    end
+  def country_params
+    params.require(:country).permit(
+      :alpha2,
+      :latitude,
+      :longitude,
+      :name,
+      :preferred_zoom_level,
+      :streetview_url,
+      :wikidata_id,
+    )
+  end
 end

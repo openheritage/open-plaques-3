@@ -1,7 +1,6 @@
 #require "google_spreadsheet"
 
 class MatchController < ApplicationController
-
   def index
     puts "matching...."
     @username = params[:username]
@@ -35,5 +34,4 @@ class MatchController < ApplicationController
     end
     ws.save
   end
-
 end

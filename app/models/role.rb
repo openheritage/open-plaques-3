@@ -97,8 +97,6 @@ class Role < ApplicationRecord
     return 'group' if group?
 
     return 'place' if place?
-
-    '?'
   end
 
   def fill_wikidata_id

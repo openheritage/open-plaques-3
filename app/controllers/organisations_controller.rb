@@ -1,5 +1,4 @@
 class OrganisationsController < ApplicationController
-
   before_action :authenticate_admin!, only: :destroy
   before_action :authenticate_user!, except: [:autocomplete, :index, :show]
   before_action :find, only: [:edit, :update]
@@ -9,7 +8,7 @@ class OrganisationsController < ApplicationController
     @organisation_count = Organisation.all.count
     @organisations = Organisation.all
       .select(:language_id, :name, :slug, :sponsorships_count)
-      .in_alphabetical_order
+      .alphabetically
       .paginate(page: params[:page], per_page: 50)
     @top_10 = Organisation.all
       .select(:name, :slug, :sponsorships_count)
@@ -19,7 +18,7 @@ class OrganisationsController < ApplicationController
       format.html
       format.json { render json: @organisations }
       format.geojson {
-        @organisations = Organisation.all.in_alphabetical_order
+        @organisations = Organisation.all.alphabetically
         render geojson: @organisations
       }
     end
@@ -28,8 +27,8 @@ class OrganisationsController < ApplicationController
   def autocomplete
     limit = params[:limit] ? params[:limit] : 5
     @organisations = Organisation.select(:id, :name).name_is(params[:contains] || params[:starts_with]).limit(limit)
-    @organisations += Organisation.select(:id, :name).name_starts_with(params[:contains] || params[:starts_with]).in_alphabetical_order.limit(limit)
-    @organisations += Organisation.select(:id, :name).name_contains(params[:contains]).in_alphabetical_order.limit(limit) if params[:contains]
+    @organisations += Organisation.select(:id, :name).name_starts_with(params[:contains] || params[:starts_with]).alphabetically.limit(limit)
+    @organisations += Organisation.select(:id, :name).name_contains(params[:contains]).alphabetically.limit(limit) if params[:contains]
     @organisations.uniq!
     render json: @organisations.as_json(only: [:id, :name])
   end
@@ -72,36 +71,36 @@ class OrganisationsController < ApplicationController
 
   protected
 
-    def find
-      @organisation = Organisation.find_by_slug!(params[:id])
-    end
+  def find
+    @organisation = Organisation.find_by_slug!(params[:id])
+  end
 
-    def find_languages
-      @languages = Language.order(name: :desc)
-    end
+  def find_languages
+    @languages = Language.order(name: :desc)
+  end
 
   private
 
-    def help
-      Helper.instance
-    end
+  def help
+    Helper.instance
+  end
 
-    class Helper
-      include Singleton
-      include PlaquesHelper
-    end
+  class Helper
+    include Singleton
+    include PlaquesHelper
+  end
 
-    def organisation_params
-      params.require(:organisation).permit(
-        :description,
-        :language_id,
-        :latitude,
-        :longitude,
-        :name,
-        :notes,
-        :slug,
-        :streetview_url,
-        :website,
-      )
-    end
+  def organisation_params
+    params.require(:organisation).permit(
+      :description,
+      :language_id,
+      :latitude,
+      :longitude,
+      :name,
+      :notes,
+      :slug,
+      :streetview_url,
+      :website,
+    )
+  end
 end

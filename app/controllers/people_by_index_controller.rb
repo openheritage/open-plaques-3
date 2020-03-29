@@ -1,5 +1,4 @@
 class PeopleByIndexController < ApplicationController
-
   def show
     @index = params[:id]
     if @index =~ /^[A-Z]$/
@@ -21,5 +20,4 @@ class PeopleByIndexController < ApplicationController
       raise ActiveRecord::RecordNotFound
     end
   end
-
 end

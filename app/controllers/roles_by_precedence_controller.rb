@@ -1,5 +1,4 @@
 class RolesByPrecedenceController < ApplicationController
-
   def index
     @roles = Role.where("priority > ?", 0).order("priority DESC")
     respond_to do |format|
@@ -7,5 +6,4 @@ class RolesByPrecedenceController < ApplicationController
       format.json { render json: @roles }
     end
   end
-
 end

@@ -1,5 +1,4 @@
 class PhotographersController < ApplicationController
-
   def index
     @photographers_count = Photographer.all.count
     @photographers = Photographer.top50
@@ -48,9 +47,8 @@ class PhotographersController < ApplicationController
 
   protected
 
-    class Helper
-      include Singleton
-      include PlaquesHelper
-    end
-
+  class Helper
+    include Singleton
+    include PlaquesHelper
+  end
 end

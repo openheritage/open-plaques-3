@@ -1,5 +1,4 @@
 class AreaSubjectsController < ApplicationController
-
   before_action :find_country, only: [:show]
   before_action :find, only: [:show]
 
@@ -62,5 +61,4 @@ class AreaSubjectsController < ApplicationController
   def find
     @area = @country.areas.find_by_slug!(params[:area_id])
   end
-
 end

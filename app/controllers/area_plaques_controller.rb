@@ -1,5 +1,4 @@
 class AreaPlaquesController < ApplicationController
-
   before_action :find, only: [:show]
   respond_to :html, :json, :csv
 
@@ -59,9 +58,8 @@ class AreaPlaquesController < ApplicationController
 
   protected
 
-    def find
-      @country = Country.find_by_alpha2!(params[:country_id])
-      @area = @country.areas.find_by_slug!(params[:area_id])
-    end
-
+  def find
+    @country = Country.find_by_alpha2!(params[:country_id])
+    @area = @country.areas.find_by_slug!(params[:area_id])
+  end
 end
