@@ -9,12 +9,13 @@
 # * +plaques_count+ - cached count of plaques
 # * +wikidata_id+ - Q-code to match to Wikidata
 class Country < ApplicationRecord
+  include PlaquesHelper
+
   has_many :areas
   has_many :plaques, through: :areas
   validates_presence_of :name, :alpha2
   validates_uniqueness_of :name, :alpha2
-
-  include PlaquesHelper
+  scope :uk, -> { where(alpha2: 'gb').first }
 
   def geolocated?
     !(latitude.nil? || longitude.nil? || latitude == 51.475 && longitude.zero?)

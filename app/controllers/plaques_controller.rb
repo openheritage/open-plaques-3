@@ -147,8 +147,11 @@ class PlaquesController < ApplicationController
     redirect_to plaques_url and return if params[:plaque][:inscription].start_with?('1') && params[:plaque][:inscription].to_s.size < 10
     redirect_to plaques_url and return if params[:plaque][:inscription].to_s.size < 8
     redirect_to plaques_url and return if params[:area] == 'New York' && params[:plaque][:country] != '13'
-
-    country = Country.find(params[:plaque][:country].blank? ? 1 : params[:plaque][:country])
+    country = if params[:plaque][:country].blank?
+                Country.uk
+              else
+                Country.find(params[:plaque][:country])
+              end
     if params[:area_id] && !params[:area_id].blank?
       area = Area.find(params[:area_id])
       raise 'ERROR' if area.country_id != country.id and return
