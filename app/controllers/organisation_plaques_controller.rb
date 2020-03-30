@@ -29,7 +29,7 @@ class OrganisationPlaquesController < ApplicationController
       @plaques = @organisation.plaques.all(conditions: conditions, order: 'created_at DESC', limit: limit)
     elsif params[:data] && params[:data] == 'basic'
       @plaques = @organisation.plaques.all(select: %i[id latitude longitude inscription])
-    elsif (params[:filter] && params[:filter] != '')
+    elsif params[:filter] && params[:filter] != ''
       begin
         @plaques = if request.format == 'html'
                      @organisation.plaques.send(params[:filter].to_s).paginate(page: params[:page], per_page: 50)

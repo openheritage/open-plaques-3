@@ -78,7 +78,7 @@ class TodoController < ApplicationController
       @photos = Photo.unassigned.ungeolocated.order(:updated_at).paginate(page: params[:page], per_page: 100)
       render :unassigned_photo
     when 'microtask'
-      case 5 # rand(7)
+      case rand(7)
       when 0
         puts 'photographed_not_coloured'
         @plaques = Plaque.photographed_not_coloured
@@ -110,7 +110,7 @@ class TodoController < ApplicationController
         puts 'ungeolocated'
         @plaques = Plaque.ungeolocated
         @plaque = @plaques[rand @plaques.length]
-        @geocodes = Array.new
+        @geocodes = []
         if @plaque
           render 'plaque_geolocation/streetview_edit' and return
         end

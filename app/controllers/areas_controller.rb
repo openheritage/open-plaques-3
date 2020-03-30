@@ -15,21 +15,21 @@ class AreasController < ApplicationController
   end
 
   def autocomplete
-    limit = params[:limit] ? params[:limit] : 5
+    limit = params[:limit] || 5
     country_id = params[:country_id]
     if params[:contains]
-      @areas = Area.select(:id,:name,:country_id).name_contains(params[:contains]).includes(:country).limit(limit)
+      @areas = Area.select(:id, :name, :country_id).name_contains(params[:contains]).includes(:country).limit(limit)
     elsif params[:starts_with]
       if country_id == nil
-        @areas = Area.select(:id,:name,:country_id).name_starts_with(params[:starts_with]).includes(:country).limit(limit)
+        @areas = Area.select(:id, :name, :country_id).name_starts_with(params[:starts_with]).includes(:country).limit(limit)
       else
-        @areas = Area.select(:id,:name,:country_id).where(country_id: country_id).name_starts_with(params[:starts_with]).includes(:country).limit(limit)
+        @areas = Area.select(:id, :name, :country_id).where(country_id: country_id).name_starts_with(params[:starts_with]).includes(:country).limit(limit)
       end
     else
       @areas = '{}'
     end
     render json: @areas.as_json(
-      only: [:id,:name,:country_id],
+      only: %i[id name country_id],
       include: {
         country: {
           only: [:name]
@@ -69,9 +69,7 @@ class AreasController < ApplicationController
   end
 
   def update
-    if @area.update!(permitted_params)
-      flash[:notice] = 'Area was successfully updated.'
-    end
+    flash[:notice] = 'Area was successfully updated.' if @area.update!(permitted_params)
     redirect_back(fallback_location: root_path)
   end
 
@@ -95,18 +93,19 @@ class AreasController < ApplicationController
     @area = @country.areas.find_by_slug!(params[:id])
   end
 
+  # access helpers within controller
   class Helper
     include Singleton
     include PlaquesHelper
   end
 
   def streetview_to_params
-    if params[:streetview_url]
-      point = Helper.instance.geolocation_from params[:streetview_url]
-      unless point.latitude.blank? || point.longitude.blank?
-        params[:area][:latitude] = point.latitude.to_s
-        params[:area][:longitude] = point.longitude.to_s
-      end
+    return unless params[:streetview_url]
+
+    point = Helper.instance.geolocation_from params[:streetview_url]
+    unless point.latitude.blank? || point.longitude.blank?
+      params[:area][:latitude] = point.latitude.to_s
+      params[:area][:longitude] = point.longitude.to_s
     end
   end
 
@@ -119,7 +118,7 @@ class AreasController < ApplicationController
       :longitude,
       :name,
       :slug,
-      :streetview_url,
+      :streetview_url
     )
   end
 end

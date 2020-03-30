@@ -29,9 +29,9 @@ class PagesController < ApplicationController
   end
 
   def update
-    if @page.update_attributes(permitted_params)
-      redirect_to action: :show, id: @page.slug
-    end
+    return unless @page.update_attributes(permitted_params)
+
+    redirect_to(action: :show, id: @page.slug)
   end
 
   protected

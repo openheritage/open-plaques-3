@@ -25,10 +25,12 @@ class RolesController < ApplicationController
                   .name_starts_with(params[:contains] || params[:starts_with])
                   .alphabetically
                   .limit(limit)
-    @roles += Role.select(:id, :name)
-                  .name_contains(params[:contains])
-                  .alphabetically
-                  .limit(limit) if params[:contains]
+    if params[:contains]
+      @roles += Role.select(:id, :name)
+                    .name_contains(params[:contains])
+                    .alphabetically
+                    .limit(limit)
+    end
     @roles.uniq!
     render json: @roles.as_json(
       only: %i[id name]

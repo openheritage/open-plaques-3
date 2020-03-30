@@ -33,8 +33,7 @@ class PhotographersController < ApplicationController
     end
   end
 
-  def new
-  end
+  def new; end
 
   def create
     # photographer isn't an actual object, but we can search a named Flickr user's photos

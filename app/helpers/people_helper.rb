@@ -73,7 +73,7 @@ module PeopleHelper
     dates = ' '
     dates += person.dates if person.dates
     return content_tag(:span, person.full_name, { class: :fn, property: 'rdfs:label foaf:name vcard:fn' }) + dates.html_safe if options[:links] == :none
-    
+
     link_to(person.full_name, person, { class: 'fn url', property: 'rdfs:label foaf:name vcard:fn', rel: 'foaf:homepage vcard:url' }) + dates.html_safe
   end
 end

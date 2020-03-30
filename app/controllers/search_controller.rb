@@ -30,7 +30,7 @@ class SearchController < ApplicationController
 
       @plaques += Plaque.where(['inscription ILIKE ?', full_phrase_like]).limit(cap).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort! { |t1, t2| t1.to_s <=> t2.to_s }
       @plaques += Plaque.where(['inscription ILIKE ?', phrase_like]).limit(cap).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort! { |t1, t2| t1.to_s <=> t2.to_s }
-      @plaques += Plaque.where(['inscription_in_english ILIKE ?', phrase_like]).limit(cap).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort! { |t1, t2| t1.to_s <=> t2.to_s}
+      @plaques += Plaque.where(['inscription_in_english ILIKE ?', phrase_like]).limit(cap).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort! { |t1, t2| t1.to_s <=> t2.to_s }
       if @phrase.match(/[À-ž]/)
         @plaques += Plaque.where(['inscription ILIKE ?', unaccented_phrase_like]).limit(cap).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort! { |t1, t2| t1.to_s <=> t2.to_s }
         @plaques += Plaque.where(['inscription_in_english ILIKE ?', unaccented_phrase_like]).limit(cap).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort! { |t1, t2| t1.to_s <=> t2.to_s }
