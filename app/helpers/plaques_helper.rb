@@ -220,7 +220,7 @@ module PlaquesHelper
       if plaque
         puts "#{series.name} number #{marker_number} already exists"
       else
-        plaque = Plaque.new(series_id: series.id, series_ref: marker_number, area: area, latitude: latitude, longitude: longitude) if !plaque
+        plaque = Plaque.new(series_id: series.id, series_ref: marker_number, area: area, latitude: latitude, longitude: longitude)
         if /MARKER/.match(inscription)
           matches = /([\w\W]*)([\bNEVADA\b\s]*[\bSTATE OF NEVADA\b\s]*[STATE\b\s]*[\bCENTENNIAL\b\s]*[\bHISTORIC[AL]*\b\s]*MA[R]*KER)\s(NO[.]*|number|NUMBER)\W*(\d*)\W*(.*)\W*(.*)\W*(.*)\W*(.*)\W*(.*)\W*/i.match(inscription)
           plaque.inscription = "#{title}."
@@ -380,7 +380,7 @@ module PlaquesHelper
     end
     # or OSM
     # https://www.openstreetmap.org/#map=17/57.14772/-2.10572
-    r = /map=[\d]*\/([-\d.\d]*)\/([-\d.\d]*)/
+    r = %r{map=[\d]*\/([-\d.\d]*)\/([-\d.\d]*)}
     if url[r]
       p.latitude = url[r, 1].to_f.round(5)
       p.longitude = url[r, 2].to_f.round(5)

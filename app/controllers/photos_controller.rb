@@ -47,7 +47,11 @@ class PhotosController < ApplicationController
         @photo = @already_existing_photo
         @photo.update_attributes(photo_params)
       end
-      @photo.save ? flash[:notice] = 'Photo was successfully updated.' : flash[:notice] = @photo.errors.full_messages.to_sentence
+      flash[:notice] = if @photo.save
+                         'Photo was successfully updated.'
+                       else 
+                         @photo.errors.full_messages.to_sentence
+                       end
     else
       flash[:notice] = @photo.errors.full_messages.to_sentence
     end

@@ -356,7 +356,7 @@ class Photo < ApplicationRecord
     self.longitude = parsed_json['location']['longitude'] if parsed_json['location']
     self.taken_at = parsed_json['dates']['taken'] if parsed_json['dates']
     return unless plaque_id.nil? && parsed_json['tags']
-    
+
     parsed_json['tags']['tag'].each do |tag|
       machine_tag_id = tag['raw'].match(/openplaques:id=(\d*)/)
       self.plaque_id = machine_tag_id[1] if machine_tag_id

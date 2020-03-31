@@ -371,14 +371,14 @@ class Plaque < ApplicationRecord
     state_towns = Area.where("country_id = #{usa.id} and name like '%, #{us_state}'")
     state_towns.each do |town|
       # match any address that includes a town name from the state
-      if town.name != ", #{us_state}" && address.include?(town.us_town)
-        self.area = town
-        self.address = address.reverse.sub(", #{town.name}".reverse, '').reverse.strip
-        self.address = address.reverse.sub(town.name.reverse, '').reverse.strip
-        self.address = address.reverse.sub("in #{town.us_town}".reverse, '').reverse.strip
-        self.address = address.reverse.sub(", #{town.us_town}".reverse, '').reverse.strip
-        break
-      end
+      next unless town.name != ", #{us_state}" && address.include?(town.us_town)
+
+      self.area = town
+      self.address = address.reverse.sub(", #{town.name}".reverse, '').reverse.strip
+      self.address = address.reverse.sub(town.name.reverse, '').reverse.strip
+      self.address = address.reverse.sub("in #{town.us_town}".reverse, '').reverse.strip
+      self.address = address.reverse.sub(", #{town.us_town}".reverse, '').reverse.strip
+      break
     end
   end
 

@@ -27,32 +27,32 @@ class AreaPlaquesController < ApplicationController
       begin
         request.format.html? ?
           @plaques = @area.plaques.send(params[:filter].to_s).paginate(page: params[:page], per_page: 50)
-          : @plaques = @area.plaques.send(params[:filter].to_s).paginate(page: params[:page], per_page: 5000000)
+          : @plaques = @area.plaques.send(params[:filter].to_s).paginate(page: params[:page], per_page: 5_000_000)
         @display = params[:filter].to_s
       rescue # an unrecognised filter method
         request.format.html? ?
           @plaques = @area.plaques.paginate(page: params[:page], per_page: 50)
-          : @plaques = @area.plaques.paginate(page: params[:page], per_page: 5000000)
+          : @plaques = @area.plaques.paginate(page: params[:page], per_page: 5_000_000)
         @display = 'all'
       end
     else
       request.format.html? ?
         @plaques = @area.plaques.paginate(page: params[:page], per_page: 50)
-        : @plaques = @area.plaques.paginate(page: params[:page], per_page: 5000000)
+        : @plaques = @area.plaques.paginate(page: params[:page], per_page: 5_000_000)
       @display = 'all'
     end
     respond_with @plaques do |format|
       format.html { render 'areas/plaques/show' }
       format.json { render json: @plaques }
       format.geojson { render geojson: @plaques.geolocated, parent: @area }
-      format.csv {
+      format.csv do
         send_data(
           "\uFEFF#{PlaqueCsv.new(@plaques).build}",
           type: 'text/csv',
           filename: "open-plaques-#{@area.slug}-#{Date.today}.csv",
           disposition: 'attachment'
         )
-      }
+      end
     end
   end
 

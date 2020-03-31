@@ -54,7 +54,7 @@ module PeopleHelper
     para_numbers = para_numbers.to_s.scan(/\d+/) unless para_numbers.is_a?(Array)
     doc = Hpricot(URI.parse(url).open)
     section = para_numbers.inject('') do |para, para_number|
-      para += doc.at("p[#{para_number}]").to_html.gsub(/<\/?[^>]*>/, '') + ' '
+      para += doc.at("p[#{para_number}]").to_html.gsub(%r{<\/?[^>]*>}, '') + ' '
     end
     section.strip
   rescue Exception
