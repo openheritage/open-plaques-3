@@ -1,3 +1,4 @@
+# Assist layouts
 module LayoutsHelper
   # Used to achieve nested layouts without content_for. This helper relies on
   # Rails internals, so beware that it make break with future major versions

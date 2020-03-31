@@ -1,5 +1,5 @@
+# control colours
 class ColoursController < ApplicationController
-
   before_action :authenticate_admin!, only: :destroy
   before_action :authenticate_user!, except: [:index]
   before_action :find, only: [:update]
@@ -17,7 +17,7 @@ class ColoursController < ApplicationController
   end
 
   def create
-    @colour = Colour.new(colour_params)
+    @colour = Colour.new(permitted_params)
     @colour.save
     redirect_to colours_path
   end
@@ -30,9 +30,10 @@ class ColoursController < ApplicationController
 
   private
 
-    def colour_params
-      params.require(:colour).permit(
-        :name,
-        :dbpedia_uri)
-    end
+  def permitted_params
+    params.require(:colour).permit(
+      :name,
+      :dbpedia_uri
+    )
+  end
 end

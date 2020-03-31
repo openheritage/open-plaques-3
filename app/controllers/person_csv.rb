@@ -1,3 +1,4 @@
+# define Person CSV format
 class PersonCsv < Julia::Builder
   column :id
   column :machine_tag
@@ -7,12 +8,12 @@ class PersonCsv < Julia::Builder
   column :born_in
   column :died_in
   column :age do |person|
-    person.age.to_s.gsub('c. ','')
+    person.age.to_s.gsub('c. ', '')
   end
   column :sex
   column 'roles' do |person|
     roles = []
-    person.roles.each do |role| roles << role.name end
+    person.roles.each { |role| roles << role.name }
     roles
   end
   column :primary_role do |person|

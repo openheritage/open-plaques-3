@@ -3,8 +3,8 @@ require 'net/http'
 require 'uri'
 require 'rexml/document'
 
+# assist plaques
 module PlaquesHelper
-
   def marked_text(text, term)
     text.to_s.gsub(/(#{term})/i, '<mark>\1</mark>').html_safe
   end
@@ -26,7 +26,7 @@ module PlaquesHelper
       s = text[i, 160]
       first_space = (s.index(/\s/) + 1)
       last_space = (s.rindex(/\s/) - 1)
-      snippet += '...' if i > 0
+      snippet += '...' if i.positive?
       snippet += (s[first_space..last_space])
       snippet += '...' if last_space + 2 < text.length
     end
@@ -36,7 +36,7 @@ module PlaquesHelper
   def find_flickr_photos_non_api(plaque)
     url = "https://www.flickr.com/search/?tags=#{plaque.machine_tag}%20"
     response = ''
-    open(url){ |f| response = f.read }
+    URI.parse(url).open { |f| response = f.read }
     pics = response.match(/\[{"_flickrModelRegistry":"photo-lite-models".*?\]/)
     pics = '[]' if pics.nil?
     json_parsed = JSON.parse("{\"data\":#{pics}}")
@@ -142,9 +142,7 @@ module PlaquesHelper
             area.save
           end
           plaque.area = area
-          if plaque.address.end_with?(", #{known_name}")
-            plaque.address = plaque.address.reverse.sub(", #{known_name}".reverse, '').reverse
-          end
+          plaque.address = plaque.address.reverse.sub(", #{known_name}".reverse, '').reverse if plaque.address.end_with?(", #{known_name}")
           break
         end
         plaque.save
@@ -222,7 +220,7 @@ module PlaquesHelper
       if plaque
         puts "#{series.name} number #{marker_number} already exists"
       else
-        plaque = Plaque.new(series_id: series.id, series_ref: marker_number, area: area, latitude: latitude, longitude: longitude) if !plaque
+        plaque = Plaque.new(series_id: series.id, series_ref: marker_number, area: area, latitude: latitude, longitude: longitude)
         if /MARKER/.match(inscription)
           matches = /([\w\W]*)([\bNEVADA\b\s]*[\bSTATE OF NEVADA\b\s]*[STATE\b\s]*[\bCENTENNIAL\b\s]*[\bHISTORIC[AL]*\b\s]*MA[R]*KER)\s(NO[.]*|number|NUMBER)\W*(\d*)\W*(.*)\W*(.*)\W*(.*)\W*(.*)\W*(.*)\W*/i.match(inscription)
           plaque.inscription = "#{title}."
@@ -382,7 +380,7 @@ module PlaquesHelper
     end
     # or OSM
     # https://www.openstreetmap.org/#map=17/57.14772/-2.10572
-    r = /map=[\d]*\/([-\d.\d]*)\/([-\d.\d]*)/
+    r = %r{map=[\d]*\/([-\d.\d]*)\/([-\d.\d]*)}
     if url[r]
       p.latitude = url[r, 1].to_f.round(5)
       p.longitude = url[r, 2].to_f.round(5)

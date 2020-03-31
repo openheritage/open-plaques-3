@@ -54,7 +54,6 @@ class Plaque < ApplicationRecord
   scope :partial_inscription, -> { where(inscription_is_stub: true).order(id: :desc) }
   scope :partial_inscription_photo, -> { where(photos_count: 1..99_999, inscription_is_stub: true).order(id: :desc) }
   scope :no_english_version, -> { where('language_id > 1').where(inscription_is_stub: false, inscription_in_english: nil) }
-  scope :random, -> { order(Arel.sql('random()')) }
   scope :in_series_ref_order, -> { order(:series_ref) }
   attr_accessor :country, :other_colour_id, :force_us_state
 
@@ -318,20 +317,13 @@ class Plaque < ApplicationRecord
   end
 
   def self.tile(zoom, xtile, ytile, options)
-    puts("options #{options}")
     top_left = get_lat_lng_for_number(zoom, xtile, ytile)
     bottom_right = get_lat_lng_for_number(zoom, xtile + 1, ytile + 1)
-    lat_min = bottom_right[:lat_deg].to_s
-    lat_max = top_left[:lat_deg].to_s
-    lon_min = bottom_right[:lng_deg].to_s
-    lon_max = top_left[:lng_deg].to_s
-    latitude = lat_min..lat_max
-    longitude = lon_max..lon_min
+    latitude = bottom_right[:lat_deg].to_s..top_left[:lat_deg].to_s
+    longitude = top_left[:lng_deg].to_s..bottom_right[:lng_deg].to_s
     tile = '/plaques/'
     tile += options + '/' if options && options != '' && options != 'all'
     tile += "tiles/#{zoom}/#{xtile}/#{ytile}"
-    puts "Rails query #{tile}"
-    #    Rails.cache.fetch(tile, expires_in: 5.minutes) do
     if options == 'unphotographed'
       unphotographed
         .select(:id, :inscription, :latitude, :longitude, :is_accurate_geolocation)
@@ -345,7 +337,6 @@ class Plaque < ApplicationRecord
         .select(:id, :inscription, :latitude, :longitude, :is_accurate_geolocation)
         .where(latitude: latitude, longitude: longitude)
     end
-    #    end
   end
 
   def distance_to(thing)
@@ -380,14 +371,14 @@ class Plaque < ApplicationRecord
     state_towns = Area.where("country_id = #{usa.id} and name like '%, #{us_state}'")
     state_towns.each do |town|
       # match any address that includes a town name from the state
-      if town.name != ", #{us_state}" && address.include?(town.us_town)
-        self.area = town
-        self.address = address.reverse.sub(", #{town.name}".reverse, '').reverse.strip
-        self.address = address.reverse.sub(town.name.reverse, '').reverse.strip
-        self.address = address.reverse.sub("in #{town.us_town}".reverse, '').reverse.strip
-        self.address = address.reverse.sub(", #{town.us_town}".reverse, '').reverse.strip
-        break
-      end
+      next unless town.name != ", #{us_state}" && address.include?(town.us_town)
+
+      self.area = town
+      self.address = address.reverse.sub(", #{town.name}".reverse, '').reverse.strip
+      self.address = address.reverse.sub(town.name.reverse, '').reverse.strip
+      self.address = address.reverse.sub("in #{town.us_town}".reverse, '').reverse.strip
+      self.address = address.reverse.sub(", #{town.us_town}".reverse, '').reverse.strip
+      break
     end
   end
 

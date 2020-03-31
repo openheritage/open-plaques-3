@@ -1,5 +1,6 @@
-class WomenByIndexController < ApplicationController
 
+# show women
+class WomenByIndexController < ApplicationController
   def show
     @index = params[:id]
     if @index =~ /^[A-Z]$/
@@ -7,14 +8,14 @@ class WomenByIndexController < ApplicationController
     elsif @index =~ /^[a-z]$/
       # roles used by person.full_name
       @people = Person
-        .where(surname_starts_with: @index)
-        .connected
-        .female
-        .paginate(page: params[:page], per_page: 50)
-        .preload(:personal_roles, :roles, :main_photo)
-        .to_a.sort! { |a,b| a.surname.downcase <=> b.surname.downcase }
+                .where(surname_starts_with: @index)
+                .connected
+                .female
+                .paginate(page: params[:page], per_page: 50)
+                .preload(:personal_roles, :roles, :main_photo)
+                .to_a.sort! { |a, b| a.surname.downcase <=> b.surname.downcase }
       respond_to do |format|
-        format.html { render "people/by_index/show" }
+        format.html { render 'people/by_index/show' }
         format.xml
         format.json { render json: @people }
       end
@@ -22,5 +23,4 @@ class WomenByIndexController < ApplicationController
       raise ActiveRecord::RecordNotFound
     end
   end
-
 end

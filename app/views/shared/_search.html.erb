@@ -1,3 +1,6 @@
-<%= form_tag(search_path, method: "get", class: 'form-inline my-2 my-md-0') do %>
-  <%= text_field_tag(:phrase, params[:phrase], type: 'text', placeholder: t('menu.search_placeholder'), class: 'form-control mr-sm-2') %>
+<%= form_tag(search_path, method: :get, class: 'form-inline ml-auto') do %>
+  <div class="md-form my-0">
+    <%= text_field_tag(:phrase, params[:phrase], type: 'search', placeholder: t('menu.search_placeholder'), 'aria-label' => 'Search') %>
+  </div>
+  <%= submit_tag(t('menu.go'), class: 'btn btn-primary my-0 ml-sm-2', name: :gosearch) %>
 <% end %>

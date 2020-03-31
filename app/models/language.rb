@@ -12,16 +12,24 @@ class Language < ApplicationRecord
   scope :most_plaques_order, -> { order('plaques_count DESC nulls last') }
 
   def flag_icon
-    alpha2_2 = alpha2[0, 2]
-    fi = "flag-icon-#{alpha2_2}"
-    fi = 'flag-icon-cz' if alpha2_2 == 'cs' # Czech
-    fi = 'flag-icon-by' if alpha2_2 == 'be' # Belarusian
-    fi = 'flag-icon-es-ct' if alpha2_2 == 'ca' # Catalan
-    fi = 'flag-icon-it' if alpha2_2 == 'la' # Latin
-    fi = 'flag-icon-gb-wls' if alpha2_2 == 'cy' # Welsh
-    fi = 'flag-icon-ie' if alpha2_2 == 'ga' # Gaelic
-    fi = 'flag-icon-za' if alpha2_2 == 'af' # Afrikaans
-    fi
+    alpha = alpha2[0, 2]
+    case alpha
+    when 'cs' # Czech
+      alpha = 'cz'
+    when 'be' # Belarusian
+      alpha = 'by'
+    when 'ca' # Catalan
+      alpha = 'es-ct'
+    when 'la' # Latin
+      alpha = 'it'
+    when 'cy' # Welsh
+      alpha = 'gb-wls'
+    when 'ga' # Gaelic
+      alpha = 'ie'
+    when 'af' # Afrikaans
+      alpha = 'za'
+    end
+    "flag-icon-#{alpha}"
   end
 
   def to_param
@@ -42,5 +50,4 @@ class Language < ApplicationRecord
     end
     super(options)
   end
-
 end

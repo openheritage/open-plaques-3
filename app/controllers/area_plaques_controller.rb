@@ -1,5 +1,5 @@
+# control plaques in an area
 class AreaPlaquesController < ApplicationController
-
   before_action :find, only: [:show]
   respond_to :html, :json, :csv
 
@@ -20,7 +20,6 @@ class AreaPlaquesController < ApplicationController
     rescue
     end
     zoom = params[:zoom].to_i
-
     @display = 'plaques'
     if zoom > 0
       @plaques = @area.plaques.tile(zoom, params[:x].to_i, params[:y].to_i, params[:filter])
@@ -28,40 +27,39 @@ class AreaPlaquesController < ApplicationController
       begin
         request.format.html? ?
           @plaques = @area.plaques.send(params[:filter].to_s).paginate(page: params[:page], per_page: 50)
-          : @plaques = @area.plaques.send(params[:filter].to_s).paginate(page: params[:page], per_page: 5000000)
+          : @plaques = @area.plaques.send(params[:filter].to_s).paginate(page: params[:page], per_page: 5_000_000)
         @display = params[:filter].to_s
       rescue # an unrecognised filter method
         request.format.html? ?
           @plaques = @area.plaques.paginate(page: params[:page], per_page: 50)
-          : @plaques = @area.plaques.paginate(page: params[:page], per_page: 5000000)
+          : @plaques = @area.plaques.paginate(page: params[:page], per_page: 5_000_000)
         @display = 'all'
       end
     else
       request.format.html? ?
         @plaques = @area.plaques.paginate(page: params[:page], per_page: 50)
-        : @plaques = @area.plaques.paginate(page: params[:page], per_page: 5000000)
+        : @plaques = @area.plaques.paginate(page: params[:page], per_page: 5_000_000)
       @display = 'all'
     end
     respond_with @plaques do |format|
       format.html { render 'areas/plaques/show' }
       format.json { render json: @plaques }
       format.geojson { render geojson: @plaques.geolocated, parent: @area }
-      format.csv {
+      format.csv do
         send_data(
           "\uFEFF#{PlaqueCsv.new(@plaques).build}",
           type: 'text/csv',
-          filename: "open-plaques-#{@area.slug}-#{Date.today.to_s}.csv",
+          filename: "open-plaques-#{@area.slug}-#{Date.today}.csv",
           disposition: 'attachment'
         )
-      }
+      end
     end
   end
 
   protected
 
-    def find
-      @country = Country.find_by_alpha2!(params[:country_id])
-      @area = @country.areas.find_by_slug!(params[:area_id])
-    end
-
+  def find
+    @country = Country.find_by_alpha2!(params[:country_id])
+    @area = @country.areas.find_by_slug!(params[:area_id])
+  end
 end

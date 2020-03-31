@@ -1,9 +1,9 @@
+# control photos
 class PhotosController < ApplicationController
-
-  before_action :authenticate_user!, except: [:index, :show, :update, :create]
+  before_action :authenticate_user!, except: %i[index show update create]
   before_action :authenticate_admin!, only: :destroy
-  before_action :find, only: [:destroy, :edit, :show, :update]
-  before_action :get_licences, only: [:new, :create, :edit]
+  before_action :find, only: %i[destroy edit show update]
+  before_action :licences, only: %i[new create edit]
 
   def index
     @photos = Photo.order(id: :desc).paginate(page: params[:page], per_page: 200)
@@ -24,11 +24,11 @@ class PhotosController < ApplicationController
 
   def update
     respond_to do |format|
-      if @photo.update_attributes(photo_params)
-        flash[:notice] = 'Photo was successfully updated.'
-      else
-        flash[:notice] = @photo.errors
-      end
+      flash[:notice] = if @photo.update_attributes(photo_params)
+                         'Photo was successfully updated.'
+                       else
+                         @photo.errors
+                       end
       format.html { redirect_back(fallback_location: root_path) }
     end
   end
@@ -41,13 +41,17 @@ class PhotosController < ApplicationController
     @photo = Photo.new(photo_params)
     @photo.populate
     if @photo.errors.empty?
-      @already_existing_photo = Photo.find_by_file_url @photo.file_url
-      @already_existing_photo = Photo.find_by_file_url(@photo.file_url.gsub("https","http")) if !@already_existing_photo
+      @already_existing_photo = Photo.find_by_file_url(@photo.file_url)
+      @already_existing_photo ||= Photo.find_by_file_url(@photo.file_url.gsub('https', 'http'))
       if @already_existing_photo
         @photo = @already_existing_photo
         @photo.update_attributes(photo_params)
       end
-      @photo.save ? flash[:notice] = 'Photo was successfully updated.' : flash[:notice] = @photo.errors.full_messages.to_sentence
+      flash[:notice] = if @photo.save
+                         'Photo was successfully updated.'
+                       else 
+                         @photo.errors.full_messages.to_sentence
+                       end
     else
       flash[:notice] = @photo.errors.full_messages.to_sentence
     end
@@ -62,47 +66,49 @@ class PhotosController < ApplicationController
     @plaque = @photo.plaque
     @person = @photo.person
     @photo.destroy
-    redirect_to @plaque ? plaque_photos_path(@plaque) : @person ? edit_person_path(@person) : photos_path()
+    redirect_to @plaque ? plaque_photos_path(@plaque) : @person ? edit_person_path(@person) : photos_path
   end
 
   protected
 
-    def find
-      @photo = Photo.find(params[:id])
-    end
+  def find
+    @photo = Photo.find(params[:id])
+  end
 
-    def get_licences
-      @licences = Licence.order(:name)
-    end
+  def licences
+    @licences = Licence.alphabetically
+  end
 
   private
 
-    def help
-      Helper.instance
-    end
+  def help
+    Helper.instance
+  end
 
-    class Helper
-      include Singleton
-      include PlaquesHelper
-    end
+  # access helpers from controller
+  class Helper
+    include Singleton
+    include PlaquesHelper
+  end
 
-  	def photo_params
-      params.require(:photo).permit(
-        :clone_id,
-        :description,
-        :file_url,
-        :latitude,
-        :licence_id,
-        :longitude,
-        :of_a_plaque,
-        :person_id,
-        :photographer,
-        :photographer_url,
-        :plaque_id,
-        :shot,
-        :streetview_url,
-        :subject,
-        :thumbnail,
-        :url)
-    end
+  def photo_params
+    params.require(:photo).permit(
+      :clone_id,
+      :description,
+      :file_url,
+      :latitude,
+      :licence_id,
+      :longitude,
+      :of_a_plaque,
+      :person_id,
+      :photographer,
+      :photographer_url,
+      :plaque_id,
+      :shot,
+      :streetview_url,
+      :subject,
+      :thumbnail,
+      :url
+    )
+  end
 end

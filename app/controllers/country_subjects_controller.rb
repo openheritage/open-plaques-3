@@ -1,5 +1,6 @@
 require 'ostruct'
 
+# show subjects in a country
 class CountrySubjectsController < ApplicationController
   before_action :find, only: [:show]
 
@@ -25,7 +26,9 @@ class CountrySubjectsController < ApplicationController
             ORDER BY plaques_count desc
             LIMIT 50"
         )
-        @top = @results.reject{|p| p['plaques_count'] < 1}.map{|attributes| OpenStruct.new(attributes)}
+        @top = @results
+               .reject { |p| p['plaques_count'] < 1 }
+               .map { |attributes| OpenStruct.new(attributes) }
         @gender = ActiveRecord::Base.connection.execute(
           "SELECT people.gender, count(distinct person_id) as subject_count
             FROM areas, plaques, personal_connections, people
@@ -35,8 +38,8 @@ class CountrySubjectsController < ApplicationController
             AND personal_connections.person_id = people.id
             GROUP BY people.gender"
         )
-        @gender = @gender.map{|attributes| OpenStruct.new(attributes)}
-        @subject_count = @gender.inject(0){|sum, g| sum + g.subject_count }
+        @gender = @gender.map { |attributes| OpenStruct.new(attributes) }
+        @subject_count = @gender.inject(0) { |sum, g| sum + g.subject_count }
         @gender.append(OpenStruct.new(gender: 'tba', subject_count: @uncurated_count))
         render 'countries/subjects/top'
       end
@@ -55,20 +58,20 @@ class CountrySubjectsController < ApplicationController
 
   protected
 
-    def people(plaques)
-      @people = []
-      plaques.each do |p|
-        p.people.each do |per|
-          per.define_singleton_method(:plaques_count) do
-            1
-          end
-          @people << per
+  def people(plaques)
+    @people = []
+    plaques.each do |p|
+      p.people.each do |per|
+        per.define_singleton_method(:plaques_count) do
+          1
         end
+        @people << per
       end
-      @people.uniq
     end
+    @people.uniq
+  end
 
-    def find
-      @country = Country.find_by_alpha2!(params[:country_id])
-    end
+  def find
+    @country = Country.find_by_alpha2!(params[:country_id])
+  end
 end

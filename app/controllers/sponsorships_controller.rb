@@ -1,8 +1,8 @@
+# control sponsorships
 class SponsorshipsController < ApplicationController
-
   before_action :authenticate_admin!, only: :destroy
   before_action :find, only: [:destroy]
-  before_action :list_organisations, only: [:new, :index]
+  before_action :list_organisations, only: %i[new index]
 
   def destroy
     plaque = @sponsorship.plaque
@@ -29,18 +29,17 @@ class SponsorshipsController < ApplicationController
 
   private
 
-    def sponsorship_params
-      params.require(:sponsorship).permit(:plaque_id, :organisation_id)
-    end
+  def sponsorship_params
+    params.require(:sponsorship).permit(:plaque_id, :organisation_id)
+  end
 
-    def find
-      if params[:id]
-        @sponsorship = Sponsorship.find(params[:id])
-      end
-    end
+  def find
+    return unless params[:id]
 
-    def list_organisations
-      @organisations = Organisation.select(:id, :name).order('name')
-    end
+    @sponsorship = Sponsorship.find(params[:id])
+  end
 
+  def list_organisations
+    @organisations = Organisation.select(:id, :name).alphabetically
+  end
 end

@@ -124,10 +124,8 @@ class Photo < ApplicationRecord
   def thumbnail_url
     return thumbnail if thumbnail?
 
-    if file_url.ends_with?(*%w[_b.jpg _z.jpg _z.jpg?zz=1 _m.jpg _o.jpg])
-      return file_url.gsub('b.jpg', 'm.jpg').gsub('z.jpg?zz=1', 'm.jpg').gsub('z.jpg', 'm.jpg').gsub('o.jpg', 'm.jpg')
+    return file_url.gsub(/[bzo].jpg/, 'm.jpg').gsub('z.jpg?zz=1', 'm.jpg') if file_url.ends_with?('_b.jpg', '_z.jpg', '_z.jpg?zz=1', '_m.jpg', '_o.jpg')
 
-    end
     "https://commons.wikimedia.org/wiki/Special:FilePath/#{wikimedia_filename}?width=250" if wikimedia?
   end
 
@@ -357,11 +355,11 @@ class Photo < ApplicationRecord
     self.latitude = parsed_json['location']['latitude'] if parsed_json['location']
     self.longitude = parsed_json['location']['longitude'] if parsed_json['location']
     self.taken_at = parsed_json['dates']['taken'] if parsed_json['dates']
-    if plaque_id.nil? && parsed_json['tags']
-      parsed_json['tags']['tag'].each do |tag|
-        machine_tag_id = tag['raw'].match(/openplaques:id=(\d*)/)
-        self.plaque_id = machine_tag_id[1] if machine_tag_id
-      end
+    return unless plaque_id.nil? && parsed_json['tags']
+
+    parsed_json['tags']['tag'].each do |tag|
+      machine_tag_id = tag['raw'].match(/openplaques:id=(\d*)/)
+      self.plaque_id = machine_tag_id[1] if machine_tag_id
     end
   end
 

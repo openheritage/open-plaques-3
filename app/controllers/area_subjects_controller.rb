@@ -1,5 +1,5 @@
+# show subjects in an area
 class AreaSubjectsController < ApplicationController
-
   before_action :find_country, only: [:show]
   before_action :find, only: [:show]
 
@@ -33,7 +33,7 @@ class AreaSubjectsController < ApplicationController
         send_data(
           "\uFEFF#{PersonCsv.new(@people).build}",
           type: 'text/csv',
-          filename: "open-plaques-#{@area.name}-subjects-#{Date.today.to_s}.csv",
+          filename: "open-plaques-#{@area.name}-subjects-#{Date.today}.csv",
           disposition: 'attachment'
         )
       }
@@ -62,5 +62,4 @@ class AreaSubjectsController < ApplicationController
   def find
     @area = @country.areas.find_by_slug!(params[:area_id])
   end
-
 end

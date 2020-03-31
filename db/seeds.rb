@@ -12,8 +12,8 @@ Page.create({ slug: 'about', name: 'What is Open Plaques?', body: 'Open Plaques 
 Page.create({ slug: 'contribute', name: 'How can you help?', body: 'Open Plaques is a community-run website containing information about historical plaques found all around the world by people like you. We don\'t own it, we believe that our role is to curate it and then give the data back to the world for free. We are the museum of the street.' })
 Page.create({ slug: 'data', name: 'Who can use the data and how?', body: 'anyone can, it is free!' })
 
-Country.create({ alpha2: 'us', name: 'United States' })
 uk = Country.create({ alpha2: 'gb', name: 'United Kingdom' })
+Country.create({ alpha2: 'us', name: 'United States' })
 Country.create({ alpha2: 'de', name: 'Germany' })
 Country.create({ alpha2: 'fr', name: 'France' })
 Country.create({ alpha2: 'it', name: 'Italy' })

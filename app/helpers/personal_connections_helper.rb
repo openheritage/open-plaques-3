@@ -1,5 +1,5 @@
+# Assist personal connections
 module PersonalConnectionsHelper
-
   def personal_connection_path(personal_connection)
     url_for(controller: 'PersonalConnections', action: :show, id: personal_connection.id, plaque_id: pc.plaque_id)
   end
@@ -31,5 +31,4 @@ module PersonalConnectionsHelper
     end
     verbs
   end
-
 end

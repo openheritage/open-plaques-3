@@ -42,7 +42,7 @@ class Licence < ApplicationRecord
 
   # technically, this returns the starting index but can be treated as boolean
   def creative_commons?
-    url =~ /creativecommons.org\/licenses/i
+    url =~ %r{creativecommons.org\/licenses}i
   end
 
   def to_s
