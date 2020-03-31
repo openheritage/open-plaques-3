@@ -2,7 +2,7 @@ require 'ostruct'
 
 # show subjects in a country
 class CountrySubjectsController < ApplicationController
-  before_action :find, only: [:show]
+  before_action :find, only: :show
 
   def show
     respond_to do |format|
@@ -16,7 +16,6 @@ class CountrySubjectsController < ApplicationController
             (
               SELECT count(distinct plaque_id)
               FROM personal_connections, plaques, areas
-
               WHERE personal_connections.person_id = people.id
               AND personal_connections.plaque_id = plaques.id
               AND plaques.area_id = areas.id

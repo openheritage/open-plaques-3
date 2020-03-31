@@ -1,7 +1,7 @@
 # control todos
 class TodoController < ApplicationController
   include ActionView::Helpers::TextHelper
-  before_action :authenticate_user!, except: [:index]
+  before_action :authenticate_user!, except: :index
 
   def index
     @unassigned_photo_count = Photo.unassigned.geolocated.count
@@ -13,7 +13,7 @@ class TodoController < ApplicationController
     uk = Country.find_by_name('United Kingdom')
     @uk_plaques_count = uk.plaques.count
     @no_connection_count = uk.plaques.unconnected.count
-    @no_connection_percentage = (@no_connection_count.to_f / @uk_plaques_count.to_f * 100).to_i
+    @no_connection_percentage = (@no_connection_count.to_f / @uk_plaques_count * 100).to_i
     @partial_inscription_count = Plaque.partial_inscription.count
     @partial_inscription_photo_count = Plaque.partial_inscription_photo.count
     @no_roles_count = Person.unroled.count
@@ -47,7 +47,7 @@ class TodoController < ApplicationController
       uk = Country.find_by_name('United Kingdom')
       @uk_plaques_count = uk.plaques.count
       @no_connection_count = uk.plaques.unconnected.count
-      @no_connection_percentage = (@no_connection_count.to_f / @uk_plaques_count.to_f * 100).to_i
+      @no_connection_percentage = (@no_connection_count.to_f / @uk_plaques_count * 100).to_i
       @plaques = uk.plaques.unconnected.paginate(page: params[:page], per_page: 100)
       render :no_connection
     when 'partial_inscription'

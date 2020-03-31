@@ -1,8 +1,8 @@
 # control colours
 class ColoursController < ApplicationController
   before_action :authenticate_admin!, only: :destroy
-  before_action :authenticate_user!, except: [:index]
-  before_action :find, only: [:update]
+  before_action :authenticate_user!, except: :index
+  before_action :find, only: :update
 
   def index
     @colours = Colour.all.most_plaques_order
@@ -24,16 +24,16 @@ class ColoursController < ApplicationController
 
   protected
 
-    def find
-      @colour = Colour.find_by_slug!(params[:id])
-    end
+  def find
+    @colour = Colour.find_by_slug!(params[:id])
+  end
 
   private
 
   def permitted_params
     params.require(:colour).permit(
-      :name,
-      :dbpedia_uri
+      :dbpedia_uri,
+      :name
     )
   end
 end

@@ -84,11 +84,11 @@ class Plaque < ApplicationRecord
   end
 
   def erected_at_string=(date)
-    if date.length == 4
-      self.erected_at = Date.parse(date + '-01-01')
-    else
-      self.erected_at = date
-    end
+    self.erected_at = if date.length == 4
+                        Date.parse(date + '-01-01')
+                      else
+                        date
+                      end
   end
 
   def geolocated?
@@ -142,41 +142,43 @@ class Plaque < ApplicationRecord
   end
 
   def as_json(options = {})
-    options = {
-      only: %i[id inscription erected_at is_current updated_at latitude longitude],
-      include: {
-        photos: {
-          only: [],
-          methods: %i[uri thumbnail_url shot_name attribution]
-        },
-        organisations: {
-          only: [:name],
-          methods: [:uri]
-        },
-        language: {
-          only: %i[name alpha2]
-        },
-        area: {
-          only: :name,
-          include: {
-            country: {
-              only: %i[name alpha2],
-              methods: :uri
-            }
+    if !options || !options[:only]
+      options = {
+        only: %i[id inscription erected_at is_current updated_at latitude longitude],
+        include: {
+          photos: {
+            only: [],
+            methods: %i[uri thumbnail_url shot_name attribution]
           },
-          methods: :uri
+          organisations: {
+            only: [:name],
+            methods: [:uri]
+          },
+          language: {
+            only: %i[name alpha2]
+          },
+          area: {
+            only: :name,
+            include: {
+              country: {
+                only: %i[name alpha2],
+                methods: :uri
+              }
+            },
+            methods: :uri
+          },
+          people: {
+            only: [],
+            methods: %i[uri full_name]
+          },
+          see_also: {
+            only: [],
+            methods: %i[uri]
+          }
         },
-        people: {
-          only: [],
-          methods: %i[uri full_name]
-        },
-        see_also: {
-          only: [],
-          methods: %i[uri]
-        }
-      },
-      methods: %i[uri title address subjects colour_name machine_tag geolocated? photographed? thumbnail_url]
-    } if !options || !options[:only]
+        methods: %i[uri title address subjects colour_name machine_tag geolocated? photographed? thumbnail_url]
+      }
+    end
     super options
   end
 
@@ -321,9 +323,9 @@ class Plaque < ApplicationRecord
     bottom_right = get_lat_lng_for_number(zoom, xtile + 1, ytile + 1)
     latitude = bottom_right[:lat_deg].to_s..top_left[:lat_deg].to_s
     longitude = top_left[:lng_deg].to_s..bottom_right[:lng_deg].to_s
-    tile = '/plaques/'
-    tile += options + '/' if options && options != '' && options != 'all'
-    tile += "tiles/#{zoom}/#{xtile}/#{ytile}"
+    # tile = '/plaques/'
+    # tile += options + '/' if options && options != '' && options != 'all'
+    # tile += "tiles/#{zoom}/#{xtile}/#{ytile}"
     if options == 'unphotographed'
       unphotographed
         .select(:id, :inscription, :latitude, :longitude, :is_accurate_geolocation)

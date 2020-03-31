@@ -1,13 +1,13 @@
 # show subjects in an area
 class AreaSubjectsController < ApplicationController
-  before_action :find_country, only: [:show]
-  before_action :find, only: [:show]
+  before_action :find_country, only: :show
+  before_action :find, only: :show
 
   def show
     @plaques_count = @area.plaques.size
     @uncurated_count = @area.plaques.unconnected.size
     @curated_count = @plaques_count - @uncurated_count
-    @percentage_curated = ((@curated_count.to_f / @plaques_count.to_f) * 100).to_i
+    @percentage_curated = ((@curated_count.to_f / @plaques_count) * 100).to_i
     query = "SELECT people.gender, count(distinct person_id) as subject_count
       FROM personal_connections, plaques, areas, people
       WHERE areas.id = #{@area.id}
@@ -16,18 +16,16 @@ class AreaSubjectsController < ApplicationController
       AND personal_connections.person_id = people.id
       GROUP BY people.gender"
     @gender = ActiveRecord::Base.connection.execute(query)
-    @gender = @gender.map{|attributes| OpenStruct.new(attributes)}
-    @subject_count = @gender.inject(0){|sum, g| sum + g.subject_count }
+    @gender = @gender.map { |attributes| OpenStruct.new(attributes) }
+    @subject_count = @gender.inject(0) { |sum, g| sum + g.subject_count }
     @gender.append(OpenStruct.new(gender: 'tba', subject_count: @uncurated_count))
     respond_to do |format|
-      format.html {
+      format.html do
         @people = @area.people # .paginate(page: params[:page], per_page: 50)
         render 'areas/subjects/show'
-      }
-      format.json {
-        render json: @area.people
-      }
-      format.csv {
+      end
+      format.json { render json: @area.people }
+      format.csv do
         @plaques = @area.plaques.connected
         @people = people(@plaques)
         send_data(
@@ -36,7 +34,7 @@ class AreaSubjectsController < ApplicationController
           filename: "open-plaques-#{@area.name}-subjects-#{Date.today}.csv",
           disposition: 'attachment'
         )
-      }
+      end
     end
   end
 
@@ -46,9 +44,7 @@ class AreaSubjectsController < ApplicationController
     @people = []
     plaques.each do |p|
       p.people.each do |per|
-        per.define_singleton_method(:plaques_count) do
-          1
-        end
+        per.define_singleton_method(:plaques_count) { 1 }
         @people << per
       end
     end

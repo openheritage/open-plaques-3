@@ -1,6 +1,6 @@
 # respond to series paths
 class SeriesPlaquesController < ApplicationController
-  before_action :find, only: [:show]
+  before_action :find, only: :show
 
   def show
     zoom = params[:zoom].to_i

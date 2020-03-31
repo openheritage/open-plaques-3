@@ -1,8 +1,9 @@
+# control Areas
 class AreasController < ApplicationController
   before_action :authenticate_admin!, only: :destroy
-  before_action :authenticate_user!, except: [:autocomplete, :index, :show, :update]
-  before_action :find_country, only: [:index, :new, :show, :create, :edit, :update, :destroy, :geolocate]
-  before_action :find, only: [:show, :edit, :update, :destroy, :geolocate]
+  before_action :authenticate_user!, except: %i[autocomplete index show update]
+  before_action :find_country, only: %i[index new show create edit update destroy geolocate]
+  before_action :find, only: %i[show edit update destroy geolocate]
   before_action :streetview_to_params, only: :update
 
   def index
@@ -17,17 +18,15 @@ class AreasController < ApplicationController
   def autocomplete
     limit = params[:limit] || 5
     country_id = params[:country_id]
-    if params[:contains]
-      @areas = Area.select(:id, :name, :country_id).name_contains(params[:contains]).includes(:country).limit(limit)
-    elsif params[:starts_with]
-      if country_id == nil
-        @areas = Area.select(:id, :name, :country_id).name_starts_with(params[:starts_with]).includes(:country).limit(limit)
-      else
-        @areas = Area.select(:id, :name, :country_id).where(country_id: country_id).name_starts_with(params[:starts_with]).includes(:country).limit(limit)
-      end
-    else
-      @areas = '{}'
-    end
+    @areas = if params[:contains]
+               Area.select(:id, :name, :country_id).name_contains(params[:contains]).includes(:country).limit(limit)
+             elsif params[:starts_with] && country_id.nil?
+               Area.select(:id, :name, :country_id).name_starts_with(params[:starts_with]).includes(:country).limit(limit)
+             elsif params[:starts_with]
+               Area.select(:id, :name, :country_id).where(country_id: country_id).name_starts_with(params[:starts_with]).includes(:country).limit(limit)
+             else
+               '{}'
+             end
     render json: @areas.as_json(
       only: %i[id name country_id],
       include: {
@@ -103,10 +102,10 @@ class AreasController < ApplicationController
     return unless params[:streetview_url]
 
     point = Helper.instance.geolocation_from params[:streetview_url]
-    unless point.latitude.blank? || point.longitude.blank?
-      params[:area][:latitude] = point.latitude.to_s
-      params[:area][:longitude] = point.longitude.to_s
-    end
+    return if point.latitude.blank? || point.longitude.blank?
+
+    params[:area][:latitude] = point.latitude.to_s
+    params[:area][:longitude] = point.longitude.to_s
   end
 
   private

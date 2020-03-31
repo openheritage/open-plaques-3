@@ -18,12 +18,12 @@
 <%= will_paginate @organisations if @organisations.respond_to?(:total_pages) %>
 
 <script>
-  data = [<% @top_10.each do |organisation| %><%= organisation.sponsorships_count %>,<% end %>];
+  data = [<% @top_ten.each do |organisation| %><%= organisation.sponsorships_count %>,<% end %>];
   hbar = new RGraph.SVG.HBar({
     id: 'top10-chart',
     data: data,
     options: {
-      yaxisLabels: [<% @top_10.each do |o| %>'<%= o %>',<% end %>],
+      yaxisLabels: [<% @top_ten.each do |o| %>'<%= o %>',<% end %>],
       colors: ['blue','red','green','orange','blue','red','green','orange','blue'],
       strokestyle: 'rgba(0,0,0,0)',
       labelsAbove: true,

@@ -38,7 +38,7 @@ class CountriesController < ApplicationController
   end
 
   def create
-    @country = Country.new(country_params)
+    @country = Country.new(permitted_params)
     if @country.save
       redirect_to country_path(@country)
     else
@@ -62,7 +62,7 @@ class CountriesController < ApplicationController
   end
 
   def update
-    if @country.update_attributes(country_params)
+    if @country.update_attributes(permitted_params)
       redirect_to country_path(@country)
     else
       render :edit
@@ -85,15 +85,15 @@ class CountriesController < ApplicationController
     return unless params[:streetview_url]
 
     point = Helper.instance.geolocation_from params[:streetview_url]
-    if !point.latitude.blank? && !point.longitude.blank?
-      params[:country][:latitude] = point.latitude.to_s
-      params[:country][:longitude] = point.longitude.to_s
-    end
+    return unless !point.latitude.blank? && !point.longitude.blank?
+
+    params[:country][:latitude] = point.latitude.to_s
+    params[:country][:longitude] = point.longitude.to_s
   end
 
   private
 
-  def country_params
+  def permitted_params
     params.require(:country).permit(
       :alpha2,
       :latitude,

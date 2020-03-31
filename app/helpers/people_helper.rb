@@ -45,22 +45,6 @@ module PeopleHelper
     nil
   end
 
-  # select html paragraphs from a web page given an Array, String or integer
-  # e.g. "http://en.wikipedia.org/wiki/Arthur_Onslow", "2,4,5"
-  # e.g. "http://en.wikipedia.org/wiki/Arthur_Onslow", "2 4 5"
-  # e.g. "http://en.wikipedia.org/wiki/Arthur_Onslow", [2,4,5]
-  # e.g. "http://en.wikipedia.org/wiki/Arthur_Onslow", 2
-  def wikipedia_summary_each(url, para_numbers)
-    para_numbers = para_numbers.to_s.scan(/\d+/) unless para_numbers.is_a?(Array)
-    doc = Hpricot(URI.parse(url).open)
-    section = para_numbers.inject('') do |para, para_number|
-      para += doc.at("p[#{para_number}]").to_html.gsub(%r{<\/?[^>]*>}, '') + ' '
-    end
-    section.strip
-  rescue Exception
-    nil
-  end
-
   def dated_roled_person(person)
     return 'XXXX' unless person
 

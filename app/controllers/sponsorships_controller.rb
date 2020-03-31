@@ -1,7 +1,7 @@
 # control sponsorships
 class SponsorshipsController < ApplicationController
   before_action :authenticate_admin!, only: :destroy
-  before_action :find, only: [:destroy]
+  before_action :find, only: :destroy
   before_action :list_organisations, only: %i[new index]
 
   def destroy

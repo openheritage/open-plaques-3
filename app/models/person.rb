@@ -250,7 +250,15 @@ class Person < ApplicationRecord
 
   def current_personal_roles
     current = personal_roles.select(&:current?)
-    current.sort! { |b, a| (a.role.priority && b.role.priority) ? a.role.priority <=> b.role.priority : (a.role.priority ? 1 : -1) }
+    current.sort! do |b, a|
+      if a.role.priority && b.role.priority
+        a.role.priority <=> b.role.priority
+      elsif a.role.priority
+        1
+      else
+        -1
+      end
+    end
     current
   end
 
@@ -343,7 +351,6 @@ class Person < ApplicationRecord
   def father
     relationships.each do |relationship|
       return relationship.related_person if relationship.role.role_type == 'child' && !relationship.related_person.nil? && relationship.related_person.male?
-
     end
     nil
   end
@@ -351,7 +358,6 @@ class Person < ApplicationRecord
   def mother
     relationships.each do |relationship|
       return relationship.related_person if relationship.role.role_type == 'child' && !relationship.related_person.nil? && relationship.related_person.female?
-
     end
     nil
   end
@@ -361,7 +367,7 @@ class Person < ApplicationRecord
     relationships.each do |relationship|
       issue << relationship.related_person if relationship.role.role_type == 'parent'
     end
-    issue.uniq.sort! { |a, b| a.born_on ? a.born_on : 0 <=> b.born_on ? b.born_on : 0 }
+    issue.uniq.sort! { |a, b| a.born_on || 0 <=> b.born_on || 0 }
   end
 
   def children?
@@ -372,7 +378,7 @@ class Person < ApplicationRecord
     siblings = []
     father&.children&.each { |child| siblings << child if child != self }
     mother&.children&.each { |child| siblings << child if child != self }
-    siblings.uniq.sort! { |a, b| a.born_on ? a.born_on : 0 <=> b.born_on ? b.born_on : 0 }
+    siblings.uniq.sort! { |a, b| a.born_on || 0 <=> b.born_on || 0 }
   end
 
   def spouses

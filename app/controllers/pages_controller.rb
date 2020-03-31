@@ -1,7 +1,7 @@
 # control CMS
 class PagesController < ApplicationController
   before_action :authenticate_admin!, only: :destroy
-  before_action :authenticate_user!, except: [:show]
+  before_action :authenticate_user!, except: :show
   before_action :find, only: %i[show edit update]
   respond_to :html, :json
 

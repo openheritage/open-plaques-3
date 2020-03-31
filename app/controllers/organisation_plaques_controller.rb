@@ -1,6 +1,6 @@
 # show plaques for an organisation
 class OrganisationPlaquesController < ApplicationController
-  before_action :find, only: [:show]
+  before_action :find, only: :show
 
   def show
     begin

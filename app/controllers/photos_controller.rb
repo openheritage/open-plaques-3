@@ -24,7 +24,7 @@ class PhotosController < ApplicationController
 
   def update
     respond_to do |format|
-      flash[:notice] = if @photo.update_attributes(photo_params)
+      flash[:notice] = if @photo.update_attributes(permitted_params)
                          'Photo was successfully updated.'
                        else
                          @photo.errors
@@ -38,18 +38,18 @@ class PhotosController < ApplicationController
   end
 
   def create
-    @photo = Photo.new(photo_params)
+    @photo = Photo.new(permitted_params)
     @photo.populate
     if @photo.errors.empty?
       @already_existing_photo = Photo.find_by_file_url(@photo.file_url)
       @already_existing_photo ||= Photo.find_by_file_url(@photo.file_url.gsub('https', 'http'))
       if @already_existing_photo
         @photo = @already_existing_photo
-        @photo.update_attributes(photo_params)
+        @photo.update_attributes(permitted_params)
       end
       flash[:notice] = if @photo.save
                          'Photo was successfully updated.'
-                       else 
+                       else
                          @photo.errors.full_messages.to_sentence
                        end
     else
@@ -66,7 +66,13 @@ class PhotosController < ApplicationController
     @plaque = @photo.plaque
     @person = @photo.person
     @photo.destroy
-    redirect_to @plaque ? plaque_photos_path(@plaque) : @person ? edit_person_path(@person) : photos_path
+    if @plaque
+      redirect_to plaque_photos_path(@plaque)
+    elsif @person
+      redirect_to edit_person_path(@person)
+    else
+      redirect_to photos_path
+    end
   end
 
   protected
@@ -91,7 +97,7 @@ class PhotosController < ApplicationController
     include PlaquesHelper
   end
 
-  def photo_params
+  def permitted_params
     params.require(:photo).permit(
       :clone_id,
       :description,

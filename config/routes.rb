@@ -6,8 +6,6 @@ Rails.application.routes.draw do
 
   devise_for :users
 
-  get 'gc', controller: :home
-
   scope '/plaques' do
     resource :latest, as: :latest, controller: :plaques_latest, only: :show
   end

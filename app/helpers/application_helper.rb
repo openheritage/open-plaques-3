@@ -77,7 +77,11 @@ module ApplicationHelper
   end
 
   def pluralize_no_count(count, singular, plural = nil)
-    ((count == 1 || count == '1') ? singular : (plural || singular.pluralize))
+    if [1, '1'].include?(count)
+      singular
+    else
+      plural || singular.pluralize
+    end
   end
 
   # A persistant navigation link, as used in "top navs" or "left navs".
@@ -102,7 +106,7 @@ module ApplicationHelper
   end
 
   def pluralize_word(count, singular, plural = nil)
-    count == 1 || count =~ %r/^1(\.0+)?$/ ? singular : plural || singular.pluralize
+    count == 1 || count =~ %r{^1(\.0+)?$} ? singular : plural || singular.pluralize
   end
 
   def make_slug_not_war

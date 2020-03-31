@@ -1,16 +1,28 @@
 # show plaques in country
 class CountryPlaquesController < ApplicationController
-  before_action :find, only: [:show]
+  before_action :find, only: :show
 
   def show
     @display = 'all'
     if params[:id] && params[:id] == 'unphotographed'
-      request.format == 'html' ? @plaques = @country.plaques.unphotographed.paginate(page: params[:page], per_page: 50) : @plaques = @country.plaques.unphotographed
+      @plaques = if request.format == 'html'
+                   @country.plaques.unphotographed.paginate(page: params[:page], per_page: 50)
+                 else
+                   @country.plaques.unphotographed
+                 end
       @display = 'unphotographed'
     elsif params[:id] && params[:id] == 'current'
-      request.format == 'html' ? @plaques = @country.plaques.current.paginate(page: params[:page], per_page: 50) : @plaques = @country.plaques.current
+      @plaques = if request.format == 'html'
+                   @country.plaques.current.paginate(page: params[:page], per_page: 50)
+                 else
+                   @country.plaques.current
+                 end
     elsif params[:id] && params[:id] == 'ungeolocated'
-      request.format == 'html' ? @plaques = @country.plaques.ungeolocated.paginate(page: params[:page], per_page: 50) : @plaques = @country.plaques.ungeolocated
+      @plaques = if request.format == 'html'
+                   @country.plaques.ungeolocated.paginate(page: params[:page], per_page: 50)
+                 else
+                   @country.plaques.ungeolocated
+                 end
       @display = 'ungeolocated'
     else
       @plaques = if request.format == 'html'
