@@ -7,14 +7,16 @@ class OrganisationsController < ApplicationController
 
   def index
     @organisation_count = Organisation.all.count
-    @organisations = Organisation.all
-                                 .select(:language_id, :name, :slug, :sponsorships_count)
-                                 .alphabetically
-                                 .paginate(page: params[:page], per_page: 50)
-    @top_10 = Organisation.all
-                          .select(:name, :slug, :sponsorships_count)
-                          .in_count_order
-                          .limit(10)
+    @organisations = Organisation
+                     .all
+                     .select(:language_id, :name, :slug, :sponsorships_count)
+                     .alphabetically
+                     .paginate(page: params[:page], per_page: 50)
+    @top_ten = Organisation
+               .all
+               .select(:name, :slug, :sponsorships_count)
+               .in_count_order
+               .limit(10)
     respond_to do |format|
       format.html
       format.json { render json: @organisations }

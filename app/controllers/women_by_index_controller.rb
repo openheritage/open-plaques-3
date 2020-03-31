@@ -1,4 +1,3 @@
-
 # show women
 class WomenByIndexController < ApplicationController
   def show

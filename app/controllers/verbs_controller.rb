@@ -1,6 +1,6 @@
 # control verbs
 class VerbsController < ApplicationController
-  before_action :authenticate_user!, except: [:index]
+  before_action :authenticate_user!, except: :index
 
   def index
     @verbs = Verb.order(personal_connections_count: :desc)

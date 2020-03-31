@@ -1,43 +1,39 @@
 source 'https://rubygems.org'
 ruby '2.6.5'
 
-gem 'rails', '6.0.2.2'
-gem 'pg'
-gem 'webpacker'
-gem 'uglifier'
-
+gem 'aws-sdk-comprehend'
+gem 'aws-sdk-translate'
 gem 'bcrypt', '~> 3.1.7'
-
-gem 'nokogiri'
-gem 'sanitize'
-
-gem 'sass-rails'
+gem 'bootstrap'
+gem 'devise'
+gem 'font-awesome-sass', '~> 5.12.0'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
-gem 'bootstrap'
-gem 'font-awesome-sass', '~> 5.12.0'
+gem 'julia_builder'
+gem 'meta-tags'
+gem 'nokogiri'
+gem 'oink'
+gem 'pg'
+gem 'puma'
+gem 'rails', '6.0.2.2'
+gem 'redcarpet'
+gem 'rollbar'
+gem 'sanitize'
+gem 'sass-rails'
+gem 'tzinfo-data'
+gem 'uglifier'
+gem 'webpacker'
+gem 'wikimedia-commoner', github: 'jnicho02/wikimedia-commoner'
+gem 'will_paginate'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-tether', '>= 1.1.0'
 end
 
-gem 'devise'
-gem 'meta-tags'
-gem 'will_paginate'
-gem 'redcarpet'
-gem 'wikimedia-commoner', github: 'jnicho02/wikimedia-commoner'
-gem 'rollbar'
-gem 'puma'
-gem 'oink'
-
-gem 'julia_builder'
-
-gem 'aws-sdk-comprehend'
-gem 'aws-sdk-translate'
-
 group :development do
   gem 'bullet'
   gem 'derailed_benchmarks'
+  gem 'dotenv-rails', groups: :test
   gem 'fuubar'
   gem 'listen'
   gem 'mechanize'
@@ -53,6 +49,3 @@ group :test do
   gem 'faker'
   gem 'rspec-rails', '4.0.0.rc1'
 end
-
-gem 'tzinfo-data'
-gem 'dotenv-rails', groups: [:development, :test]

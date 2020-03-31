@@ -1,6 +1,6 @@
 # show subjects in an organisation
 class OrganisationSubjectsController < ApplicationController
-  before_action :find, only: [:show]
+  before_action :find, only: :show
 
   def show
     respond_to do |format|

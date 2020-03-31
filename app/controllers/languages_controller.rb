@@ -1,8 +1,8 @@
 # control languages
 class LanguagesController < ApplicationController
   before_action :authenticate_admin!, only: :destroy
-  before_action :authenticate_user!, except: [:index]
-  before_action :find, only: [:update]
+  before_action :authenticate_user!, except: :index
+  before_action :find, only: :update
 
   def index
     @languages = Language.all.most_plaques_order

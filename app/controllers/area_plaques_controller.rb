@@ -1,44 +1,50 @@
 # control plaques in an area
 class AreaPlaquesController < ApplicationController
-  before_action :find, only: [:show]
+  before_action :find, only: :show
   respond_to :html, :json, :csv
 
   def show
     begin
       set_meta_tags open_graph: {
-        title: "Open Plaques Area #{@area.name}",
+        title: "Open Plaques Area #{@area.name}"
       }
       @main_photo = @area.main_photo
       set_meta_tags twitter: {
         title: "Open Plaques Area #{@area.name}",
         image: {
-          _: @main_photo ? @main_photo.file_url : view_context.root_url[0...-1] + view_context.image_path("openplaques.png"),
+          _: @main_photo ? @main_photo.file_url : view_context.root_url[0...-1] + view_context.image_path('openplaques.png'),
           width: 100,
-          height: 100,
+          height: 100
         }
       }
     rescue
     end
     zoom = params[:zoom].to_i
     @display = 'plaques'
-    if zoom > 0
+    if zoom.positive?
       @plaques = @area.plaques.tile(zoom, params[:x].to_i, params[:y].to_i, params[:filter])
-    elsif (params[:filter] && params[:filter]!='')
+    elsif params[:filter] && params[:filter] != ''
       begin
-        request.format.html? ?
-          @plaques = @area.plaques.send(params[:filter].to_s).paginate(page: params[:page], per_page: 50)
-          : @plaques = @area.plaques.send(params[:filter].to_s).paginate(page: params[:page], per_page: 5_000_000)
+        @plaques = if request.format.html?
+                     @area.plaques.send(params[:filter].to_s).paginate(page: params[:page], per_page: 50)
+                   else
+                     @area.plaques.send(params[:filter].to_s).paginate(page: params[:page], per_page: 5_000_000)
+                   end
         @display = params[:filter].to_s
       rescue # an unrecognised filter method
-        request.format.html? ?
-          @plaques = @area.plaques.paginate(page: params[:page], per_page: 50)
-          : @plaques = @area.plaques.paginate(page: params[:page], per_page: 5_000_000)
+        @plaques = if request.format.html?
+                     @area.plaques.paginate(page: params[:page], per_page: 50)
+                   else
+                     @area.plaques.paginate(page: params[:page], per_page: 5_000_000)
+                   end
         @display = 'all'
       end
     else
-      request.format.html? ?
-        @plaques = @area.plaques.paginate(page: params[:page], per_page: 50)
-        : @plaques = @area.plaques.paginate(page: params[:page], per_page: 5_000_000)
+      @plaques = if request.format.html?
+                   @area.plaques.paginate(page: params[:page], per_page: 50)
+                 else
+                   @area.plaques.paginate(page: params[:page], per_page: 5_000_000)
+                 end
       @display = 'all'
     end
     respond_with @plaques do |format|

@@ -2,7 +2,7 @@ require 'julia'
 
 # control Plaques
 class PlaquesController < ApplicationController
-  before_action :authenticate_user!, only: [:edit]
+  before_action :authenticate_user!, only: :edit
   before_action :authenticate_admin!, only: :destroy
   before_action :find, only: %i[show flickr_search flickr_search_all update destroy edit]
   # before_action :set_cache_header, only: :index

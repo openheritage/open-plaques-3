@@ -278,20 +278,9 @@ class Photo < ApplicationRecord
         self.file_url = wikimedia_special
 
         if wikimedia[:licence_url]
+          wikimedia[:licence_url] += '/' unless wikimedia[:licence_url].ends_with?('/') || wikimedia[:licence_url].ends_with?('html')
           licence = Licence.find_by(url: wikimedia[:licence_url])
-          unless licence
-            wikimedia[:licence_url] += '/' unless wikimedia[:licence_url].ends_with? '/'
-            licence = Licence.find_by_url wikimedia[:licence_url]
-            unless licence
-              if wikimedia[:licence]
-                licence = Licence.new(
-                  name: wikimedia[:licence],
-                  url: wikimedia[:licence_url]
-                )
-                licence.save
-              end
-            end
-          end
+          licence ||= Licence.create(name: wikimedia[:licence], url: wikimedia[:licence_url])
           self.licence = licence unless licence.nil?
         end
         self.latitude = wikimedia[:latitude] if wikimedia[:latitude]
