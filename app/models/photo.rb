@@ -256,7 +256,7 @@ class Photo < ApplicationRecord
     return unless saved_change_to_plaque_id?
 
     Plaque.reset_counters(plaque_id_before_last_save, :photos) unless plaque_id_before_last_save.nil? || plaque_id_before_last_save.zero?
-    Plaque.reset_counters(plaque.id, :photos) unless plaque.nil? || plaque_id_before_last_save.zero?
+    Plaque.reset_counters(plaque.id, :photos) unless plaque.nil? || !plaque_id_before_last_save.nil?
   end
 
   def new?
