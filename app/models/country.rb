@@ -15,6 +15,7 @@ class Country < ApplicationRecord
   has_many :plaques, through: :areas
   validates_presence_of :name, :alpha2
   validates_uniqueness_of :name, :alpha2
+  after_commit :notify_slack, on: :create
   scope :uk, -> { where(alpha2: 'gb').first }
 
   def geolocated?
@@ -49,5 +50,13 @@ class Country < ApplicationRecord
 
   def to_s
     name || ''
+  end
+
+  def notify_slack
+    hook = ENV.fetch('SLACKHOOK', '')
+    return if hook.empty?
+
+    notifier = Slack::Notifier.new(hook)
+    notifier.ping "Country <a href='#{uri}'>#{to_s}</a> was just created. ISO code #{alpha2}"
   end
 end
