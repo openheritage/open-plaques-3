@@ -688,8 +688,8 @@ class Person < ApplicationRecord
     matches
   end
 
-  def uri
-    "https://openplaques.org#{Rails.application.routes.url_helpers.person_path(self, format: :json)}"
+  def uri(format = :html)
+    "https://openplaques.org#{Rails.application.routes.url_helpers.person_path(self, format: format)}"
   end
 
   def machine_tag

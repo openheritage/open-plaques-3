@@ -8,6 +8,7 @@ class PersonalConnection < ApplicationRecord
   belongs_to :plaque, counter_cache: true
   belongs_to :verb, counter_cache: true
   validates_presence_of :verb_id, :person_id, :plaque_id
+  after_commit :notify_slack, on: :create
   attr_accessor :other_verb_id
 
   # this would be a Verb query, but data is fixed and this is used frequently
@@ -40,5 +41,14 @@ class PersonalConnection < ApplicationRecord
 
   def single_year?
     from == to
+  end
+
+  def notify_slack
+    hook = ENV.fetch('SLACKHOOK', '')
+    return if hook.empty?
+
+    notifier = Slack::Notifier.new(hook)
+    phrase = ['someone just connected', 'there is a new connection from', 'new connection alert!'].sample
+    notifier.ping "#{phrase} <a href='#{person.uri}'>#{person.name_and_dates}</a> to <a href='#{plaque.uri}'>#{plaque.inscription_preferably_in_english}</a>"
   end
 end
