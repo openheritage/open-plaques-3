@@ -22,6 +22,9 @@ require 'aws-sdk-translate'
 # * +reference+ - An official reference number or identifier for the self. Sometimes marked on the actual plaque itself, sometimes only in promotional material. Optional.
 # * +series_ref+ - if part of a series does it have a reference number/id?
 class Plaque < ApplicationRecord
+  include ApplicationHelper
+  include ActionView::Helpers::TextHelper
+
   belongs_to :area, counter_cache: true, optional: true
   belongs_to :colour, counter_cache: true, optional: true
   belongs_to :language, counter_cache: true, optional: true
@@ -37,6 +40,7 @@ class Plaque < ApplicationRecord
   before_save :usa_townify
   before_save :unshout
   before_save :translate
+  after_commit :notify_slack, on: :create
   accepts_nested_attributes_for :photos, reject_if: proc { |attributes| attributes['photo_url'].blank? }
   scope :current, -> { where(is_current: true).order(id: :desc) }
   scope :geolocated, -> { where(['plaques.latitude IS NOT NULL']) }
@@ -56,9 +60,6 @@ class Plaque < ApplicationRecord
   scope :no_english_version, -> { where('language_id > 1').where(inscription_is_stub: false, inscription_in_english: nil) }
   scope :in_series_ref_order, -> { order(:series_ref) }
   attr_accessor :country, :other_colour_id, :force_us_state
-
-  include ApplicationHelper
-  include ActionView::Helpers::TextHelper
 
   def coordinates
     geolocated? ? "#{latitude},#{longitude}" : ''
@@ -421,5 +422,17 @@ class Plaque < ApplicationRecord
 
     # IT IS ALL IN CAPITALS, I AM SHOUTING
     self.inscription = inscription.capitalize
+  end
+
+  # this action is not an essential part of the data model
+  # could consider wisper gem for simple pub-sub
+  # https://karolgalanciak.com/blog/2019/11/30/from-activerecord-callbacks-to-publish-slash-subscribe-pattern-and-event-driven-design/
+  def notify_slack
+    hook = ENV.fetch('SLACKHOOK', '')
+    return if hook.empty?
+
+    notifier = Slack::Notifier.new(hook)
+    phrase = ['a new plaque was created', 'someone just added', 'new plaque alert!'].sample
+    notifier.ping "#{phrase} <a href='#{uri}'>#{inscription_preferably_in_english}</a>"
   end
 end
