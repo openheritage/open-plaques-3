@@ -20,6 +20,7 @@ gem 'redcarpet'
 gem 'rollbar'
 gem 'sanitize'
 gem 'sass-rails'
+gem 'slack-notifier'
 gem 'tzinfo-data'
 gem 'uglifier'
 gem 'webpacker'
@@ -34,7 +35,6 @@ group :development do
   gem 'bullet'
   gem 'derailed_benchmarks'
   gem 'dotenv-rails', groups: :test
-  gem 'fuubar'
   gem 'listen'
   gem 'mechanize'
   gem 'meta_request'
@@ -48,4 +48,5 @@ group :test do
   gem 'factory_bot_rails'
   gem 'faker'
   gem 'rspec-rails', '4.0.0.rc1'
+  #  gem 'webdrivers'
 end
