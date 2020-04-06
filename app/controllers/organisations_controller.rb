@@ -15,7 +15,7 @@ class OrganisationsController < ApplicationController
     @top_ten = Organisation
                .all
                .select(:name, :slug, :sponsorships_count)
-               .in_count_order
+               .by_popularity
                .limit(10)
     respond_to do |format|
       format.html
@@ -48,6 +48,7 @@ class OrganisationsController < ApplicationController
   def create
     @organisation = Organisation.new(permitted_params)
     if @organisation.save
+      flash[:notice] = 'Thanks for adding this organisation.'
       redirect_to organisation_path(@organisation.slug)
     else
       render :new

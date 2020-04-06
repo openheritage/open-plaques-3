@@ -2,9 +2,10 @@ require 'rails_helper'
 
 describe 'JSON API' do
   describe 'plaque API' do
+    let(:plaque) { create(:plaque) }
+
     before do
-      @plaque = Plaque.create!
-      get "/plaques/#{@plaque.id}.json"
+      get "/plaques/#{plaque.id}.json"
     end
 
     it 'should return 200' do

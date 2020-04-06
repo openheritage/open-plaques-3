@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Language, type: :model do
   it 'has a valid factory' do
-    expect(create(:language)).to be_valid
+    expect(create :language).to be_valid
   end
   describe '#full_name' do
     context 'with nothing set' do
@@ -10,19 +10,17 @@ describe Language, type: :model do
         @language = Language.new
       end
       it 'is nil' do
-        expect(@language.to_s).to eq(nil)
+        expect(@language.to_s).to eq nil
       end
     end
   end
 
   describe '#as_json' do
     context 'with nothing set' do
-      before do
-        @language = Language.new
-      end
+      let(:language) { build :language }
       it 'is json' do
         # can do better than this. Probably by using https://github.com/collectiveidea/json_spec
-        expect(@language.as_json.to_s.size).to be > 10
+        expect(language.as_json.to_s.size).to be > 10
       end
     end
   end

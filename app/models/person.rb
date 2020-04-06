@@ -23,8 +23,8 @@ class Person < ApplicationRecord
   has_many :roles, -> { distinct }, through: :personal_roles
   has_many :personal_connections, dependent: :destroy
   has_many :plaques, -> { distinct }, through: :personal_connections
-  has_one :birth_connection, -> { where('verb_id in (8,504)') }, class_name: 'PersonalConnection'
-  has_one :death_connection, -> { where('verb_id in (3,49,161,1108)') }, class_name: 'PersonalConnection'
+  has_one :birth_connection, -> { where('verb_id in (8, 504)') }, class_name: 'PersonalConnection'
+  has_one :death_connection, -> { where('verb_id in (3, 49, 161, 1108)') }, class_name: 'PersonalConnection'
   has_one :main_photo, class_name: 'Photo'
   validates_presence_of :name
   before_save :update_index
@@ -39,11 +39,7 @@ class Person < ApplicationRecord
   scope :unphotographed, -> { where('id not in (select person_id from photos)') }
   scope :connected, -> { where('personal_connections_count > 0') }
   scope :unconnected, -> { where(personal_connections_count: [nil, 0]) }
-  scope :name_starts_with, ->(term) { where(['name ILIKE ?', term.gsub(' ', '%') + '%']) }
-  scope :name_contains, ->(term) { where(['name ILIKE ?', '%' + term.gsub(' ', '%') + '%']) }
-  scope :name_is, ->(term) { where(['lower(name) = ?', term.downcase]) }
   scope :aka, ->(term) { where(["array_to_string(aka, ' ') ILIKE ?", term.gsub(' ', '%') + '%']) }
-  scope :in_alphabetical_order, -> { order('name ASC') }
   scope :with_counts, lambda {
     select <<~SQL
       people.*,
@@ -669,13 +665,12 @@ class Person < ApplicationRecord
     @people = []
     unaccented_phrase = name.tr("’ßÀÁÂÃÄÅàáâãäåĀāĂăĄąÇçĆćĈĉĊċČčÐðĎďĐđÈÉÊËèéêëĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħÌÍÎÏìíîïĨĩĪīĬĭĮįİıĴĵĶķĸĹĺĻļĽľĿŀŁłÑñŃńŅņŇňŉŊŋÒÓÔÕÖØòóôõöøŌōŎŏŐőŔŕŖŗŘřŚśŜŝŞşŠšſŢţŤťŦŧÙÚÛÜùúûüŨũŪūŬŭŮůŰűŲųŴŵÝýÿŶŷŸŹźŻżŽž",
 "'sAAAAAAaaaaaaAaAaAaCcCcCcCcCcDdDdDdEEEEeeeeEeEeEeEeEeGgGgGgGgHhHhIIIIiiiiIiIiIiIiIiJjKkkLlLlLlLlLlNnNnNnNnnNnOOOOOOooooooOoOoOoRrRrRrSsSsSsSssTtTtTtUUUUuuuuUuUuUuUuUuUuWwYyyYyYZzZzZz")
-    full_phrase_like = "%#{name}%"
     phrase_like = "%#{name.tr(' ', '%').tr('.', '%')}%"
     unaccented_phrase_like = "%#{unaccented_phrase.tr(' ', '%').tr('.', '%')}%"
-    @people += Person.where(['name ILIKE ?', full_phrase_like]).limit(cap)
+    @people += Person.name_contains(name).limit(cap)
     @people += Person.where(['name ILIKE ?', phrase_like]).limit(cap)
     @people += Person.where(['name ILIKE ?', unaccented_phrase_like]).limit(cap) if name.match(/[À-ž]/)
-    @people += Person.where(["array_to_string(aka, ' ') ILIKE ?", full_phrase_like]).limit(cap)
+    @people += Person.where(["array_to_string(aka, ' ') ILIKE ?", "%#{name}%"]).limit(cap)
     @people += Person.where(["array_to_string(aka, ' ') ILIKE ?", phrase_like]).limit(cap)
     @people += Person.where(["array_to_string(aka, ' ') ILIKE ?", unaccented_phrase_like]).limit(cap) if name.match(/[À-ž]/)
     @people.uniq!

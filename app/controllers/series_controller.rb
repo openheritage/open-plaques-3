@@ -20,7 +20,7 @@ class SeriesController < ApplicationController
     else
       @plaques = @series
                  .plaques
-                 .in_series_ref_order
+                 .by_series_ref
                  .paginate(page: params[:page], per_page: 20)
                  .preload(:language, :personal_connections, :photos, area: :country)
       begin

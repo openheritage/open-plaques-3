@@ -5,7 +5,7 @@ class ColoursController < ApplicationController
   before_action :find, only: :update
 
   def index
-    @colours = Colour.all.most_plaques_order
+    @colours = Colour.all.by_popularity
     respond_to do |format|
       format.html
       format.json { render json: @colours }

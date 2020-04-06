@@ -11,8 +11,6 @@
 # * +sponsorships_count+ - equivalent of number of plaques
 # * +website+ - official web site
 class Organisation < ApplicationRecord
-  include Named
-
   has_many :sponsorships, dependent: :restrict_with_error
   has_many :plaques, through: :sponsorships
   belongs_to :language, optional: true
@@ -23,7 +21,7 @@ class Organisation < ApplicationRecord
     in: %w[unknown unkown Unknown Unknown],
     message: 'just leave it blank'
   }
-  scope :in_count_order, -> { order(sponsorships_count: :desc) }
+  scope :by_popularity, -> { order(sponsorships_count: :desc) }
 
   # for slug helper
   include ApplicationHelper

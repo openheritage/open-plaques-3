@@ -29,13 +29,17 @@
       <%= f.text_field :longitude, readonly: !current_user %>
     </div>
   </div>
-  <div class="row mb-3"><div class="form-group col-md-6">
-    <a id="latlonlink" href="https://maps.google.com/maps?q=<%= @plaque.latitude %>,<%= @plaque.longitude %>&z=18" target="_new"><%= @plaque.latitude %>,<%= @plaque.longitude %> on Google Maps</a>
-  </div></div>
-  <div class="row mb-3"><div class="form-group col-md-6">
-    <%= f.check_box :is_accurate_geolocation %> I am certain that this location is accurate because it was located from a geocoded photo, or I have seen this plaque in Google Streetview/real life
-  </div></div>
-  <%= f.submit "Update", class: 'btn btn-primary' %>
+  <div class="row mb-3">
+    <div class="form-group col-md-6">
+      <a id="latlonlink" href="https://maps.google.com/maps?q=<%= @plaque.latitude %>,<%= @plaque.longitude %>&z=18" target="_new"><%= @plaque.latitude %>,<%= @plaque.longitude %> on Google Maps</a>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="form-group col-md-6">
+      <%= f.check_box :is_accurate_geolocation %> I am certain that this location is accurate because it was located from a geocoded photo, or I have seen this plaque in Google Streetview/real life
+    </div>
+  </div>
+  <%= f.submit 'Update', class: 'btn btn-primary' %>
 
   <div class="row mb-3">
     <div class="form-group col-md-12">

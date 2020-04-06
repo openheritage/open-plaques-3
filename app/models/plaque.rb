@@ -58,7 +58,7 @@ class Plaque < ApplicationRecord
   scope :partial_inscription, -> { where(inscription_is_stub: true).order(id: :desc) }
   scope :partial_inscription_photo, -> { where(photos_count: 1..99_999, inscription_is_stub: true).order(id: :desc) }
   scope :no_english_version, -> { where('language_id > 1').where(inscription_is_stub: false, inscription_in_english: nil) }
-  scope :in_series_ref_order, -> { order(:series_ref) }
+  scope :by_series_ref, -> { order(:series_ref) }
   attr_accessor :country, :other_colour_id, :force_us_state
 
   def coordinates

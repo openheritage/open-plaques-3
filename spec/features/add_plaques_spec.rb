@@ -8,7 +8,7 @@ RSpec.feature 'Add a plaque.', type: :feature do
     expect(page).to have_text 'Can\'t find what you\'re looking for?'
     click_link :goadd
     click_button :commit
-    expect(page).to have_text 'Thanks for adding this plaque.'
+    expect(page).to have_text 'Thanks for adding this'
   end
 
   scenario 'Spammer tries to create a new plaque' do

@@ -8,6 +8,7 @@ class PersonalRole < ApplicationRecord
   belongs_to :role, counter_cache: true
   belongs_to :related_person, class_name: 'Person', optional: true
   validates_presence_of :person_id, :role_id
+  scope :by_date, -> { order(:started_at) }
 
   def date_range
     dates = ''

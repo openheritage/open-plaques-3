@@ -5,12 +5,12 @@
 
 <script>
   $(function() {
-    $( "#organisation_name" ).autocomplete({
+    $( '#organisation_name' ).autocomplete({
       autofocus: true,
       source: function(request, response) {
         $.ajax({
-          url: "/organisations/autocomplete",
-          dataType: "json",
+          url: '/organisations/autocomplete',
+          dataType: 'json',
           data: {
             contains: request.term,
             limit: 10
@@ -33,27 +33,41 @@
 </script>
 
 <div class="row">
-  <div class="col-xs-12 col-sm-6">
-    <% @plaque.sponsorships.all.each do |sponsorship| %>
-      <% if sponsorship.organisation %>
-        <div class="row">
-          <div class="col-xs-10"><%= render sponsorship.organisation %></div>
-          <%= button_to t('buttons.unlink'), plaque_sponsorship_path(@plaque, sponsorship.id), method: :delete, class: 'btn btn-danger col-xs-2' %>
-        </div>
+  <div class="col-xs-12 col-sm-6" id="organisation-chooser">
+    <div class="col-md-12">
+      <% @plaque.sponsorships.all.each do |sponsorship| %>
+        <% if sponsorship.organisation %>
+          <div class="row">
+            <div class="col-xs-10"><%= render sponsorship.organisation %></div>
+            <div class="col-xs-2"><%= button_to t('buttons.unlink'), plaque_sponsorship_path(@plaque, sponsorship.id), method: :delete, class: 'btn btn-danger' %></div>
+          </div>
+        <% end %>
       <% end %>
-    <% end %>
+    </div>
 
     <%= form_for @sponsorship, url: plaque_sponsorships_path(@plaque) do |f| %>
       <%= f.hidden_field :plaque_id, value: @plaque.id %>
-      <div class="form-group">
-        <%= text_field_tag :organisation_name, "", {class: 'form-control', placeholder: "English Heritage"} %>
-        <%= f.collection_select :organisation_id, @organisations, :id, :name, {class: 'form-control', include_blank: true} %>
-        <%= content_tag("p", link_to("Add new organisation", new_organisation_path)) if current_user %>
+      <div class="row mb-6">
+        <div class="col-md-12">
+          <div class="form-group">
+            <%= f.label(:organisation_id, class: 'form-control-label') %>
+            <%= text_field_tag :organisation_name, '', { class: 'form-control', placeholder: 'English Heritage' } %>
+            <%= f.collection_select :organisation_id, @organisations, :id, :name, { include_blank: 'enter an organisation name or use dropdown' }, class: 'form-control' %>
+          </div>
+        </div>
       </div>
-      <%= f.submit t('buttons.add'), class: 'btn btn-primary col-xs-2' %>
+      <%= f.submit t('buttons.link'), class: 'btn btn-primary' %>
+    <% end %>
+    <% if current_user %>
+      <br/>
+      <div>
+        <%= link_to('Add new organisation', new_organisation_path) %>
+      </div>
     <% end %>
   </div>
-  <div class="col-xs-12 col-sm-6">
-    <%= render @plaque.main_photo, large: true if @plaque.main_photo %>
-  </div>
+  <% if @plaque.main_photo %>
+    <div class="col-xs-12 col-sm-6" id="photo-display">
+      <%= render @plaque.main_photo, large: true %>
+    </div>
+  <% end %>
 </div>

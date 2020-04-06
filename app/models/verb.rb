@@ -7,8 +7,6 @@ class Verb < ApplicationRecord
   has_many :people, through: :personal_connections
   validates_presence_of :name
   validates_uniqueness_of :name
-  scope :name_starts_with, ->(term) { where(['lower(name) LIKE ?', "#{term.downcase}%"]) }
-  scope :name_contains, ->(term) { where(['lower(name) LIKE ?', "%#{term.downcase}%"]) }
 
   def self.common
     [

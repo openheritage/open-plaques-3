@@ -6,15 +6,15 @@
 # * +plaques_count+ - cached count of plaques
 # * +slug+ - textual identifier, usually equivalent to its name in lower case, with spaces replaced by underscores. Used in URLs.
 class Colour < ApplicationRecord
+  include ApplicationHelper # for help with making slugs
+
   has_many :plaques
   before_validation :make_slug_not_war
   validates_presence_of :name, :slug
   validates_uniqueness_of :name, :slug
   scope :common, -> { where(common: true) }
   scope :uncommon, -> { where(common: false) }
-  scope :most_plaques_order, -> { order('plaques_count DESC nulls last') }
-
-  include ApplicationHelper # for help with making slugs
+  scope :by_popularity, -> { order('plaques_count desc nulls last') }
 
   def to_param
     slug

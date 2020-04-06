@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Country, type: :model do
   it 'has a valid factory' do
-    expect(create(:country)).to be_valid
+    expect(create :country).to be_valid
   end
 
   describe '#geolocated?' do
@@ -36,7 +36,7 @@ describe Country, type: :model do
   end
 
   describe '#uri' do
-    context 'with nothing set' do
+    context 'unsaved' do
       let(:country) { build :country }
       it 'is nil' do
         expect(country.uri).to eq(nil)

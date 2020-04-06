@@ -6,7 +6,6 @@
 # * +latitude+ - location
 # * +longitude+ - location
 # * +name+ - the country's common name (not necessarily its official one).
-# * +plaques_count+ - cached count of plaques
 # * +wikidata_id+ - Q-code to match to Wikidata
 class Country < ApplicationRecord
   include PlaquesHelper
@@ -57,6 +56,6 @@ class Country < ApplicationRecord
     return if hook.empty?
 
     notifier = Slack::Notifier.new(hook)
-    notifier.ping "Country <a href='#{uri}'>#{to_s}</a> was just created. ISO code #{alpha2}"
+    notifier.ping "Country <a href='#{uri}'>#{name}</a> was just created. ISO code #{alpha2}"
   end
 end

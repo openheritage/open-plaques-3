@@ -9,6 +9,7 @@ class Licence < ApplicationRecord
   has_many :photos
   validates_presence_of :name, :url
   validates_uniqueness_of :url
+  scope :by_popularity, -> { order('photos_count desc nulls last') }
 
   def self.find_by_flickr_licence_id(flickr_licence_id)
     case flickr_licence_id.to_s
