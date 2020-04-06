@@ -340,9 +340,8 @@ en-GB:
 
   photographers:
     index:
-      page_title: Plaque hunters
-      page_heading: Plaque hunters
-      the_top_50: Top 50
+      page_title: Top 50 plaque hunters
+      page_heading: Top 50 plaque hunters
       how_many: Open Plaques links to photographs on the internet taken by %{count} plaque hunters.
       where: These images are held on Flickr, Wikimedia Commons, and Geograph.
       how_they_are_licenced_html: They are all licenced with permissive <a href="http://creativecommons.org/">Creative Commons</a> licences meaning that the owner has declared via a copyright notice that other people may reuse their photograph.
