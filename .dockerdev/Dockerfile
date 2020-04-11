@@ -57,10 +57,15 @@ ENV LANG=C.UTF-8 \
 # Uncomment this line if you want to run binstubs without prefixing with `bin/` or `bundle exec`
 # ENV PATH /app/bin:$PATH
 
-# Upgrade RubyGems and install required Bundler version
-RUN gem update --system && \
-    gem uninstall bundler \
-    gem install bundler:$BUNDLER_VERSION
+# Upgrade RubyGems and optionally install required Bundler version
+RUN if test -z "$BUNDLER_VERSION"; then \
+    gem update --system; \
+  else \
+    gem update --system \
+    && rm /usr/local/lib/ruby/gems/*/specifications/default/bundler-*.gemspec \
+    && gem uninstall bundler \
+    && gem install bundler -v $BUNDLER_VERSION; \
+  fi
 
 # Create a directory for the app code
 RUN mkdir -p /app

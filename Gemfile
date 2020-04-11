@@ -46,7 +46,7 @@ group :test do
   gem 'capybara'
   gem 'database_cleaner'
   gem 'factory_bot_rails'
-  gem 'faker'
+  gem 'ffaker'
   gem 'rspec-rails', '4.0.0.rc1'
   #  gem 'webdrivers'
 end

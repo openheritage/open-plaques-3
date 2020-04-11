@@ -28,8 +28,8 @@ describe Photo, type: :model do
       end
     end
     context 'of a person with a name' do
-      let(:person) { build :person, name: 'Fred' }
-      let(:photo) { build :photo, person: person }
+      let(:fred) { build :person, name: 'Fred' }
+      let(:photo) { build :photo, person: fred }
       it 'is \'a photo of [name]]\'' do
         expect(photo.title).to eq('a photo of Fred')
       end
@@ -39,7 +39,7 @@ describe Photo, type: :model do
   describe '#attribution' do
     context 'with nothing set' do
       it 'is copyright on the web' do
-        expect(nothing_set.attribution).to eq('&copy;  on the web')
+        expect(nothing_set.attribution).to eq('&copy;  on Geograph')
       end
     end
   end

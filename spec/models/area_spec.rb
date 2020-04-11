@@ -27,7 +27,7 @@ describe Area, type: :model do
     context 'with nothing set' do
       let(:area) { create :area }
       it 'is nil' do
-        expect(area.uri).to eq 'http://openplaques.org/places/ab/areas/somewhere.json'
+        expect(area.uri).to eq "http://openplaques.org/places/gb/areas/#{area.slug}.json"
       end
     end
   end

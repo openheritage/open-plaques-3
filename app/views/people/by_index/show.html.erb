@@ -2,7 +2,7 @@
 <% content_for(:title) {t '.page_heading', letter: @index.upcase} %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_person_path} %>
 
-<ul class="nav">
+<ul class="nav" id="alphabetical-navbar">
   <% for letter in "A".."Z" %>
     <%= content_tag("li", navigation_link_to(letter, people_by_index_path(letter.downcase)), class: "nav-link") %>
   <% end %>

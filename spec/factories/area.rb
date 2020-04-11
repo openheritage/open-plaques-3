@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :area do
-    country
-    name { 'somewhere' }
+    country { Country.uk }
+    name { FFaker::AddressUK.city }
   end
 end

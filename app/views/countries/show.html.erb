@@ -40,6 +40,7 @@
     </script>
   <% end %>
 
+<h2>Areas</h2>
 <% @areas.sort { |a,b| a.state.to_s <=> b.state.to_s }.group_by(&:state).each do |state, areas| %>
   <% if !state.blank? %>
     <h2>Region: <%= state %></h2>

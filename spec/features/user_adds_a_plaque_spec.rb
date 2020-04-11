@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-RSpec.feature 'Add a plaque.', type: :feature do
+RSpec.feature 'User adds a plaque.', type: :feature do
   scenario 'User searches for a person then creates a new plaque' do
     visit '/'
-    fill_in :phrase, with: Faker::Name.name
+    fill_in :phrase, with: FFaker::Name.name
     click_button :gosearch
     expect(page).to have_text 'Can\'t find what you\'re looking for?'
     click_link :goadd
