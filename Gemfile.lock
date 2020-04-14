@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/jnicho02/wikimedia-commoner.git
-  revision: fb70e3cfbb7af43dbf7d4e50c188b9ba3c3eb02b
+  revision: 28a9c0eb74508f805d17602f1afbb334b37b00be
   specs:
     wikimedia-commoner (1.0.4)
       httparty (~> 0.10)
@@ -68,15 +68,15 @@ GEM
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
     ast (2.4.0)
-    autoprefixer-rails (9.7.5)
+    autoprefixer-rails (9.7.6)
       execjs
-    aws-eventstream (1.0.3)
-    aws-partitions (1.294.0)
+    aws-eventstream (1.1.0)
+    aws-partitions (1.296.0)
     aws-sdk-comprehend (1.30.0)
       aws-sdk-core (~> 3, >= 3.71.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-core (3.92.0)
-      aws-eventstream (~> 1.0, >= 1.0.2)
+    aws-sdk-core (3.94.0)
+      aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.239.0)
       aws-sigv4 (~> 1.1)
       jmespath (~> 1.0)
@@ -95,7 +95,7 @@ GEM
     bullet (6.1.0)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
-    capybara (3.32.0)
+    capybara (3.32.1)
       addressable
       mini_mime (>= 0.1.3)
       nokogiri (~> 1.8)
@@ -168,7 +168,7 @@ GEM
     listen (3.2.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
-    loofah (2.4.0)
+    loofah (2.5.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -218,7 +218,7 @@ GEM
       ast (~> 2.4.0)
     pg (1.2.3)
     popper_js (1.16.0)
-    public_suffix (4.0.3)
+    public_suffix (4.0.4)
     puma (4.3.3)
       nio4r (~> 2.0)
     rack (2.2.2)
@@ -395,7 +395,7 @@ DEPENDENCIES
   will_paginate
 
 RUBY VERSION
-   ruby 2.6.5p114
+   ruby 2.6.6p146
 
 BUNDLED WITH
    2.1.2
