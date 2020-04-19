@@ -7,7 +7,7 @@ class AreasController < ApplicationController
   before_action :streetview_to_params, only: :update
 
   def index
-    @areas = @country.areas.all
+    @areas = @country.areas.all.alphabetically
     respond_to do |format|
       format.html
       format.json { render json: @areas }
