@@ -1,7 +1,80 @@
-<% content_for(:page_title) {t '.page_title'} %>
+<% content_for(:page_title) {t '.page_title', country: @country.name} %>
 <% content_for(:title) {t '.page_heading'} %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_person_path} %>
 
-<%= @area.plaques.connected.count %> <%= @area.plaques.count %>
+<style>
+  .list-group {
+  	list-style: decimal inside;
+  }
 
-<%= render partial: 'people/tiles' %>
+  .list-group-item {
+  	display: list-item;
+  }
+</style>
+
+<div class="jumbotron">
+  <h1>
+    <span class="flag-icon flag-icon-<%= @country.alpha2 %>"></span>
+    <%= link_to(@country.name, @country) %>
+    <%= t '.page_heading' %>
+  </h1>
+  <p>
+    <%= @curated_count %> out of <%= @plaques_count %>
+    (<%= @percentage_curated %>%)
+    plaques have been curated
+  </p>
+  <span class="badge badge-secondary pull-right"><%= @subject_count %></span>
+</div>
+
+<h2>Country Diversity</h2>
+<div class="row">
+  <ol class="list-group">
+    <% @gender.each do |g| %>
+      <li class="list-group-item">
+        <%= g.gender %>
+        <span class="badge badge-primary"><%= g.subject_count %></span>
+      </li>
+    <% end %>
+  </ol>
+</div>
+<div class="row">
+  <div id="gender-chart" class="col-8" style="height: 400px;"></div>
+</div>
+
+<script>
+  pie = new RGraph.SVG.Pie({
+    id: 'gender-chart',
+    data: [<% @gender.each do |g| %><%= g.subject_count %>,<% end %>],
+    options: {
+      radius: 150,
+      colors: [
+        'rgb(51,102,204)',
+        'rgb(220,57,18)',
+        'rgb(255,153,0)',
+        'rgb(16,150,24)',
+        'rgb(153,0,153)',
+        'rgb(0,153,198)',
+        'rgb(221,68,119)'
+      ],
+      linewidth: 2,
+      shadow: false,
+      labels: [<% @gender.each do |g| %>"<%= g.gender %> <%= g.subject_count %> (<%= (100 * g.subject_count / @subject_count.to_f).to_i %>%)",<% end %>],
+      labelsSticksList: true,
+      textFont: 'Arial',
+      textSize: 16,
+      textAccessible: true
+    }
+  }).draw();
+</script>
+
+<h2>The top 50</h2>
+<div class="row">
+  <ol class="list-group">
+    <% @top.each do |t| %>
+      <li class="list-group-item">
+        <%= link_to t.name, person_url(t.id) %>
+        <span class="badge badge-primary"><%= t.plaques_count %></span>
+      </li>
+    <% end %>
+  </ol>
+</div>

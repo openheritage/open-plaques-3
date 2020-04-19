@@ -32,7 +32,6 @@ class CountryPlaquesController < ApplicationController
                  end
     end
     respond_to do |format|
-      format.html { render 'countries/plaques/show' }
       format.json { render json: @plaques }
       format.geojson { render geojson: @plaques, parent: @country }
       format.csv do

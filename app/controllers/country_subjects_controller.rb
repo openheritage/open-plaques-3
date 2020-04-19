@@ -40,7 +40,7 @@ class CountrySubjectsController < ApplicationController
         @gender = @gender.map { |attributes| OpenStruct.new(attributes) }
         @subject_count = @gender.inject(0) { |sum, g| sum + g.subject_count }
         @gender.append(OpenStruct.new(gender: 'tba', subject_count: @uncurated_count))
-        render 'countries/subjects/top'
+        render 'countries/subjects/show'
       end
       format.csv do
         @plaques = @country.plaques.connected

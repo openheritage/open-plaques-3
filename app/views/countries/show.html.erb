@@ -9,9 +9,9 @@
       var map = L.map('map', {maxZoom: 13})
       map.scrollWheelZoom.disable()
       map.setView([<%= @country.latitude %>, <%= @country.longitude %>], <%= @country.zoom %>)
-      L.tileLayer('https://maps.tilehosting.com/styles/basic/{z}/{x}/{y}.png?key=qSorA16cJhhBZEhqDisF', {
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
-        attribution: '&copy; <a href="http://www.openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       }).addTo(map)
       var blueIcon = new L.Icon({
         iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
@@ -41,7 +41,7 @@
   <% end %>
 
 <h2>Areas</h2>
-<% @areas.sort { |a,b| a.state.to_s <=> b.state.to_s }.group_by(&:state).each do |state, areas| %>
+<% @areas.sort { |a,b| a.state.to_s + a.name <=> b.state.to_s + b.name }.group_by(&:state).each do |state, areas| %>
   <% if !state.blank? %>
     <h2>Region: <%= state %></h2>
   <% end %>
