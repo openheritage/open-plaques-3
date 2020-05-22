@@ -1,12 +1,12 @@
 <header>
-  <%= render 'shared/navbar' %>
+  <%= render 'layouts/navbar' %>
 </header>
 <div class="container-fluid">
   <main>
-    <%= render 'shared/alerts' %>
-    <%= render 'shared/page_header' %>
+    <%= render 'layouts/alerts' %>
+    <%= render 'layouts/page_header' %>
     <%= yield %>
   </main>
-  <%= render 'shared/footer' %>
+  <%= render 'layouts/footer' %>
 </div>
 <% parent_layout 'base' %>

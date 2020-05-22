@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-sm navbar-light bg-light">
+<nav class="navbar navbar-expand-md navbar-light bg-light">
   <%= link_to image_tag("openplaques.png"), root_path, class: 'navbar-brand' %>
   <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarItemsMain" aria-controls="navbarItemsMain" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -20,7 +20,7 @@
       <%= navbar_link_to t('devise.sessions.user.sign_in'), new_user_session_path unless user_signed_in? %>
       <%= navbar_link_to t('devise.sessions.user.sign_out'), destroy_user_session_path, method: :delete if user_signed_in? %>
     </ul>
-    <%= render 'shared/search' %>
+    <%= render 'layouts/search' %>
   </div>
 </nav>
 <% if current_user&.is_admin? %>
