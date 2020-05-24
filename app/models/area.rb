@@ -76,7 +76,7 @@ class Area < ApplicationRecord
     path = Rails.application.routes.url_helpers.country_area_path(
       country, self, format: :json
     )
-    "http://openplaques.org#{path}"
+    "https://openplaques.org#{path}"
   end
 
   def plaques_uri
@@ -85,7 +85,7 @@ class Area < ApplicationRecord
     path = Rails.application.routes.url_helpers.country_area_plaques_path(
       country, self, format: :json
     )
-    "http://openplaques.org#{path}"
+    "https://openplaques.org#{path}"
   end
 
   def main_photo
@@ -100,6 +100,10 @@ class Area < ApplicationRecord
 
   def town
     matches = /(.*), ([A-Z][A-Z]\z)/.match(name)
-    matches[1] if matches
+    if matches
+      matches[1]
+    else
+      name
+    end
   end
 end

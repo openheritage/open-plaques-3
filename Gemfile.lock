@@ -80,6 +80,13 @@ GEM
       aws-partitions (~> 1, >= 1.239.0)
       aws-sigv4 (~> 1.1)
       jmespath (~> 1.0)
+    aws-sdk-kms (1.31.0)
+      aws-sdk-core (~> 3, >= 3.71.0)
+      aws-sigv4 (~> 1.1)
+    aws-sdk-s3 (1.64.0)
+      aws-sdk-core (~> 3, >= 3.83.0)
+      aws-sdk-kms (~> 1)
+      aws-sigv4 (~> 1.1)
     aws-sdk-translate (1.20.0)
       aws-sdk-core (~> 3, >= 3.71.0)
       aws-sigv4 (~> 1.1)
@@ -355,6 +362,7 @@ PLATFORMS
 
 DEPENDENCIES
   aws-sdk-comprehend
+  aws-sdk-s3
   aws-sdk-translate
   bcrypt (~> 3.1.7)
   bootstrap

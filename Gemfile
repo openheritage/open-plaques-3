@@ -3,6 +3,7 @@ ruby '2.6.6'
 
 gem 'aws-sdk-comprehend'
 gem 'aws-sdk-translate'
+gem 'aws-sdk-s3', require: false
 gem 'bcrypt', '~> 3.1.7'
 gem 'bootstrap'
 gem 'devise'
