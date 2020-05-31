@@ -10,9 +10,13 @@
     </div>
     <p class="card-text">
       <span class="badge badge-secondary pull-right">
-        <%= country.plaques_count %>
+        <%= pluralize(country.plaques_count, 'plaque') %>
       </span>
-      <%= icon(:far, :compass) if country.geolocated? %>
+      <% if controller.controller_name.eql?('countries') && controller.action_name.eql?('show') %>
+        <small><%= @percentage_curated %>% have been curated</small>
+      <% else %>
+       <%= icon(:far, :compass) if country.geolocated? %>
+      <% end %>
     </p>
   </div>
 </div>
