@@ -17,6 +17,10 @@ class Country < ApplicationRecord
   after_commit :notify_slack, on: :create
   scope :uk, -> { where(alpha2: 'gb').first }
 
+  def name=(name)
+    write_attribute(:name, name.try(:squish))
+  end
+
   def geolocated?
     !(latitude.nil? || longitude.nil? || latitude == 51.475 && longitude.zero?)
   end

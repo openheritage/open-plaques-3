@@ -26,6 +26,10 @@ class Area < ApplicationRecord
   validates_presence_of :name, :slug, :country_id
   validates_uniqueness_of :slug, scope: :country_id
 
+  def name=(name)
+    write_attribute(:name, name.try(:squish))
+  end
+
   def geolocated?
     !(latitude.nil? || longitude.nil? || latitude == 51.475 && longitude.zero?)
   end
