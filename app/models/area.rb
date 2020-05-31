@@ -26,6 +26,10 @@ class Area < ApplicationRecord
   validates_presence_of :name, :slug, :country_id
   validates_uniqueness_of :slug, scope: :country_id
 
+  def name=(name)
+    write_attribute(:name, name.try(:squish))
+  end
+
   def geolocated?
     !(latitude.nil? || longitude.nil? || latitude == 51.475 && longitude.zero?)
   end
@@ -76,7 +80,7 @@ class Area < ApplicationRecord
     path = Rails.application.routes.url_helpers.country_area_path(
       country, self, format: :json
     )
-    "http://openplaques.org#{path}"
+    "https://openplaques.org#{path}"
   end
 
   def plaques_uri
@@ -85,7 +89,7 @@ class Area < ApplicationRecord
     path = Rails.application.routes.url_helpers.country_area_plaques_path(
       country, self, format: :json
     )
-    "http://openplaques.org#{path}"
+    "https://openplaques.org#{path}"
   end
 
   def main_photo
@@ -100,6 +104,10 @@ class Area < ApplicationRecord
 
   def town
     matches = /(.*), ([A-Z][A-Z]\z)/.match(name)
-    matches[1] if matches
+    if matches
+      matches[1]
+    else
+      name
+    end
   end
 end

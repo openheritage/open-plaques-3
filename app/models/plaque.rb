@@ -359,7 +359,7 @@ class Plaque < ApplicationRecord
   end
 
   def us_state
-    return area.us_state if area
+    return area.state if area
 
     return force_us_state if force_us_state
 
@@ -386,11 +386,37 @@ class Plaque < ApplicationRecord
   end
 
   def uri
-    'http://openplaques.org' + Rails.application.routes.url_helpers.plaque_path(self) if id
+    'https://openplaques.org' + Rails.application.routes.url_helpers.plaque_path(self) if id
   end
 
   def to_s
     title
+  end
+
+  def serialize(geojson: true)
+    if geojson
+      io = StringIO.new(JSON.dump(as_geojson))
+      key = "#{id}.geojson"
+    else
+      io = StringIO.new(PlaqueCsv.new([self]).build)
+      key = "#{id}.csv"
+    end
+    as = ActiveStorage::Blob.service
+    if area.present?
+      if as.class.name.include? 'Disk'
+        p = if us_state
+              File.join as.root, area.country.name, us_state, area.town, key
+            else
+              File.join as.root, area.country.name, area.town, key
+            end
+        path_for = p.tap { |path| FileUtils.mkdir_p File.dirname(path) }
+        puts path_for
+        IO.copy_stream(io, path_for)
+      else
+        key = [area.country.name, us_state, area.town, key].reject(&:nil?).join('/')
+        as.upload(key, io, checksum: nil, content_type: 'application/json')
+      end
+    end
   end
 
   # from OpenStreetMap documentation
