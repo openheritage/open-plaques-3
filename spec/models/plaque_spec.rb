@@ -150,7 +150,7 @@ describe Plaque, type: :model do
       let(:plaque) { build :plaque, id: 13 }
       it 'is \'openplaques.org/plaques/[id]\'' do
         # this is not ideal response. It should depend on the output format
-        expect(plaque.uri).to eq('http://openplaques.org/plaques/13')
+        expect(plaque.uri).to eq('https://openplaques.org/plaques/13')
       end
     end
   end
