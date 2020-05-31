@@ -1,0 +1,86 @@
+<span class="badge badge-secondary pull-right"><%= pluralize(@subject_count, 'subject') %></span>
+
+<% if @subject_count > 0 %>
+  <h2>Diversity</h2>
+  <div class="row">
+    <div id="gender-bars" class="col-8" style="height: 400px;"></div>
+  </div>
+<% end %>
+
+<h2>The top 10</h2>
+
+<div class="card-columns">
+  <% @top.each do |t| %>
+    <% person = Person.find(t.id) %>
+    <%= link_to(person) do %>
+      <div class="card card-inverse vcard person" typeof="<%= if (person.person?) then "foaf:Person" else "foaf:Agent" end %> vcard:VCard" about="#person" style="min-height: 8rem; background-color: #999;">
+        <%= image_tag(person.main_photo.thumbnail_url, {class: 'card-img w-50'}) if person.main_photo&.thumbnail_url %>
+        <div class="card-info">
+          <span class="card-title fn">
+            <span class="badge badge-primary">#<%= t.rank %></span> <%= person.full_name %><br/>
+            <small><%= person.dates %></small>
+            <% if person.gender == 'm' %>
+              <small><%= icon(:fas, :mars) %></small>
+            <% elsif person.gender == 'f' %>
+              <small><%= icon(:fas, :venus) %></small>
+            <% elsif person.gender == 'u' %>
+              <small><%= person.gender %></small>
+            <% end %>
+          </span>
+          <span class="badge badge-primary"><%= pluralize(t.plaques_count, 'plaque') %></span>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+
+<script>
+  var data = [<% @gender.each do |g| %><%= g.subject_count %>,<% end %>];
+  hbar = new RGraph.SVG.HBar({
+    id: 'gender-bars',
+    data: data,
+    options: {
+      yaxisLabels: [<% @gender.each do |o| %>'<%= o.gender %>',<% end %>],
+      colors: ['blue','red','green','orange','blue','red','green','orange','blue'],
+      strokestyle: 'rgba(0,0,0,0)',
+      labelsAbove: true,
+      vmargin: 15,
+      backgroundGrid: false,
+      colorsSequential: true,
+      xlabels: false,
+      gutterLeft: 350,
+      gutterRight: 50,
+      gutterTop: 25,
+      noxaxis: true,
+      noxtickmarks: true,
+      noytickmarks: true,
+    }
+  }).grow();
+
+<% if @subject_count > 0 %>
+pie = new RGraph.SVG.Pie({
+    id: 'gender-pie',
+    data: [<% @gender.each do |g| %><%= g.subject_count %>,<% end %>],
+    options: {
+      radius: 150,
+      colors: [
+        'rgb(51,102,204)',
+        'rgb(220,57,18)',
+        'rgb(255,153,0)',
+        'rgb(16,150,24)',
+        'rgb(153,0,153)',
+        'rgb(0,153,198)',
+        'rgb(221,68,119)'
+      ],
+      linewidth: 2,
+      shadow: false,
+      labels: [<% @gender.each do |g| %>"<%= g.gender %> <%= g.subject_count %> (<%= g.percentage %>%)",<% end %>],
+      labelsSticksList: true,
+      textFont: 'Arial',
+      textSize: 16,
+      textAccessible: true
+    }
+  }).draw();
+  <% end %>
+</script>
+
