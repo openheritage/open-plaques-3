@@ -73,10 +73,10 @@ class CountriesController < ApplicationController
         LIMIT 10"
     )
     @top = @results
-           .reject { |p| p['plaques_count'] < 1 }
+           .reject { |p| p['plaques_count'] < 2 }
            .map { |attributes| OpenStruct.new(attributes) }
     @top.each_with_index { |p, i| p['rank'] = i + 1 }
-    puts @top
+    puts "top #{@top.size}"
     @gender = ActiveRecord::Base.connection.execute(
       "SELECT people.gender, count(distinct person_id) as subject_count
         FROM areas, plaques, personal_connections, people
@@ -150,6 +150,7 @@ class CountriesController < ApplicationController
   def permitted_params
     params.require(:country).permit(
       :alpha2,
+      :description,
       :latitude,
       :longitude,
       :name,

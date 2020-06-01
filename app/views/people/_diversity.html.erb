@@ -1,0 +1,33 @@
+<% @gender = @gender || [] %>
+<% @subject_count = @subject_count || 0 %>
+
+<% if @subject_count > 0 %>
+  <h2>Diversity</h2>
+  <div class="row">
+    <div id="gender-bars" class="col-8" style="height: 300px;"></div>
+  </div>
+<% end %>
+
+<script>
+  var data = [<%= @gender.map(&:subject_count).join(',') %>];
+  hbar = new RGraph.SVG.HBar({
+    id: 'gender-bars',
+    data: data,
+    options: {
+      yaxisLabels: [<% @gender.each do |o| %>'<%= o.gender %>',<% end %>],
+      colors: ['blue','red','green','orange','blue','red','green','orange','blue'],
+      strokestyle: 'rgba(0,0,0,0)',
+      labelsAbove: true,
+      vmargin: 15,
+      backgroundGrid: false,
+      colorsSequential: true,
+      xlabels: false,
+      gutterLeft: 350,
+      gutterRight: 50,
+      gutterTop: 25,
+      noxaxis: true,
+      noxtickmarks: true,
+      noytickmarks: true,
+    }
+  }).grow();
+</script>

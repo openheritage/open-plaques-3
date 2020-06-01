@@ -48,7 +48,63 @@ class AreaPlaquesController < ApplicationController
       @display = 'all'
     end
     respond_with @plaques do |format|
-      format.html { render 'areas/plaques/show' }
+      format.html { 
+        @plaques_count = @area.plaques.count
+        @uncurated_count = @area.plaques.unconnected.size
+        @curated_count = @plaques_count - @uncurated_count
+        @percentage_curated = ((@curated_count.to_f / @plaques_count) * 100).to_i
+        @results = ActiveRecord::Base.connection.execute(
+          "SELECT people.id, people.name, people.gender,
+            (
+              SELECT count(distinct plaque_id)
+              FROM personal_connections, plaques, areas
+              WHERE personal_connections.person_id = people.id
+              AND personal_connections.plaque_id = plaques.id
+              AND plaques.area_id = #{@area.id}
+            ) as plaques_count
+            FROM people
+            ORDER BY plaques_count desc
+            LIMIT 10"
+        )
+        @top = @results
+               .reject { |p| p['plaques_count'] < 2 }
+               .map { |attributes| OpenStruct.new(attributes) }
+        @top.each_with_index { |p, i| p['rank'] = i + 1 }
+        puts "top #{@top.size}"
+        @gender = ActiveRecord::Base.connection.execute(
+          "SELECT people.gender, count(distinct person_id) as subject_count
+            FROM areas, plaques, personal_connections, people
+            WHERE areas.id = #{@area.id}
+            AND plaques.area_id = #{@area.id}
+            AND plaques.id = personal_connections.plaque_id
+            AND personal_connections.person_id = people.id
+            GROUP BY people.gender"
+        )
+        @gender = @gender.map { |attributes| OpenStruct.new(attributes) }
+        @subject_count = @gender.inject(0) { |sum, g| sum + g.subject_count }
+        @gender.append(OpenStruct.new(gender: 'tba', subject_count: @uncurated_count)) if @uncurated_count > 0
+        @gender.each do |g|
+          case g['gender']
+          when 'f'
+            g['gender'] = 'female'
+          when 'm'
+            g['gender'] = 'male'
+          when 'n'
+            g['gender'] = 'inanimate'
+          when 'u'
+            g['gender'] = 'not set'
+          when 'tba'
+            g['gender'] = 'to be advised'
+          end
+          if g['subject_count'] > 0
+            g['percent'] = (100 * g.subject_count / (@subject_count.to_f + @uncurated_count)).to_i
+          else
+            g['percent'] = 0
+          end
+        end
+        puts "gender #{@gender}"
+        render 'areas/plaques/show'
+      }
       format.json { render json: @plaques }
       format.geojson { render geojson: @plaques.geolocated, parent: @area }
       format.csv do
