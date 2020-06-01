@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_08_112338) do
+ActiveRecord::Schema.define(version: 2020_06_01_104636) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -74,6 +74,21 @@ ActiveRecord::Schema.define(version: 2020_05_08_112338) do
     t.float "longitude"
     t.integer "preferred_zoom_level"
     t.string "wikidata_id"
+  end
+
+  create_table "google_analytics", force: :cascade do |t|
+    t.string "page", null: false
+    t.string "period", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "page_views", null: false
+    t.bigint "unique_page_views"
+    t.float "average_time_on_page"
+    t.bigint "entrances"
+    t.float "bounce_rate"
+    t.float "exit_percentage"
+    t.datetime "created_at", null: false
+    t.index ["record_type", "record_id", "page", "period"], name: "index_ga_uniqueness", unique: true
   end
 
   create_table "languages", id: :serial, force: :cascade do |t|
