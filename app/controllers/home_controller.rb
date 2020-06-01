@@ -14,6 +14,29 @@ class HomeController < ApplicationController
     @todays = Pick.todays
     @todays_place = Area.where(name: 'Norwich').first
     @todays_place_description = 'Norwich has a long history. It has been a city since 1094. From the Middle Ages until the Industrial Revolution, Norwich was the largest city in England after London and one of the most important. This is refelected in its plaques.'
+    p1 = Plaque.find_by_id(2825)
+    if p1
+      GoogleAnalytic.find_or_create_by(page: '/plaques/2825', period: 'all time', record: p1, page_views: 19177)
+      p2 = Plaque.find(2885)
+      GoogleAnalytic.find_or_create_by(page: '/plaques/2885', period: 'all time', record: p2, page_views: 14612)
+      p3 = Plaque.find(189)
+      GoogleAnalytic.find_or_create_by(page: '/plaques/189', period: 'all time', record: p3, page_views: 6298)
+      p4 = Plaque.find(595)
+      GoogleAnalytic.find_or_create_by(page: '/plaques/595', period: 'all time', record: p4, page_views: 5484)
+      p5 = Plaque.find(3276)
+      GoogleAnalytic.find_or_create_by(page: '/plaques/3276', period: 'all time', record: p5, page_views: 3913)
+      p6 = Plaque.find(628)
+      GoogleAnalytic.find_or_create_by(page: '/plaques/628', period: 'all time', record: p6, page_views: 3761)
+      p7 = Plaque.find(1619)
+      GoogleAnalytic.find_or_create_by(page: '/plaques/1619', period: 'all time', record: p7, page_views: 3522)
+      p8 = Plaque.find(1114)
+      GoogleAnalytic.find_or_create_by(page: '/plaques/1114', period: 'all time', record: p8, page_views: 3278)
+      p9 = Plaque.find(178)
+      GoogleAnalytic.find_or_create_by(page: '/plaques/178', period: 'all time', record: p9, page_views: 2928)
+      p10 = Plaque.find(768)
+      GoogleAnalytic.find_or_create_by(page: '/plaques/768', period: 'all time', record: p10, page_views: 2887)   
+      @top10 = [p1, p2, p3, p4, p5, p6, p7, p8, p9, p10]
+    end
     begin
       set_meta_tags open_graph: {
         type: :website,
