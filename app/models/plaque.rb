@@ -359,7 +359,7 @@ class Plaque < ApplicationRecord
   end
 
   def us_state
-    return area.state if area
+    return area&.state if area
 
     return force_us_state if force_us_state
 
@@ -393,29 +393,38 @@ class Plaque < ApplicationRecord
     title
   end
 
-  def serialize(geojson: true)
-    if geojson
+  # 1.upto(Plaque.maximum(:id)).each { |i| p = Plaque.find_by_id(i); p&.serialize(format: :json) }
+  def serialize(format: :geojson)
+    case format
+    when :geojson
       io = StringIO.new(JSON.dump(as_geojson))
       key = "#{id}.geojson"
-    else
+    when :csv
       io = StringIO.new(PlaqueCsv.new([self]).build)
       key = "#{id}.csv"
+    when :json
+      io = StringIO.new(JSON.dump(as_json))
+      key = "#{id}.json"
     end
     as = ActiveStorage::Blob.service
-    if area.present?
-      if as.class.name.include? 'Disk'
-        p = if us_state
-              File.join as.root, area.country.name, us_state, area.town, key
+    if as.class.name.include? 'Disk'
+      p = if us_state
+            if area.present?
+              File.join as.root, area.country.name.parameterize, us_state.parameterize, area.town.parameterize, key
             else
-              File.join as.root, area.country.name, area.town, key
+              File.join as.root, 'united-states', us_state&.parameterize, key
             end
-        path_for = p.tap { |path| FileUtils.mkdir_p File.dirname(path) }
-        puts path_for
-        IO.copy_stream(io, path_for)
-      else
-        key = [area.country.name, us_state, area.town, key].reject(&:nil?).join('/')
-        as.upload(key, io, checksum: nil, content_type: 'application/json')
-      end
+          elsif area.present?
+            File.join as.root, area.country&.name&.parameterize, area.town&.parameterize, key
+          else
+            File.join as.root, key
+          end
+      path_for = p.tap { |path| FileUtils.mkdir_p File.dirname(path) }
+      puts path_for
+      IO.copy_stream(io, path_for)
+    else
+      key = [area&.country&.name&.parameterize, us_state&.parameterize, area&.town&.parameterize, key].reject(&:nil?).join('/')
+      as.upload(key, io, checksum: nil, content_type: 'application/json')
     end
   end
 

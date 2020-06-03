@@ -4,7 +4,7 @@ module PeopleHelper
     list = []
     list << person.type if person.roles.empty? || person.type != 'man'
     person.straight_roles.each { |personal_role| list << dated_role(personal_role) }
-    person.relationships.each { |relationship| list << link_to(relationship.role.name, relationship.role) } if person.inanimate_object?
+    person.relationships.each { |relationship| list << link_to(relationship.role.name, relationship.role, class: 'role') } if person.inanimate_object?
     list.uniq!
     content_tag(:span, list.to_sentence.html_safe, { id: "person-#{person.id}-roles" })
   end
