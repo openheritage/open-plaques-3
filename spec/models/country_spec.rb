@@ -46,7 +46,7 @@ describe Country, type: :model do
     context 'with an id' do
       let(:country) { create :country }
       it 'is an http address' do
-        expect(country.uri).to eq("http://openplaques.org/places/#{country.alpha2}.json")
+        expect(country.uri).to eq("https://openplaques.org/places/#{country.alpha2}.json")
       end
     end
   end
