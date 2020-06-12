@@ -39,3 +39,5 @@ yarn.lock
 log/.bash_history
 log/.psql_history
 storage/**/
+storage/*.json
+storage_old/**
