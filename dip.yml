@@ -73,10 +73,7 @@ interaction:
   livepull:
     description: Pull data from live into development
     service: runner
-#    command: heroku pg:backups capture --app open-plaques-beta && \
-#      curl -o openplaques_production.dump `heroku pg:backups --app open-plaques-beta public-url` && \
-#      pg_restore -h postgres -U postgres -d openplaques_development openplaques_production.dump
-    command: pg_restore -h postgres -U postgres -d openplaques_development openplaques_production.dump
+    command: /bin/bash local_restore.sh
   
   'redis-cli':
     description: Run Redis console

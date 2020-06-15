@@ -196,6 +196,9 @@ class Person < ApplicationRecord
 
   def wikipedia_url
     Wikidata.new(wikidata_id).en_wikipedia_url
+  rescue
+    # timeout?
+    puts "Wikidata timeout?"
   end
 
   def dbpedia_uri

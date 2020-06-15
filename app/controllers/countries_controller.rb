@@ -57,7 +57,11 @@ class CountriesController < ApplicationController
     @plaques_count = @country.plaques.count # size is 0
     @uncurated_count = @country.plaques.unconnected.size
     @curated_count = @plaques_count - @uncurated_count
-    @percentage_curated = ((@curated_count.to_f / @plaques_count) * 100).to_i
+    @percentage_curated = if @plaques_count > 0
+                            ((@curated_count.to_f / @plaques_count) * 100).to_i
+                          else
+                            0
+                          end
     @results = ActiveRecord::Base.connection.execute(
       "SELECT people.id, people.name, people.gender,
         (
