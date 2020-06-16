@@ -12,6 +12,9 @@
         <% elsif person.gender == 'u' %>
           <small><%= person.gender %></small>
         <% end %>
+        <% if current_user&.is_admin? && person.ethnicity == 'bame' %>
+          <small><%= icon(:fas, :users) %></small>
+        <% end %>
       </span>
     </div>
   </div>
