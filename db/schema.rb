@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_01_104636) do
+ActiveRecord::Schema.define(version: 2020_06_16_110027) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -152,6 +152,7 @@ ActiveRecord::Schema.define(version: 2020_06_01_104636) do
     t.string "find_a_grave_id", limit: 255
     t.string "ancestry_id", limit: 255
     t.string "wikidata_id"
+    t.string "ethnicity"
     t.index ["born_on", "died_on"], name: "born_and_died"
     t.index ["index"], name: "index_people_on_index"
     t.index ["surname_starts_with"], name: "index_people_on_surname_starts_with"
