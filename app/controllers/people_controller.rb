@@ -190,6 +190,7 @@ class PeopleController < ApplicationController
       :born_on,
       :dbpedia_uri,
       :died_on,
+      :ethnicity,
       :find_a_grave_id,
       :gender,
       :introduction,

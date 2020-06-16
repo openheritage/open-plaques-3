@@ -11,6 +11,7 @@ class PersonCsv < Julia::Builder
     person.age.to_s.gsub('c. ', '')
   end
   column :sex
+  column :ethnicity
   column 'roles' do |person|
     roles = []
     person.roles.each { |role| roles << role.name }
