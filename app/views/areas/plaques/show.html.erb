@@ -42,7 +42,7 @@
 
 <% if @display!='ungeolocated' %>
   <% if @area.geolocated? %>
-    <div id="plaque-mapss" class="full" data-latitude="<%= @area.latitude %>" data-longitude="<%= @area.longitude %>" data-view="all" context="<%= request.path %>"></div>
+    <div id="plaque-map" class="full" data-latitude="<%= @area.latitude %>" data-longitude="<%= @area.longitude %>" data-view="all" context="<%= request.path %>"></div>
   <% else %>
     <%= form_for(@area, url: country_area_path(@area.country, @area)) do |f| %>
       <div class="edit_lat_long panel clearfix">
