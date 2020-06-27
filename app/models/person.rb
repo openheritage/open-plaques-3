@@ -591,7 +591,7 @@ class Person < ApplicationRecord
         Lidia Lina Liz
         Lotte Louise Louisa
         Lucie Lucy Luise
-        Mabel Mala Margaret Margery Margot Maria Marianne Marie Martha Mary Maryse Mathilde May
+        Mabel Mala Margaret Margery Margot Maria Marianne Marie Marjorie Marjory Martha Mary Maryse Mathilde May
         Mercy Meta
         Minna Minnie
         Monica Monika
