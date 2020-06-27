@@ -217,9 +217,6 @@ en-GB:
       location_blurb: Discover where plaques are located.
 
   languages:
-    edit:
-      page_title: Edit %{language}
-      page_heading: Edit %{language}
     index:
       page_title: Historical plaques - by language
       page_heading: Languages

@@ -13,20 +13,22 @@ class Language < ApplicationRecord
   def flag_icon
     alpha = alpha2[0, 2]
     case alpha
-    when 'cs' # Czech
-      alpha = 'cz'
+    when 'af' # Afrikaans
+      alpha = 'za'
     when 'be' # Belarusian
       alpha = 'by'
     when 'ca' # Catalan
       alpha = 'es-ct'
-    when 'la' # Latin
-      alpha = 'it'
+    when 'cs' # Czech
+      alpha = 'cz'
     when 'cy' # Welsh
       alpha = 'gb-wls'
     when 'ga' # Gaelic
       alpha = 'ie'
-    when 'af' # Afrikaans
-      alpha = 'za'
+    when 'la' # Latin
+      alpha = 'it'
+    when 'uk' # Ukrainian
+      alpha = 'ua'
     end
     "flag-icon-#{alpha}"
   end
