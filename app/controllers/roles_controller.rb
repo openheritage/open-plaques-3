@@ -48,6 +48,7 @@ class RolesController < ApplicationController
     else
       @personal_roles = @role
                         .personal_roles
+                        .by_date
                         .paginate(page: params[:page], per_page: 20)
     end
     @pluralized_role = @role.pluralize

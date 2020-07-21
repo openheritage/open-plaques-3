@@ -64,8 +64,8 @@
                         <% end %>
                         <% if @plaque.geolocated? %>
                         <br/>
-                        <%= icon(:fas, :link) %>
-                        <a href="https://maps.google.com/maps?q=&layer=c&cbll=<%= @plaque.latitude %>,<%= @plaque.longitude %>&cbp=11,0,0,0,0" target="_new">Google Streetview</a>
+                        <%= link_to(icon(:fas, :link) + 'Google Streetview', "https://maps.google.com/maps?q=&layer=c&cbll=#{@plaque.latitude},#{@plaque.longitude}&cbp=11,0,0,0,0", target: '_blank') %>
+                        <%= link_to(icon(:fas, :link) + 'OpenStreetMap', "https://www.openstreetmap.org/#map=11/#{@plaque.latitude}/#{@plaque.longitude}", target: '_blank') %>
                         <% end %>
                     </p>
                 </div>

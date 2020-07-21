@@ -51,12 +51,12 @@
       <% unless !@person.dbpedia_abstract || @person.dbpedia_abstract.empty? %>
         <blockquote class="quote-card blue-card">
           <p><%= @person.dbpedia_abstract %></p>
-          <cite><%= link_to(icon(:fas, :'external-link') + 'DbPedia', @person.dbpedia_uri, target: '_blank') unless @person.dbpedia_uri.blank? %></cite>
+          <cite><%= link_to(icon(:fas, :link) + 'DbPedia', @person.dbpedia_uri, target: '_blank') unless @person.dbpedia_uri.blank? %></cite>
         </blockquote>
       <% end %>
-      <%= link_to(icon(:fas, :'external-link') + "Wikidata", @person.wikidata_url, target: '_blank') unless @person.wikidata_url.blank? %>
-      <%= link_to(icon(:fas, :'external-link') + "Wikipedia", @person.wikipedia_url, target: '_blank') unless @person.wikipedia_url.blank? %>
-      <%= link_to(icon(:fas, :'external-link') + "Find A Grave", @person.find_a_grave_url, target: '_blank') unless @person.find_a_grave_id.blank? %>
+      <%= link_to(icon(:fas, :link) + "Wikidata", @person.wikidata_url, target: '_blank') unless @person.wikidata_url.blank? %>
+      <%= link_to(icon(:fas, :link) + "Wikipedia", @person.wikipedia_url, target: '_blank') unless @person.wikipedia_url.blank? %>
+      <%= link_to(icon(:fas, :link) + "Find A Grave", @person.find_a_grave_url, target: '_blank') unless @person.find_a_grave_id.blank? %>
   </div>
   </div>
 
