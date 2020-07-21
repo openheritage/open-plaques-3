@@ -8,7 +8,6 @@ GIT
 
 GEM
   remote: https://rubygems.org/
-  remote: https://rails-assets.org/
   specs:
     actioncable (6.0.3.2)
       actionpack (= 6.0.3.2)
@@ -389,7 +388,7 @@ DEPENDENCIES
   pg
   puma
   rails (= 6.0.3.2)
-  rails-assets-tether (>= 1.1.0)!
+  rails-assets-tether (>= 1.1.0)
   redcarpet
   rollbar
   rspec-rails
