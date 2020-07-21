@@ -28,9 +28,9 @@ gem 'webpacker'
 gem 'wikimedia-commoner', github: 'jnicho02/wikimedia-commoner'
 gem 'will_paginate'
 
-#source 'https://rails-assets.org' do
+source 'https://rails-assets.org' do
   gem 'rails-assets-tether', '>= 1.1.0'
-#end
+end
 
 group :development do
   gem 'bullet'
