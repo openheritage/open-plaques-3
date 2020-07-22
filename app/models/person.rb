@@ -761,6 +761,10 @@ class Person < ApplicationRecord
     aka.push(unaccented_name)
   end
 
+  def citation_html
+    citation || 'OpenPlaques'
+  end
+
   def depiction_from_dbpedia
     return unless !main_photo && dbpedia_depiction
 

@@ -153,6 +153,10 @@
     <%= f.label :introduction, class: 'col-form-label' %>
     <%= f.text_area :introduction, class: 'form-control', rows: 6 %>
   </div>
+  <div class="form-group row">
+    <%= f.label :citation, class: 'col-form-label' %>
+    <%= f.text_field :citation, class: 'form-control' %>
+  </div>
   <%= f.submit t('buttons.update'), class: 'btn btn-primary' %>
 
   <h2 id="links">Links</h2>

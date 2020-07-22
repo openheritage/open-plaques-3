@@ -188,6 +188,7 @@ class PeopleController < ApplicationController
       :ancestry_id,
       :aka,
       :born_on,
+      :citation,
       :dbpedia_uri,
       :died_on,
       :ethnicity,
