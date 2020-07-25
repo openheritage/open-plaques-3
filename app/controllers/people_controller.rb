@@ -57,7 +57,7 @@ class PeopleController < ApplicationController
     @people.uniq!
     render json: @people.uniq.as_json(
       only: %i[id name],
-      methods: %i[name_and_dates type]
+      methods: %i[action_id name_and_dates primary_role_name type]
     )
   end
 

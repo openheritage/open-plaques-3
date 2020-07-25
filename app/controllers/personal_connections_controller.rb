@@ -37,7 +37,6 @@ class PersonalConnectionsController < ApplicationController
       end
     rescue
     end
-    puts "@suggested_people #{@suggested_people}"
   end
 
   def create
