@@ -73,14 +73,39 @@ class Person < ApplicationRecord
 
   def primary_roles
     @primary_roles ||= begin
-      primary_roles = personal_roles.select(&:primary?)
+      roles = personal_roles.select(&:primary?)
       # if >1 then cannot judge which is the 'best' role
-      straight_roles if primary_roles == [] && straight_roles.size == 1
+      if roles == [] && straight_roles.size == 1
+        straight_roles
+      else
+        roles
+      end
     end
   end
 
   def primary_role
     primary_roles&.first
+  end
+
+  def primary_role_name
+    primary_role&.role&.name
+  end
+
+  def default_action
+    action = Verb.find_by(name: 'was')
+    if (type == 'thing' || type == 'place' || type == 'place' || type == 'group')
+      action = Verb.find_by(name: 'sited')
+    elsif primary_role&.role&.name == 'architect'
+      action = Verb.find_by(name: 'designed')
+    elsif primary_role&.role&.name == 'benefactor'
+      action = Verb.find_by(name: 'donated')
+    end
+    action
+  end
+
+  # this sucks, but the autocomplete uses json and wants to pass it
+  def action_id
+    default_action&.id
   end
 
   def person?
