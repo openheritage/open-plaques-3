@@ -15,6 +15,9 @@
         <% if current_user&.is_admin? && person.ethnicity == 'bame' %>
           <small><%= icon(:fas, :users) %></small>
         <% end %>
+        <% if person.primary_role %>
+          <small><%= person.primary_role.role.name %></small>
+        <% end %>
       </span>
     </div>
   </div>
