@@ -95,11 +95,13 @@
   <% end %>
 <% end %>
 
-<div id="person-tiles" class="card-columns">
-  <% for person in @suggested_people %>
-    <%= render partial: 'people/tile', object: person, as: :person  %>
-  <% end %>
-</div>
+<% if @suggested_people && @suggested_people.size > 0 %>
+  <div id="person-tiles" class="card-columns">
+    <% for person in @suggested_people %>
+      <%= render partial: 'people/tile', object: person, as: :person  %>
+    <% end %>
+  </div>
+<% end %>
 
 <h2><%= t '.page_heading' %></h2>
 <%= form_for @personal_connection, url: plaque_connections_path(@plaque) do |f| %>
@@ -177,7 +179,8 @@
       },
       select: function(event, ui) {
         console.log(ui.item)
-        $('#personal_connection_verb_id').val(ui.item.action_id)
+        $('#personal_connection_person_id').val(ui.item.id);
+        $('#personal_connection_verb_id').val(ui.item.action_id);
       }
     });
   });

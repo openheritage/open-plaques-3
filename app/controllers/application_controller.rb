@@ -41,7 +41,7 @@ class ApplicationController < ActionController::Base
     if is_semrush ||
        is_the_knowledge_ai ||
        (is_a_bot && is_not_following_robots_txt)
-      puts "BLOCKED: #{is_a_bot ? 'bot' : 'not-bot'} #{request.format} #{request.path} #{request.headers['HTTP_USER_AGENT']}"
+      puts "BLOCKED: #{request.headers['HTTP_USER_AGENT']}"
       render json: { error: 'no-bots' }.to_json, status: 406 and return
     end
     yield

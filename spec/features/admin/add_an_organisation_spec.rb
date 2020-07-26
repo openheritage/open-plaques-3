@@ -11,7 +11,8 @@ RSpec.feature 'Admin adds an organisation.', type: :feature do
   scenario 'click add on the org page' do
     click_on_nav_item 'Organisations'
     click_on 'add'
-    fill_in :organisation_name, with: FFaker::Company.name
+    o = build :organisation
+    fill_in :organisation_name, with: o.name
     click_button :commit
     expect(page).to have_text 'Thanks for adding this'
   end

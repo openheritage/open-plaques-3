@@ -47,7 +47,7 @@ class PersonalConnectionsController < ApplicationController
     @personal_connection.ended_at = params[:personal_connection][:ended_at]
     @personal_connection.person_id = params[:personal_connection][:person_id]
     @personal_connection.verb_id = params[:personal_connection][:verb_id]
-    if @personal_connection.save
+    if @personal_connection.save!
       redirect_back(fallback_location: root_path)
     else
       # can we just redirect to new?

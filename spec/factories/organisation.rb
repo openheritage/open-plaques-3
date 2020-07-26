@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :organisation do
-    name { 'orga' }
+    name { FFaker::Company.name }
   end
 end
