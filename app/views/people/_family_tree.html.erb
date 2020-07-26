@@ -4,12 +4,13 @@
     <div class="tree">
       <ul>
         <li>
-          <%= @person.father ? link_to(@person.father.full_name, @person.father) : link_to('father?', '#') %> <%= @person.mother ? link_to(@person.mother.full_name, @person.mother) : link_to('mother?', '#') %>
+          <%= @person.father ? link_to("#{@person.father.name_and_dates} #{@person.father.primary_role&.role&.name}", @person.father) : link_to('father?', '#') %>
+          <%= @person.mother ? link_to("#{@person.mother.name_and_dates} #{@person.mother.primary_role&.role&.name}", @person.mother) : link_to('mother?', '#') %>
           <ul>
             <li>
-              <%= link_to(@person.full_name, @person) %>
+              <strong><%= link_to(@person.name_and_dates, @person) %></strong>
               <% @person.spouses.each do |spouse| %>
-                <%= link_to(spouse.full_name, spouse) %>
+                <%= link_to("#{spouse.name_and_dates} #{spouse.primary_role&.role&.name}", spouse) %>
               <% end %>
               <% if @person.children? %>
                 <ul>
@@ -20,7 +21,7 @@
               <% end %>
             </li>
             <% @person.siblings&.each do |sibling| %>
-              <li><%= link_to(sibling.full_name, sibling) %></li>
+              <li><%= link_to("#{sibling.name_and_dates} #{sibling.primary_role&.role&.name}", sibling) %></li>
             <% end %>
           </ul>
         </li>
