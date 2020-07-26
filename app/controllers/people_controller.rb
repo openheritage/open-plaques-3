@@ -122,11 +122,11 @@ class PeopleController < ApplicationController
     params[:person][:born_on] += '-01-01' if params[:person][:born_on] =~ /\d{4}/
     params[:person][:died_on] += '-01-01' if params[:person][:died_on] =~ /\d{4}/
     @person = Person.new(permitted_params)
-    @person.sex  # Get sex from name
+    @person.sex
     respond_to do |format|
       if @person.save
         if params[:role_id] && !params[:role_id].blank?
-          @personal_role = PersonalRole.new(person_id: @person.id, role_id: params[:role_id])
+          @personal_role = PersonalRole.new(person_id: @person.id, role_id: params[:role_id], primary: true)
           @personal_role.save!
           # reget the person now that they have a role
           @person = Person.find @person.id
