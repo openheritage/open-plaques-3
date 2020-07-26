@@ -73,13 +73,17 @@ class Person < ApplicationRecord
 
   def primary_roles
     @primary_roles ||= begin
-      roles = personal_roles.select(&:primary?)
-      # if >1 then cannot judge which is the 'best' role
-      if roles == [] && straight_roles.size == 1
-        straight_roles
-      else
-        roles
+      r = personal_roles.select(&:primary?)
+      
+      if r.empty?
+        if !straight_roles.empty?
+          # if >1 then cannot judge which is the 'best' role
+          r << straight_roles.first
+        elsif !non_family_relationships.empty?
+          r << non_family_relationships.first
+        end
       end
+      r
     end
   end
 
