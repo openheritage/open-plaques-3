@@ -420,7 +420,6 @@ class Plaque < ApplicationRecord
             File.join as.root, key
           end
       path_for = p.tap { |path| FileUtils.mkdir_p File.dirname(path) }
-      puts path_for
       IO.copy_stream(io, path_for)
     else
       key = [area&.country&.name&.parameterize, us_state&.parameterize, area&.town&.parameterize, key].reject(&:nil?).join('/')
