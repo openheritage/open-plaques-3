@@ -1,5 +1,5 @@
-<% content_for :page_title, "Geocoding #{@plaque.title}" %>
-<% content_for :title, "Where is this plaque?" %>
+<% content_for :page_title, t('.page_title', plaque: @plaque.title) %>
+<% content_for :title, t('.title') %>
 <% content_for :page_subhead, t('.page_subhead') %>
 <%= render 'plaques/edit_bar', plaque: @plaque %>
 

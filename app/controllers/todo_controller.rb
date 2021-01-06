@@ -78,68 +78,42 @@ class TodoController < ApplicationController
       @photos = Photo.unassigned.ungeolocated.order(:updated_at).paginate(page: params[:page], per_page: 100)
       render :unassigned_photo
     when 'microtask'
-      case rand(7)
+      case rand(5)
       when 0
         puts 'photographed_not_coloured'
-        @plaques = Plaque.photographed_not_coloured
-        @plaque = @plaques[rand @plaques.length]
+        @plaque = Plaque.photographed_not_coloured.random
         if @plaque
           @colours = Colour.alphabetically
-          render 'plaque_colour/edit' and return
+          render 'plaques/colour/edit', layout: 'plaque_edit' and return
         end
       when 1
         puts 'partial_inscription_photo'
-        @plaques = Plaque.partial_inscription_photo
-        @plaque = @plaques[rand @plaques.length]
+        @plaque = Plaque.partial_inscription_photo.random
         if @plaque
           @languages = Language.all.alphabetically
-          render 'plaque_inscription/edit' and return
+          render 'plaques/inscription/edit', layout: 'plaque_edit' and return
         end
       when 2
-        puts 'no_role'
-        @people = Person.unroled
-        @person = @people[rand @people.length]
-        if @person
-          @roles = Role.all.alphabetically
-          @personal_role = PersonalRole.new
-          @died_on = @person.died_on.year if @person.died_on
-          @born_on = @person.born_on.year if @person.born_on
-          render 'people/personal_roles/edit' and return
-        end
-      when 3
         puts 'ungeolocated'
-        @plaques = Plaque.ungeolocated
-        @plaque = @plaques[rand @plaques.length]
+        @plaque = Plaque.ungeolocated.random
         @geocodes = []
         if @plaque
-          render 'plaque_geolocation/streetview_edit' and return
+          @areas = Area.preload(:country).alphabetically
+          render 'plaques/geolocation/edit' and return
         end
       when 4
-        puts 'no_dates'
-        @people = Person.no_dates
-        @person = @people[rand @people.length]
-        @personal_role = PersonalRole.new
-        @died_on = @person.died_on.year if @person.died_on
-        @born_on = @person.born_on.year if @person.born_on
-        if @person
-          @roles = Role.all.alphabetically
-          render 'people/dates/edit' and return
-        end
-      when 5
         puts 'unassigned photo'
-        @photos = Photo.unassigned
-        @photo = @photos[rand @photos.length]
+        @photo = Photo.unassigned.random
         if @photo
           @plaques = [Plaque.find(100)]
           @licences = Licence.all.alphabetically
-          render 'photos/plaque/edit' and return
+          render 'photos/edit' and return
         end
       when 6
-        puts 'no English version'
-        @plaques = Plaque.no_english_version
-        @plaque = @plaques[rand @plaques.length]
+        puts 'no English translation'
+        @plaque = Plaque.no_english_version.random
         if @plaque
-          render 'plaque_inscription/edit' and return
+          render 'plaques/inscription/edit' and return
         end
       end
       redirect_to todo_path and return

@@ -1,11 +1,9 @@
 <% content_for :page_title, t('.page_title') + @plaque.id.to_s %>
-<% content_for :title do %>
-  What does the <%= link_to @plaque.title, @plaque %> say?
-<% end %>
+<% content_for :title, t('.title') %>
 <% content_for :page_subhead do %>
   <%= t '.page_subhead' %>
   <% if url_for(only_path: false).include?('microtask') %>
-    <%= button_to "Not sure. Give me another one", todo_path('microtask'), method: :get, class: :button %>
+    <%= button_to "Not sure. Give me another one", todo_path('microtask'), method: :get, class: 'btn btn-primary' %>
   <% end %>
 <% end %>
 <%= render 'plaques/edit_bar', plaque: @plaque %>

@@ -389,7 +389,7 @@ en-GB:
     colour:
       edit:
         page_title: Edit colour of
-        title: What colour is the
+        title: What colour is this plaque?
         page_heading: yy
         not_sure: Not sure. Give me another one
         colour_label: It is
@@ -402,17 +402,19 @@ en-GB:
       erected_in: Erected in
     erected:
       edit:
-        page_title: xx
+        page_title: xx 
         page_heading: yy
     geolocation:
       edit:
-        page_title: xx
+        page_title: Geocoding %{plaque}
+        title: Where is this plaque?
         page_heading: yy
         page_subhead: Our goal is to accurately locate all plaques through real-life evidence. We do not use geocoding software as the results are inaccurate and it taint the openness of our data. It is okay to plot an approximate position, but please be sure to flag it as uncertain.
     inscription:
       edit:
         page_title: Edit inscription for plaque
-        page_subhead: Type in all the words written on the plaque excluding the organisation. Please write in sentence case, there is NO NEED TO SHOUT
+        title: What does this plaque say?
+        page_subhead: Type in all the words written on the plaque excluding the organisation. Please write in sentence case, as there is NO NEED TO SHOUT
         the_words: The words written on the plaque excluding the organisation in sentence case are
         placeholder: Joe Bloggs lived here
         exact_wording: We don't have the full, exact wording yet

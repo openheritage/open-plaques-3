@@ -50,6 +50,8 @@ module ApplicationHelper
   # <tt>name</tt> - the word
   # <tt>include_name - whether to include the name in the string output or not.
   def a_or_an(name, include_name = true)
+    return '' unless name.present?
+
     article = if name[0, 1] =~ /[aeiou]/
                 'an'.html_safe
               else
