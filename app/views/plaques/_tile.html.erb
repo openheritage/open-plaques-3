@@ -20,6 +20,13 @@
     <% end %>
   <% end %>
   <div class="card-footer">
+    <% if plaque.attributes.key?('series_id') && plaque.series %>
+      <div class="card-text">
+        <small class="text-muted">
+          <%= link_to plaque.series.name, plaque.series %> <% if plaque.series_ref? %>#<%= plaque.series_ref %> <% end %>
+        </small>
+      </div>
+    <% end %>
     <%= icon(:far, :compass) if plaque.geolocated? %>
     <small class="text-muted"><%= plaque.area.full_name if plaque.area %></small>
   </div>

@@ -270,7 +270,9 @@ class Plaque < ApplicationRecord
         plaques.inscription,
         plaques.area_id,
         plaques.latitude,
-        plaques.longitude
+        plaques.longitude,
+        plaques.series_id,
+        plaques.series_ref
         from personal_connections as pc_main
         inner join personal_connections as pc_related
            on pc_related.person_id = pc_main.person_id
