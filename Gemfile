@@ -16,7 +16,7 @@ gem 'nokogiri'
 gem 'oink'
 gem 'pg'
 gem 'puma'
-gem 'rails', '6.0.3.2'
+gem 'rails', '6.1.0'
 gem 'redcarpet'
 gem 'rollbar'
 gem 'sanitize'
@@ -33,12 +33,9 @@ source 'https://rails-assets.org' do
 end
 
 group :development do
-  gem 'bullet'
-  gem 'derailed_benchmarks'
   gem 'dotenv-rails', groups: :test
   gem 'listen'
   gem 'mechanize'
-  gem 'meta_request'
   gem 'rubocop'
   gem 'spring'
 end
