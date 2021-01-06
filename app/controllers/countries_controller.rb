@@ -120,7 +120,7 @@ class CountriesController < ApplicationController
   end
 
   def update
-    if @country.update_attributes(permitted_params)
+    if @country.update(permitted_params)
       redirect_to country_path(@country)
     else
       render :edit

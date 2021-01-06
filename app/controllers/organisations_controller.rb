@@ -64,7 +64,7 @@ class OrganisationsController < ApplicationController
         params[:organisation][:longitude] = point.longitude
       end
     end
-    if @organisation.update_attributes(permitted_params)
+    if @organisation.update(permitted_params)
       flash[:notice] = 'Updates to organisation saved.'
       redirect_to organisation_path(@organisation.slug)
     else

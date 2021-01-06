@@ -197,7 +197,7 @@ class PlaquesController < ApplicationController
       end
     end
     respond_to do |format|
-      if @plaque.update_attributes(permitted_params)
+      if @plaque.update(permitted_params)
         flash[:notice] = 'Plaque was successfully updated.'
         format.html { redirect_to(@plaque) }
         format.xml  { head :ok }

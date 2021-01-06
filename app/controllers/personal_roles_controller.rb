@@ -44,7 +44,7 @@ class PersonalRolesController < ApplicationController
       ended_at += '-01-01' if ended_at =~ /\d{4}/
       ended_at = Date.parse(ended_at)
     end
-    if @personal_role.update_attributes(
+    if @personal_role.update(
       started_at: started_at,
       ended_at: ended_at,
       related_person: related_person,

@@ -4,7 +4,7 @@ class AddSlugToOrganisations < ActiveRecord::Migration[4.2]
 
     say_with_time("Assigning slugs to organisations") do
       Organisation.find_each do |organisation|
-        organisation.update_attributes(slug: organisation.name.gsub!(" ", "_"))
+        organisation.update(slug: organisation.name.gsub!(" ", "_"))
       end
     end
   end

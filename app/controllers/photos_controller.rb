@@ -24,7 +24,7 @@ class PhotosController < ApplicationController
 
   def update
     respond_to do |format|
-      flash[:notice] = if @photo.update_attributes(permitted_params)
+      flash[:notice] = if @photo.update(permitted_params)
                          'Photo was successfully updated.'
                        else
                          @photo.errors
@@ -45,7 +45,7 @@ class PhotosController < ApplicationController
       @already_existing_photo ||= Photo.find_by_file_url(@photo.file_url.gsub('https', 'http'))
       if @already_existing_photo
         @photo = @already_existing_photo
-        @photo.update_attributes(permitted_params)
+        @photo.update(permitted_params)
       end
       flash[:notice] = if @photo.save
                          'Photo was successfully updated.'

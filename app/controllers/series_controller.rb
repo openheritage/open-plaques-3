@@ -57,7 +57,7 @@ class SeriesController < ApplicationController
   end
 
   def update
-    if @series.update_attributes(permitted_params)
+    if @series.update(permitted_params)
       flash[:notice] = 'Updates to series saved.'
       redirect_to series_path(@series)
     else

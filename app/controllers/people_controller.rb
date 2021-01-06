@@ -151,7 +151,7 @@ class PeopleController < ApplicationController
     params[:person][:born_on] += '-01-01' if params[:person][:born_on] =~ /\d{4}/
     params[:person][:died_on] += '-01-01' if params[:person][:died_on] =~ /\d{4}/
     respond_to do |format|
-      if @person.update_attributes(permitted_params)
+      if @person.update(permitted_params)
         flash[:notice] = 'Person was successfully updated.'
         format.html { redirect_to(@person) }
         format.xml  { head :ok }

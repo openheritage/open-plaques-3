@@ -32,7 +32,7 @@ class PicksController < ApplicationController
   end
 
   def update
-    if @pick.update_attributes(permitted_params)
+    if @pick.update(permitted_params)
       redirect_to pick_path(@pick)
     else
       render :edit

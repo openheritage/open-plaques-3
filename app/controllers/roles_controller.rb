@@ -76,7 +76,7 @@ class RolesController < ApplicationController
 
   def update
     respond_to do |format|
-      if @role.update_attributes(role_params)
+      if @role.update(role_params)
         flash[:notice] = 'Role was successfully updated.'
         format.html { redirect_to(role_path(@role.slug)) }
       else
