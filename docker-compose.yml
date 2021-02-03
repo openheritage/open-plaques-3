@@ -13,7 +13,8 @@ x-app: &app
   environment: &env
     NODE_ENV: development
     RAILS_ENV: ${RAILS_ENV:-development}
-  image: openplaques-dev:1.0.2
+    DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: 'true'
+  image: openplaques-dev:1.0.3
   tmpfs:
     - /tmp
 
