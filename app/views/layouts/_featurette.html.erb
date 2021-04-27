@@ -7,7 +7,7 @@
   </div>
   <div class="col-md-5<% if id.even? %> order-md-1<% end %>">
     <% if image_url.present? %>
-      <img class="featurette-image img-fluid mx-auto" src="<%= image_url %>" alt="<%= image_alt %>">
+      <%= image_tag(image_url, class: 'featurette-image img-fluid mx-auto', alt: image_alt) %>
     <% else %>
       <img class="featurette-image img-fluid mx-auto" data-src="holder.js/400x500/auto" alt="Generic placeholder image">
     <% end %>
