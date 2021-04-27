@@ -1,0 +1,15 @@
+<hr class="featurette-divider">
+
+<div class="row featurette">
+  <div class="col-md-7<% if id.even? %> order-md-2<% end %>">
+    <h2 class="featurette-heading"><%= heading %> <span class="text-muted"><%= subheading %></span></h2>
+    <p class="lead"><%= body %></p>
+  </div>
+  <div class="col-md-5<% if id.even? %> order-md-1<% end %>">
+    <% if image_url.present? %>
+      <img class="featurette-image img-fluid mx-auto" src="<%= image_url %>" alt="<%= image_alt %>">
+    <% else %>
+      <img class="featurette-image img-fluid mx-auto" data-src="holder.js/400x500/auto" alt="Generic placeholder image">
+    <% end %>
+  </div>
+</div>

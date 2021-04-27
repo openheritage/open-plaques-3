@@ -129,7 +129,8 @@ Rails.application.routes.draw do
   resource :about, controller: :pages, id: 'about', only: :show
   resource :contact, controller: :pages, id: 'contact', only: :show
   resource :data, controller: :pages, id: 'data', as: 'about_the_data', only: :show
-  resource :contribute, controller: :pages, id: 'contribute', as: 'contribute', only: :show
+  get 'about', controller: :static_pages
+  get 'contribute', controller: :static_pages
+  get 'contact', controller: :static_pages
   resource :explore, controller: :explore, only: :show
-
 end
