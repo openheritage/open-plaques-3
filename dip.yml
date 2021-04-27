@@ -24,6 +24,11 @@ interaction:
     description: Open a Bash shell within a Rails container (with dependencies up)
     service: runner
     command: /bin/bash heroku run console --app open-plaques-beta
+      
+  livelogs:
+    description: Show what is happening right now
+    service: runner
+    command: /bin/bash heroku logs --tail --app open-plaques-beta
 
   livepull:
     description: Pull data from live into development
