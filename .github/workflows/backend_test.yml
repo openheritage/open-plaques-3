@@ -32,6 +32,7 @@ jobs:
           working-directory: .
       - name: Migration
         run: |
+          cp config/database.example.yml config/database.yml
           bundle exec rails db:create
           bundle exec rake db:schema:load
       - name: Run rspec
