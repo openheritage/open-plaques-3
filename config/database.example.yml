@@ -13,4 +13,4 @@ development:
 
 test:
   <<: *default
-  database: <%= ENV.fetch("POSTGRES_DB" { 'openplaques_test' } %>
+  database: <%= ENV.fetch("POSTGRES_DB") { 'openplaques_test' } %>
