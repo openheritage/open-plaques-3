@@ -1,0 +1,39 @@
+name: Backend Test
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+    services:
+      postgres:
+        image: postgres:11
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: test
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    env:
+      RAILS_ENV: test
+      RAILS_DATABASE_HOST: 127.0.0.1
+      RAILS_DATABASE_USER: postgres
+      RAILS_DATABASE_PASSWORD: password
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.6.6
+          bundler-cache: true
+          working-directory: .
+      - name: Migration
+        run: |
+          cp config/database.example.yml config/database.yml
+          bundle exec rails db:create
+          bundle exec rake db:schema:load
+      - name: Run rspec
+        run: bundle exec rspec
