@@ -1,36 +1,12 @@
 <% content_for(:page_title) {t '.page_title'} %>
-<% content_for(:title) {t '.page_heading'} %>
-<% content_for(:page_subhead) {t '.page_subhead'} %>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.9.0/holder.js"></script>
 
 <div class="row">
 
 <div class="container marketing">
 
-<div class="row">
-  <div class="col-lg-4">
-    <img class="rounded-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140">
-    <h2><%= t '.action_1' %></h2>
-    <p><%= t '.action_1_body' %></p>
-    <p><a class="btn btn-secondary" href="about" role="button">Email &raquo;</a></p>
-  </div>
-  <div class="col-lg-4">
-    <img class="rounded-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140">
-    <h2><%= t '.action_2' %></h2>
-    <p><%= t '.action_2_body' %></p>
-    <p><a class="btn btn-secondary" href="https://twitter.com/openplaques" role="button">Tweet @openplaques &raquo;</a></p>
-  </div>
-  <div class="col-lg-4">
-    <img class="rounded-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140">
-    <h2><%= t '.action_3' %></h2>
-    <p><%= t '.action_3_body' %></p>
-  </div>
-</div>
-
-<%= render partial: '/layouts/featurette', locals: { id: 1, image_url: 'assets/plaque_composite.png', image_alt: 'Winston Churchill Plaque', heading: t('.featurette_1_heading'), subheading: t('.featurette_1_subheading'), body: t('.featurette_1_body') } %>
-
-<hr class="featurette-divider">
+<%= render partial: '/layouts/featurette', locals: { id: 1, image_url: 'minnie-turner-unveiling.jpg', image_alt: 'Unveiling Minnie Turner plaque in Brighton', heading: t('.featurette_1_heading'), subheading: t('.featurette_1_subheading'), body: t('.featurette_1_body') } %>
+<%= render partial: '/layouts/featurette', locals: { id: 2, image_url: 'minjoo-jalali-plaque.jpg', image_alt: 'Minjoo Jalali plaque', heading: t('.featurette_2_heading'), subheading: t('.featurette_2_subheading'), body: t('.featurette_2_body') } %>
+<%= render partial: '/layouts/featurette', locals: { id: 3, image_url: 'blue-plaque-dress.jpg', image_alt: 'A dress of blue plaques', heading: t('.featurette_3_heading'), subheading: t('.featurette_3_subheading'), body: t('.featurette_3_body') } %>
 
 </div>
 </div>

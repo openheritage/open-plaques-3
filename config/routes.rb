@@ -127,7 +127,7 @@ Rails.application.routes.draw do
   # Convenience resources for important pages:
   resources :pages
   resource :about, controller: :pages, id: 'about', only: :show
-  resource :contact, controller: :pages, id: 'contact', only: :show
+#  resource :contact, controller: :pages, id: 'contact', only: :show
   resource :data, controller: :pages, id: 'data', as: 'about_the_data', only: :show
   get 'about', controller: :static_pages
   get 'contribute', controller: :static_pages
