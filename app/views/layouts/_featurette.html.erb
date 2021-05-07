@@ -1,8 +1,6 @@
-<hr class="featurette-divider">
-
 <div class="row featurette">
-  <div class="col-md-7<% if id.even? %> order-md-2<% end %>">
-    <h2 class="featurette-heading"><%= heading %> <span class="text-muted"><%= subheading %></span></h2>
+  <div class="col-md-7<% if id&.even? %> order-md-2<% end %>">
+    <h2 class="featurette-heading"><%= heading %> <% unless subheading.include?('Subheading') %><span class="text-muted"><%= subheading %></span><% end %></h2>
     <p class="lead"><%= body %></p>
   </div>
   <div class="col-md-5<% if id.even? %> order-md-1<% end %>">
@@ -13,3 +11,4 @@
     <% end %>
   </div>
 </div>
+<hr class="featurette-divider">

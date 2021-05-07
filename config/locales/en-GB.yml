@@ -182,16 +182,16 @@ en-GB:
     show:
       page_title: Contact
       page_heading: Contact
-      page_subhead:
-      action_1: email
-      action_1_body: If you have any comments, questions or suggestions for the service, you can get in touch by e-mailing feedback@openplaques.org
-      action_2: twitter
-      action_2_body:
-      action_3: press
-      action_3_body:
-      featurette_1_heading: Organisations
-      featurette_1_subheading: we want you
-      featurette_1_body: We are particularly keen to hear from organisations - local councils, historical and civic societies and others - that put up plaques, in order to help them get their plaques included in our listings. Once at least one of their plaques is added, each organisation also gets a page on our website.
+      page_subhead: Talk to us...we are quite nice
+      featurette_1_heading: Comments and suggestions?
+      featurette_1_subheading: Found something wrong?
+      featurette_1_body: If you have any comments, questions, or suggestions for the service get in touch by e-mailing feedback@openplaques.org or tweeting to @openplaques
+      featurette_2_heading: Organisations.
+      featurette_2_subheading: Come and co-curate your content
+      featurette_2_body: Are you from a local council, historical or civic society, or other group that puts up plaques? Help us get your plaques included in the listings. When at least one of your plaques is added, your organisation gets a page on our website.
+      featurette_3_heading: Press
+      featurette_3_subheading: soundbites and opinions
+      featurette_3_body: You may have already used the web site for researching an article. We could help you to refine your search. We could provide some quotes. We might be able to find an unusual plaque to match your story.
       
   contribute:
     show:
