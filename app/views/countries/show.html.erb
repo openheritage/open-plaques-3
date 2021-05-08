@@ -1,8 +1,8 @@
-<% content_for(:page_title) {t '.page_title', country: @country.name} %>
-<% content_for(:title) {render @country} %>
-<% content_for(:page_subhead) {@country.description} %>
-<% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_country_path(@country)} %>
-<% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_country_area_path(@country.alpha2)} %>
+<% content_for(:page_title) { t '.page_title', country: @country.name } %>
+<% content_for(:title) { render @country } %>
+<% content_for(:page_subhead) { @country.description } %>
+<% content_for(:admin_menu) { navbar_link_to t('buttons.edit'), edit_country_path(@country) } %>
+<% content_for(:admin_menu) { navbar_link_to t('buttons.add'), new_country_area_path(@country.alpha2) } %>
 
 <span class="badge badge-secondary pull-right"><%= pluralize(@subject_count, 'subject') %></span>
 <%= render partial: 'people/diversity' %>
@@ -50,7 +50,6 @@
   <% if !state.blank? %>
     <h2>Region: <%= state %></h2>
   <% end %>
-
   <div class="card-columns">
     <%= render areas %>
   </div>

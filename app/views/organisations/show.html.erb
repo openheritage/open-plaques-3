@@ -6,11 +6,11 @@
     <%= link_to(content_tag('span', @organisation.name, lang: @organisation.language.alpha2), @organisation) %>
   <% end %>
 <% end %>
-<% content_for(:page_subhead) { markdown(@organisation.description) } if !@organisation.description.blank? %>
+<% content_for(:page_subhead) { content_tag('p', markdown(@organisation.description)) } if !@organisation.description.blank? %>
 <% content_for(:admin_menu) { navbar_link_to t('buttons.edit'), edit_organisation_path(@organisation) } %>
 
 <% if !@organisation.website.blank? %>
   <p rel="foaf:homepage vcard:url">
-    <small class="text-muted"><%= link_to(h(@organisation.website),@organisation.website) %></small>
+    <small class="text-muted"><%= link_to(h(@organisation.website), @organisation.website) %></small>
   </p>
 <% end %>

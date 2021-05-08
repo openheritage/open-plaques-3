@@ -1,13 +1,10 @@
-<% content_for(:page_title) {t '.page_title'} %>
-<% content_for(:title) {t '.page_heading'} %>
+<% content_for(:page_title) { t('.page_title') } %>
+<% content_for(:title) { t('.page_heading') } %>
 <% content_for(:page_subhead) do %>
-  <%= t '.how_many', count: @photographers_count %><br/>
-  <%= t '.where' %>
-  <%= t '.how_they_are_licenced_html' %>
-  <br/>
-  <span class="badge badge-secondary pull-right"><%= @photographers_count %></span>
+  <p><%= t '.how_many', count: @photographers_count %></p>
+  <p><%= t '.where' %> <%= t '.how_they_are_licenced_html' %></p>
 <% end %>
-<% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_photographer_path} %>
+<% content_for(:admin_menu) { navbar_link_to t('buttons.add'), new_photographer_path } %>
 
 <div class="row">
   <div id="top-chart" class="col-12" style="height: 2000px;"></div>

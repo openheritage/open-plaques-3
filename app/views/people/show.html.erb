@@ -45,7 +45,7 @@
       <% unless !@person.introduction || @person.introduction.empty? || @person.introduction.blank? %>
         <blockquote class="quote-card blue-card">
           <p><%= markdown(@person.introduction) %></p>
-          -&nbsp;<cite><%= @person.citation_html %></cite>
+          <cite><%= markdown(@person.citation_html) %></cite>
         </blockquote>
       <% end %>
       <% unless !@person.dbpedia_abstract || @person.dbpedia_abstract.empty? %>
