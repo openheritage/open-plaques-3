@@ -31,29 +31,9 @@ Rails.application.routes.draw do
   match 'plaques/tiles/:zoom/:x/:y' => 'plaques#index', constraints: { zoom: /\d{2}/, x: /\d+/, y: /\d+/ }, via: [:get]
   match 'plaques/:filter/tiles/:zoom/:x/:y' => 'plaques#index', id: :filter, constraints: { zoom: /\d{2}/, x: /\d+/, y: /\d+/ }, via: [:get]
 
-  resources :places, controller: :countries, as: :countries do
-    collection do
-      get 'autocomplete', controller: :areas
-    end
-    resource :plaques, controller: :country_plaques, only: :show
-    resource :subjects, controller: :country_subjects, only: :show
-    match 'plaques/:filter' => 'country_plaques#show', via: [:get]
-    resources :areas do
-      member do
-        post 'geolocate'
-      end
-      resource :plaques, controller: :area_plaques, only: :show
-      resource :subjects, controller: :area_subjects, only: :show
-      match 'plaques/tiles/:zoom/:x/:y' => 'area_plaques#show', constraints: { zoom: /\d{2}/, x: /\d+/, y: /\d+/ }, via: [:get]
-      match 'plaques/:filter/tiles/:zoom/:x/:y' => 'area_plaques#show', id: :filter, constraints: { zoom: /\d{2}/, x: /\d+/, y: /\d+/ }, via: [:get]
-      match 'plaques/:filter' => 'area_plaques#show', via: [:get]
-    end
-  end
-
-  resources :photos
-  resources :photographers, as: :photographers, only: [:create, :index, :show, :new]
+  resources :colours, only: [:index, :new, :create]
+  resources :languages
   resources :licences, only: [:index]
-
   resources :organisations do
     collection do
       get 'autocomplete'
@@ -67,15 +47,31 @@ Rails.application.routes.draw do
     match 'plaques/:filter' => 'organisation_plaques#show', via: [:get]
     resource :subjects, controller: :organisation_subjects, only: :show
   end
+  resources :personal_roles
+  resources :picks
+  resources :places, controller: :countries, as: :countries do
+    collection do
+      get 'autocomplete', controller: :areas
+    end
+    resources :areas do
+      member do
+        post 'geolocate'
+      end
+      resource :plaques, controller: :area_plaques, only: :show
+      resource :subjects, controller: :area_subjects, only: :show
+      match 'plaques/tiles/:zoom/:x/:y' => 'area_plaques#show', constraints: { zoom: /\d{2}/, x: /\d+/, y: /\d+/ }, via: [:get]
+      match 'plaques/:filter/tiles/:zoom/:x/:y' => 'area_plaques#show', id: :filter, constraints: { zoom: /\d{2}/, x: /\d+/, y: /\d+/ }, via: [:get]
+      match 'plaques/:filter' => 'area_plaques#show', via: [:get]
+    end
+    resource :plaques, controller: :country_plaques, only: :show
+    resource :subjects, controller: :country_subjects, only: :show
+    match 'plaques/:filter' => 'country_plaques#show', via: [:get]
+  end
+  resources :photos
+  resources :photographers, as: :photographers, only: [:create, :index, :show, :new]
 
   scope '/unveilings' do
     resource :upcoming, only: [:show], controller: :upcoming_unveilings
-  end
-
-  resources :verbs, only: [:create, :index, :show, :new] do
-    collection do
-      get 'autocomplete'
-    end
   end
 
   scope '/roles' do
@@ -87,12 +83,13 @@ Rails.application.routes.draw do
       get 'autocomplete'
     end
   end
-  resources :personal_roles
 
   scope '/people' do
     resources 'a-z', controller: :people_by_index, as: 'people_by_index', only: :show
   end
-
+  scope '/subjects' do
+    resources 'a-z', controller: :people_by_index, as: 'people_by_index', only: :show
+  end
   scope '/women' do
     resources 'a-z', controller: :women_by_index, as: 'women_by_index', only: :show
   end
@@ -104,8 +101,6 @@ Rails.application.routes.draw do
     resource :roles, controller: :person_roles, only: :show
   end
 
-  resources :languages
-  resources :colours, only: [:index, :new, :create]
   resources :series do
     member do
       post 'geolocate'
@@ -117,7 +112,11 @@ Rails.application.routes.draw do
   end
   get 'series/:id/:series_ref', to: 'series#show'
   resources :todo
-  resources :picks
+  resources :verbs, only: [:create, :index, :show, :new] do
+    collection do
+      get 'autocomplete'
+    end
+  end
 
   # Convenience paths for search:
   match 'search' => 'search#index', via: [:get]
