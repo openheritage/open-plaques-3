@@ -1,0 +1,13 @@
+<% content_for(:page_title) {t '.page_title'} %>
+
+<div class="row">
+
+<div class="container marketing">
+
+<%= render partial: '/layouts/featurette', locals: { id: 1, image_url: 'minnie-turner-unveiling.jpg', image_alt: 'Unveiling Minnie Turner plaque in Brighton', heading: t('.featurette_1_heading'), subheading: t('.featurette_1_subheading'), body: t('.featurette_1_body') } %>
+<%= render partial: '/layouts/featurette', locals: { id: 2, image_url: 'minjoo-jalali-plaque.jpg', image_alt: 'Minjoo Jalali plaque', heading: t('.featurette_2_heading'), subheading: t('.featurette_2_subheading'), body: t('.featurette_2_body') } %>
+<%= render partial: '/layouts/featurette', locals: { id: 3, image_url: 'blue-plaque-dress.jpg', image_alt: 'A dress of blue plaques', heading: t('.featurette_3_heading'), subheading: t('.featurette_3_subheading'), body: t('.featurette_3_body') } %>
+<%= render partial: '/layouts/featurette', locals: { id: 4, image_url: 'hackday-shirts.jpg', image_alt: 'A collection of hackday shorts', heading: t('.featurette_4_heading'), subheading: t('.featurette_4_subheading'), body: t('.featurette_4_body') } %>
+
+</div>
+</div>
