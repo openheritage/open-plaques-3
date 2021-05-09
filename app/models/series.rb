@@ -25,7 +25,7 @@ class Series < ApplicationRecord
   end
 
   def uri
-    'https://openplaques.org' + Rails.application.routes.url_helpers.series_path(id, format: :json) if id
+    "https://openplaques.org#{Rails.application.routes.url_helpers.series_path(id, format: :json)}" if id
   end
 
   def as_json(options = {})

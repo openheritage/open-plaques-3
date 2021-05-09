@@ -5,10 +5,10 @@ class StaticPagesController < ApplicationController
   end
 
   def contribute
-    render 'contribute/show'
+    render 'contribute/index'
   end
 
   def contact
-    render 'contact/show'
+    render 'contact/index'
   end
 end

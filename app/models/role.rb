@@ -213,7 +213,7 @@ class Role < ApplicationRecord
   end
 
   def uri
-    'https://openplaques.org' + Rails.application.routes.url_helpers.role_path(slug, format: :json)
+    "https://openplaques.org#{Rails.application.routes.url_helpers.role_path(slug, format: :json)}"
   end
 
   def to_s

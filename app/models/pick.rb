@@ -28,8 +28,8 @@ class Pick < ApplicationRecord
     where(
       [
         'feature_on > ? and feature_on < ?',
-        (Date.today - 1.day).strftime + ' 23:59:59 UTC',
-        (Date.today + 1.day).strftime + ' 00:00:00 UTC'
+        "#{(Date.today - 1.day).strftime} 23:59:59 UTC",
+        "#{(Date.today + 1.day).strftime} 00:00:00 UTC"
       ]
     )
       .order(featured_count: :asc)

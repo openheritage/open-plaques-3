@@ -24,10 +24,10 @@ module PersonalConnectionsHelper
     connections = person.personal_connections.where(plaque_id: plaque)
     connections.each do |personal_connection|
       years = ''
-      years += '(' + personal_connection.from if personal_connection.from != ''
-      years += '-' + personal_connection.to unless ['', personal_connection.from].include?(personal_connection.to)
+      years += "(#{personal_connection.from}" if personal_connection.from != ''
+      years += "-#{personal_connection.to}" unless ['', personal_connection.from].include?(personal_connection.to)
       years += ')' if years != ''
-      verbs << personal_connection.verb.name + ' ' + years
+      verbs << "#{personal_connection.verb.name} #{years}"
     end
     verbs
   end

@@ -50,7 +50,7 @@ module PeopleHelper
 
     roles = []
     person.personal_roles.each { |personal_role| roles << dated_role(personal_role) }
-    dated_person(person) + roles.empty? ? '' : ', ' + roles.to_sentence.html_safe
+    dated_person(person) + roles.empty? ? '' : ", #{roles.to_sentence.html_safe}"
   end
 
   def dated_person(person, options = {})

@@ -104,7 +104,7 @@ class Photo < ApplicationRecord
   def wikimedia_filename
     name = ''
     begin
-      name = url[url.index('File:') + 5..-1] if wikimedia?
+      name = url[url.index('File:') + 5..] if wikimedia?
     rescue
       name = url.split('/').last
     end
@@ -230,7 +230,7 @@ class Photo < ApplicationRecord
   end
 
   def uri
-    'https://openplaques.org' + Rails.application.routes.url_helpers.photo_path(self, format: :json)
+    "https://openplaques.org#{Rails.application.routes.url_helpers.photo_path(self, format: :json)}"
   end
 
   def to_s
@@ -287,7 +287,7 @@ class Photo < ApplicationRecord
         self.longitude = wikimedia[:longitude] if wikimedia[:longitude]
       end
     rescue RuntimeError => e
-      errors.add :file_url, 'Commoner errored' + e.full_messages
+      errors.add :file_url, "Commoner errored #{e.full_messages}"
     end
   end
 

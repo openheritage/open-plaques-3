@@ -39,7 +39,7 @@ class Person < ApplicationRecord
   scope :unphotographed, -> { where('id not in (select person_id from photos)') }
   scope :connected, -> { where('personal_connections_count > 0') }
   scope :unconnected, -> { where(personal_connections_count: [nil, 0]) }
-  scope :aka, ->(term) { where(["array_to_string(aka, ' ') ILIKE ?", term.gsub(' ', '%') + '%']) }
+  scope :aka, ->(term) { where(["array_to_string(aka, ' ') ILIKE ?", "#{term.gsub(' ', '%')}%"]) }
   scope :with_counts, lambda {
     select <<~SQL
       people.*,
@@ -74,7 +74,6 @@ class Person < ApplicationRecord
   def primary_roles
     @primary_roles ||= begin
       r = personal_roles.select(&:primary?)
-      
       if r.empty?
         if !straight_roles.empty?
           # if >1 then cannot judge which is the 'best' role
@@ -97,7 +96,7 @@ class Person < ApplicationRecord
 
   def default_action
     action = Verb.find_by(name: 'was')
-    if (type == 'thing' || type == 'place' || type == 'place' || type == 'group')
+    if type == 'thing' || type == 'place' || type == 'place' || type == 'group'
       action = Verb.find_by(name: 'sited')
     elsif primary_role&.role&.name == 'architect'
       action = Verb.find_by(name: 'designed')
@@ -197,7 +196,7 @@ class Person < ApplicationRecord
 
   def age
     circa = died_on && born_on && born_on.month == 1 && born_on.day == 1 && died_on.month == 1 && died_on.day == 1
-    return "c. #{(died_on.year - born_on.year)}" if circa
+    return "c. #{died_on.year - born_on.year}" if circa
 
     if died_on && born_on
       a = died_on.year - born_on.year
@@ -227,7 +226,7 @@ class Person < ApplicationRecord
     Wikidata.new(wikidata_id).en_wikipedia_url
   rescue
     # timeout?
-    puts "Wikidata timeout?"
+    puts 'Wikidata timeout?'
   end
 
   def dbpedia_uri
@@ -728,8 +727,7 @@ class Person < ApplicationRecord
   end
 
   def as_json(options = nil)
-    if options && options[:only]
-    else
+    unless options && options[:only]
       options = {
         only: [],
         include: {

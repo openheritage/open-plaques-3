@@ -48,7 +48,7 @@ class AreaPlaquesController < ApplicationController
       @display = 'all'
     end
     respond_with @plaques do |format|
-      format.html { 
+      format.html do
         @plaques_count = @area.plaques.count
         @uncurated_count = @area.plaques.unconnected.size
         @curated_count = @plaques_count - @uncurated_count
@@ -104,7 +104,7 @@ class AreaPlaquesController < ApplicationController
         end
         puts "gender #{@gender}"
         render 'areas/plaques/show'
-      }
+      end
       format.json { render json: @plaques }
       format.geojson { render geojson: @plaques.geolocated, parent: @area }
       format.csv do

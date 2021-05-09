@@ -25,7 +25,7 @@ class Verb < ApplicationRecord
   end
 
   def uri
-    'https://openplaques.org' + Rails.application.routes.url_helpers.verb_path(self, format: :json)
+    "https://openplaques.org#{Rails.application.routes.url_helpers.verb_path(self, format: :json)}"
   end
 
   def as_json(options = nil)
