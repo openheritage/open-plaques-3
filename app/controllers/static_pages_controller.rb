@@ -1,6 +1,7 @@
 class StaticPagesController < ApplicationController
   def about
     @organisations_count = Organisation.count
+    render 'about/index'
   end
 
   def contribute
