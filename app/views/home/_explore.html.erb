@@ -1,9 +1,10 @@
 <div class="card">
-    <h2 class="card-header text-center"><%=t '.explore' %></h2>
-    <div class="card-body">
-        <p class="card-text">So far, plaque hunters around the world have found, photographed, and curated <%= @plaques_count %> plaques.
-            Use the search box in the top-right corner, or browse plaques by
-            <%= link_to "person", people_path, class: 'card-link' %>,
-            <%= link_to "place", countries_path %></p>
-    </div>
+  <h2 class="card-header text-center"><%=t '.explore' %></h2>
+  <div class="card-body">
+    <p class="card-text">So far, plaque hunters around the world have found, photographed, and curated <%= @plaques_count %> plaques.
+      Use the search box in the top-right corner, or browse plaques by
+      <%= link_to "person", people_path, class: 'card-link' %>, 
+      <%= link_to "place", countries_path %>
+    </p>
+  </div>
 </div>

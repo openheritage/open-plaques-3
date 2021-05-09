@@ -86,7 +86,7 @@ class Plaque < ApplicationRecord
 
   def erected_at_string=(date)
     self.erected_at = if date.length == 4
-                        Date.parse(date + '-01-01')
+                        Date.parse("#{date}-01-01")
                       else
                         date
                       end
@@ -226,8 +226,8 @@ class Plaque < ApplicationRecord
       first_4_people.to_sentence
     elsif people.any?
       t = people.collect(&:name).to_sentence
-      t += ' ' + colour_name if colour_name && colour_name != 'unknown'
-      t + ' plaque'
+      t += " #{colour_name}" if colour_name && colour_name != 'unknown'
+      "#{t} plaque"
     elsif colour_name && colour_name != 'unknown'
       "#{colour_name.to_s.capitalize} plaque № #{id}"
     elsif !id.nil?
@@ -329,11 +329,12 @@ class Plaque < ApplicationRecord
     # tile = '/plaques/'
     # tile += options + '/' if options && options != '' && options != 'all'
     # tile += "tiles/#{zoom}/#{xtile}/#{ytile}"
-    if options == 'unphotographed'
+    case options
+    when 'unphotographed'
       unphotographed
         .select(:id, :inscription, :latitude, :longitude, :is_accurate_geolocation)
         .where(latitude: latitude, longitude: longitude)
-    elsif options == 'unconnected'
+    when 'unconnected'
       unconnected
         .select(:id, :inscription, :latitude, :longitude, :is_accurate_geolocation)
         .where(latitude: latitude, longitude: longitude)
@@ -388,7 +389,7 @@ class Plaque < ApplicationRecord
   end
 
   def uri
-    'https://openplaques.org' + Rails.application.routes.url_helpers.plaque_path(self) if id
+    "https://openplaques.org#{Rails.application.routes.url_helpers.plaque_path(self)}" if id
   end
 
   def to_s

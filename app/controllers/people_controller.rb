@@ -62,11 +62,11 @@ class PeopleController < ApplicationController
   end
 
   def show
-    if params[:id] =~ /\A\d+\Z/
-      @person = Person.with_counts.find(params[:id])
-    else
+    unless params[:id] =~ /\A\d+\Z/
       redirect_to(controller: :people, action: :index, filter: params[:id]) and return
     end
+
+    @person = Person.with_counts.find(params[:id])
     begin
       set_meta_tags description: "#{@person.name_and_dates} historical plaques and markers"
       set_meta_tags open_graph: {
@@ -98,7 +98,7 @@ class PeopleController < ApplicationController
         send_data(
           "\uFEFF#{PersonCsv.new(@people).build}",
           type: 'text/csv',
-          filename: 'open-plaque-subject-' + @person.id.to_s + '.csv',
+          filename: "open-plaque-subject-#{@person.id}.csv",
           disposition: 'attachment'
         )
       end

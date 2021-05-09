@@ -13,7 +13,7 @@ module PlaquesHelper
     regex = /#{search_term}/i
     return text unless text =~ regex
 
-    text = ' ' + text + ' '
+    text = " #{text} "
     indexes = []
     first_index = text.index(regex)
     indexes << first_index
@@ -326,9 +326,9 @@ module PlaquesHelper
           matched = !reduced_inscription.upcase.index(search_for.upcase).nil?
           i = reduced_inscription.upcase.index(search_for.upcase)
         end
-        reduced_inscription = "#{reduced_inscription[0..i]}#{reduced_inscription[(i + search_for.length - 1)..-1]}" if matched
+        reduced_inscription = "#{reduced_inscription[0..i]}#{reduced_inscription[(i + search_for.length - 1)..]}" if matched
         i_inscription = inscription.upcase.index(search_for.upcase)
-        inscription = "#{inscription[0..(i_inscription - 1)] if i_inscription.positive?}#{link_to(search_for, person_path(person))}#{inscription[(i_inscription + search_for.length)..-1]}" if i
+        inscription = "#{inscription[0..(i_inscription - 1)] if i_inscription.positive?}#{link_to(search_for, person_path(person))}#{inscription[(i_inscription + search_for.length)..]}" if i
       end
     end
     inscription += ' [full inscription unknown]' if plaque.inscription_is_stub
@@ -399,10 +399,7 @@ module PlaquesHelper
 
   # A geographic point location
   class Point
-    attr_accessor :precision
-    attr_accessor :latitude
-    attr_accessor :longitude
-    attr_accessor :zoom
+    attr_accessor :latitude, :longitude, :precision, :zoom
 
     def as_wkt
       "POINT(#{latitude} #{longitude})"

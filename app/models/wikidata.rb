@@ -114,7 +114,7 @@ class Wikidata
       wikidata = JSON.parse(resp, object_class: OpenStruct)
       if wikidata.not_found?
         #  try again with first letter in uppercase
-        name = name[0].upcase + name[1..-1]
+        name = name[0].upcase + name[1..]
         api = "#{api_root}wbgetentities&sites=enwiki&titles=#{name}&format=json"
         logger.debug(api)
         response = URI.parse(api).open
