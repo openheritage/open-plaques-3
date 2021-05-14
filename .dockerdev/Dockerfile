@@ -20,7 +20,7 @@ RUN apt-get update -qq \
   && truncate -s 0 /var/log/*log
 
 # Install Heroku CLI
-RUN curl https://cli-assets.heroku.com/install.sh | sh
+RUN curl https://cli-assets.heroku.com/install.sh | sh && heroku update
 
 # Add PostgreSQL to sources list
 #RUN curl -sSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
