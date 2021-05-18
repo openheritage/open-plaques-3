@@ -79,15 +79,10 @@ function initmap()
     L.Icon.Default.imagePath = '/assets';
     map = L.map('plaque-map');
     map.scrollWheelZoom.disable();
-    var basemap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    	maxZoom: 19,
-    	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    })
-    var basemap2 = L.tileLayer('https://maps.tilehosting.com/styles/basic/{z}/{x}/{y}.png?key=qSorA16cJhhBZEhqDisF', {
-    	maxZoom: 19,
-    	attribution: '&copy; <a href="http://www.openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
-    });
-    map.addLayer(basemap);
+    var basemap3 = L.mapboxGL({
+      attribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
+      style: 'https://api.maptiler.com/maps/basic/style.json?key=qSorA16cJhhBZEhqDisF'
+    }).addTo(map);
     var latitude = plaque_map.attr("data-latitude"), longitude = plaque_map.attr("data-longitude"), zoom = plaque_map.attr("data-zoom");
     var zoom_level = 14;
     if (zoom)
