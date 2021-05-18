@@ -19,11 +19,10 @@ document.addEventListener("DOMContentLoaded", function()
 
     map = L.map('map').setView(geolocation, view)
     map.scrollWheelZoom.disable()
-    var basemap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     	maxZoom: 19,
     	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    })
-    map.addLayer(basemap)
+    }).addTo(map)
     marker = L.marker(geolocation, {draggable: true, icon: plaque_icon})
     marker.on('dragend', update_text_fields_from_marker)
     marker.addTo(map)

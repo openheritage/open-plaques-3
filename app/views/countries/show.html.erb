@@ -14,10 +14,10 @@
     var map = L.map('map', {maxZoom: 13})
     map.scrollWheelZoom.disable()
     map.setView([<%= @country.latitude %>, <%= @country.longitude %>], <%= @country.zoom %>)
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map)
+    L.mapboxGL({
+        attribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
+        style: 'https://api.maptiler.com/maps/basic/style.json?key=qSorA16cJhhBZEhqDisF'
+      }).addTo(map)
     var blueIcon = new L.Icon({
       iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
       shadowUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-shadow.png',

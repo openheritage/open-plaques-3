@@ -18,7 +18,6 @@
 //= require jquery_ujs
 //= require leaflet.ajax
 //= require leaflet.markercluster
-//= require tile.stamen
 //= require RGraph.svg.common.ajax.js
 //= require RGraph.svg.common.core.js
 //= require RGraph.svg.common.fx.js
