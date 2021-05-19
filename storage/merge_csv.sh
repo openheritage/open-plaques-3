@@ -1,4 +1,4 @@
-for country in */ ; do
+for country in 'gb/'; do # */ ; do
   echo "country:" $country
   for city_or_state in ${country}*/ ; do
     if [ -d ${city_or_state} ]; then
@@ -20,5 +20,5 @@ for country in */ ; do
     fi
   done
   echo "merge plaques for country"
-  awk '(NR == 1) || (FNR > 1)' ${country}*/plaques.csv > ${country}/plaques.csv
+  awk '(NR == 1) || (FNR > 1)' ${country}*/plaques.csv > ${country}/open-plaques-${country}-2012-05-14.csv
 done

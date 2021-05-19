@@ -1,4 +1,4 @@
-for country in 'united_kingdom/'; do # */ ; do
+for country in 'gb/'; do # */ ; do
   echo "country:" $country
   for city_or_state in ${country}*/ ; do
     if [ -d ${city_or_state} ]; then
