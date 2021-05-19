@@ -9,7 +9,7 @@
       <% else %>
         <%= link_to area.name, area_plaques_path(area) %>
       <% end %>
-      <span class="badge badge-secondary pull-right">
+      <span class="badge bg-secondary pull-right">
         <%= pluralize(area.plaques_count, 'plaque') %>
       </span>
       <%= icon(:far, :compass) if area.geolocated? %>

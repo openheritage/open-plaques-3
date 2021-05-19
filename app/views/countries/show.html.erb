@@ -4,7 +4,7 @@
 <% content_for(:admin_menu) { navbar_link_to t('buttons.edit'), edit_country_path(@country) } %>
 <% content_for(:admin_menu) { navbar_link_to t('buttons.add'), new_country_area_path(@country.alpha2) } %>
 
-<span class="badge badge-secondary pull-right"><%= pluralize(@subject_count, 'subject') %></span>
+<span class="badge bg-secondary pull-right"><%= pluralize(@subject_count, 'subject') %></span>
 <%= render partial: 'people/diversity' %>
 <%= render partial: 'people/top10' %>
 
@@ -32,7 +32,7 @@
         pointToLayer: function(feature, latlng) {
           var number_icon = new L.DivIcon({
             className: 'plaque-marker',
-            html: `<span class="badge badge-secondary">${feature.properties['plaques_count']}</span>`,
+            html: `<span class="badge bg-secondary">${feature.properties['plaques_count']}</span>`,
             iconSize: [20, 20],
             popupAnchor: [3, -40]
           })

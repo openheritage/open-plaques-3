@@ -6,6 +6,7 @@ en-GB:
     models:
       area: Area
       photo: Photo
+      plaque: Plaque
     attributes:
       area:
         name: Name

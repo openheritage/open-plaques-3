@@ -1,6 +1,6 @@
 <% if @todays %>
   <div class="card">
-    <div class="row no-gutters">
+    <div class="row g-0 align-items-center">
       <% if @todays&.photo %>
         <div class="col-md-4">
           <%= link_to @todays.plaque do %>
@@ -12,7 +12,7 @@
         <div class="card-body">
           <h5 class="card-title"><%= t '.plaque_of_the_day' %></h5>
           <p class="card-text"><%= link_to @todays.plaque.title, @todays.plaque %></p>
-          <p class="card-text"><%= @todays.proposer %> says,"<%= @todays.description %>"</p>
+          <p class="card-text"><%= @todays.proposer %> says, "<%= @todays.description %>"</p>
           <div class="card-text"><%= link_to "See more...", picks_path, class: "btn btn-primary" %></div>
         </div>
       </div>

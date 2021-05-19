@@ -2,7 +2,7 @@
 <% content_for(:title) {@series.name} %>
 <% content_for(:page_subhead) do %>
   <p><%= @series.description %></p>
-  <span class="badge badge-secondary pull-right"><%= @series.plaques_count %></span>
+  <span class="badge bg-secondary pull-right"><%= @series.plaques_count %></span>
 <% end %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_series_path(@series)} %>
 

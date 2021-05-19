@@ -2,6 +2,13 @@
 $grid-gutter-width: 20px;
 $grid-float-breakpoint: 480px;
 
+.jumbotron {
+  padding: 2rem 1rem;
+  margin-bottom: 2rem;
+  background-color: #e9ecef;
+  border-radius: .3rem;
+}
+
 // CardColumns
 @media (min-width: 34em) {
   .card-columns {
