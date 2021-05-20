@@ -50,14 +50,14 @@
           </div>
         </div>
         <div class="row">
-          <% @plaque.other_photos[1..4].each do |photo| %>
+          <% @plaque.other_photos[1..4]&.each do |photo| %>
             <div class="col-sm-3">
               <%= render photo %>
             </div>
           <% end %>
         </div>
         <div class="row">
-          <% @plaque.other_photos[5..].each do |photo| %>
+          <% @plaque.other_photos[5..]&.each do |photo| %>
             <div class="col-sm-2">
               <%= render photo %>
             </div>
