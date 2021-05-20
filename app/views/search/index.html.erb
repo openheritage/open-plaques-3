@@ -18,7 +18,7 @@
       <% end %>
     </div>
   <% else %>
-    <div class="card-columns">
+    <div class="row" data-masonry='{"percentPosition": true }'>
       <%= render @organisations %>
     </div>
   <% end %>
@@ -41,7 +41,7 @@
       <% end %>
     </div>
   <% else %>
-    <div class="card-columns">
+    <div class="row" data-masonry='{"percentPosition": true }'>
       <%= render @places %>
     </div>
   <% end %>
@@ -64,7 +64,7 @@
       <% end %>
     </div>
   <% else %>
-    <div class="card-columns">
+    <div class="row" data-masonry='{"percentPosition": true }'>
       <%= render @people %>
     </div>
   <% end %>

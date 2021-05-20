@@ -6,29 +6,31 @@
 <% end %>
 <% photo = plaque.main_photo %>
 
-<div class="card plaque text-center">
-  <%= link_to plaque_path(plaque) do %>
-    <% if photo && photo.thumbnail_url %>
-      <%= render photo %>
-    <% else %>
-      <%= image_tag('NoPhotoSqr.png', {class: 'card-img-top img-responsive w-100'}) %>
-      <div class="card-img-overlay">
-        <% unless photo && photo.thumbnail_url %>
-          <h7 class="card-title"><%= plaque.inscription.truncate(90) %></h7>
-        <% end %>
-      </div>
+<div class="col-sm-3 col-lg-2 mb-2">
+  <div class="card plaque text-center">
+    <%= link_to plaque_path(plaque) do %>
+      <% if photo && photo.thumbnail_url %>
+        <%= render photo %>
+      <% else %>
+        <%= image_tag('NoPhotoSqr.png', {class: 'card-img-top img-responsive w-100'}) %>
+        <div class="card-img-overlay">
+          <% unless photo && photo.thumbnail_url %>
+            <h7 class="card-title"><%= plaque.inscription.truncate(90) %></h7>
+          <% end %>
+        </div>
+      <% end %>
     <% end %>
-  <% end %>
-  <div class="card-footer">
-    <% if plaque.attributes.key?('series_id') && plaque.series %>
-      <div class="card-text">
-        <small class="text-muted">
-          <%= link_to plaque.series.name, plaque.series %> <% if plaque.series_ref? %>#<%= plaque.series_ref %> <% end %>
-        </small>
-      </div>
-    <% end %>
-    <%= icon(:far, :compass) if plaque.geolocated? %>
-    <small class="text-muted"><%= plaque.area.full_name if plaque.area %></small>
+    <div class="card-footer">
+      <% if plaque.attributes.key?('series_id') && plaque.series %>
+        <div class="card-text">
+          <small class="text-muted">
+            <%= link_to plaque.series.name, plaque.series %> <% if plaque.series_ref? %>#<%= plaque.series_ref %> <% end %>
+          </small>
+        </div>
+      <% end %>
+      <%= icon(:far, :compass) if plaque.geolocated? %>
+      <small class="text-muted"><%= plaque.area.full_name if plaque.area %></small>
+    </div>
   </div>
 </div>
 

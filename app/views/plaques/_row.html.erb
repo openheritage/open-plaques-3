@@ -41,20 +41,15 @@
       </small>
     </p>
     <% if !controller.controller_name.eql?('people') && plaque.people.count > 0 %>
-      <style media="screen" type="text/css">
-        .subjects .card-columns .card-info .card-title {
-          font-size: 12px;
-        }
-      </style>
       <h5>Subjects</h5>
       <div class="container">
-      <% @people = plaque.people %>
-      <%= will_paginate @people if @people.respond_to?(:total_pages) %>
-      <div id="person-tiles" class="card-columns">
-        <%= render partial: 'people/tile', collection: @people, as: :person %>
+        <% @people = plaque.people %>
+        <%= will_paginate @people if @people.respond_to?(:total_pages) %>
+        <div id="person-tiles" class="row" data-masonry='{"percentPosition": true }'>
+          <%= render partial: 'people/tile', collection: @people, as: :person %>
+        </div>
+        <%= will_paginate @people if @people.respond_to?(:total_pages) %>
       </div>
-      <%= will_paginate @people if @people.respond_to?(:total_pages) %>
-    </div>
     <% end %>
   </div>
 </div>

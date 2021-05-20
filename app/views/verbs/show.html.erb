@@ -23,7 +23,7 @@
   </div>
 <% else %>
   <%= will_paginate @personal_connections %>
-  <div class="card-columns">
+  <div class="row" data-masonry='{"percentPosition": true }'>
     <%= render @personal_connections %>
   </div>
   <%= will_paginate @personal_connections %>

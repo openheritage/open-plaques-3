@@ -4,7 +4,7 @@
 
 <% if @people.size > 0 %>
   <%= will_paginate @people %>
-  <div class="card-columns">
+  <div class="row" data-masonry='{"percentPosition": true }'>
     <%= render @people %>
   </div>
   <%= will_paginate @people %>

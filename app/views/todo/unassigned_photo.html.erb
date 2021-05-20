@@ -4,7 +4,7 @@
 
 <% if @photos.size > 0 %>
   <%= will_paginate @photos %>
-  <div class="card-columns">
+  <div class="row" data-masonry='{"percentPosition": true }'>
     <% @photos.each do |photo| %>
       <%= link_to edit_photo_path(photo) do %>
         <%= render photo %>

@@ -3,6 +3,8 @@
 <% content_for(:page_subhead) {t '.different_strokes'} %>
 <% content_for(:admin_menu) {navbar_link_to(t('buttons.add'), new_country_path)} %>
 
-<div class="card-columns">
+<div class="row" data-masonry='{"percentPosition": true }'>
   <%= render @countries %>
 </div>
+
+<%= render partial: 'people/top10' %>
