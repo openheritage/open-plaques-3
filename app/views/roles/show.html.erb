@@ -6,7 +6,7 @@
   <%= icon(:fas, :building) if @role.place? %>
   <%= icon(:fas, :'map-marker') if @role.thing? %>
   <%= @role.pluralize %>
-  <span class="badge badge-secondary">
+  <span class="badge bg-secondary">
     <%= @personal_roles.total_entries if @personal_roles.respond_to?(:total_entries) %>
     <%= @personal_roles.size unless @personal_roles.respond_to?(:total_entries) %>
   </span>
@@ -32,7 +32,7 @@
   <div class="row">
     <h2><%= t '.related_roles'%></h2>
   </div>
-  <div class="card-columns">
+  <div class="row" data-masonry='{"percentPosition": true }'>
     <% @role.related_roles.each do |related_role| %>
       <%= link_to related_role do %>
         <%= render related_role %>

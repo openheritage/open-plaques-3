@@ -2,12 +2,13 @@
 
 <% if @top.size > 0 %>
   <h2>The top 10</h2>
-  <div class="card-columns">
+  <div class="row">
     <% @top.each do |t| %>
       <% person = Person.find(t.id) %>
+      <div class="col-sm-3 col-lg-2 mb-2">
       <%= link_to(person) do %>
         <div class="card card-inverse vcard person" typeof="<%= if (person.person?) then "foaf:Person" else "foaf:Agent" end %> vcard:VCard" about="#person" style="min-height: 8rem; background-color: #999;">
-          <%= image_tag(person.main_photo.thumbnail_url, {class: 'card-img w-50'}) if person.main_photo&.thumbnail_url %>
+          <%= image_tag(person.main_photo.thumbnail_url, {class: 'card-img w-100'}) if person.main_photo&.thumbnail_url %>
           <div class="card-info">
             <span class="card-title fn">
               <span class="badge badge-primary">#<%= t.rank %></span> <%= person.full_name %><br/>
@@ -20,10 +21,11 @@
                 <small><%= person.gender %></small>
               <% end %>
             </span>
-            <span class="badge badge-primary"><%= pluralize(t.plaques_count, 'plaque') %></span>
+            <span class="badge bg-primary"><%= pluralize(t.plaques_count, t('activerecord.models.plaque').downcase) %>  <%= @country.present? ? @area ? "in #{@area&.name}" : "in #{@country&.name}" : 'worldwide'  %></span>
           </div>
         </div>
       <% end %>
+      </div>
     <% end %>
   </div>
 <% end %>

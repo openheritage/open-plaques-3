@@ -1,12 +1,32 @@
 <% content_for(:page_title) { t '.page_title', country: @country.name } %>
-<% content_for(:title) { render @country } %>
+<% content_for(:title) { } %>
 <% content_for(:page_subhead) { @country.description } %>
 <% content_for(:admin_menu) { navbar_link_to t('buttons.edit'), edit_country_path(@country) } %>
 <% content_for(:admin_menu) { navbar_link_to t('buttons.add'), new_country_area_path(@country.alpha2) } %>
 
-<span class="badge badge-secondary pull-right"><%= pluralize(@subject_count, 'subject') %></span>
-<%= render partial: 'people/diversity' %>
-<%= render partial: 'people/top10' %>
+<div class="card ">
+  <div class="card-header align-text-center">
+      <%= link_to 'Country', countries_path %> /
+      <span class="flag-icon flag-icon-<%= @country.alpha2 %>"></span>
+      <%= @country.name %>
+  </div>
+  <div class="card-body">
+    <div class="card-title">
+
+    </div>
+    <p class="card-text">
+      <span class="badge bg-secondary"><%= pluralize(@country.plaques_count, t('activerecord.models.plaque').downcase) %></span>
+      <% if controller.controller_name.eql?('countries') && controller.action_name.eql?('show') %>
+        <small><%= @percentage_curated %>% have been curated</small>
+      <% else %>
+       <%= icon(:far, :compass) if @country.geolocated? %>
+      <% end %>
+    </p>
+    <span class="badge bg-secondary pull-right"><%= pluralize(@subject_count, 'subject') %></span>
+  <%= render partial: 'people/diversity' %>
+  <%= render partial: 'people/top10' %>
+  </div>
+</div>
 
 <% if @country.geolocated? %>
   <div id="map" class="mini"></div>
@@ -32,7 +52,7 @@
         pointToLayer: function(feature, latlng) {
           var number_icon = new L.DivIcon({
             className: 'plaque-marker',
-            html: `<span class="badge badge-secondary">${feature.properties['plaques_count']}</span>`,
+            html: `<span class="badge bg-secondary">${feature.properties['plaques_count']}</span>`,
             iconSize: [20, 20],
             popupAnchor: [3, -40]
           })
@@ -50,7 +70,7 @@
   <% if !state.blank? %>
     <h2>Region: <%= state %></h2>
   <% end %>
-  <div class="card-columns">
+  <div class="row" data-masonry='{"percentPosition": true }'>
     <%= render areas %>
   </div>
 <% end %>

@@ -70,7 +70,6 @@ class AreaPlaquesController < ApplicationController
                .reject { |p| p['plaques_count'] < 2 }
                .map { |attributes| OpenStruct.new(attributes) }
         @top.each_with_index { |p, i| p['rank'] = i + 1 }
-        puts "top #{@top.size}"
         @gender = ActiveRecord::Base.connection.execute(
           "SELECT people.gender, count(distinct person_id) as subject_count
             FROM areas, plaques, personal_connections, people
@@ -102,7 +101,6 @@ class AreaPlaquesController < ApplicationController
             g['percent'] = 0
           end
         end
-        puts "gender #{@gender}"
         render 'areas/plaques/show'
       end
       format.json { render json: @plaques }

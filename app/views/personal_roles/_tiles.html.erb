@@ -18,7 +18,7 @@
   </div>
 <% else %>
   <%= will_paginate @personal_roles if @personal_roles.respond_to?(:total_pages) %>
-  <div class="card-columns">
+  <div class="row" data-masonry='{"percentPosition": true }'>
     <%= render @personal_roles %>
   </div>
   <%= will_paginate @personal_roles if @personal_roles.respond_to?(:total_pages) %>

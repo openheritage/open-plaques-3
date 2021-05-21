@@ -40,19 +40,9 @@
     </div>
   <% end %>
   <% if !controller.controller_name.eql?('people') && plaque.people.count > 0 %>
-    <style media="screen" type="text/css">
-      .subjects .card-columns {
-        -webkit-column-count: 2;
-        -moz-column-count: 2;
-        column-count: 2;
-      }
-      .subjects .card-columns .card-info .card-title {
-        font-size: 12px;
-      }
-    </style>
     <h5>Subjects</h5>
-    <div class="subjects">
-      <div class="card-columns">
+    <div class="container">
+      <div class="row" data-masonry='{"percentPosition": true }'>
         <%= render plaque.people %>
       </div>
     </div>

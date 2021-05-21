@@ -3,6 +3,6 @@
 <% content_for(:page_subhead) {t '.page_subhead'} %>
 <% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_verb_path} %>
 
-<div class="card-columns">
+<div class="row" data-masonry='{"percentPosition": true }'>
   <%= render @verbs %>
 </div>

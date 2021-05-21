@@ -82,7 +82,7 @@
         <% end %>
       </div>
     <% else %>
-      <div class="card-columns">
+      <div class="row" data-masonry='{"percentPosition": true }'>
         <% @person.non_family_relationships.each do |relationship| %>
           <%= render relationship.related_person %>
         <% end %>

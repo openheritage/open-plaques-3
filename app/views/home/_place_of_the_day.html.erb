@@ -1,13 +1,18 @@
 <% if @todays_place %>
   <div class="card">
-    <div class="row no-gutters">
+    <div class="row g-0 align-items-center">
       <div class="col-md-4">
         <%= render @todays_place.main_photo %>
       </div>
       <div class="col-md-8">
         <div class="card-body">
           <h5 class="card-title"><%= t '.place_of_the_day' %></h5>
-          <p class="card-text"><%= render @todays_place %></p>
+          <p class="card-text">
+            <% if @todays_place.country %>
+              <span class="flag-icon flag-icon-<%= @todays_place.country.alpha2 %>"></span>
+            <% end %>
+            <%= @todays_place.name %>, <%= @todays_place.country.name %>
+          </p>
           <p class="card-text"><%= @todays_place_description %></p>
           <div class="card-text"><%= link_to "See more...", area_path(@todays_place), class: "btn btn-primary" %></div>
         </div>

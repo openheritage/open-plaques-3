@@ -9,6 +9,22 @@ class CountriesController < ApplicationController
     @countries = Country.all.to_a
     @countries.delete_if { |x| x.plaques_count.zero? }
     @countries.sort! { |a, b| b.plaques_count <=> a.plaques_count }
+    @results = ActiveRecord::Base.connection.execute(
+      "SELECT people.id, people.name, people.gender,
+        (
+          SELECT count(distinct plaque_id)
+          FROM personal_connections, plaques
+          WHERE personal_connections.person_id = people.id
+          AND personal_connections.plaque_id = plaques.id
+        ) as plaques_count
+        FROM people
+        ORDER BY plaques_count desc
+        LIMIT 10"
+    )
+    @top = @results
+           .reject { |p| p['plaques_count'] < 2 }
+           .map { |attributes| OpenStruct.new(attributes) }
+    @top.each_with_index { |p, i| p['rank'] = i + 1 }
     set_meta_tags open_graph: {
       type: :website,
       url: url_for(only_path: false),
@@ -80,7 +96,6 @@ class CountriesController < ApplicationController
            .reject { |p| p['plaques_count'] < 2 }
            .map { |attributes| OpenStruct.new(attributes) }
     @top.each_with_index { |p, i| p['rank'] = i + 1 }
-    puts "top #{@top.size}"
     @gender = ActiveRecord::Base.connection.execute(
       "SELECT people.gender, count(distinct person_id) as subject_count
         FROM areas, plaques, personal_connections, people
