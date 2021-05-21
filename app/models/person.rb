@@ -477,8 +477,7 @@ class Person < ApplicationRecord
   end
 
   def male?
-    if gender == 'u'
-      self.gender = 'm' if
+    self.gender = 'm' if gender == 'u' &&
       %w[
         Abel Abraham
         Adam Adolf Adolphus Adrian
@@ -565,14 +564,13 @@ class Person < ApplicationRecord
         Wilfred Wilf William Will Willie
         Zachariah Zachary Zach
       ].include?(firstname)
-    end
     !female?
   end
 
   def female?
-    if gender == 'u'
-      self.gender = 'f' if roles.any?(&:female?)
-      self.gender = 'f' if
+    self.gender = 'f' if gender == 'u' && roles.any?(&:female?)
+    self.gender = 'f' if
+      gender == 'u' &&
       %w[
         Abigail
         Adelaide Adele Ada
@@ -636,7 +634,7 @@ class Person < ApplicationRecord
         Ruth
         Sally Sarah Sara
         Selma
-        Shelley
+        Shelley Shirley
         Sonia Sophie
         Susan Susanna
         Toni Therese
@@ -645,8 +643,7 @@ class Person < ApplicationRecord
         Victoria Violet Virginia
         Wilhelmina Winifred
       ].include?(firstname)
-      self.gender = 'm' unless inanimate_object?
-    end
+    self.gender = 'm' if gender == 'u' && !inanimate_object?
     gender == 'f'
   end
 
@@ -694,8 +691,10 @@ class Person < ApplicationRecord
       died = name_and_dates[3]
     end
     @people = []
-    unaccented_phrase = name.tr("’ßÀÁÂÃÄÅàáâãäåĀāĂăĄąÇçĆćĈĉĊċČčÐðĎďĐđÈÉÊËèéêëĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħÌÍÎÏìíîïĨĩĪīĬĭĮįİıĴĵĶķĸĹĺĻļĽľĿŀŁłÑñŃńŅņŇňŉŊŋÒÓÔÕÖØòóôõöøŌōŎŏŐőŔŕŖŗŘřŚśŜŝŞşŠšſŢţŤťŦŧÙÚÛÜùúûüŨũŪūŬŭŮůŰűŲųŴŵÝýÿŶŷŸŹźŻżŽž",
-"'sAAAAAAaaaaaaAaAaAaCcCcCcCcCcDdDdDdEEEEeeeeEeEeEeEeEeGgGgGgGgHhHhIIIIiiiiIiIiIiIiIiJjKkkLlLlLlLlLlNnNnNnNnnNnOOOOOOooooooOoOoOoRrRrRrSsSsSsSssTtTtTtUUUUuuuuUuUuUuUuUuUuWwYyyYyYZzZzZz")
+    unaccented_phrase = name.tr(
+      "’ßÀÁÂÃÄÅàáâãäåĀāĂăĄąÇçĆćĈĉĊċČčÐðĎďĐđÈÉÊËèéêëĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħÌÍÎÏìíîïĨĩĪīĬĭĮįİıĴĵĶķĸĹĺĻļĽľĿŀŁłÑñŃńŅņŇňŉŊŋÒÓÔÕÖØòóôõöøŌōŎŏŐőŔŕŖŗŘřŚśŜŝŞşŠšſŢţŤťŦŧÙÚÛÜùúûüŨũŪūŬŭŮůŰűŲųŴŵÝýÿŶŷŸŹźŻżŽž",
+      "'sAAAAAAaaaaaaAaAaAaCcCcCcCcCcDdDdDdEEEEeeeeEeEeEeEeEeGgGgGgGgHhHhIIIIiiiiIiIiIiIiIiJjKkkLlLlLlLlLlNnNnNnNnnNnOOOOOOooooooOoOoOoRrRrRrSsSsSsSssTtTtTtUUUUuuuuUuUuUuUuUuUuWwYyyYyYZzZzZz"
+    )
     phrase_like = "%#{name.tr(' ', '%').tr('.', '%')}%"
     unaccented_phrase_like = "%#{unaccented_phrase.tr(' ', '%').tr('.', '%')}%"
     @people += Person.name_contains(name).limit(cap)
@@ -773,8 +772,10 @@ class Person < ApplicationRecord
   end
 
   def unaccented_name
-    name.tr('ÀÁÂÃÄÅàáâãäåĀāĂăĄąÇçĆćĈĉĊċČčÐðĎďĐđÈÉÊËèéêëĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħÌÍÎÏìíîïĨĩĪīĬĭĮįİıĴĵĶķĸĹĺĻļĽľĿŀŁłÑñŃńŅņŇňŉŊŋÒÓÔÕÖØòóôõöøŌōŎŏŐőŔŕŖŗŘřŚśŜŝŞşŠšſŢţŤťŦŧÙÚÛÜùúûüŨũŪūŬŭŮůŰűŲųŴŵÝýÿŶŷŸŹźŻżŽž',
-'AAAAAAaaaaaaAaAaAaCcCcCcCcCcDdDdDdEEEEeeeeEeEeEeEeEeGgGgGgGgHhHhIIIIiiiiIiIiIiIiIiJjKkkLlLlLlLlLlNnNnNnNnnNnOOOOOOooooooOoOoOoRrRrRrSsSsSsSssTtTtTtUUUUuuuuUuUuUuUuUuUuWwYyyYyYZzZzZz')
+    name.tr(
+      'ÀÁÂÃÄÅàáâãäåĀāĂăĄąÇçĆćĈĉĊċČčÐðĎďĐđÈÉÊËèéêëĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħÌÍÎÏìíîïĨĩĪīĬĭĮįİıĴĵĶķĸĹĺĻļĽľĿŀŁłÑñŃńŅņŇňŉŊŋÒÓÔÕÖØòóôõöøŌōŎŏŐőŔŕŖŗŘřŚśŜŝŞşŠšſŢţŤťŦŧÙÚÛÜùúûüŨũŪūŬŭŮůŰűŲųŴŵÝýÿŶŷŸŹźŻżŽž',
+      'AAAAAAaaaaaaAaAaAaCcCcCcCcCcDdDdDdEEEEeeeeEeEeEeEeEeGgGgGgGgHhHhIIIIiiiiIiIiIiIiIiJjKkkLlLlLlLlLlNnNnNnNnnNnOOOOOOooooooOoOoOoRrRrRrSsSsSsSssTtTtTtUUUUuuuuUuUuUuUuUuUuWwYyyYyYZzZzZz'
+    )
   end
 
   def accented_name?

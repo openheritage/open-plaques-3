@@ -40,7 +40,7 @@ class PhotographersController < ApplicationController
     # which is useful, because it finds more than is in the public search
     @photographer = params[:flickr_url]
     @photographer.gsub!('http://www.flickr.com/photos/', '')
-    @photographer.gsub!(%r{\/.*}, '')
+    @photographer.gsub!(%r{/.*}, '')
     Helper.instance.find_photo_by_machinetag(nil, @photographer)
     redirect_to photographers_path
   end

@@ -28,11 +28,7 @@ class PlaquesController < ApplicationController
         conditions[:updated_at] = since..now
       end
     end
-    if params[:limit] # && params[:limit].to_i <= 2000
-      @limit = params[:limit]
-    else
-      @limit = 20
-    end
+    @limit = params[:limit] || 20
     select = 'all'
     select = 'unphotographed' if params[:filter] == 'unphotographed'
     zoom = params[:zoom].to_i

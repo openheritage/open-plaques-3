@@ -73,7 +73,7 @@ class CountriesController < ApplicationController
     @plaques_count = @country.plaques.count # size is 0
     @uncurated_count = @country.plaques.unconnected.size
     @curated_count = @plaques_count - @uncurated_count
-    @percentage_curated = if @plaques_count > 0
+    @percentage_curated = if @plaques_count.positive?
                             ((@curated_count.to_f / @plaques_count) * 100).to_i
                           else
                             0
@@ -121,11 +121,11 @@ class CountriesController < ApplicationController
       when 'tba'
         g['gender'] = 'to be advised'
       end
-      if g['subject_count'] > 0
-        g['percent'] = (100 * g.subject_count / (@subject_count.to_f + @uncurated_count)).to_i
-      else
-        g['percent'] = 0
-      end
+      g['percent'] = if g['subject_count'].positive?
+                       (100 * g.subject_count / (@subject_count.to_f + @uncurated_count)).to_i
+                     else
+                       0
+                     end
     end
     respond_to do |format|
       format.html

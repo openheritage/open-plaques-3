@@ -15,8 +15,8 @@ class Pick < ApplicationRecord
     where(
       [
         'last_featured > ? and last_featured < ?',
-        (Date.today - 1.day).strftime + ' 23:59:59 UTC',
-        (Date.today + 1.day).strftime + ' 00:00:00 UTC'
+        "#{(Date.today - 1.day).strftime} 23:59:59 UTC",
+        "#{(Date.today + 1.day).strftime} 00:00:00 UTC"
       ]
     )
       .order(last_featured: :desc)
