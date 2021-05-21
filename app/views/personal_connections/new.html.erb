@@ -7,38 +7,6 @@
 <% end %>
 <%= render 'plaques/edit_bar', plaque: @plaque %>
 
-<style>
-// CardColumns
-@media (min-width: 34em) {
-  .card-columns {
-    -webkit-column-count: 2;
-    -moz-column-count: 2;
-    column-count: 2;
-  }
-}
-@media (min-width: 48em) {
-  .card-columns {
-    -webkit-column-count: 3;
-    -moz-column-count: 3;
-    column-count: 3;
-  }
-}
-@media (min-width: 62em) {
-  .card-columns {
-    -webkit-column-count: 3;
-    -moz-column-count: 3;
-    column-count: 3;
-  }
-}
-@media (min-width: 75em) {
-  .card-columns {
-    -webkit-column-count: 3;
-    -moz-column-count: 3;
-    column-count: 3;
-  }
-}
-</style>
-
 <% if @plaque.personal_connections.count > 0 %>
   <h2>Connections</h2>
 <% end %>
@@ -62,7 +30,7 @@
     <% end %>
   </div>
 <% else %>
-  <div class="card-columns">
+  <div class="row" data-masonry='{"percentPosition": true }'>
     <% @plaque.personal_connections.all.each do |connection| %>
       <div class="card">
         <%= render connection.person %>
@@ -96,7 +64,7 @@
 <% end %>
 
 <% if @suggested_people && @suggested_people.size > 0 %>
-  <div id="person-tiles" class="card-columns">
+  <div id="person-tiles" class="row" data-masonry='{"percentPosition": true }'>
     <% for person in @suggested_people %>
       <%= render partial: 'people/tile', object: person, as: :person  %>
     <% end %>

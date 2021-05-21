@@ -4,7 +4,7 @@
 <% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_photo_path} %>
 
 <%= will_paginate @photos %>
-<div class="card-columns">
+<div class="row" data-masonry='{"percentPosition": true }'>
   <% @photos.each do |photo| %>
     <%= link_to photo do %>
       <%= render photo %>

@@ -32,7 +32,7 @@
   <div class="row">
     <h2><%= t '.related_roles'%></h2>
   </div>
-  <div class="card-columns">
+  <div class="row" data-masonry='{"percentPosition": true }'>
     <% @role.related_roles.each do |related_role| %>
       <%= link_to related_role do %>
         <%= render related_role %>

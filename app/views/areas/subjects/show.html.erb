@@ -17,37 +17,8 @@
   <span class="badge bg-secondary pull-right"><%= @subject_count %></span>
 </div>
 
-<h2>Area Gender Diversity</h2>
-<div class="row">
-  <div id="gender-chart" class="col-8" style="height: 400px;"></div>
-</div>
-
-<script>
-  pie = new RGraph.SVG.Pie({
-    id: 'gender-chart',
-    data: [<% @gender.each do |g| %><%= g.subject_count %>,<% end %>],
-    options: {
-      radius: 150,
-      colors: [
-        'rgb(51,102,204)',
-        'rgb(220,57,18)',
-        'rgb(255,153,0)',
-        'rgb(16,150,24)',
-        'rgb(153,0,153)',
-        'rgb(0,153,198)',
-        'rgb(221,68,119)'
-      ],
-      linewidth: 2,
-      shadow: false,
-      labels: [<% @gender.each do |g| %>"<%= g.gender %> <%= g.subject_count %> (<%= (100 * g.subject_count / @subject_count.to_f).to_i %>%)",<% end %>],
-      labelsSticksList: true,
-      textFont: 'Arial',
-      textSize: 16,
-      textAccessible: true
-    }
-  }).draw();
-</script>
-
+<%= render partial: 'people/diversity' %>
+<br/>
 <%= will_paginate @people if @people.respond_to?(:total_pages) %>
 <%= render partial: 'people/tiles' %>
 <%= will_paginate @people if @people.respond_to?(:total_pages) %>

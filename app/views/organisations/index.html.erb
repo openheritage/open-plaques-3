@@ -12,7 +12,7 @@
 
 <h2>In alphabetical order</h2>
 <%= will_paginate @organisations if @organisations.respond_to?(:total_pages) %>
-  <div id="organisation-tiles" class="card-columns">
+<div id="organisation-tiles" class="row" data-masonry='{"percentPosition": true }'>
   <%= render @organisations %>
 </div>
 <%= will_paginate @organisations if @organisations.respond_to?(:total_pages) %>

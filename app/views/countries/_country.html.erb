@@ -1,23 +1,22 @@
-<div class="card">
-  <div class="card-header align-text-center">
-      <span class="flag-icon flag-icon-<%= country.alpha2 %>"></span>
-      <% if controller.controller_name.eql?('countries') && controller.action_name.eql?('show') %>
-        <%= country.name %>
-      <% else %>
-        <%= link_to(country.name, country) %>
-      <% end %>
-  </div>
-  <div class="card-body">
-    <div class="card-title">
-
+<div class="col-sm-3 col-lg-2 mb-2">
+  <div class="card">
+    <div class="card-header align-text-center">
+        <span class="flag-icon flag-icon-<%= country.alpha2 %>"></span>
+        <% if controller.controller_name.eql?('countries') && controller.action_name.eql?('show') %>
+          <%= country.name %>
+        <% else %>
+          <%= link_to(country.name, country) %>
+        <% end %>
     </div>
-    <p class="card-text">
-      <span class="badge bg-secondary"><%= pluralize(country.plaques_count, t('activerecord.models.plaque').downcase) %></span>
-      <% if controller.controller_name.eql?('countries') && controller.action_name.eql?('show') %>
-        <small><%= @percentage_curated %>% have been curated</small>
-      <% else %>
-       <%= icon(:far, :compass) if country.geolocated? %>
-      <% end %>
-    </p>
+    <div class="card-body">
+      <p class="card-text">
+        <span class="badge bg-secondary"><%= pluralize(country.plaques_count, t('activerecord.models.plaque').downcase) %></span>
+        <% if controller.controller_name.eql?('countries') && controller.action_name.eql?('show') %>
+          <small><%= @percentage_curated %>% have been curated</small>
+        <% else %>
+        <%= icon(:far, :compass) if country.geolocated? %>
+        <% end %>
+      </p>
+    </div>
   </div>
 </div>
