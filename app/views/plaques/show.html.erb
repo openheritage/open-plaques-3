@@ -42,7 +42,7 @@
                 </p>
               <% end %>
             </div>
-            <% if @plaque.other_photos %>
+            <% if @plaque.other_photos.present? %>
               <div class="col-xs-4">
                 <%= render @plaque.other_photos[0] %>
               </div>
