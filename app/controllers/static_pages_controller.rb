@@ -11,4 +11,8 @@ class StaticPagesController < ApplicationController
   def contact
     render 'contact/index'
   end
+
+  def data
+    render 'data/index'
+  end
 end

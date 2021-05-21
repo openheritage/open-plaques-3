@@ -1,0 +1,5 @@
+<% @subject_count = @subject_count || 0 %>
+
+<span class="badge bg-secondary pull-right">
+  <%= pluralize(@subject_count, t('activerecord.models.subject')) %>
+</span>
