@@ -16,7 +16,7 @@
       <%= navbar_link_to t('menu.todo_lists'), '/todo', active_when: { controller: :todo } %>
       <% end %>
       <%= navbar_link_to t('menu.contribute'), '/contribute', active_when: { controller: :pages } %>
-      <%= navbar_link_to t('menu.data'), about_the_data_path, active_when: { controller: :pages } %>
+      <%= navbar_link_to t('menu.data'), '/data', active_when: { controller: :pages } %>
       <%= navbar_link_to t('menu.contact'), contact_path, active_when: { controller: :pages } %>
       <%= navbar_link_to t('devise.sessions.user.sign_in'), new_user_session_path unless user_signed_in? %>
       <%= navbar_link_to t('devise.sessions.user.sign_out'), destroy_user_session_path, method: :delete if user_signed_in? %>
