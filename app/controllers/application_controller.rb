@@ -30,14 +30,14 @@ class ApplicationController < ActionController::Base
     is_not_following_robots_txt = is_a_data_request ||
                                   request.path.end_with?('/new') ||
                                   request.path.end_with?('/edit') ||
-                                  %r{\/places}.match?(request.path) ||
-                                  %r{\/organisation}.match?(request.path) ||
-                                  %r{\/photographers}.match?(request.path) ||
-                                  %r{\/roles}.match?(request.path) ||
-                                  %r{\/verbs}.match?(request.path) ||
-                                  %r{\/todo}.match?(request.path) ||
-                                  %r{\/series}.match?(request.path) ||
-                                  %r{\/photos}.match?(request.path)
+                                  %r{/places}.match?(request.path) ||
+                                  %r{/organisation}.match?(request.path) ||
+                                  %r{/photographers}.match?(request.path) ||
+                                  %r{/roles}.match?(request.path) ||
+                                  %r{/verbs}.match?(request.path) ||
+                                  %r{/todo}.match?(request.path) ||
+                                  %r{/series}.match?(request.path) ||
+                                  %r{/photos}.match?(request.path)
     if is_semrush ||
        is_the_knowledge_ai ||
        (is_a_bot && is_not_following_robots_txt)

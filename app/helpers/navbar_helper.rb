@@ -18,7 +18,7 @@ module NavbarHelper
     end
     active_class = active ? ' active' : ''
     options[:class] = 'nav-link'
-    content_tag(:li, class: ("nav-item#{active_class}")) do
+    content_tag(:li, class: "nav-item#{active_class}") do
       link_to(label, path, options)
     end
   end

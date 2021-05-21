@@ -81,7 +81,7 @@ class AreaPlaquesController < ApplicationController
         )
         @gender = @gender.map { |attributes| OpenStruct.new(attributes) }
         @subject_count = @gender.inject(0) { |sum, g| sum + g.subject_count }
-        @gender.append(OpenStruct.new(gender: 'tba', subject_count: @uncurated_count)) if @uncurated_count > 0
+        @gender.append(OpenStruct.new(gender: 'tba', subject_count: @uncurated_count)) if @uncurated_count.positive?
         @gender.each do |g|
           case g['gender']
           when 'f'
@@ -95,11 +95,11 @@ class AreaPlaquesController < ApplicationController
           when 'tba'
             g['gender'] = 'to be advised'
           end
-          if g['subject_count'] > 0
-            g['percent'] = (100 * g.subject_count / (@subject_count.to_f + @uncurated_count)).to_i
-          else
-            g['percent'] = 0
-          end
+          g['percent'] = if g['subject_count'].positive?
+                           (100 * g.subject_count / (@subject_count.to_f + @uncurated_count)).to_i
+                         else
+                           0
+                         end
         end
         render 'areas/plaques/show'
       end

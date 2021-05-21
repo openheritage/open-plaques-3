@@ -75,7 +75,7 @@ module ApplicationHelper
 
   def pluralize_is_or_are(number, name)
     word = number > 1 ? 'are' : 'is'
-    word + ' ' + pluralize(number, name)
+    "#{word} #{pluralize(number, name)}"
   end
 
   def pluralize_no_count(count, singular, plural = nil)

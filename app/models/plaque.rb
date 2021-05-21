@@ -300,7 +300,7 @@ class Plaque < ApplicationRecord
       as.upload(key, io, checksum: nil, content_type: 'application/json')
     end
   end
-  
+
   def subjects
     number_of_subjects = 3
     if people.size == number_of_subjects + 1
@@ -449,6 +449,7 @@ class Plaque < ApplicationRecord
   end
 
   private
+
   # this action is not an essential part of the data model
   # could consider wisper gem for simple pub-sub
   # https://karolgalanciak.com/blog/2019/11/30/from-activerecord-callbacks-to-publish-slash-subscribe-pattern-and-event-driven-design/

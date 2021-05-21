@@ -117,7 +117,7 @@ class Photo < ApplicationRecord
 
   # retrieve Flickr photo id from url e.g. http://www.flickr.com/photos/84195101@N00/3412825200/
   def self.flickr_photo_id(url)
-    mtch = url.match(%r{flickr.com\/photos\/[^\/]*\/([^\/]*)})
+    mtch = url.match(%r{flickr.com/photos/[^/]*/([^/]*)})
     mtch ? mtch[1].to_s : nil
   end
 

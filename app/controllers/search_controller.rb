@@ -40,9 +40,7 @@ class SearchController < ApplicationController
       # include all that person's plaques
       @people.each do |person|
         @plaques += person.plaques
-      end
-      # Look for their akas in the inscription
-      @people.each do |person|
+        # Look for their akas in the inscription
         person.aka.each do |aka|
           @plaques += Plaque.where(['inscription ILIKE ?', "%#{aka}%"]).limit(cap).includes([[personal_connections: [:person]], [area: :country]]).to_a.sort! { |t1, t2| t1.to_s <=> t2.to_s }
         end
