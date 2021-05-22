@@ -112,12 +112,6 @@ describe Person, type: :model do
   end
 
   describe '#type' do
-    context 'a subject' do
-      it 'is assumed to be a man' do
-        expect(a_person.type).to eq('man')
-      end
-    end
-
     context 'an actor' do
       before do
         a_person.roles << (build :actor)
