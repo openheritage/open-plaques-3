@@ -66,7 +66,7 @@ Rails.application.routes.draw do
     resource :subjects, controller: :country_subjects, only: :show
     match 'plaques/:filter' => 'country_plaques#show', via: [:get]
   end
-  resources :photos, only: [:create, :edit, :new, :show]
+  resources :photos, only: [:create, :edit, :new, :show, :update]
   resources :photographers, as: :photographers, only: [:create, :index, :show, :new]
 
   scope '/roles' do

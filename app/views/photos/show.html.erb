@@ -18,7 +18,9 @@
 <% content_for(:admin_menu) {navbar_link_to t('buttons.edit'), edit_photo_path(@photo)} %>
 
 <div class="row">
+  <div class="col-sm-6">
   <%= link_to @photo.url do %>
     <%= render @photo, large: true %>
   <% end %>
+  </div>
 </div>
