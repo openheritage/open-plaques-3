@@ -3,5 +3,5 @@
 
 <%= form_tag("/photographers", method: "create") do %>
   <%= label_tag(:flickr_url, t('.flickr_url')) %> <%= text_field_tag(:flickr_url) %>
-  <%= submit_tag(t('buttons.add'), class: 'btn btn-primary') %>
+  <%= submit_tag(t('buttons.add')) %>
 <% end %>

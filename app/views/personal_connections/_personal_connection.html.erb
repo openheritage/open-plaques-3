@@ -1,18 +1,20 @@
- <div class="card">
-  <div class="card-block">
-    <%= render personal_connection.person if personal_connection.person %>
-    <p class="card-text">
-      <small>
-        <%= personal_connection.verb.name %>
-        <% if personal_connection.single_year? %>
-          <%= "in " + personal_connection.from if personal_connection.from != '' %>
-        <% else %>
-          <%= "from " + personal_connection.from if personal_connection.from != '' %><%= " to " + personal_connection.to  if personal_connection.to != ''%>
-        <% end %>
-        <%= "at " unless personal_connection.verb.name.ends_with?(' near') %>
-        <%= personal_connection.full_address if personal_connection.full_address %>
-        <%= icon(:far, :compass) if personal_connection.plaque&.geolocated? %>
-      </small>
-    </p>
+<div class="col-sm-3 col-lg-2 mb-2">
+  <div class="card">
+    <div class="card-block">
+      <%= render personal_connection.person if personal_connection.person %>
+      <p class="card-text">
+        <small>
+          <%= personal_connection.verb.name %>
+          <% if personal_connection.single_year? %>
+            <%= "in " + personal_connection.from if personal_connection.from != '' %>
+          <% else %>
+            <%= "from " + personal_connection.from if personal_connection.from != '' %><%= " to " + personal_connection.to  if personal_connection.to != ''%>
+          <% end %>
+          <%= "at " unless personal_connection.verb.name.ends_with?(' near') %>
+          <%= personal_connection.full_address if personal_connection.full_address %>
+          <%= icon(:far, :compass) if personal_connection.plaque&.geolocated? %>
+        </small>
+      </p>
+    </div>
   </div>
  </div>

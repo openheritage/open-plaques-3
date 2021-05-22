@@ -52,7 +52,7 @@
         <p>Just find '<%= @area.full_name %>' <a href="https://maps.google.com/maps?q=<%= @area.full_name %>&z=18" target="_new">on Google Maps</a> and tell us the <%= label_tag(:streetview_url, "web url:") %> <%= text_field_tag(:streetview_url, ' ', size: 100) %>.</p>
         <p>We will extract the geolocation. Probably.</p>
         <%= f.hidden_field :name %>
-        <p><%= f.submit t('buttons.update'), class: 'btn btn-primary' %></p>
+        <p><%= f.submit t('buttons.update') %></p>
       </div>
     <% end %>
   <% end %>

@@ -2,29 +2,12 @@
 <% content_for(:title) { @verb.name } %>
 <% content_for(:page_subhead) do %>
   Each subject is connected to a plaque by what they did there
-  <span class="badge bg-secondary pull-right">
-    <%= @verb.personal_connections_count %>
-  </span>
+  <% @subject_count = @verb.personal_connections_count %>
+  <%= render partial: 'people/badge' %>
 <% end %>
 
-<% if @verb.personal_connections.count < 3 %>
-  <div class="row">
-    <% @verb.personal_connections.each do |personal_connection| %>
-      <div class="col-xs-6 col-sm-4 col-md-3"><%= render personal_connection %></div>
-    <% end %>
-  </div>
-<% elsif @verb.personal_connections.count < 11 %>
-  <div class="row">
-    <% cols = (12 / @verb.personal_connections.count).ceil %>
-    <% cols = [cols,2].max %>
-    <% @verb.personal_connections.each do |personal_connection| %>
-      <div class="col-xs-6 col-sm-<%= cols %>"><%= render personal_connection %></div>
-    <% end %>
-  </div>
-<% else %>
-  <%= will_paginate @personal_connections %>
-  <div class="row" data-masonry='{"percentPosition": true }'>
-    <%= render @personal_connections %>
-  </div>
-  <%= will_paginate @personal_connections %>
-<% end %>
+<%= will_paginate @personal_connections if @personal_connections.respond_to?(:total_pages) %>
+<div class="row" data-masonry='{"percentPosition": true }'>
+  <%= render @personal_connections %>
+</div>
+<%= will_paginate @personal_connections if @personal_connections.respond_to?(:total_pages) %>

@@ -1,12 +1,12 @@
 # Assist creation of forms
 module BootstrapFormHelper
   def bootstrap_text_field(form, key)
-    field = form.text_field(key, class: 'form-control')
+    field = form.text_field(key)
     bootstrap_field(form, key, field)
   end
 
   def bootstrap_select_field(form, key, options)
-    field = form.select(key, options, {}, class: 'form-control')
+    field = form.select(key, options, {})
     bootstrap_field(f, key, field)
   end
 
@@ -20,7 +20,7 @@ module BootstrapFormHelper
     content_tag(:div, class: 'row mb-3') do
       content_tag(:div, class: 'col-md-6') do
         content_tag(:div, class: 'form-group') do
-          form.label(key, class: 'form-control-label') +
+          form.label(key) +
             field
         end
       end

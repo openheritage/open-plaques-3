@@ -1,5 +1,7 @@
-<%= will_paginate @plaques if @plaques.respond_to?(:total_pages) %>
-<div id="plaque-tiles" class="row" data-masonry='{"percentPosition": true }'>
-  <%= render partial: 'plaques/tile', collection: @plaques, as: :plaque %>
+<div class="row" data-masonry='{"percentPosition": true }'>
+  <%= will_paginate @plaques if @plaques.respond_to?(:total_pages) %>
+  <div id="plaque-tiles" class="row" data-masonry='{"percentPosition": true }'>
+    <%= render partial: 'plaques/tile', collection: @plaques, as: :plaque %>
+  </div>
+  <%= will_paginate @plaques if @plaques.respond_to?(:total_pages) %>
 </div>
-<%= will_paginate @plaques if @plaques.respond_to?(:total_pages) %>

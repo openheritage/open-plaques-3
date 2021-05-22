@@ -2,48 +2,36 @@
 <% content_for(:title) {t '.page_heading', pick: @pick.title} %>
 
 <%= form_for(@pick) do |f| %>
-  <div class="form-group row">
-    <%= f.label :plaque_id, class: 'form-control-label col-sm-2' %>
-    <div class="col-sm-10">
-      <%= f.text_field :plaque_id, class: 'form-control' %>
-    </div>
+  <div class="mb-3">
+    <%= f.label :plaque_id %>
+    <%= f.text_field :plaque_id %>
   </div>
-  <div class="form-group row">
-    <%= f.label :description, class: 'form-control-label col-sm-2' %>
-    <div class="col-sm-10">
-      <%= f.text_area :description, class: 'form-control' %>
-    </div>
+  <div class="mb-3">
+    <%= f.label :description %>
+    <%= f.text_area :description %>
   </div>
-  <div class="form-group row">
-    <%= f.label :proposer, class: 'form-control-label col-sm-2' %>
-    <div class="col-sm-10">
-      <%= f.text_field :proposer, class: 'form-control' %>
-    </div>
+  <div class="mb-3">
+    <%= f.label :proposer %>
+    <%= f.text_field :proposer %>
   </div>
-  <div class="form-group row">
-    <%= f.label :feature_on, class: 'form-control-label col-sm-2' %>
-    <div class="col-sm-10">
-      <%= f.text_field :feature_on, class: 'form-control' %>
-    </div>
+  <div class="mb-3">
+    <%= f.label :feature_on %>
+    <%= f.text_field :feature_on %>
   </div>
-  <div class="form-group row">
-    <%= f.label :last_featured, class: 'form-control-label col-sm-2' %>
-    <div class="col-sm-10">
-      <%= f.text_field :last_featured, class: 'form-control' %>
-    </div>
+  <div class="mb-3">
+    <%= f.label :last_featured %>
+    <%= f.text_field :last_featured %>
   </div>
-  <div class="form-group row">
-    <%= f.label :featured_count, class: 'form-control-label col-sm-2' %>
-    <div class="col-sm-10">
-      <div class='label label-default label-pill pull-left'><%= @pick.featured_count %></div>
-    </div>
+  <div class="mb-3">
+    <%= f.label :featured_count %>
+    <div class='label label-default label-pill pull-left'><%= @pick.featured_count %></div>
   </div>
-  <%= f.submit t('buttons.save'), class: 'btn btn-primary' %>
+  <%= f.submit t('buttons.save') %>
 <% end %>
 
 <div class="container">
   <div class="row">
-  <%= render @pick %>
+    <%= render @pick %>
   </div>
 </div>
 

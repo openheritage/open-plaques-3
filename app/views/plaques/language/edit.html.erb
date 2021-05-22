@@ -14,5 +14,5 @@
     <%= f.label :language_id, t('.language_label') %>
     <%= f.collection_select :language_id, @languages, :id, :name, {class: 'form-control'} %>
   </div>
-  <%= f.submit t('buttons.save'), class: 'btn btn-primary' %>
+  <%= f.submit t('buttons.save') %>
 <% end %>

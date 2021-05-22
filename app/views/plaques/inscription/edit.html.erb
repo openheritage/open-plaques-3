@@ -3,7 +3,7 @@
 <% content_for :page_subhead do %>
   <%= t '.page_subhead' %>
   <% if url_for(only_path: false).include?('microtask') %>
-    <%= button_to "Not sure. Give me another one", todo_path('microtask'), method: :get, class: 'btn btn-primary' %>
+    <%= button_to "Not sure. Give me another one", todo_path('microtask'), method: :get %>
   <% end %>
 <% end %>
 <%= render 'plaques/edit_bar', plaque: @plaque %>
@@ -27,5 +27,5 @@
     <%= f.label :inscription_in_english, t('.inscription_in_english') %>
     <%= f.text_area :inscription_in_english, {class: 'form-control', rows: 6} %>
   </div>
-  <%= f.submit t('buttons.save'), class: 'btn btn-primary' %>
+  <%= f.submit t('buttons.save') %>
 <% end %>
