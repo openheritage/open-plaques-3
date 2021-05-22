@@ -72,29 +72,29 @@
 
   <h2 id="name">Name</h2>
   <%= form_for @person do |f| %>
-  <div class="form-group row">
-    <%= f.label :name, "#{@person.possessive} name was", class: 'col-form-label col-sm-2' %>
+  <div class="mb-3">
+    <%= f.label :name, "#{@person.possessive} name was", class: 'col-form-label' %>
     <div class="col-sm-10">
-      <%= f.text_field :name, class: 'form-control' %>
+      <%= f.text_field :name %>
       <% if @person.name != @person.full_name %>
       <%= t '.display_name' %>
       <strong>"<%= @person.full_name %>"</strong>
       <% end %>
     </div>
   </div>
-  <div class="form-group row">
-    <%= f.label :aka, class: 'col-form-label col-sm-2' %>
+  <div class="mb-3">
+    <%= f.label :aka, class: 'col-form-label' %>
     <div class="col-sm-10">
-      <%= f.text_area :aka, class: 'form-control' %>
+      <%= f.text_area :aka %>
     </div>
   </div>
-  <div class="form-group row">
-    <%= f.label :surname_starts_with, "#{@person.possessive} lastname '#{@person.surname}' starts with", class: 'col-form-label col-sm-2' %>
+  <div class="mb-3">
+    <%= f.label :surname_starts_with, "#{@person.possessive} lastname '#{@person.surname}' starts with", class: 'col-form-label' %>
     <div class="col-sm-1">
-      <%= f.text_field :surname_starts_with, maxlength: 1, class: 'form-control' %>
+      <%= f.text_field :surname_starts_with, maxlength: 1 %>
     </div>
   </div>
-  <%= f.submit t('buttons.update'), class: 'btn btn-primary' %>
+  <%= f.submit t('buttons.update') %>
 
   <h2 id="details">Details</h2>
   <% if @person.dbpedia_abstract %>
@@ -105,8 +105,8 @@
       </blockquote>
     </div>
   <% end %>
-  <div class="form-group row">
-    <%= f.label :gender, class: 'col-form-label col-sm-2' %>
+  <div class="mb-3">
+    <%= f.label :gender, class: 'col-form-label' %>
     <div class="col-sm-10">
       <%= f.radio_button :gender, 'm' %>
       <%= f.label :gender, 'Male', value: 'm' %>
@@ -118,58 +118,58 @@
       <%= f.label :gender, 'None', value: 'n' %>
     </div>
   </div>
-  <div class="form-group row">
-    <%= f.label :ethnicity, class: 'col-form-label col-sm-2' %>
+  <div class="mb-3">
+    <%= f.label :ethnicity, class: 'col-form-label' %>
     <div class="col-sm-10">
-      <%= f.text_field :ethnicity, class: 'form-control' %>
+      <%= f.text_field :ethnicity %>
     </div>
   </div>
-  <div class="form-group row">
-    <%= f.label :born_on, "#{@person.personal_pronoun} were #{@person.creation_word}", class: 'col-form-label col-sm-2' %>
+  <div class="mb-3">
+    <%= f.label :born_on, "#{@person.personal_pronoun} were #{@person.creation_word}", class: 'col-form-label' %>
     <div class="col-sm-2">
       <%= f.text_field :born_on, {class: 'form-control', maxlength: 10}  %>
     </div>
   </div>
-  <div class="form-group row">
-    <%= f.label :died_on, 'and ' + @person.destruction_word, class: 'col-form-label col-sm-2' %>
+  <div class="mb-3">
+    <%= f.label :died_on, 'and ' + @person.destruction_word, class: 'col-form-label' %>
     <div class="col-sm-2">
       <%= f.text_field :died_on, {class: 'form-control', maxlength: "10"} %>
     </div>
   </div>
   <% if @person.age %>
-  <div class="form-group row">
-    <div class="col-form-label col-sm-2">
+  <div class="mb-3">
+    <div class="col-form-label">
       <%= "Died aged" if (@person.person? || @person.thing? || @person.animal?) && @person.dead? %><%= "Closed aged" if @person.place? && @person.dead? %><%= "Aged" if @person.alive?%>
     </div>
-    <div class="form-control-static col-form-label col-sm-2">
+    <div class="form-control-static col-form-label">
       <%= @person.age.to_s %>
     </div>
   </div>
   <% end %>
-  <%= f.submit t('buttons.update'), class: 'btn btn-primary' %>
+  <%= f.submit t('buttons.update') %>
 
   <h2 id="description">Description</h2>
-  <div class="form-group row">
+  <div class="mb-3">
     <%= f.label :introduction, class: 'col-form-label' %>
-    <%= f.text_area :introduction, class: 'form-control', rows: 6 %>
+    <%= f.text_area :introduction, rows: 6 %>
   </div>
-  <div class="form-group row">
+  <div class="mb-3">
     <%= f.label :citation, class: 'col-form-label' %>
-    <%= f.text_field :citation, class: 'form-control' %>
+    <%= f.text_field :citation %>
   </div>
-  <%= f.submit t('buttons.update'), class: 'btn btn-primary' %>
+  <%= f.submit t('buttons.update') %>
 
   <h2 id="links">Links</h2>
-  <div class="form-group row">
+  <div class="mb-3">
     <div class="col-sm-2">
       <%= f.label :wikidata_id, class: 'col-form-label' %>
       <%= link_to(icon(:fas, :link), @person.wikidata_url, target: '_blank') unless @person.wikidata_id.blank?%>
     </div>
     <div class="col-sm-10">
-      <%= f.text_field :wikidata_id, class: 'form-control' %>
+      <%= f.text_field :wikidata_id %>
     </div>
   </div>
-  <div class="form-group row">
+  <div class="mb-3">
     <div class="col-sm-2">
       <%= f.label :wikipedia_url, class: 'col-form-label' %>
       <%= link_to(icon(:fas, :link), @person.wikipedia_url, target: '_blank')  unless @person.wikipedia_url.blank? %>
@@ -180,26 +180,26 @@
       <%= t '.wikipedia_comment' %>
     </div>
   </div>
-  <div class="form-group row">
+  <div class="mb-3">
     <div class="col-sm-2">
       <%= f.label :find_a_grave_id, class: 'col-form-label' %>
       <%= link_to(icon(:fas, :link), "https://www.findagrave.com/famous-memorial/global-search?globalsearch=#{@person.name}", target: '_blank') if @person.find_a_grave_id.blank?%>
       <%= link_to(icon(:fas, :link), @person.find_a_grave_url, target: '_blank') unless @person.find_a_grave_id.blank?%>
     </div>
     <div class="col-sm-10">
-      <%= f.text_field :find_a_grave_id, class: 'form-control' %>
+      <%= f.text_field :find_a_grave_id %>
     </div>
   </div>
-  <div class="form-group row">
+  <div class="mb-3">
     <div class="col-sm-2">
       <%= f.label :ancestry_id, class: 'col-form-label' %>
       <%= link_to(icon(:fas, :link), @person.ancestry_url, target: '_blank') unless @person.ancestry_id.blank?%>
     </div>
     <div class="col-sm-10">
-      <%= f.text_field :ancestry_id, class: 'form-control' %>
+      <%= f.text_field :ancestry_id %>
     </div>
   </div>
-  <%= f.submit t('buttons.update'), class: 'btn btn-primary' %>
+  <%= f.submit t('buttons.update') %>
   <% end %>
 
   <h2 id="roles">Roles</h2>
@@ -235,7 +235,7 @@
   <% @person.personal_roles.each_with_index do |personal_role, index| %>
     <div class="row">
       <span class="col-sm-1">
-        <%= link_to t('buttons.edit'), edit_personal_role_path(personal_role), class: 'btn btn-primary' %>
+        <%= link_to t('buttons.edit'), edit_personal_role_path(personal_role) %>
       </span>
       <span class="col-sm-11">
         <% if index == 0 %>
@@ -262,11 +262,11 @@
         <% else %>
           and a
         <% end %>
-        <%= f.collection_select :role, @roles, :id, :full_name, {}, {style: 'width:400px'} %>
+        <%= f.collection_select :role, @roles, :id, :full_name, {}, {class: 'form-select', style: 'width:400px'} %>
         from <%= f.text_field :started_at %>
         to <%= f.text_field :ended_at %>
         <%= f.hidden_field :person_id, value: @person.id %>
-        <%= f.submit t('buttons.add'), class: 'btn btn-primary' %>
+        <%= f.submit t('buttons.add') %>
       <% end %>
     </span>
     <span class="col-sm-12">

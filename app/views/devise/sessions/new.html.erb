@@ -13,9 +13,9 @@ body {
 	<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
 		<h2 class="form-signin-heading">Please sign in</h2>
 			<%= f.label :email, class: 'sr-only' %>
-			<%= f.email_field :email, autofocus: true, required: true, class: 'form-control'  %>
+			<%= f.email_field :email, autofocus: true, required: true  %>
 			<%= f.label :password, class: 'sr-only' %>
-			<%= f.password_field :password, class: 'form-control'  %>
+			<%= f.password_field :password  %>
 		<% if devise_mapping.rememberable? -%>
 	  	<div class="checkbox">
 			  <label>

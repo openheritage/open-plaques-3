@@ -8,22 +8,22 @@
 <%= render 'plaques/edit_bar', plaque: @plaque %>
 
 <%= form_for(@plaque) do |f| %>
-  <div class="form-group">
-    <%= f.label :erected_at_string, t('.erected_in') %>
+  <div class="mb-3">
+    <%= f.label :erected_at_string, t('.erected_in'), {class: 'form-label'} %>
     <%= f.text_field :erected_at_string, {class: 'form-control', include_blank: true} %>
-    <%= content_tag(:p, t('.not_erected'), class: 'bg-warning' ) unless @plaque.erected? %>
+    <%= content_tag(:div, t('.not_erected'), class: 'form-text' ) unless @plaque.erected? %>
   </div>
-  <div class="form-group">
+  <div class="mb-3">
     <label class="form-check-label">
       <%= f.check_box :is_current, class: 'form-check-input' %>
       <%= t('.exists') %>
     </label>
   </div>
-  <div class="form-group">
+  <div class="mb-3">
     <%= f.label :notes %>
     <%= f.text_area :notes, {class: 'form-control', rows: 6} %>
   </div>
-  <%= f.submit t('buttons.save'), class: 'btn btn-primary' %>
+  <%= f.submit t('buttons.save') %>
 <% end %>
 
 <br/>

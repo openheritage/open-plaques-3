@@ -4,6 +4,5 @@
     <p class="card-text"><%= series.description %></p>
     <% @plaques = series.plaques.photographed.random(5) %>
     <%= render partial: 'plaques/tiles' %>
-    </div>
   </div>
 </div>

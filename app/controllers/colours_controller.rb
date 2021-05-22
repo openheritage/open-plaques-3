@@ -2,15 +2,6 @@
 class ColoursController < ApplicationController
   before_action :authenticate_admin!, only: :destroy
   before_action :authenticate_user!, except: :index
-  before_action :find, only: :update
-
-  def index
-    @colours = Colour.all.by_popularity
-    respond_to do |format|
-      format.html
-      format.json { render json: @colours }
-    end
-  end
 
   def new
     @colour = Colour.new
@@ -20,12 +11,6 @@ class ColoursController < ApplicationController
     @colour = Colour.new(permitted_params)
     @colour.save
     redirect_to colours_path
-  end
-
-  protected
-
-  def find
-    @colour = Colour.find_by_slug!(params[:id])
   end
 
   private

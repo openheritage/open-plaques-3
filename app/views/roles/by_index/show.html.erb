@@ -3,8 +3,8 @@
 <% content_for(:admin_menu) {navbar_link_to t('buttons.add'), new_role_path} %>
 
 <ul class="nav">
-  <% for letter in "A".."Z" %>
-    <%= content_tag("li", navigation_link_to(letter, roles_by_index_path(letter.downcase)), class: "nav-link") %>
+  <% for letter in 'A'..'Z' %>
+    <li class="nav-link"><%= navigation_link_to(letter, roles_by_index_path(letter.downcase)) %></li>
   <% end %>
 </ul>
 

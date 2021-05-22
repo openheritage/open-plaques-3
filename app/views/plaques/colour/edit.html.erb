@@ -2,7 +2,7 @@
 <% content_for :title, t('.title') %>
 <% content_for :page_subhead do %>
   <% if url_for(only_path: false).include?('microtask') %>
-    <%= button_to "Not sure. Give me another one", todo_path('microtask'), method: :get, class: 'btn btn-primary' %>
+    <%= button_to "Not sure. Give me another one", todo_path('microtask'), method: :get %>
   <% end %>
 <% end %>
 <%= render 'plaques/edit_bar', plaque: @plaque %>
@@ -12,5 +12,5 @@
     <%= f.label :colour_id, t('.colour_label') %>
     <%= f.collection_select :colour_id, @colours, :id, :name, {class: 'form-control', include_blank: true} %>
   </div>
-  <%= f.submit t('buttons.save'), class: 'btn btn-primary' %>
+  <%= f.submit t('buttons.save') %>
 <% end %>

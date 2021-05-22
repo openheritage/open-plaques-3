@@ -31,9 +31,8 @@ Rails.application.routes.draw do
   match 'plaques/tiles/:zoom/:x/:y' => 'plaques#index', constraints: { zoom: /\d{2}/, x: /\d+/, y: /\d+/ }, via: [:get]
   match 'plaques/:filter/tiles/:zoom/:x/:y' => 'plaques#index', id: :filter, constraints: { zoom: /\d{2}/, x: /\d+/, y: /\d+/ }, via: [:get]
 
-  resources :colours, only: [:index, :new, :create]
-  resources :languages
-  resources :licences, only: [:index]
+  resources :colours, only: [:new, :create]
+  resources :languages, only: [:new, :create]
   resources :organisations do
     collection do
       get 'autocomplete'
@@ -67,12 +66,8 @@ Rails.application.routes.draw do
     resource :subjects, controller: :country_subjects, only: :show
     match 'plaques/:filter' => 'country_plaques#show', via: [:get]
   end
-  resources :photos
+  resources :photos, only: [:create, :edit, :new, :show]
   resources :photographers, as: :photographers, only: [:create, :index, :show, :new]
-
-  scope '/unveilings' do
-    resource :upcoming, only: [:show], controller: :upcoming_unveilings
-  end
 
   scope '/roles' do
     resources 'a-z', controller: :roles_by_index, as: 'roles_by_index', only: [:show, :index]
@@ -118,16 +113,12 @@ Rails.application.routes.draw do
     end
   end
 
-  # Convenience paths for search:
   match 'search' => 'search#index', via: [:get]
   match 'search/:phrase' => 'search#index', via: [:get]
   match 'match' => 'match#index', via: [:get]
-
-  # Convenience resources for important pages:
   resources :pages
   get 'about', controller: :static_pages
   get 'contribute', controller: :static_pages
   get 'contact', controller: :static_pages
   get 'data', controller: :static_pages
-  resource :explore, controller: :explore, only: :show
 end

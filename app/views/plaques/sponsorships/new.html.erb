@@ -50,13 +50,13 @@
       <div class="row mb-6">
         <div class="col-md-12">
           <div class="form-group">
-            <%= f.label(:organisation_id, class: 'form-control-label') %>
+            <%= f.label(:organisation_id) %>
             <%= text_field_tag :organisation_name, '', { class: 'form-control', placeholder: 'English Heritage' } %>
-            <%= f.collection_select :organisation_id, @organisations, :id, :name, { include_blank: 'enter an organisation name or use dropdown' }, class: 'form-control' %>
+            <%= f.collection_select :organisation_id, @organisations, :id, :name, { include_blank: 'enter an organisation name or use dropdown' } %>
           </div>
         </div>
       </div>
-      <%= f.submit t('buttons.link'), class: 'btn btn-primary' %>
+      <%= f.submit t('buttons.link') %>
     <% end %>
     <% if current_user %>
       <br/>

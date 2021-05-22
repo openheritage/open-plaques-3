@@ -6,7 +6,7 @@
 <%= form_for @plaque do |f| %>
   <% if current_user %>
     <%= bootstrap_text_field(f, :address) %>
-    <%= bootstrap_field(f, :area_id, f.collection_select(:area_id, @areas, :id, :full_name, {include_blank: true}, class: 'form-control')) %>
+    <%= bootstrap_field(f, :area_id, f.collection_select(:area_id, @areas, :id, :full_name, {include_blank: true})) %>
   <% end %>
   <div class="row mb-3">
     <div class="form-group col-md-6">
@@ -15,7 +15,7 @@
   </div>
   <div class="row mb-3">
     <div class="form-group col-md-6">
-      <label class="form-control-label" for="streetview_url">OpenStreetMap/Google/Geohack url</label>
+      <label class="form-label" for="streetview_url">OpenStreetMap/Google/Geohack url</label>
       <input class="form-control" type="text" value="http://..." name="streetview_url" id="streetview_url" size="100" />
     </div>
   </div>
@@ -39,7 +39,7 @@
       <%= f.check_box :is_accurate_geolocation %> I am certain that this location is accurate because it was located from a geocoded photo, or I have seen this plaque in Google Streetview/real life
     </div>
   </div>
-  <%= f.submit 'Update', class: 'btn btn-primary' %>
+  <%= f.submit 'Update' %>
 
   <div class="row mb-3">
     <div class="form-group col-md-12">
