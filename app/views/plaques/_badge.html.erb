@@ -1,0 +1,5 @@
+<% @plaques_count = @plaques_count || @plaques&.count || 0 %>
+
+<span class="badge bg-secondary pull-right">
+  <%= pluralize(@plaques_count, t('activerecord.models.plaque')) %>
+</span>
