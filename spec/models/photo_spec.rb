@@ -24,7 +24,7 @@ describe Photo, type: :model do
       let(:plaque) { build :plaque }
       let(:photo) { build :photo, plaque: plaque }
       it 'is \'a photo of a plaque\'' do
-        expect(photo.title).to eq('a photo of a plaque')
+        expect(photo.title).to match(/a photo of a.*plaque/)
       end
     end
     context 'of a person with a name' do

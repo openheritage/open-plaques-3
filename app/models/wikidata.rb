@@ -77,7 +77,13 @@ class Wikidata
   end
 
   def dates?(born, died)
-    (born && born_in ? born_in == born : true) && (died && died_in ? died_in == died : true)
+    return false if disambiguation?
+    return false unless (born.present? && born_in.present?) || (died.present? && died_in.present?)
+
+    Wikidata.logger.debug("#{qcode} (#{born}-#{died}) == (#{born_in}-#{died_in})")
+    b_match = born.present? && born_in.present? ? born == born_in: true
+    d_match = died.present? && died_in.present? ? died == died_in : true
+    b_match && d_match
   end
 
   def self.qcode(term)
@@ -123,12 +129,13 @@ class Wikidata
       end
       if (wikidata.not_found? || wikidata.disambiguation?) && (born || died)
         api = "#{api_root}query&list=search&srsearch=#{name}&format=json"
+        logger.debug(api)
         response = URI.parse(api).open
         resp = response.read
         search_wikidata = JSON.parse(resp, object_class: OpenStruct)
         search_wikidata.query.search.each do |search_result|
           w = Wikidata.new(search_result.title)
-          return w.qcode if w.dates?(born, died)
+          return w.qcode if w.dates?(born, died) && !w.disambiguation?
         end
       end
       if wikidata.not_found? || wikidata.disambiguation?

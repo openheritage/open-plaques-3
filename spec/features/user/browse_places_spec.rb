@@ -3,8 +3,11 @@ require 'rails_helper'
 RSpec.feature 'User browses areas.', type: :feature do
   before do
     20.times do
-      area_in_the_uk = create :area, country: Country.uk
-      plaque = create :plaque, area: area_in_the_uk
+      begin
+        area_in_the_uk = create :area, country: Country.uk
+      rescue
+      end
+      plaque = create :plaque, area: Country.uk.areas.random
     end
     visit '/'
     click_on_nav_item 'Places'

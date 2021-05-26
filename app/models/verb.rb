@@ -10,14 +10,14 @@ class Verb < ApplicationRecord
 
   def self.common
     [
-      Verb.find_by_name('was born'),
-      Verb.find_by_name('lived'),
-      Verb.find_by_name('died')
+      Verb.find_by(name: 'was born'),
+      Verb.find_by(name: 'lived'),
+      Verb.find_by(name: 'died')
     ].compact
   end
 
   def to_param
-    name.gsub('.', '_').gsub(' ', '_')
+    name.gsub(/[. ]/, '_')
   end
 
   def to_s

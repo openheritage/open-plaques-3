@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :role do
-    name { 'adsfsd' }
+    name { FFaker::CheesyLingo.words(3).join(' ') }
   end
 
   factory :title, parent: :role do
@@ -46,6 +46,6 @@ FactoryBot.define do
   end
 
   factory :building, parent: :place do
-    name { 'Mansfield House' }
+    name { 'building' }
   end
 end

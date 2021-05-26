@@ -56,21 +56,20 @@ describe Plaque, type: :model do
   end
   describe '#title' do
     context 'with nothing linked' do
-      let(:plaque) { build :plaque, id: 666 }
+      let(:plaque) { create :plaque, id: 666 }
       it 'is \'plaque number [id]\'' do
-        expect(plaque.title).to eq('plaque № 666')
+        expect(plaque.title).to match(/.*plaque № 666/)
       end
     end
     context 'with a subject' do
       let(:plaque) { create :plaque }
       let(:person) { create :person, name: 'Gizmo' }
-      let(:verb) { create :verb }
-      let(:pc) { create :personal_connection, plaque: plaque, person: person, verb: verb }
+      let(:pc) { create :personal_connection, plaque: plaque, person: person }
       before do
         plaque.personal_connections << pc
       end
       it 'is \'[subject\'s name] plaque\'' do
-        expect(plaque.title).to eq('Gizmo plaque')
+        expect(plaque.title).to match(/Gizmo .*plaque/)
       end
     end
     context 'with a subject and a colour' do
@@ -101,7 +100,7 @@ describe Plaque, type: :model do
 
   describe '#geolocated?' do
     context 'with neither latitude nor longitude' do
-      let(:plaque) { build :plaque }
+      let(:plaque) { build :plaque, latitude: nil, longitude: nil }
       it 'is not geolocated' do
         expect(plaque).to_not be_geolocated
       end
@@ -113,13 +112,13 @@ describe Plaque, type: :model do
       end
     end
     context 'with latitude only' do
-      let(:plaque) { build :plaque, latitude: 0.121 }
+      let(:plaque) { build :plaque, latitude: 0.121, longitude: nil }
       it 'is not geolocated' do
         expect(plaque).to_not be_geolocated
       end
     end
     context 'with longitude only' do
-      let(:plaque) { build :plaque, longitude: -0.123 }
+      let(:plaque) { build :plaque, latitude: nil, longitude: -0.123 }
       it 'is not geolocated' do
         expect(plaque).to_not be_geolocated
       end
@@ -151,21 +150,6 @@ describe Plaque, type: :model do
       it 'is \'openplaques.org/plaques/[id]\'' do
         # this is not ideal response. It should depend on the output format
         expect(plaque.uri).to eq('https://openplaques.org/plaques/13')
-      end
-    end
-  end
-
-  describe '#as_wkt' do
-    context 'with nothing set' do
-      let(:plaque) { build :plaque }
-      it 'is nil' do
-        expect(plaque.as_wkt).to eq('')
-      end
-    end
-    context 'with nothing set' do
-      let(:plaque) { build :plaque, latitude: 0.121, longitude: -0.123 }
-      it 'is nil' do
-        expect(plaque.as_wkt).to eq('POINT(-0.123 0.121)')
       end
     end
   end

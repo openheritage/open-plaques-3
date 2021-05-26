@@ -40,11 +40,6 @@ interaction:
     service: postgres
     command: psql -h postgres -U postgres -d openplaques_development_20200350
 
-  rake:
-    description: Run Rake commands
-    service: runner
-    command: bundle exec rake
-
   rails:
     description: Run Rails commands
     service: runner
@@ -55,7 +50,12 @@ interaction:
         service: rails
         compose:
           run_options: [service-ports, use-aliases]
-  
+ 
+  rake:
+    description: Run Rake commands
+    service: runner
+    command: bundle exec rake
+ 
   'redis-cli':
     description: Run Redis console
     service: redis

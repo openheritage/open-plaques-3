@@ -400,9 +400,5 @@ module PlaquesHelper
   # A geographic point location
   class Point
     attr_accessor :latitude, :longitude, :precision, :zoom
-
-    def as_wkt
-      "POINT(#{latitude} #{longitude})"
-    end
   end
 end

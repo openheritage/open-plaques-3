@@ -33,18 +33,24 @@ source 'https://rails-assets.org' do
 end
 
 group :development do
-  gem 'dotenv-rails', groups: :test
   gem 'listen'
   gem 'mechanize'
   gem 'rubocop'
+  gem 'rubocop-rails'
+  # gem 'rubocop-rspec'
   gem 'spring'
+end
+
+group :development, :test do
+  gem 'dotenv-rails'
+  gem 'factory_bot_rails'
+  gem 'ffaker'
 end
 
 group :test do
   gem 'capybara'
   gem 'database_cleaner'
-  gem 'factory_bot_rails'
-  gem 'ffaker'
   gem 'rspec-rails'
+  gem 'test-prof'
   #  gem 'webdrivers'
 end

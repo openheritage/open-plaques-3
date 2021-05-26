@@ -7,7 +7,7 @@ module Features
     end
 
     def have_main_heading(value)
-        have_css 'h1', text: value
+      have_css 'h1', text: value
     end
 
     def have_sub_heading(value)

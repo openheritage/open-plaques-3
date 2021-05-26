@@ -1,4 +1,9 @@
+# .rubocop.yml
+require:
+  - rubocop-rails
+  - 'test_prof/rubocop'
 AllCops:
+  NewCops: enable
   Exclude:
     - app/controllers/*csv.rb
     - app/views/**/*.*.builder
@@ -19,6 +24,9 @@ AllCops:
     - bench_rails_memory_usage.rb
 Layout/EmptyLinesAroundAttributeAccessor:
   Enabled: true
+Layout/LineLength:
+  Enabled: false
+  Max: 150
 Layout/SpaceAroundMethodCallOperator:
   Enabled: true
 Lint/DeprecatedOpenSSLConstant:
@@ -40,18 +48,17 @@ Metrics/AbcSize:
 Metrics/BlockLength:
   Max: 35
 Metrics/ClassLength:
-  Max: 200
+  Max: 400
 Metrics/CyclomaticComplexity:
   Max: 30
-Metrics/LineLength:
-  Enabled: false
-  Max: 150
 Metrics/MethodLength:
   Enabled: false
   Max: 20
 Metrics/PerceivedComplexity:
   Enabled: false
 Style/AndOr:
+  Enabled: false
+Style/ExpandPathArguments:
   Enabled: false
 Style/ExponentialNotation:
     Enabled: true

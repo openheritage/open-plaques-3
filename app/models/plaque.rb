@@ -115,10 +115,6 @@ class Plaque < ApplicationRecord
     super options
   end
 
-  def as_wkt
-    geolocated? ? "POINT(#{longitude} #{latitude})" : ''
-  end
-
   def coordinates
     geolocated? ? "#{latitude},#{longitude}" : ''
   end
@@ -341,8 +337,10 @@ class Plaque < ApplicationRecord
       t += " #{colour_name}" if colour_name && colour_name != 'unknown'
       "#{t} plaque"
     elsif colour_name && colour_name != 'unknown'
-      "#{colour_name.to_s.capitalize} plaque № #{id}"
-    elsif !id.nil?
+      t = "#{colour_name.to_s.capitalize} plaque"
+      t += " № #{id}" if id.present?
+      t
+    elsif id.present?
       "plaque № #{id}"
     else
       'plaque'

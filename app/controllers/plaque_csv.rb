@@ -6,7 +6,6 @@ class PlaqueCsv < Julia::Builder
   column 'inscription' do |plaque| plaque.inscription.gsub(/\r/, ' ').gsub(/\n/, ' ') end
   column :latitude
   column :longitude
-  column :as_wkt
   column 'country' do |plaque| plaque.area ? plaque.area.country.name : '' end
   column 'area' do |plaque| plaque.area ? plaque.area.name : '' end
   column :address
