@@ -1,10 +1,10 @@
 <nav class="navbar navbar-expand-md navbar-light bg-light">
   <div class="container-fluid">
     <%= link_to image_tag('openplaques.png'), root_path, class: 'navbar-brand' %>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarItemsMain" aria-controls="navbarItemsMain" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse" id="navbarItemsMain">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <% unless current_user&.is_admin? %>
           <%= navbar_link_to t('menu.about'), about_path, active_when: { controller: :pages } %>
