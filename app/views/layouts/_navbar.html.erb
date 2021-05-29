@@ -1,39 +1,44 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <%= link_to image_tag("openplaques.png"), root_path, class: 'navbar-brand' %>
-  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarItemsMain" aria-controls="navbarItemsMain" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarItemsMain">
-    <ul class="navbar-nav mr-auto">
-      <%= navbar_link_to t('menu.about'), about_path, active_when: { controller: :pages } %>
-      <%= navbar_link_to t('menu.people'), people_path, active_when: { controller: :people_by_index } %>
-      <%= navbar_link_to t('menu.places'), countries_path, active_when: { controller: :people } %>
-      <%= navbar_link_to t('menu.organisations'), organisations_path, active_when: { controller: :organisations } %>
-      <%= navbar_link_to t('menu.photographers'), photographers_path, active_when: { controller: :photographers } %>
-      <% if current_user&.is_admin? %>
-      <%= navbar_link_to t('menu.roles'), roles_path, active_when: { controller: :roles } %>
-      <%= navbar_link_to t('menu.verbs'), verbs_path, active_when: { controller: :verbs } %>
-      <%= navbar_link_to t('menu.todo_lists'), '/todo', active_when: { controller: :todo } %>
-      <% end %>
-      <%= navbar_link_to t('menu.contribute'), '/contribute', active_when: { controller: :pages } %>
-      <%= navbar_link_to t('menu.data'), '/data', active_when: { controller: :pages } %>
-      <%= navbar_link_to t('menu.contact'), contact_path, active_when: { controller: :pages } %>
-      <%= navbar_link_to t('devise.sessions.user.sign_in'), new_user_session_path unless user_signed_in? %>
-      <%= navbar_link_to t('devise.sessions.user.sign_out'), destroy_user_session_path, method: :delete if user_signed_in? %>
-    </ul>
-    <%= render 'layouts/search' %>
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+  <div class="container-fluid">
+    <%= link_to image_tag('openplaques.png'), root_path, class: 'navbar-brand' %>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <% unless current_user&.is_admin? %>
+          <%= navbar_link_to t('menu.about'), about_path, active_when: { controller: :pages } %>
+        <% end %>
+        <%= navbar_link_to t('menu.people'), people_path, active_when: { controller: :people_by_index } %>
+        <%= navbar_link_to t('menu.places'), countries_path, active_when: { controller: :people } %>
+        <%= navbar_link_to t('menu.organisations'), organisations_path, active_when: { controller: :organisations } %>
+        <%= navbar_link_to t('menu.photographers'), photographers_path, active_when: { controller: :photographers } %>
+        <% if current_user&.is_admin? %>
+          <%= navbar_link_to t('menu.roles'), roles_path, active_when: { controller: :roles } %>
+          <%= navbar_link_to t('menu.verbs'), verbs_path, active_when: { controller: :verbs } %>
+          <%= navbar_link_to t('menu.todo_lists'), '/todo', active_when: { controller: :todo } %>
+        <% else %>
+          <%= navbar_link_to t('menu.contribute'), '/contribute', active_when: { controller: :pages } %>
+          <%= navbar_link_to t('menu.data'), '/data', active_when: { controller: :pages } %>
+          <%= navbar_link_to t('menu.contact'), contact_path, active_when: { controller: :pages } %>
+        <% end %>
+        <%= navbar_link_to t('devise.sessions.user.sign_in'), new_user_session_path unless user_signed_in? %>
+        <%= navbar_link_to t('devise.sessions.user.sign_out'), destroy_user_session_path, method: :delete if user_signed_in? %>
+      </ul>
+      <%= render 'layouts/search' %>
+    </div>
   </div>
 </nav>
 <% if current_user&.is_admin? %>
-<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-  <span class="navbar-brand">Admin</span>
-  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarItemsAdmin" aria-controls="navbarItemsAdmin" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarItemsAdmin">
-    <ul class="navbar-nav mr-auto">
-      <%= yield :admin_menu %>
-    </ul>
-  </div>
-</nav>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <span class="navbar-brand">Admin</span>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarItemsAdmin" aria-controls="navbarItemsAdmin" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarItemsAdmin">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <%= yield :admin_menu %>
+      </ul>
+    </div>
+  </nav>
 <% end %>
