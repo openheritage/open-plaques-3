@@ -3,48 +3,39 @@
 <% content_for :page_subhead, t('.page_subhead') %>
 <%= render 'plaques/edit_bar', plaque: @plaque %>
 
-<%= form_for @plaque do |f| %>
-  <% if current_user %>
-    <%= bootstrap_text_field(f, :address) %>
-    <%= bootstrap_field(f, :area_id, f.collection_select(:area_id, @areas, :id, :full_name, {include_blank: true})) %>
-  <% end %>
-  <div class="row mb-3">
-    <div class="form-group col-md-6">
-      <a href="https://maps.google.com/maps?q=<%= @plaque.full_address %>&z=18" target="_new">'<%= @plaque.full_address %>' on Google Maps</a>
-    </div>
-  </div>
-  <div class="row mb-3">
-    <div class="form-group col-md-6">
-      <label class="form-label" for="streetview_url">OpenStreetMap/Google/Geohack url</label>
-      <input class="form-control" type="text" value="http://..." name="streetview_url" id="streetview_url" size="100" />
-    </div>
-  </div>
-  <div class="row mb-3">
-    <div class="form-group col-md-3">
-      <%= f.label :latitude %>
-      <%= f.text_field :latitude, readonly: !current_user %>
-    </div>
-    <div class="form-group col-md-3">
-      <%= f.label :longitude %>
-      <%= f.text_field :longitude, readonly: !current_user %>
-    </div>
-  </div>
-  <div class="row mb-3">
-    <div class="form-group col-md-6">
+<div class="row">
+  <div class="col-xs-12 col-sm-6">
+    <%= form_for @plaque do |f| %>
+      <% if current_user %>
+        <%= bootstrap_text_field(f, :address) %>
+        <%= bootstrap_field(f, :area_id, f.collection_select(:area_id, @areas, :id, :full_name, include_blank: true)) %>
+      <% end %>
+      <a href="https://maps.google.com/maps?q=<%= @plaque.full_address %>&z=18" target="_new">Search on Google Maps</a>
+      <div class="form-group">
+        <label class="form-label" for="streetview_url">OpenStreetMap/Google/Geohack url</label>
+        <input class="form-control" type="text" value="http://..." name="streetview_url" id="streetview_url" size="100" />
+      </div>
+      <div class="row">
+        <div class="form-group col-md-3">
+          <%= f.label :latitude %>
+          <%= f.text_field :latitude, readonly: !current_user %>
+        </div>
+        <div class="form-group col-md-3">
+          <%= f.label :longitude %>
+          <%= f.text_field :longitude, readonly: !current_user %>
+        </div>
+      </div>
       <a id="latlonlink" href="https://maps.google.com/maps?q=<%= @plaque.latitude %>,<%= @plaque.longitude %>&z=18" target="_new"><%= @plaque.latitude %>,<%= @plaque.longitude %> on Google Maps</a>
-    </div>
+      <div class="form-group">
+        <%= f.check_box :is_accurate_geolocation %> I am certain that this location is accurate because it was located from a geocoded photo, or I have seen this plaque in Google Streetview/real life
+      </div>
+      <%= f.submit 'Update' %>
+    <% end %>
   </div>
-  <div class="row mb-3">
-    <div class="form-group col-md-6">
-      <%= f.check_box :is_accurate_geolocation %> I am certain that this location is accurate because it was located from a geocoded photo, or I have seen this plaque in Google Streetview/real life
-    </div>
-  </div>
-  <%= f.submit 'Update' %>
-
-  <div class="row mb-3">
-    <div class="form-group col-md-12">
+  <div class="col-xs-12 col-sm-6">
+    <p>
       A photo will give you the position where the photographer was standing, and Google Streetview where the cameracar was. Drag and drop the blue dot to refine the position.
-    </div>
-    <div class="form-group col-md-12" id="map" style="height: 400px; width: 100%; margin-top: 15px;"></div>
+    </p>
+    <div class="form-group" id="map" style="height: 400px; width: 100%; margin-top: 15px;"></div>
   </div>
-<% end %>
+</div>
