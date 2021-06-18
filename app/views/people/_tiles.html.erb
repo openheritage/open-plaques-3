@@ -1,5 +1,10 @@
 <%= will_paginate @people if @people.respond_to?(:total_pages) %>
-<div id="person-tiles" class="row" data-masonry='{"percentPosition": true }'>
+<div id="person-tiles" class="row grid" data-masonry='{"percentPosition": true }'>
   <%= render partial: 'people/tile', collection: @people, as: :person %>
 </div>
 <%= will_paginate @people if @people.respond_to?(:total_pages) %>
+<script>
+  setTimeout(function () {
+    var msnry = new Masonry('.grid');
+  }, 1000);
+</script>
