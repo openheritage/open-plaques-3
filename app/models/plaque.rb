@@ -102,7 +102,7 @@ class Plaque < ApplicationRecord
           },
           people: {
             only: [],
-            methods: %i[uri full_name]
+            methods: %i[uri full_name primary_role_name]
           },
           see_also: {
             only: [],
@@ -187,6 +187,10 @@ class Plaque < ApplicationRecord
 
   def latitude
     super ? super.round(5) : nil
+  end
+
+  def lead_subject
+    people.first
   end
 
   def longitude

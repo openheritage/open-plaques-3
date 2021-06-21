@@ -91,7 +91,7 @@ class Person < ApplicationRecord
   end
 
   def primary_role_name
-    primary_role&.role&.name
+    primary_role&.name
   end
 
   def default_action
@@ -328,6 +328,12 @@ class Person < ApplicationRecord
 
   def firstname
     name.split(' ').first
+  end
+
+  def role_names
+    names = []
+    personal_roles.each { |personal_role| names << personal_role.name }
+    names
   end
 
   def surname
