@@ -41,3 +41,4 @@ log/.psql_history
 storage/**/
 storage/*.json
 storage_old/**
+.DS_Store
