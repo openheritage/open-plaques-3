@@ -7,7 +7,7 @@ describe PersonalRole, type: :model do
 
   describe '#name' do
     context 'a subject with role of "duck"' do
-      let(:duck) { build :animal, name: 'duck' }
+      let(:duck) { build :duck }
       let(:personal_role) { build :personal_role, role: duck }
       it 'is a duck' do
         expect(personal_role.name).to eq('duck')

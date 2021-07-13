@@ -117,7 +117,7 @@ describe Person, type: :model do
         a_person.roles << (build :actor)
       end
       it 'is a person' do
-        expect(a_person.type).to eq('man')
+        expect(a_person.person?).to be_truthy
       end
     end
 
