@@ -60,6 +60,7 @@ class Plaque < ApplicationRecord
   scope :ungeolocated, -> { where(latitude: nil).order(id: :desc) }
   scope :unphotographed, -> { where(photos_count: 0, is_current: true).order(id: :desc) }
   attr_accessor :country, :other_colour_id, :force_us_state
+  validate :coordinates_cannot_be_zero
 
   def as_geojson(options = {})
     options = { only: %i[id uri inscription] } if !options || !options[:only]
@@ -117,6 +118,15 @@ class Plaque < ApplicationRecord
 
   def coordinates
     geolocated? ? "#{latitude},#{longitude}" : ''
+  end
+
+  def coordinates_cannot_be_zero
+    if latitude.present? && latitude == 0
+      errors.add(:latitude, 'spammer attempt to spoil coordinates')
+    end
+    if longitude.present? && longitude == 0
+      errors.add(:longitude, 'spammer attempt to spoil coordinates')
+    end
   end
 
   def distance_between(lat1, lon1, lat2, lon2)
