@@ -3,49 +3,44 @@ FactoryBot.define do
     name { FFaker::CheesyLingo.words(3).join(' ') }
   end
 
-  factory :title, parent: :role do
+  factory :baronet, parent: :role do
+    name { 'baronet' }
+    prefix { 'Sir' }
     role_type { 'title' }
   end
 
-  factory :baronet, parent: :title do
-    name { 'baronet' }
-    prefix { 'Sir' }
-  end
-
-  factory :clergy, parent: :role do
-    role_type { 'clergy' }
-  end
-
-  factory :vicar, parent: :clergy do
+  factory :vicar, parent: :role do
     name { 'vicar' }
     prefix { 'Revd' }
+    role_type { 'clergy' }
   end
 
   factory :a_person, class: :role do
     role_type { 'person' }
   end
 
-  factory :farmer, parent: :a_person do
+  factory :farmer, parent: :role do
     name { 'farmer' }
+    role_type { 'person' }
   end
 
-  factory :actor, parent: :a_person do
+  factory :actor, parent: :role do
     name { 'actor' }
+    role_type { 'person' }
   end
 
-  factory :animal, class: :role do
+  factory :dog, class: :role do
+    name { 'dog' }
     role_type { 'animal' }
   end
 
-  factory :dog, parent: :animal do
-    name { 'dog' }
+  factory :duck, class: :role do
+    name { 'duck' }
+    role_type { 'animal' }
   end
 
-  factory :place, class: :role do
-    role_type { 'place' }
-  end
-
-  factory :building, parent: :place do
+  factory :building, parent: :role do
     name { 'building' }
+    role_type { 'place' }
   end
 end
