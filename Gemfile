@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.6.6'
+ruby '2.6.8'
 
 gem 'aws-sdk-comprehend'
 gem 'aws-sdk-s3', require: false
