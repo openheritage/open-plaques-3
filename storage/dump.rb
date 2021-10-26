@@ -1,4 +1,4 @@
-country = Country.find_by_name('United Kingdom')
+country = Country.find_by(name: 'United Kingdom')
 Dir.mkdir("/app/storage/#{country.to_param}") unless File.exist?("/app/storage/#{country.to_param}")
 country.areas.each do |area|
   Dir.mkdir("/app/storage/#{country.to_param}/#{area.to_param}") unless File.exist?("/app/storage/#{country.to_param}/#{area.to_param}")

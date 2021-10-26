@@ -1,0 +1,20 @@
+name: reviewdog
+on: [pull_request]
+jobs:
+  rubocop:
+    name: code style
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v1
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.4
+      - name: rubocop
+        uses: reviewdog/action-rubocop@v2
+        level: warning
+        with:
+          rubocop_version: gemfile
+          rubocop_extensions: rubocop-rails:gemfile rubocop-rspec:gemfile
+          github_token: ${{ secrets.github_token }}
+          reporter: github-pr-check # or 'github-pr-review''
