@@ -10,7 +10,7 @@ class TodoController < ApplicationController
     @geo_no_location_plaques_count = Plaque.geo_no_location.count
     @plaques_to_add_count = TodoItem.to_add.count
     @lists_to_datacapture = TodoItem.to_datacapture.count
-    uk = Country.find_by_name('United Kingdom')
+    uk = Country.uk
     @uk_plaques_count = uk.plaques.count
     @no_connection_count = uk.plaques.unconnected.count
     @no_connection_percentage = (@no_connection_count.to_f / @uk_plaques_count * 100).to_i
@@ -44,7 +44,7 @@ class TodoController < ApplicationController
       @lists_to_datacapture = TodoItem.to_datacapture
       render :lists_to_datacapture
     when 'no_connection'
-      uk = Country.find_by_name('United Kingdom')
+      uk = Country.uk
       @uk_plaques_count = uk.plaques.count
       @no_connection_count = uk.plaques.unconnected.count
       @no_connection_percentage = (@no_connection_count.to_f / @uk_plaques_count * 100).to_i

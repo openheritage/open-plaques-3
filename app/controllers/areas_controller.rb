@@ -85,11 +85,11 @@ class AreasController < ApplicationController
   protected
 
   def find_country
-    @country = Country.find_by_alpha2!(params[:country_id])
+    @country = Country.find_by!(alpha2: params[:country_id])
   end
 
   def find
-    @area = @country.areas.find_by_slug!(params[:id])
+    @area = @country.areas.find_by!(slug: params[:id])
   end
 
   # access helpers within controller

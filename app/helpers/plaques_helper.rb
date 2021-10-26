@@ -42,7 +42,7 @@ module PlaquesHelper
     json_parsed = JSON.parse("{\"data\":#{pics}}")
     json_parsed['data'].each do |pic|
       photo_url = "https://www.flickr.com/photos/#{pic['ownerNsid']}/#{pic['id']}/"
-      @photo = Photo.find_by_url(photo_url) || Photo.find_by_url(photo_url.sub('https:', 'http:'))
+      @photo = Photo.find_by(url: photo_url) || Photo.find_by(url: photo_url.sub('https:', 'http:'))
       next if @photo
 
       @photo = Photo.new(url: photo_url, plaque: plaque)
@@ -66,12 +66,12 @@ module PlaquesHelper
         $stdout.flush
         @photo = nil
         photo_url = "https://www.flickr.com/photos/#{photo.attributes['owner']}/#{photo.attributes['id']}/"
-        @photo = Photo.find_by_url(photo_url) || Photo.find_by_url(photo_url.sub('https:', 'http:'))
+        @photo = Photo.find_by(url: photo_url) || Photo.find_by(url: photo_url.sub('https:', 'http:'))
         if @photo
           # we've already got that one
         else
           plaque_id = photo.attributes['machine_tags'][/openplaques\:id\=(\d+)/, 1]
-          @plaque = Plaque.find_by_id(plaque_id)
+          @plaque = Plaque.find_by(id: plaque_id)
           if @plaque
             @photo = Photo.new(url: photo_url, plaque: @plaque)
             @photo.populate
@@ -91,12 +91,12 @@ module PlaquesHelper
     field = form.field_with(name: 'ctl00$MainContentPlaceHolder$searchCriteriaControl$numberTextBox')
     submit_button = form.button_with(name: 'ctl00$MainContentPlaceHolder$searchCriteriaControl$searchByNumberButton')
 
-    kentucky_historical_society = Organisation.find_by_slug('kentucky_historical_society')
-    kentucky_highways_department = Organisation.find_by_slug('kentucky_highways_department')
-    kentucky_historical_marker = Series.find_by_name('Kentucky Historical Marker')
-    usa = Country.find_by_name('United States')
-    black = Colour.find_by_name('black')
-    english = Language.find_by_name('English')
+    kentucky_historical_society = Organisation.find_by(slug: 'kentucky_historical_society')
+    kentucky_highways_department = Organisation.find_by(slug: 'kentucky_highways_department')
+    kentucky_historical_marker = Series.find_by(name: 'Kentucky Historical Marker')
+    usa = Country.find_by(name: 'United States')
+    black = Colour.find_by(name: 'black')
+    english = Language.find_by(name: 'English')
     (1..2533).each do |series_ref|
       field.value = series_ref
       output = agent.submit(form, submit_button)
@@ -177,7 +177,7 @@ module PlaquesHelper
       plaque.force_us_state = state
       plaque.inscription = "#{title}. #{inscription}"
       plaque.colour = colour
-      plaque.language = Language.find_by_name('English')
+      plaque.language = Language.find_by(name: 'English')
       plaque.series = series
       plaque.series_ref = marker_number
       plaque.save
@@ -213,7 +213,7 @@ module PlaquesHelper
       title = output.search('.//article/h1').text.titlecase.strip
       inscription = output.search('.//article/p').text.strip
       inscription += output.search('.//article/h3').text.strip
-      usa = Country.find_by_alpha2('us')
+      usa = Country.find_by(alpha2: 'us')
       area = Area.find_or_create_by(country: usa, name: "#{city}, #{state}")
       puts "#{series.name} number #{marker_number} at #{area.name} == #{title}"
       plaque = Plaque.find_by(series_id: series.id, series_ref: marker_number)
@@ -235,7 +235,7 @@ module PlaquesHelper
             sponsors << Organisation.find_or_create_by(name: extra_sponsors.titleize) unless extra_sponsors.blank?
           end
           sponsors << Organisation.find_or_create_by(name: 'Nevada State Historic Preservation Office')
-          plaque.language = Language.find_by_name('English')
+          plaque.language = Language.(name: 'English')
           plaque.save
           sponsors.each do |sponsor|
             s = Sponsorship.find_or_create_by(plaque_id: plaque.id, organisation_id: sponsor.id)

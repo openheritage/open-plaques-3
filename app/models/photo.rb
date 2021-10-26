@@ -249,7 +249,7 @@ class Photo < ApplicationRecord
   end
 
   def unique_file_url
-    errors.add(:file_url, 'already exists') if Photo.find_by_file_url(file_url) || Photo.find_by_file_url(file_url&.gsub('https', 'http'))
+    errors.add(:file_url, 'already exists') if Photo.find_by(file_url: file_url) || Photo.find_by(file_url: file_url&.gsub('https', 'http'))
   end
 
   def reset_plaque_photo_count
@@ -302,7 +302,7 @@ class Photo < ApplicationRecord
     self.photographer_url = parsed_json['author_url'].gsub('http:', 'https:')
     self.thumbnail = parsed_json['thumbnail_url'].gsub('http:', 'https:')
     self.file_url = parsed_json['url'].gsub('http:', 'https:')
-    self.licence = Licence.find_by_url(parsed_json['license_url'])
+    self.licence = Licence.find_by(url: parsed_json['license_url'])
     self.subject = parsed_json['title'][0, 255] if parsed_json['title']
     self.description = parsed_json['description'] if parsed_json['description']
     self.latitude = parsed_json['geo']['lat'] if parsed_json['geo']

@@ -14,7 +14,7 @@ class HomeController < ApplicationController
     @todays = Pick.todays
     @todays_place = Area.where(name: 'Norwich').first
     @todays_place_description = 'Norwich has a long history. It has been a city since 1094. From the Middle Ages until the Industrial Revolution, Norwich was the largest city in England after London and one of the most important. This is refelected in its plaques.'
-    p1 = Plaque.find_by_id(2825)
+    p1 = Plaque.find_by(id: 2825)
     if p1
       GoogleAnalytic.find_or_create_by(page: '/plaques/2825', period: 'all time', record: p1, page_views: 19_526)
       p2 = Plaque.find(2885)

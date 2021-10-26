@@ -76,7 +76,7 @@ class OrganisationsController < ApplicationController
   protected
 
   def find
-    @organisation = Organisation.find_by_slug!(params[:id])
+    @organisation = Organisation.find_by!(slug: params[:id])
   end
 
   def find_languages

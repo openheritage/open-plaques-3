@@ -53,30 +53,30 @@ class PersonalRolesController < ApplicationController
     )
       opposite = nil
       if @personal_role.related_person # && !@personal_role.related_person.related_to?(@personal_role.person)
-        opposite = Role.find_by_name 'wife' if @personal_role.role.name == 'husband'
-        opposite = Role.find_by_name 'husband' if @personal_role.role.name == 'wife'
-        opposite = Role.find_by_name 'father' if @personal_role.role.role_type == 'child' && @personal_role.related_person.male?
-        opposite = Role.find_by_name 'mother' if @personal_role.role.role_type == 'child' && @personal_role.related_person.female?
-        opposite = Role.find_by_name 'son' if @personal_role.role.role_type == 'parent' && @personal_role.related_person.male?
-        opposite = Role.find_by_name 'daughter' if @personal_role.role.role_type == 'parent' && @personal_role.related_person.female?
-        opposite = Role.find_by_name 'band_member' if @personal_role.role.name == 'band'
-        opposite = Role.find_by_name 'band' if @personal_role.role.name == 'band member'
-        opposite = Role.find_by_name 'band' if @personal_role.role.name == 'lead singer'
-        opposite = Role.find_by_name 'band' if @personal_role.role.name == 'drummer'
-        opposite = Role.find_by_name 'footballer' if @personal_role.role.name == 'association football club'
-        opposite = Role.find_by_name 'association football club' if @personal_role.role.name == 'footballer'
-        opposite = Role.find_by_name 'football manager' if @personal_role.role.name == 'football managerial post'
-        opposite = Role.find_by_name 'football managerial post' if @personal_role.role.name == 'football manager'
-        opposite = Role.find_by_name 'cricketer' if @personal_role.role.name == 'cricket club'
-        opposite = Role.find_by_name 'cricket club' if @personal_role.role.name == 'cricketer'
-        opposite = Role.find_by_name 'business partner' if @personal_role.role.name == 'business partner'
-        opposite = Role.find_by_name 'friend' if @personal_role.role.name == 'friend'
-        opposite = Role.find_by_name 'creator' if @personal_role.role.name == 'creation'
-        opposite = Role.find_by_name 'creation' if @personal_role.role.name == 'creator'
-        opposite = Role.find_by_name 'founder' if @personal_role.role.name == 'foundation'
-        opposite = Role.find_by_name 'foundation' if @personal_role.role.name == 'founder'
-        opposite = Role.find_by_name 'battle' if @personal_role.role.name == 'battle veteran'
-        opposite = Role.find_by_name 'battle veteran' if @personal_role.role.name == 'battle'
+        opposite = Role.find_by(name: 'wife') if @personal_role.role.name == 'husband'
+        opposite = Role.find_by(name: 'husband') if @personal_role.role.name == 'wife'
+        opposite = Role.find_by(name: 'father') if @personal_role.role.role_type == 'child' && @personal_role.related_person.male?
+        opposite = Role.find_by(name: 'mother') if @personal_role.role.role_type == 'child' && @personal_role.related_person.female?
+        opposite = Role.find_by(name: 'son') if @personal_role.role.role_type == 'parent' && @personal_role.related_person.male?
+        opposite = Role.find_by(name: 'daughter') if @personal_role.role.role_type == 'parent' && @personal_role.related_person.female?
+        opposite = Role.find_by(name: 'band_member') if @personal_role.role.name == 'band'
+        opposite = Role.find_by(name: 'band') if @personal_role.role.name == 'band member'
+        opposite = Role.find_by(name: 'band') if @personal_role.role.name == 'lead singer'
+        opposite = Role.find_by(name: 'band') if @personal_role.role.name == 'drummer'
+        opposite = Role.find_by(name: 'footballer') if @personal_role.role.name == 'association football club'
+        opposite = Role.find_by(name: 'association football club') if @personal_role.role.name == 'footballer'
+        opposite = Role.find_by(name: 'football manager') if @personal_role.role.name == 'football managerial post'
+        opposite = Role.find_by(name: 'football managerial post') if @personal_role.role.name == 'football manager'
+        opposite = Role.find_by(name: 'cricketer') if @personal_role.role.name == 'cricket club'
+        opposite = Role.find_by(name: 'cricket club') if @personal_role.role.name == 'cricketer'
+        opposite = Role.find_by(name: 'business partner') if @personal_role.role.name == 'business partner'
+        opposite = Role.find_by(name: 'friend') if @personal_role.role.name == 'friend'
+        opposite = Role.find_by(name: 'creator') if @personal_role.role.name == 'creation'
+        opposite = Role.find_by(name: 'creation') if @personal_role.role.name == 'creator'
+        opposite = Role.find_by(name: 'founder') if @personal_role.role.name == 'foundation'
+        opposite = Role.find_by(name: 'foundation') if @personal_role.role.name == 'founder'
+        opposite = Role.find_by(name: 'battle') if @personal_role.role.name == 'battle veteran'
+        opposite = Role.find_by(name: 'battle veteran') if @personal_role.role.name == 'battle'
       end
       unless opposite.nil?
         it_exists = false

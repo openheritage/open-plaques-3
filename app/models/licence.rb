@@ -14,27 +14,27 @@ class Licence < ApplicationRecord
   def self.find_by_flickr_licence_id(flickr_licence_id)
     case flickr_licence_id.to_s
     when '0'
-      Licence.find_by_url('http://en.wikipedia.org/wiki/All_rights_reserved')
+      Licence.find_by(url: 'http://en.wikipedia.org/wiki/All_rights_reserved')
     when '1'
-      Licence.find_by_url('http://creativecommons.org/licenses/by-nc-sa/2.0/')
+      Licence.find_by(url: 'http://creativecommons.org/licenses/by-nc-sa/2.0/')
     when '2'
-      Licence.find_by_url('http://creativecommons.org/licenses/by-nc/2.0/')
+      Licence.find_by(url: 'http://creativecommons.org/licenses/by-nc/2.0/')
     when '3'
-      Licence.find_by_url('http://creativecommons.org/licenses/by-nc-nd/2.0/')
+      Licence.find_by(url: 'http://creativecommons.org/licenses/by-nc-nd/2.0/')
     when '4'
-      Licence.find_by_url('http://creativecommons.org/licenses/by/2.0/')
+      Licence.find_by(url: 'http://creativecommons.org/licenses/by/2.0/')
     when '5'
-      Licence.find_by_url('http://creativecommons.org/licenses/by-sa/2.0/')
+      Licence.find_by(url: 'http://creativecommons.org/licenses/by-sa/2.0/')
     when '6'
-      Licence.find_by_url('http://creativecommons.org/licenses/by-nd/2.0/')
+      Licence.find_by(url: 'http://creativecommons.org/licenses/by-nd/2.0/')
     when '7'
-      Licence.find_by_url('http://www.flickr.com/commons/usage/')
+      Licence.find_by(url: 'http://www.flickr.com/commons/usage/')
     when '8'
-      Licence.find_by_url('http://www.usa.gov/copyright.shtml')
+      Licence.find_by(url: 'http://www.usa.gov/copyright.shtml')
     when '9'
-      Licence.find_by_url('http://creativecommons.org/publicdomain/zero/1.0/')
+      Licence.find_by(url: 'http://creativecommons.org/publicdomain/zero/1.0/')
     when '10'
-      Licence.find_by_url('http://creativecommons.org/publicdomain/mark/1.0/')
+      Licence.find_by(url: 'http://creativecommons.org/publicdomain/mark/1.0/')
     else
       puts 'Could not find license'
       nil

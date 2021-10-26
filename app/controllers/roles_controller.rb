@@ -38,7 +38,7 @@ class RolesController < ApplicationController
   end
 
   def show
-    @role = Role.find_by_slug(params[:id])
+    @role = Role.find_by(slug: params[:id])
     @role ||= Role.new(name: params[:id]) # dummy role
     if @role.name.starts_with?('monarch')
       @monarchs = Role.where(slug: [@role.name.gsub('monarch', 'king'), @role.name.gsub('monarch', 'queen')])
@@ -88,7 +88,7 @@ class RolesController < ApplicationController
   protected
 
   def find
-    @role = Role.find_by_slug!(params[:id])
+    @role = Role.find_by!(slug: params[:id])
   end
 
   private

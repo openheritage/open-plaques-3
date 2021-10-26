@@ -150,8 +150,8 @@ class PlaquesController < ApplicationController
       area = Area.find(params[:area_id])
       raise 'ERROR' if area.country_id != country.id and return
     elsif params[:area] && !params[:area].blank?
-      area = country.areas.find_by_name(params[:area])
-      area ||= country.areas.find_by_slug(params[:area].strip.downcase.tr(' ', '_'))
+      area = country.areas.find_by(name: params[:area])
+      area ||= country.areas.find_by(slug: params[:area].strip.downcase.tr(' ', '_'))
       area ||= country.areas.create!(name: params[:area])
     end
     @plaque.area = area

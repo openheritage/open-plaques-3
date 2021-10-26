@@ -41,8 +41,8 @@ class PhotosController < ApplicationController
     @photo = Photo.new(permitted_params)
     @photo.populate
     if @photo.errors.empty?
-      @already_existing_photo = Photo.find_by_file_url(@photo.file_url)
-      @already_existing_photo ||= Photo.find_by_file_url(@photo.file_url.gsub('https', 'http'))
+      @already_existing_photo = Photo.find_by(file_url: @photo.file_url)
+      @already_existing_photo ||= Photo.find_by(file_url: @photo.file_url.gsub('https', 'http'))
       if @already_existing_photo
         @photo = @already_existing_photo
         @photo.update(permitted_params)

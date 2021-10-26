@@ -52,10 +52,10 @@ class AreaSubjectsController < ApplicationController
   end
 
   def find_country
-    @country = Country.find_by_alpha2!(params[:country_id])
+    @country = Country.find_by!(alpha2: params[:country_id])
   end
 
   def find
-    @area = @country.areas.find_by_slug!(params[:area_id])
+    @area = @country.areas.find_by!(slug: params[:area_id])
   end
 end

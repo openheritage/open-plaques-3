@@ -53,6 +53,6 @@ class OrganisationSubjectsController < ApplicationController
   end
 
   def find
-    @organisation = Organisation.find_by_slug!(params[:organisation_id])
+    @organisation = Organisation.find_by!(slug: params[:organisation_id])
   end
 end

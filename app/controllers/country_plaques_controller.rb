@@ -48,6 +48,6 @@ class CountryPlaquesController < ApplicationController
   protected
 
   def find
-    @country = Country.find_by_alpha2!(params[:country_id])
+    @country = Country.find_by!(alpha2: params[:country_id])
   end
 end

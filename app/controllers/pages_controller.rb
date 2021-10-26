@@ -37,7 +37,7 @@ class PagesController < ApplicationController
   protected
 
   def find
-    @page = Page.find_by_slug!(params[:id])
+    @page = Page.find_by!(slug: params[:id])
   end
 
   private
