@@ -115,7 +115,7 @@ class Role < ApplicationRecord
   end
 
   def dbpedia_abstract
-    return description unless description.blank?
+    return description if description.present?
 
     return nil if dbpedia_uri.blank?
 
@@ -135,7 +135,7 @@ class Role < ApplicationRecord
   end
 
   def used_as_a_prefix?
-    !prefix.blank?
+    prefix.present?
   end
 
   def military_medal?
@@ -143,7 +143,7 @@ class Role < ApplicationRecord
   end
 
   def used_as_a_suffix?
-    !suffix.blank?
+    suffix.present?
   end
 
   def letters
@@ -151,7 +151,7 @@ class Role < ApplicationRecord
   end
 
   def abbreviated?
-    !abbreviation.blank?
+    abbreviation.present?
   end
 
   def confers_honourific_title?

@@ -121,10 +121,10 @@ class Plaque < ApplicationRecord
   end
 
   def coordinates_cannot_be_zero
-    if latitude.present? && latitude == 0
+    if latitude.present? && latitude.zero?
       errors.add(:latitude, 'spammer attempt to spoil coordinates')
     end
-    if longitude.present? && longitude == 0
+    if longitude.present? && longitude.zero?
       errors.add(:longitude, 'spammer attempt to spoil coordinates')
     end
   end
@@ -390,7 +390,7 @@ class Plaque < ApplicationRecord
   def usa_townify
     return unless area.nil? && us_state
 
-    usa = Country.find_by_alpha2('us')
+    usa = Country.find_by(alpha2: 'us')
     state_towns = Area.where("country_id = #{usa.id} and name like '%, #{us_state}'")
     state_towns.each do |town|
       # match any address that includes a town name from the state
