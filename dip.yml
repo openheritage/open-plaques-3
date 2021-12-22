@@ -35,6 +35,11 @@ interaction:
     service: runner
     command: /bin/bash local_restore.sh
 
+  logs_live:
+    description: view Heroku logs from Live
+    service: runner
+    command: /bin/bash heroku logs --tail --app open-plaques-beta
+
   psql:
     description: Run psql console
     service: postgres
