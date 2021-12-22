@@ -6,7 +6,7 @@ x-app: &app
     dockerfile: ./.dockerdev/Dockerfile
     args:
       RUBY_VERSION: '2.7.4'
-      PG_MAJOR: '11'
+      PG_MAJOR: '13'
       NODE_MAJOR: '12'
       YARN_VERSION: '1.22.4'
 #      BUNDLER_VERSION: '2.0.2'
@@ -14,7 +14,7 @@ x-app: &app
     NODE_ENV: development
     RAILS_ENV: ${RAILS_ENV:-development}
     DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: 'true'
-  image: openplaques-dev:1.0.5
+  image: openplaques-dev:1.0.6
   tmpfs:
     - /tmp
 
