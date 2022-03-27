@@ -7,15 +7,15 @@
 <% if photo %>
   <% url = local_assigns[:large] ? photo.file_url : photo.thumbnail_url %>
   <% if url %>
-  <% url = url.gsub('http:','https:') if !photo.geograph? %>
-  <div class="card photo">
-    <%= image_tag(url, {class: "card-img img-rounded w-100", rel: "foaf:depiction"}) %>
-    <div class="card-info">
-      <%= photo.licence.creative_commons? ? icon(:fab, :'creative-commons') : icon(:far, :copyright) if photo.licence %> <%= photo.photographer if photo.photographer %> on <%= photo.source %>
-      <% if photo.licence && !photo.licence.creative_commons? %>
-        <%= photo.licence.abbreviation ? photo.licence.abbreviation : photo.licence.name %>
-      <% end %>
+    <% url = url.gsub('http:', 'https:') if !photo.geograph? %>
+    <div class="card photo">
+      <%= image_tag(url, { class: "card-img img-rounded w-100", rel: "foaf:depiction" }) %>
+      <div class="card-info">
+        <%= photo.licence.creative_commons? ? icon(:fab, :'creative-commons') : icon(:far, :copyright) if photo.licence %> <a href="<%= photo.url %>"><%= photo.photographer if photo.photographer %> on <%= photo.source %></a>
+        <% if photo.licence && !photo.licence.creative_commons? %>
+          <%= photo.licence.abbreviation ? photo.licence.abbreviation : photo.licence.name %>
+        <% end %>
+      </div>
     </div>
-  </div>
   <% end %>
 <% end %>
