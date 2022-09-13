@@ -15,7 +15,7 @@
   </div>
   <div class="form-group">
     <%= f.label :inscription, t('.the_words') %>
-    <%= f.text_area :inscription, {class: 'form-control', rows: 6, placeholder: t('.placeholder'), autofocus: true} %>
+    <%= f.text_area :inscription, {autocomplete: 'off', class: 'form-control', rows: 6, placeholder: t('.placeholder'), autofocus: true} %>
   </div>
   <div class="form-check">
     <label class="form-check-label">
