@@ -98,12 +98,12 @@ class Area < ApplicationRecord
   end
 
   def state
-    matches = /(.*), ([A-Z][A-Z]\z)/.match(name)
+    matches = /(.*), ([A-Z]*\z)/.match(name)
     matches[2] if matches
   end
 
   def town
-    matches = /(.*), ([A-Z][A-Z]\z)/.match(name)
+    matches = /(.*), ([A-Z]*\z)/.match(name)
     if matches
       matches[1]
     else

@@ -410,7 +410,7 @@ class Plaque < ApplicationRecord
 
     return force_us_state if force_us_state
 
-    matches = /(.*), ([A-Z][A-Z]\z)/.match(address)
+    matches = /(.*), ([A-Z]*\z)/.match(address)
     matches[2] if matches
   end
 
